@@ -1,18 +1,22 @@
 // @flow
-import React, { PureComponent } from 'react'
+import React, { PureComponent, Fragment } from 'react'
 import { hot } from 'react-hot-loader'
+
+import { SideBar, TopBar } from './'
 
 // $FlowIgnore
 import '../index.less'
+import 'semantic-ui-css/semantic.min.css'
 
 type Props = {}
 
 class Main extends PureComponent<Props> {
   render () {
     return (
-      <div>
-        <h2>Dashboard</h2>
-      </div>
+      <Fragment>
+        <TopBar />
+        <SideBar />
+      </Fragment>
     )
   }
 }

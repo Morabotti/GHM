@@ -1,0 +1,66 @@
+.TopBar{
+  z-index: 2;
+  display: flex;
+  justify-content: flex-start;
+  align-content: stretch;
+  width: 100%;
+  background-color: #FF4500;
+  height: 50px;
+  color: white;
+  padding-right: 20px;
+
+  .logo{
+      width: 300px;
+  }
+
+  .dummy{
+      flex: 1;
+  }
+
+  .currentsite{
+      width: auto;
+      display: flex;
+  }
+
+  .crsite{
+      width: 230px;
+      background-color: #e53e00;
+      height: 50px;
+      padding-left: 10px;
+
+      h2{
+          margin: 0;
+          line-height: 50px;
+      }
+  }
+
+  .btn_nav{
+      height: 50px;
+      width: 50px;
+      transition: 200ms;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-align: center;
+
+      &:hover{
+          color: white;
+          background-color: #cc3700;
+      }
+  }
+
+  .settings{
+      display: flex;
+      justify-content: flex-end;
+      width: 200px;
+  }
+
+  .logo-cont h2{
+      margin: 0;
+      line-height: 50px;
+      font-size: 1.7em;
+      text-align: center;
+      background-color: #ff5719;
+  }
+}
