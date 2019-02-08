@@ -1,11 +1,9 @@
 // @flow
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { AppContainer } from 'react-hot-loader';
 
 import App from './App'
-
-// $FlowIgnore
-import './index.less'
 
 const mount = document.getElementById('mount')
 const render = () => {
@@ -14,7 +12,13 @@ const render = () => {
     return
   }
 
-  ReactDOM.render(<App />, mount)
+  ReactDOM.render(<AppContainer><App /></AppContainer>, mount)
 }
 
 render()
+
+// $FlowIgnore
+if (module.hot) {
+  // $FlowIgnore
+  module.hot.accept('./App', render)
+}
