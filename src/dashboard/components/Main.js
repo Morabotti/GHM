@@ -2,7 +2,7 @@
 import React, { PureComponent, Fragment } from 'react'
 import { hot } from 'react-hot-loader'
 
-import { SideBar, TopBar } from './'
+import { SideBar, TopBar, MainContainer } from './'
 
 // $FlowIgnore
 import '../index.less'
@@ -16,6 +16,7 @@ class Main extends PureComponent<Props> {
       <Fragment>
         <TopBar />
         <SideBar />
+        <MainContainer />
       </Fragment>
     )
   }

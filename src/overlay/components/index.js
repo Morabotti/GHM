@@ -1,1 +1,1 @@
-export { default as OverlayMain } from './Main';
+export { default as OverlayMain } from './Main'

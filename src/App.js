@@ -1,13 +1,13 @@
 // @flow
 import React, { PureComponent, Suspense, lazy } from 'react'
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import { hot } from 'react-hot-loader'
 import { Provider } from 'react-redux'
 
 import configureStore from './store'
 
-const DashboardMain = lazy(() => import("./dashboard/components/Main"));
-const OverlayMain = lazy(() => import("./overlay/components/Main"));
+const DashboardMain = lazy(() => import('./dashboard/components/Main'))
+const OverlayMain = lazy(() => import('./overlay/components/Main'))
 
 type Props = {}
 
@@ -20,9 +20,9 @@ class App extends PureComponent<Props> {
         <BrowserRouter>
           <Suspense fallback={<div>Loading...</div>}>
             <Switch>
-              <Redirect from="/" to="/dashboard" exact />
-              <Route path="/dashboard/" component={props => <DashboardMain />} />
-              <Route path="/overlay/" component={props => <OverlayMain />} />
+              <Redirect from='/' to='/dashboard' exact />
+              <Route path='/dashboard/' component={props => <DashboardMain />} />
+              <Route path='/overlay/' component={props => <OverlayMain />} />
             </Switch>
           </Suspense>
         </BrowserRouter>
