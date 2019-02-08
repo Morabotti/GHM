@@ -12,7 +12,8 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "express-history-api-fallback": "^2.2.1"
+    "express-history-api-fallback": "^2.2.1",
+    "moment": "^2.24.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.9"
