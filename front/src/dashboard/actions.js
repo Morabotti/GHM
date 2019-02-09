@@ -1,9 +1,8 @@
 // @flow
-// export type Action = { type: 'text-set', text: string }
+import { Status } from './types'
+export type Action = { type: 'set-status', status: Status }
 
-/*
-export const setText = (text: string) => ({
-  type: 'text-set',
-  text
+export const setStatus = (status: Status) => ({
+  type: 'set-status',
+  status
 })
-*/

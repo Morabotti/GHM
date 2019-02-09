@@ -24,6 +24,10 @@
   font-size: 1.5rem
 }
 
+.ConnectionInfo p{
+  margin-bottom: 10px;
+}
+
 button {
   border: none;
   margin: 0;
@@ -69,4 +73,32 @@ button {
 
 .Item-name{
   padding-left: 28px;
+}
+
+.status, .server{
+  margin-bottom: 15px;
+  align-items: center;
+  border-radius: 4px;
+  display: inline-flex;
+  justify-content: center;
+  line-height: 1.5;
+  padding-left: .75em;
+  padding-right: .75em;
+  white-space: nowrap;
+  height: 1.6em;
+
+  &.connected{
+    background-color: #23d160;
+    color: #fff;
+  }
+
+  &.disconnected{
+    background-color: #ff3860;
+    color: #fff;
+  }
+
+  &.warning{
+    background-color: #ffdd57;
+    color: rgba(0,0,0,.7);
+  }
 }
