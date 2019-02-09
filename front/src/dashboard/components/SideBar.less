@@ -2,9 +2,16 @@
   min-height: 100%;
   width: 300px;
   z-index: 1;
-  position: absolute;
+  position: fixed;
+  padding-top: 45px;
   background-color: #303D74;
   color: white;
+  left: 0px;
+  transition: left 200ms;
+
+  &.hidden{
+    left: -300px;
+  }
 
   .Navigation-side{
     padding-left: 0;
@@ -26,22 +33,6 @@
 
 .ConnectionInfo p{
   margin-bottom: 10px;
-}
-
-button {
-  border: none;
-  margin: 0;
-  padding: 0;
-  width: auto;
-  overflow: visible;
-  outline: none;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  line-height: normal;
-  -webkit-font-smoothing: inherit;
-  -moz-osx-font-smoothing: inherit;
-  -webkit-appearance: none;
 }
 
 .link-header{
@@ -113,4 +104,23 @@ button {
 
 .Item-name{
   padding-left: 28px;
+}
+
+@media only screen and (max-width: 768px) {
+  .SideBar{
+    display: block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 10px;
+    transition: top 200ms;
+
+    &.hidden{
+      left: 0;
+      display: none;
+    }
+  }
+
+  .link-normal{
+    padding-left: 0px;
+  }
 }

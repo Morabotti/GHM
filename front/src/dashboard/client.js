@@ -5,7 +5,6 @@ const checkResponse = (res: window.Response): window.Response => {
   if (!res.ok) {
     throw Error(res.statusText)
   }
-
   return res
 }
 

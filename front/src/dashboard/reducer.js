@@ -3,11 +3,13 @@ import type { Action } from './actions'
 import { Status } from './types'
 
 export type State = {
-  status: Status
+  status: Status,
+  showNavbar: boolean
 }
 
 const getDefaultState = (): State => ({
-  status: [false, false]
+  status: [false, false],
+  showNavbar: true
 })
 
 export default function reducer (
@@ -19,6 +21,11 @@ export default function reducer (
       return {
         ...state,
         status: action.status
+      }
+    case 'toggle-navbar':
+      return {
+        ...state,
+        showNavbar: action.showNavbar
       }
     default:
       return state

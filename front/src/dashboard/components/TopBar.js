@@ -8,12 +8,14 @@ import type { Status, State } from '../types'
 import { ConnectionButton } from './'
 
 type Props = {
-  status: Status
+  status: Status,
+  show: boolean,
+  dispatch: Dispatch
 }
 
 class TopBar extends Component<Props> {
   render () {
-    const { status } = this.props
+    const { status, show, toggleShow } = this.props
     return (
       <div className='TopBar'>
         <div className='logo'>
@@ -22,7 +24,10 @@ class TopBar extends Component<Props> {
           </div>
         </div>
         <div className='currentsite'>
-          <div className='btn_nav'>
+          <div 
+            className={show ? 'btn_nav' : 'btn_nav selected'}
+            onClick={toggleShow}
+          >
             <Icon name='list' size='big' />
           </div>
           <div className='crsite'>
@@ -46,7 +51,7 @@ class TopBar extends Component<Props> {
 }
 
 const mapStateToProps = (state: State) => ({
-  status: state.dashboard.status
+  status: state.dashboard.status,
 })
 
 export default connect(mapStateToProps)(TopBar)

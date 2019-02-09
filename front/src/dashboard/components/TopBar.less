@@ -4,6 +4,7 @@
   justify-content: flex-start;
   align-content: stretch;
   width: 100%;
+  position: fixed;
   background-color: #FF4500;
   height: 50px;
   color: white;
@@ -23,7 +24,7 @@
   }
 
   .crsite{
-      width: 230px;
+      width: 200px;
       background-color: #e53e00;
       height: 50px;
       padding-left: 10px;
@@ -45,8 +46,13 @@
       text-align: center;
 
       &:hover{
-          color: white;
-          background-color: #cc3700;
+        color: white;
+        background-color: #cc3700;
+      }
+
+      &.selected{
+        color: white;
+        background-color: #cc3700;
       }
   }
 
@@ -63,4 +69,18 @@
       text-align: center;
       background-color: #ff5719;
   }
+}
+
+@media only screen and (max-width: 768px) {
+    .TopBar .crsite, .TopBar .dummy{
+        display: none;
+    }
+
+    .TopBar{
+        position: absolute;
+    }
+
+    .TopBar .settings{
+        width: auto;
+    }
 }

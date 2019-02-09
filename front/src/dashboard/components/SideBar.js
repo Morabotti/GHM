@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import type { Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, withRouter } from 'react-router-dom';
 
 import { ClientConnectButton, ServerConnectButton } from './'
 
@@ -14,7 +14,8 @@ import type { Status, State } from '../types'
 
 type Props = {
   dispatch: Dispatch,
-  status: Status
+  status: Status,
+  show: boolean,
 }
 
 class SideBar extends Component<Props> {
@@ -39,10 +40,10 @@ class SideBar extends Component<Props> {
 
   render () {
     const url = '/dashboard';
-    const { status } = this.props
+    const { status, show } = this.props
 
     return (
-      <div className='SideBar'>
+      <div className={show ? 'SideBar' : 'SideBar hidden'}>
         <div className='collapse'>
           <ul className='Navigation-side'>
             <li className='ConnectionInfo'>
@@ -51,12 +52,12 @@ class SideBar extends Component<Props> {
               <ServerConnectButton connected={status[1]} />
             </li>
             <li className='list-cont'>
-              <NavLink className='Item-major-link' exact to={url+'/'}>
+              <NavLink className='Item-major-link' activeClassName="chosen" exact to={url+'/'}>
                 <span className='Item-name-header'> <Icon color='green' name='home' /> Home</span>
               </NavLink>
             </li>
             <li className='list-cont'>
-              <NavLink className='Item-major-link' to={url+'/credits'}>
+              <NavLink className='Item-major-link' activeClassName="chosen" to={url+'/credits'}>
                 <span className='Item-name-header'> <Icon color='green' name='question circle outline' /> Credits</span>
               </NavLink>
             </li>
@@ -66,22 +67,22 @@ class SideBar extends Component<Props> {
               </Link>
             </li>
             <li className='list-cont'>
-              <NavLink className='link-normal is-sublink' to={url+'/csgo/general/'}>
+              <NavLink className='link-normal is-sublink' activeClassName="chosen" to={url+'/csgo/general/'}>
                 <span className='Item-name'>General</span>
               </NavLink>
             </li>
             <li className='list-cont'>
-              <NavLink className='link-normal is-sublink' to={url+'/csgo/schedule/'}>
+              <NavLink className='link-normal is-sublink' activeClassName="chosen" to={url+'/csgo/schedule/'}>
                 <span className='Item-name'>Schedule</span>
               </NavLink>
             </li>
             <li className='list-cont is-sublink'>
-              <NavLink className='link-normal' to={url+'/csgo/statistics/'}>
+              <NavLink className='link-normal' activeClassName="chosen" to={url+'/csgo/statistics/'}>
                 <span className='Item-name'>Statistics</span>
               </NavLink>
             </li>
             <li className='list-cont is-sublink'>
-              <NavLink className='link-normal' to={url+'/csgo/settings/'}>
+              <NavLink className='link-normal' activeClassName="chosen" to={url+'/csgo/settings/'}>
                 <span className='Item-name'>Settings</span>
               </NavLink>
             </li>
@@ -93,7 +94,7 @@ class SideBar extends Component<Props> {
 }
 
 const mapStateToProps = (state: State) => ({
-  status: state.dashboard.status
+  status: state.dashboard.status,
 })
 
-export default connect(mapStateToProps)(SideBar)
+export default withRouter(connect(mapStateToProps)(SideBar))

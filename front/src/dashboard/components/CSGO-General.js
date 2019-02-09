@@ -11,6 +11,23 @@ class CSGOGeneral extends Component<Props> {
     return (
       <div>
         <h2>CSGO-General</h2>
+        <h1>CSGO-General</h1>
+        <h1>CSGO-General</h1>
+        <h1>CSGO-General</h1>
+        <h1>CSGO-General</h1>
+        <h1>CSGO-General</h1>
+        <h1>CSGO-General</h1>
+        <h1>CSGO-General</h1>
+        <h1>CSGO-General</h1>
+        <h1>CSGO-General</h1>
+        <h1>CSGO-General</h1>
+        <h1>CSGO-General</h1>
+        <h1>CSGO-General</h1>
+        <h1>CSGO-General</h1>
+        <h1>CSGO-General</h1>
+        <h1>CSGO-General</h1>
+        <h1>CSGO-General</h1>
+        <h1>CSGO-General</h1>
       </div>
     )
   }
