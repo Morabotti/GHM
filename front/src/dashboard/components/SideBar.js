@@ -5,6 +5,8 @@ import { connect } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 import { NavLink, Link } from 'react-router-dom';
 
+import { ClientConnectButton, ServerConnectButton } from './'
+
 import { getStatus } from '../client'
 import { setStatus } from '../actions'
 
@@ -38,13 +40,6 @@ class SideBar extends Component<Props> {
   render () {
     const url = '/dashboard';
     const { status } = this.props
-    let connectionButton, serverButton
-
-    if (status[0]) connectionButton = <span className='status connected'>Connected</span>
-    else connectionButton = <span className='status disconnected'>Not Connected</span>
-
-    if (status[1]) serverButton = <span className='status connected'>Server connected</span>
-    else serverButton = <span className='status warning'>Server not connected</span>
 
     return (
       <div className='SideBar'>
@@ -52,8 +47,8 @@ class SideBar extends Component<Props> {
           <ul className='Navigation-side'>
             <li className='ConnectionInfo'>
               <p>Connection status</p>
-              {connectionButton}
-              {serverButton}
+              <ClientConnectButton connected={status[0]} />
+              <ServerConnectButton connected={status[1]} />
             </li>
             <li className='list-cont'>
               <NavLink className='Item-major-link' exact to={url+'/'}>
