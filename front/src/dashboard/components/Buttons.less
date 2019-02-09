@@ -25,3 +25,32 @@
     color: rgba(0,0,0,.7);
   }
 }
+
+.statusTag {
+  line-height: 1.5;
+  padding-left: .75em;
+  padding-right: .75em;
+  align-items: center;
+  display: inline-flex;
+  border-radius: 4px;
+  justify-content: center;
+
+  &.connected{
+    background-color: #23d160;
+    color: #fff;
+  }
+
+  &.disconnected{
+    background-color: #ff3860;
+    color: #fff;
+  }
+
+  &.warning{
+    background-color: #ffdd57;
+    color: rgba(0,0,0,.7);
+  }
+}
+
+.popUpCont{
+  text-align: center;
+}

@@ -4,7 +4,7 @@ import TopBar from './TopBar'
 import CSGOGeneral from './CSGO-General'
 import Home from './HomePage'
 import Credits from './CreditsPage'
-import { ClientConnectButton, ServerConnectButton } from './Buttons'
+import { ClientConnectButton, ConnectionButton, ServerConnectButton } from './Buttons'
  
 export {
   SideBar,
@@ -13,5 +13,6 @@ export {
   Home,
   Credits,
   ClientConnectButton,
-  ServerConnectButton
+  ServerConnectButton,
+  ConnectionButton
 }

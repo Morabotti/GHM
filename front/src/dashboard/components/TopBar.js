@@ -1,11 +1,19 @@
 // @flow
 import React, { Component } from 'react'
 import { Icon } from 'semantic-ui-react'
+import type { Dispatch } from 'redux'
+import { connect } from 'react-redux'
 
-type Props = {}
+import type { Status, State } from '../types'
+import { ConnectionButton } from './'
+
+type Props = {
+  status: Status
+}
 
 class TopBar extends Component<Props> {
   render () {
+    const { status } = this.props
     return (
       <div className='TopBar'>
         <div className='logo'>
@@ -23,6 +31,11 @@ class TopBar extends Component<Props> {
         </div>
         <div className='dummy' />
         <div className='settings'>
+          <ConnectionButton
+            clientConnection={status[0]}
+            serverConnection={status[1]}
+            overlayConnection={false}
+          />
           <div className='btn_nav'>
             <Icon name='setting' size='big' />
           </div>
@@ -32,4 +45,8 @@ class TopBar extends Component<Props> {
   }
 }
 
-export default TopBar
+const mapStateToProps = (state: State) => ({
+  status: state.dashboard.status
+})
+
+export default connect(mapStateToProps)(TopBar)
