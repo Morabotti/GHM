@@ -20,7 +20,8 @@ module.exports = {
   output: {
     pathinfo: true,
     filename: '[name]/bundle.js',
-    path: resolve('build')
+    path: resolve('build'),
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -71,11 +72,11 @@ module.exports = {
     proxy: {
       '/api': {
         target: 'http://localhost:8000'
-      }
+      },
     },
     port: 8082,
-    host: '0.0.0.0',
-    contentBase: resolve('./build'),
+    host: 'localhost',
+    contentBase: resolve('/build'),
     hot: true,
     disableHostCheck: true,
     historyApiFallback: true

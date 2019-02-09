@@ -1,10 +1,14 @@
 // @flow
 import SideBar from './SideBar'
 import TopBar from './TopBar'
-import MainContainer from './MainContainer'
-
+import CSGOGeneral from './CSGO-General'
+import Home from './HomePage'
+import Credits from './CreditsPage'
+ 
 export {
   SideBar,
   TopBar,
-  MainContainer
+  CSGOGeneral,
+  Home,
+  Credits
 }

@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import type { Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
+import { NavLink, Link } from 'react-router-dom';
 
 import { getStatus } from '../client'
 import { setStatus } from '../actions'
@@ -19,7 +20,7 @@ class SideBar extends Component<Props> {
 
   componentDidMount () {
     this._getStatus()
-    this.interval = setInterval(this._getStatus, 2500)
+    this.interval = setInterval(this._getStatus, 2000)
   }
 
   componentWillUnmount () {
@@ -28,9 +29,14 @@ class SideBar extends Component<Props> {
 
   _getStatus = () => getStatus()
     .then(setStatus)
-    .then(this.props.dispatch)
+    .then(i => { 
+      if(i.status[0] !== this.props.status[0] || i.status[1] !== this.props.status[1] ) {
+        this.props.dispatch(i) 
+      }
+    })
 
   render () {
+    const url = '/dashboard';
     const { status } = this.props
     let connectionButton, serverButton
 
@@ -49,31 +55,40 @@ class SideBar extends Component<Props> {
               {connectionButton}
               {serverButton}
             </li>
-            <li className='selected-header'>
-              <button className='link-header'>
-                <Icon color='green' name='th' />
-                <span className='Item-name-header'>CS:GO</span>
-              </button>
+            <li className='list-cont'>
+              <NavLink className='Item-major-link' exact to={url+'/'}>
+                <span className='Item-name-header'> <Icon color='green' name='home' /> Home</span>
+              </NavLink>
             </li>
-            <li className='selected'>
-              <button className='link-normal'>
+            <li className='list-cont'>
+              <NavLink className='Item-major-link' to={url+'/credits'}>
+                <span className='Item-name-header'> <Icon color='green' name='question circle outline' /> Credits</span>
+              </NavLink>
+            </li>
+            <li className='list-cont selected-header'>
+              <Link to={url+'/csgo/general/'}>
+                <span className='Item-name-header'> <Icon color='green' name='th' /> CSGO</span>
+              </Link>
+            </li>
+            <li className='list-cont'>
+              <NavLink className='link-normal is-sublink' to={url+'/csgo/general/'}>
                 <span className='Item-name'>General</span>
-              </button>
+              </NavLink>
             </li>
-            <li className='selected'>
-              <button className='link-normal'>
+            <li className='list-cont'>
+              <NavLink className='link-normal is-sublink' to={url+'/csgo/schedule/'}>
                 <span className='Item-name'>Schedule</span>
-              </button>
+              </NavLink>
             </li>
-            <li className='selected'>
-              <button className='link-normal'>
+            <li className='list-cont is-sublink'>
+              <NavLink className='link-normal' to={url+'/csgo/statistics/'}>
                 <span className='Item-name'>Statistics</span>
-              </button>
+              </NavLink>
             </li>
-            <li className='selected'>
-              <button className='link-normal'>
+            <li className='list-cont is-sublink'>
+              <NavLink className='link-normal' to={url+'/csgo/settings/'}>
                 <span className='Item-name'>Settings</span>
-              </button>
+              </NavLink>
             </li>
           </ul>
         </div>
