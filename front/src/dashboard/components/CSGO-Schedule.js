@@ -6,7 +6,7 @@ type Props = {
   
 }
 
-class Home extends Component<Props> {
+class CSGOSchedule extends Component<Props> {
   render () {
     return (
       <div className="fCont">
@@ -14,7 +14,7 @@ class Home extends Component<Props> {
           <Grid.Row>
             <Grid.Column>
               <div className="fCont-wrap">
-                <h1><Icon name='home' /> Home</h1>
+                <h1><Icon name='time' /> CSGO | Schedule</h1>
               </div>
             </Grid.Column>
           </Grid.Row>
@@ -38,4 +38,4 @@ class Home extends Component<Props> {
   }
 }
 
-export default Home
+export default CSGOSchedule

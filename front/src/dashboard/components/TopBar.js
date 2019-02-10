@@ -23,19 +23,14 @@ class TopBar extends Component<Props> {
             <h2>GHM</h2>
           </div>
         </div>
-        <div className='currentsite'>
+        <div className='dummy' />
+        <div className='settings'>
           <div 
             className={show ? 'btn_nav' : 'btn_nav selected'}
             onClick={toggleShow}
           >
             <Icon name='list' size='big' />
           </div>
-          <div className='crsite'>
-            <h2>CS:GO</h2>
-          </div>
-        </div>
-        <div className='dummy' />
-        <div className='settings'>
           <ConnectionButton
             clientConnection={status[0]}
             serverConnection={status[1]}

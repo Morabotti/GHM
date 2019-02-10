@@ -7,7 +7,16 @@ import { hot } from 'react-hot-loader'
 
 import { toggleNavBar } from '../actions'
 
-import { SideBar, TopBar, CSGOGeneral, Home, Credits } from './'
+import {
+  SideBar,
+  TopBar,
+  Home,
+  Credits,
+  CSGOGeneral,
+  CSGOSchedule,
+  CSGOSettings,
+  CSGOStatistic
+} from './'
 
 // $FlowIgnore
 import '../index.less'
@@ -38,6 +47,9 @@ class Main extends PureComponent<Props> {
               <Route path={url + '/'} exact component={Home}/>
               <Route path={url + '/credits/'} component={Credits}/>
               <Route path={url + '/csgo/general/'} component={CSGOGeneral}/>
+              <Route path={url + '/csgo/schedule/'} component={CSGOSchedule}/>
+              <Route path={url + '/csgo/statistics/'} component={CSGOStatistic}/>
+              <Route path={url + '/csgo/settings/'} component={CSGOSettings}/>
             </Switch>
           </div>
         </Fragment>

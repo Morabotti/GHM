@@ -18,22 +18,6 @@
       flex: 1;
   }
 
-  .currentsite{
-      width: auto;
-      display: flex;
-  }
-
-  .crsite{
-      width: 200px;
-      background-color: #e53e00;
-      height: 50px;
-      padding-left: 10px;
-
-      h2{
-          margin: 0;
-          line-height: 50px;
-      }
-  }
 
   .btn_nav{
       height: 50px;
@@ -51,7 +35,7 @@
       }
 
       &.selected{
-        color: white;
+        color: #fdf498;
         background-color: #cc3700;
       }
   }
@@ -67,20 +51,17 @@
       line-height: 50px;
       font-size: 1.7em;
       text-align: center;
-      background-color: #ff5719;
+      background-color: #ff6932;
   }
 }
 
 @media only screen and (max-width: 768px) {
-    .TopBar .crsite, .TopBar .dummy{
-        display: none;
-    }
-
     .TopBar{
         position: absolute;
     }
 
     .TopBar .settings{
         width: auto;
+
     }
 }
