@@ -1,16 +1,17 @@
 // @flow
 import React, { Component } from 'react'
 import { Icon } from 'semantic-ui-react'
-import type { Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
-import type { Status, State } from '../types'
+import type { Status, Dispatch } from '../types'
+import type { State } from '../../types'
 import { ConnectionButton } from './'
 
 type Props = {
   status: Status,
   show: boolean,
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  toggleShow: void
 }
 
 class TopBar extends Component<Props> {
@@ -25,7 +26,7 @@ class TopBar extends Component<Props> {
         </div>
         <div className='dummy' />
         <div className='settings'>
-          <div 
+          <div
             className={show ? 'btn_nav' : 'btn_nav selected'}
             onClick={toggleShow}
           >
@@ -46,7 +47,7 @@ class TopBar extends Component<Props> {
 }
 
 const mapStateToProps = (state: State) => ({
-  status: state.dashboard.status,
+  status: state.dashboard.status
 })
 
 export default connect(mapStateToProps)(TopBar)

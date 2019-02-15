@@ -1,1 +1,5 @@
-export { default as OverlayMain } from './Main'
+import Team from './Team'
+
+export {
+  Team
+}

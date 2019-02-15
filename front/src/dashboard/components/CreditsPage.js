@@ -2,18 +2,16 @@
 import React, { Component } from 'react'
 import { Grid, Icon } from 'semantic-ui-react'
 
-type Props = {
-  
-}
+type Props = {}
 
 class Credits extends Component<Props> {
   render () {
     return (
-      <div className="fCont">
+      <div className='fCont'>
         <Grid columns='1' stackable>
           <Grid.Row>
             <Grid.Column>
-              <div className="fCont-wrap">
+              <div className='fCont-wrap'>
                 <h1><Icon name='question circle outline' /> Credits</h1>
               </div>
             </Grid.Column>
@@ -22,12 +20,12 @@ class Credits extends Component<Props> {
         <Grid columns='2' stackable>
           <Grid.Row>
             <Grid.Column>
-              <div className="fCont-wrap">
+              <div className='fCont-wrap'>
                 <h2>Data</h2>
               </div>
             </Grid.Column>
             <Grid.Column>
-              <div className="fCont-wrap">
+              <div className='fCont-wrap'>
                 <h2>Something</h2>
               </div>
             </Grid.Column>

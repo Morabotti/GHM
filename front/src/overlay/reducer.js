@@ -1,9 +1,7 @@
 // @flow
 import type { Action } from './actions'
 
-export type State = {
-
-}
+export type State = {}
 
 const getDefaultState = (): State => ({
 

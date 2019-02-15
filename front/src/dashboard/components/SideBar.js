@@ -1,16 +1,16 @@
 // @flow
 import React, { Component } from 'react'
-import type { Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
-import { NavLink, Link, withRouter } from 'react-router-dom';
+import { NavLink, Link, withRouter } from 'react-router-dom'
 
 import { ClientConnectButton, ServerConnectButton } from './'
 
 import { getStatus } from '../client'
 import { setStatus } from '../actions'
 
-import type { Status, State } from '../types'
+import type { Status, Dispatch } from '../types'
+import type { State } from '../../types'
 
 type Props = {
   dispatch: Dispatch,
@@ -32,14 +32,14 @@ class SideBar extends Component<Props> {
 
   _getStatus = () => getStatus()
     .then(setStatus)
-    .then(i => { 
-      if(i.status[0] !== this.props.status[0] || i.status[1] !== this.props.status[1] ) {
-        this.props.dispatch(i) 
+    .then(i => {
+      if (i.status[0] !== this.props.status[0] || i.status[1] !== this.props.status[1]) {
+        this.props.dispatch(i)
       }
     })
 
   render () {
-    const url = '/dashboard';
+    const url = '/dashboard'
     const { status, show } = this.props
 
     return (
@@ -52,37 +52,37 @@ class SideBar extends Component<Props> {
               <ServerConnectButton connected={status[1]} />
             </li>
             <li className='list-cont'>
-              <NavLink className='Item-major-link' activeClassName="chosen" exact to={url+'/'}>
+              <NavLink className='Item-major-link' activeClassName='chosen' exact to={url + '/'}>
                 <span className='Item-name-header'> <Icon color='green' name='home' /> Home</span>
               </NavLink>
             </li>
             <li className='list-cont'>
-              <NavLink className='Item-major-link' activeClassName="chosen" to={url+'/credits'}>
+              <NavLink className='Item-major-link' activeClassName='chosen' to={url + '/credits'}>
                 <span className='Item-name-header'> <Icon color='green' name='question circle outline' /> Credits</span>
               </NavLink>
             </li>
             <li className='list-cont selected-header'>
-              <Link to={url+'/csgo/general/'}>
+              <Link to={url + '/csgo/general/'}>
                 <span className='Item-name-header'> <Icon color='green' name='th' /> CSGO</span>
               </Link>
             </li>
             <li className='list-cont'>
-              <NavLink className='link-normal is-sublink' activeClassName="chosen" to={url+'/csgo/general/'}>
+              <NavLink className='link-normal is-sublink' activeClassName='chosen' to={url + '/csgo/general/'}>
                 <span className='Item-name'>General</span>
               </NavLink>
             </li>
             <li className='list-cont'>
-              <NavLink className='link-normal is-sublink' activeClassName="chosen" to={url+'/csgo/schedule/'}>
+              <NavLink className='link-normal is-sublink' activeClassName='chosen' to={url + '/csgo/schedule/'}>
                 <span className='Item-name'>Schedule</span>
               </NavLink>
             </li>
             <li className='list-cont is-sublink'>
-              <NavLink className='link-normal' activeClassName="chosen" to={url+'/csgo/statistics/'}>
+              <NavLink className='link-normal' activeClassName='chosen' to={url + '/csgo/statistics/'}>
                 <span className='Item-name'>Statistics</span>
               </NavLink>
             </li>
             <li className='list-cont is-sublink'>
-              <NavLink className='link-normal' activeClassName="chosen" to={url+'/csgo/settings/'}>
+              <NavLink className='link-normal' activeClassName='chosen' to={url + '/csgo/settings/'}>
                 <span className='Item-name'>Settings</span>
               </NavLink>
             </li>
@@ -94,7 +94,7 @@ class SideBar extends Component<Props> {
 }
 
 const mapStateToProps = (state: State) => ({
-  status: state.dashboard.status,
+  status: state.dashboard.status
 })
 
 export default withRouter(connect(mapStateToProps)(SideBar))

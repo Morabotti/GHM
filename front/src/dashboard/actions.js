@@ -1,5 +1,5 @@
 // @flow
-import { Status } from './types'
+import type { Status } from './types'
 
 export type Action = { type: 'set-status', status: Status }
   | { type: 'toggle-navbar', showNavbar: boolean }

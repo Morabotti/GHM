@@ -1,7 +1,8 @@
 // @flow
 import React, { PureComponent, Fragment } from 'react'
-import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
-import type { Dispatch } from 'redux'
+import { Switch, Route, BrowserRouter } from 'react-router-dom'
+import type { Dispatch } from '../types'
+import type { State } from '../../types'
 import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader'
 
@@ -36,20 +37,20 @@ class Main extends PureComponent<Props> {
 
   render () {
     const { show } = this.props
-    const url = '/dashboard';
+    const url = '/dashboard'
     return (
       <BrowserRouter>
         <Fragment>
-          <TopBar show={show} toggleShow={this._toggleShow}/>
-          <SideBar show={show}/>
+          <TopBar show={show} toggleShow={this._toggleShow} />
+          <SideBar show={show} />
           <div className={show ? 'main-container' : 'main-container fullscreen'}>
             <Switch>
-              <Route path={url + '/'} exact component={Home}/>
-              <Route path={url + '/credits/'} component={Credits}/>
-              <Route path={url + '/csgo/general/'} component={CSGOGeneral}/>
-              <Route path={url + '/csgo/schedule/'} component={CSGOSchedule}/>
-              <Route path={url + '/csgo/statistics/'} component={CSGOStatistic}/>
-              <Route path={url + '/csgo/settings/'} component={CSGOSettings}/>
+              <Route path={url + '/'} exact component={Home} />
+              <Route path={url + '/credits/'} component={Credits} />
+              <Route path={url + '/csgo/general/'} component={CSGOGeneral} />
+              <Route path={url + '/csgo/schedule/'} component={CSGOSchedule} />
+              <Route path={url + '/csgo/statistics/'} component={CSGOStatistic} />
+              <Route path={url + '/csgo/settings/'} component={CSGOSettings} />
             </Switch>
           </div>
         </Fragment>
