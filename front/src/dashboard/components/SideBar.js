@@ -19,7 +19,7 @@ type Props = {
 }
 
 class SideBar extends Component<Props> {
-  interval: IntervalID
+  interval: any
 
   componentDidMount () {
     this._getStatus()

@@ -13,13 +13,11 @@ class Main extends PureComponent<Props> {
     return (
       <div className='overlay'>
         <div className='overlay-left'>
-          <Team />
+          <Team team='CT' />
         </div>
-        <div className='overlay-center'>
-          <h2>Stats, info</h2>
-        </div>
+        <div className='overlay-center' />
         <div className='overlay-right'>
-          <Team />
+          <Team team='T' />
         </div>
       </div>
     )

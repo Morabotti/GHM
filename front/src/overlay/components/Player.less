@@ -1,0 +1,155 @@
+.team-player{
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  height: 55px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
+.player-area-upper{
+  display: flex;
+  align-self: stretch;
+  line-height: 30px;
+
+  .player-weapon-main{
+    width: 80px;
+    overflow: hidden;
+    height: 30px;
+
+    img{
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 3px;
+      margin-bottom: 2px;
+    }
+  }
+
+  .player-name{
+    text-align: left;
+    flex: 1;
+    padding-left: 0;
+    padding-right: 10px;
+    display: flex;
+    justify-content: flex-end;
+
+    .name, .data-divider{
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .data-divider{
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+    .spec-num{
+      font-size: 15px;
+    }
+  }
+
+  .player-health{
+    width: 60px;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+  }
+}
+
+.player-area-lower{
+  display: flex;
+  align-self: stretch;
+  line-height: 25px;
+  background-color: rgba(1, 64, 137, 0.5);
+  .player-weapon-secondary{
+    display: flex;
+    height: 25px;
+
+    .player-pistol {
+      width: 60px;
+      img{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 3px;
+        margin-bottom: 2px;
+      }
+    }
+
+    .player-grenade {
+      width: 20px;
+        img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 3px;
+        margin-bottom: 2px;
+      }
+    }
+  }
+
+  .player-money{
+    text-align: left;
+    flex: 1;
+    padding-left: 0;
+    padding-right: 10px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .player-utility{
+    width: 60px;
+    text-align: center;
+  }
+}
+
+.team-player.first .player-area-upper{
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.team-player.last .player-area-lower{
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.overlay-left>.team.ct>.team-player>.player-area-upper{
+  background: -webkit-linear-gradient(left, #004799 2%,#54A6E5 100%);
+}
+.overlay-right>.team.ct>.team-player>.player-area-upper{
+  background: -webkit-linear-gradient(right, #004799 2%,#54A6E5 100%);
+}
+
+.overlay-left>.team.t>.team-player>.player-area-upper{
+  background: -webkit-linear-gradient(left, #5e3b00 0%,#ffb900 60%);
+}
+.overlay-right>.team.t>.team-player>.player-area-upper{
+  background: -webkit-linear-gradient(right, #5e3b00 0%,#ffb900 60%);
+}
+
+
+.overlay-left>.team>.team-player>.player-area-upper,
+.overlay-left>.team>.team-player>.player-area-lower{
+  flex-direction: row-reverse;
+  .player-name,
+  .player-money{
+    flex-direction: row-reverse;
+    padding-left: 10px;
+    padding-right: 0;
+  }
+
+  .player-weapon-secondary{
+    flex-direction: row-reverse;
+  }
+}
+
+.overlay-right>.team>.team-player>.player-area-upper,
+.overlay-right>.team>.team-player>.player-area-lower{
+  .player-weapon-main img,
+  .player-weapon-secondary img{
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+  }
+}
