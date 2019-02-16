@@ -1,12 +1,13 @@
 // @flow
 import React, { PureComponent } from 'react'
 import type { State } from '../../types'
+import type { Teams } from '../types'
 import { connect } from 'react-redux'
 
 import { Player } from './'
 
 type Props = {
-  team: 'CT' | 'T'
+  team: Teams
 }
 
 class Team extends PureComponent<Props> {

@@ -10,7 +10,7 @@ router.post('/update', (req, res) => {
   const data = req.body;
   const activity = data.player.activity;
   const authToken = data.auth.token;
-  if(authToken !== authToken) {res.sendStatus(401); return}
+  if(authToken !== AuthKey) {res.sendStatus(401); return}
 
   if(activity === 'playing' || activity === 'textinput') { Controller.setClientConnectionInGame(true); } 
   else { Controller.setClientConnectionInGame(false); }

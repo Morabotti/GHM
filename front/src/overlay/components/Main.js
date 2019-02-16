@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react'
 import { hot } from 'react-hot-loader'
-import { Team } from './'
+import { Team, Radar } from './'
 
 // $FlowIgnore
 import '../index.less'
@@ -13,6 +13,8 @@ class Main extends PureComponent<Props> {
     return (
       <div className='overlay'>
         <div className='overlay-left'>
+          <Radar />
+          <div className='overlay-left-dummy' />
           <Team team='CT' />
         </div>
         <div className='overlay-center' />

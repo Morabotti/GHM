@@ -1,27 +1,27 @@
 .team-player{
   display: grid;
   grid-template-rows: 1fr 1fr;
-  height: 55px;
-  margin-top: 1px;
-  margin-bottom: 1px;
+  height: 65px;
+  margin-top: 1.5px;
+  margin-bottom: 1.5px;
 }
 
 .player-area-upper{
   display: flex;
   align-self: stretch;
-  line-height: 30px;
+  line-height: 35px;
 
   .player-weapon-main{
     width: 80px;
     overflow: hidden;
-    height: 30px;
+    height: 35px;
 
     img{
       display: block;
       margin-left: auto;
       margin-right: auto;
-      margin-top: 3px;
-      margin-bottom: 2px;
+      margin-top: 5px;
+      margin-bottom: 4px;
     }
   }
 
@@ -61,7 +61,7 @@
   background-color: rgba(1, 64, 137, 0.5);
   .player-weapon-secondary{
     display: flex;
-    height: 25px;
+    height: 30px;
 
     .player-pistol {
       width: 60px;
@@ -69,8 +69,8 @@
         display: block;
         margin-left: auto;
         margin-right: auto;
-        margin-top: 3px;
-        margin-bottom: 2px;
+        margin-top: 5px;
+        margin-bottom: 5px;
       }
     }
 
@@ -80,8 +80,8 @@
         display: block;
         margin-left: auto;
         margin-right: auto;
-        margin-top: 3px;
-        margin-bottom: 2px;
+        margin-top: 5px;
+        margin-bottom: 5px;
       }
     }
   }
@@ -93,6 +93,14 @@
     padding-right: 10px;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+
+    p{
+      font-weight: bold;
+      font-size: 19px;
+      color: #21c650;
+      text-shadow: 1px 1px 1px black;
+    }
   }
 
   .player-utility{
