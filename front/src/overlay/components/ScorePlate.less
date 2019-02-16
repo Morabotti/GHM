@@ -1,0 +1,81 @@
+.score-top{
+  height: 95px;
+  margin-left: 30px;
+  margin-right: 30px;
+
+  .score-top-upper{
+    display: flex;
+    height: 65px;
+
+    .score-area{
+      display: flex;
+      width: 100%;
+
+      &.ct{
+        flex-direction: row;
+        .team-logo{ border-top-left-radius: 15px; }
+        .team-name, .team-score{ color: #2688f8; }
+        .team-score{ border-bottom: 2px solid #2688f8; }
+      }
+
+      &.t{
+        flex-direction: row-reverse;
+        .team-logo{ border-top-right-radius: 15px; }
+        .team-name, .team-score{ color: #ffb900; }
+        .team-score{ border-bottom: 2px solid #ffb900; }
+      }
+
+      .team-logo{
+        width: 75px;
+        background-color: #1d3b5d;
+
+        img{
+          display: block;
+          height: 50px;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 7px;
+        }
+      }
+
+      .team-name{
+        line-height: 65px;
+        font-size: 42px;
+        text-align: center;
+        font-weight: bold;
+        flex: 1;
+        background-color: rgba(1, 64, 137, 0.6);
+      }
+
+      .team-score{
+        width: 75px;
+        text-align: center;
+        font-size: 55px;
+        font-weight: bold;
+        background-color: #0c2045;
+      }
+    }
+    .score-time{
+      color: white;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      width: 340px;
+      background-color: rgba(1, 64, 137, 0.6);
+
+      .time{
+        font-size: 42px;
+        width: 100%;
+        text-align: center;
+        height: 70%;
+      }
+
+      .round{
+        width: 100%;
+        text-align: center;
+        height: 30%;
+        letter-spacing: 1px;
+      }
+    }
+  }
+}

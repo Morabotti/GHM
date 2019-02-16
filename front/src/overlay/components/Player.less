@@ -7,13 +7,12 @@
 }
 
 .player-area-upper{
+  overflow: hidden;
   display: flex;
-  align-self: stretch;
   line-height: 35px;
 
   .player-weapon-main{
     width: 80px;
-    overflow: hidden;
     height: 35px;
 
     img{
@@ -59,6 +58,7 @@
   align-self: stretch;
   line-height: 25px;
   background-color: rgba(1, 64, 137, 0.5);
+  overflow: hidden;
   .player-weapon-secondary{
     display: flex;
     height: 30px;
@@ -147,6 +147,10 @@
   .player-weapon-secondary{
     flex-direction: row-reverse;
   }
+}
+
+.overlay-left>.team>.team-player>.player-area-lower{
+  margin-right: 1px;
 }
 
 .overlay-right>.team>.team-player>.player-area-upper,

@@ -2,10 +2,14 @@ import Team from './Team'
 import Player from './Player'
 import Radar from './Radar'
 import RadarPlayer from './RadarPlayer'
+import ScorePlate from './ScorePlate'
+import PlayerPlate from './PlayerPlate'
 
 export {
   Team,
   Player,
   Radar,
-  RadarPlayer
+  RadarPlayer,
+  ScorePlate,
+  PlayerPlate
 }

@@ -1,0 +1,83 @@
+
+.player-plate{
+  margin-bottom: 15px;
+  margin-left: auto;
+  margin-right: auto;
+
+  &.ct{
+    .grid-upper p{
+      color: #2688f8;
+    }
+
+    .grid-upper{
+      border-bottom: 2px solid #2688f8;
+    }
+  }
+
+  &.t{
+    .grid-upper p{
+      color: #ffb900;
+    }
+
+    .grid-upper{
+      border-bottom: 2px solid #ffb900;
+    }
+  }
+
+
+  .grid{
+    width: 720px;
+    display: grid;
+    grid-template-rows: 50px 50px 90px;
+
+    .grid-upper{
+      margin-left: auto;
+      margin-right: auto;
+      width: 350px;
+      background-color: rgba(3, 26, 54, 0.8);
+      border-radius: 20px 20px 0px 0px;
+
+      p{
+        font-size: 30px;
+        line-height: 50px;
+        text-align: center;
+        font-weight: bold;
+      }
+    }
+
+    .grid-lower{
+      display: grid;
+      grid-template-columns: 1fr 350px 1fr;
+      font-weight: bold;
+      color: white;
+      
+      .grid-hp {
+        border-top-left-radius: 20px;
+        font-size: 26px;
+        line-height: 50px;
+        text-align: center;
+      }
+
+      .grid-ammo {
+        border-top-right-radius: 20px;
+        font-size: 26px;
+        line-height: 50px;
+        text-align: center;
+      }
+
+      .grid-stats{
+        font-size: 20px;
+        line-height: 50px;
+        text-align: center;
+      }
+
+      .grid-lower-light{
+        background-color: rgba(1, 64, 137, 0.6);
+      }
+
+      .grid-lower-dark{
+        background-color: rgba(3, 26, 54, 0.8);
+      }
+    }
+  }
+}

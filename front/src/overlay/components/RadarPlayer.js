@@ -6,31 +6,32 @@ import { connect } from 'react-redux'
 
 type Props = {
   PlayerNumber: number,
-  PlayerTeam: Teams
+  PlayerTeam: Teams,
+  PlayerPosX: number,
+  PlayerPosY: number
 }
 
 class Radar extends PureComponent<Props> {
-
   _calculateXPosition = () => {
     const { PlayerPosX } = this.props
     return PlayerPosX
-    //TODO: This
+    // TODO: This
   }
   _calculateYPosition = () => {
     const { PlayerPosY } = this.props
     return PlayerPosY
-     //TODO: This
+    // TODO: This
   }
 
   render () {
     const { PlayerNumber, PlayerTeam } = this.props
     return (
-      <div 
-      className={`radar-player ${PlayerTeam === 'T' ? 't' : 'ct'}`}
-      style={{
-        left: this._calculateXPosition(),
-        top: this._calculateYPosition()
-      }}
+      <div
+        className={`radar-player ${PlayerTeam === 'T' ? 't' : 'ct'}`}
+        style={{
+          left: this._calculateXPosition(),
+          top: this._calculateYPosition()
+        }}
       >
         <span>{PlayerNumber}</span>
       </div>
