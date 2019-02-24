@@ -1,3 +1,5 @@
+const io = require('socket.io').listen(8081);
+
 module.exports = GlobalVariables
 
 function GlobalVariables () {
@@ -61,6 +63,7 @@ function GlobalVariables () {
       
       this.roundEndData = sentData;
     }
+   
     this.latestData = data
   }
 

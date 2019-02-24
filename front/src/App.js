@@ -5,9 +5,11 @@ import { hot } from 'react-hot-loader'
 import { Provider } from 'react-redux'
 
 import configureStore from './store'
+import './loader.less'
 
 const DashboardMain = lazy(() => import('./dashboard/components/Main'))
 const OverlayMain = lazy(() => import('./overlay/components/Main'))
+const PopUpMain = lazy(() => import('./popup/components/Main'))
 
 type Props = {}
 
@@ -18,11 +20,12 @@ class App extends PureComponent<Props> {
     return (
       <Provider store={store}>
         <BrowserRouter>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div className='center'><div className='loader'></div></div>}>
             <Switch>
               <Redirect from='/' to='/dashboard' exact />
               <Route path='/dashboard/' component={props => <DashboardMain />} />
               <Route path='/overlay/' component={props => <OverlayMain />} />
+              <Route path='/popup/' component={props => <PopUpMain />} />
             </Switch>
           </Suspense>
         </BrowserRouter>

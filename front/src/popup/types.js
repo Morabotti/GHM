@@ -5,4 +5,3 @@ export type Action = _Action
 
 export type Dispatch = (Action) => void
 
-export type Teams = ('CT' | 'T')
