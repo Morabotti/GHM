@@ -7,11 +7,11 @@ type Props = {}
 class Credits extends Component<Props> {
   render () {
     return (
-      <div className='fCont'>
+      <div className='f-container'>
         <Grid columns='1' stackable>
           <Grid.Row>
             <Grid.Column>
-              <div className='fCont-wrap'>
+              <div className='f-container-wrap'>
                 <h1><Icon name='question circle outline' /> Credits</h1>
               </div>
             </Grid.Column>
@@ -20,12 +20,12 @@ class Credits extends Component<Props> {
         <Grid columns='2' stackable>
           <Grid.Row>
             <Grid.Column>
-              <div className='fCont-wrap'>
+              <div className='f-container-wrap'>
                 <h2>Data</h2>
               </div>
             </Grid.Column>
             <Grid.Column>
-              <div className='fCont-wrap'>
+              <div className='f-container-wrap'>
                 <h2>Something</h2>
               </div>
             </Grid.Column>

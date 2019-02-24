@@ -5,6 +5,8 @@ import { hot } from 'react-hot-loader'
 import { Provider } from 'react-redux'
 
 import configureStore from './store'
+
+// $FlowIgnore
 import './loader.less'
 
 const DashboardMain = lazy(() => import('./dashboard/components/Main'))
@@ -20,7 +22,7 @@ class App extends PureComponent<Props> {
     return (
       <Provider store={store}>
         <BrowserRouter>
-          <Suspense fallback={<div className='center'><div className='loader'></div></div>}>
+          <Suspense fallback={<div className='center'><div className='loader' /></div>}>
             <Switch>
               <Redirect from='/' to='/dashboard' exact />
               <Route path='/dashboard/' component={props => <DashboardMain />} />

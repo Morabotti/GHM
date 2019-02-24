@@ -2,22 +2,15 @@
 import React, { PureComponent } from 'react'
 import { hot } from 'react-hot-loader'
 import { Team, Radar, ScorePlate, PlayerPlate } from './'
-import openSocket from 'socket.io-client';
+// import openSocket from 'socket.io-client';
 
 // $FlowIgnore
 import '../index.less'
-const endpoint = 'http://localhost:8081/socket/overlay'
+// const endpoint = 'http://localhost:8081/socket/overlay'
 
 type Props = {}
 
 class Main extends PureComponent<Props> {
-  // componentDidMount() { 
-    // const socket = openSocket(endpoint);
-    // socket.on("update", data => {
-    //  this.setState({allplayers: data.allplayers})
-    // })
-  // }
-
   render () {
     return (
       <div className='overlay'>

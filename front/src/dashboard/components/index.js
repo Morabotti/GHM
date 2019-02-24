@@ -8,6 +8,7 @@ import CSGOGeneral from './CSGO-General'
 import CSGOSchedule from './CSGO-Schedule'
 import CSGOSettings from './CSGO-Settings'
 import CSGOStatistic from './CSGO-Statistic'
+import { SubHeaderWithIcon } from './Headers'
 
 export {
   SideBar,
@@ -20,5 +21,6 @@ export {
   CSGOGeneral,
   CSGOSchedule,
   CSGOSettings,
-  CSGOStatistic
+  CSGOStatistic,
+  SubHeaderWithIcon
 }
