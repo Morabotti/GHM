@@ -14,13 +14,24 @@ type Props = {
 class Radar extends PureComponent<Props> {
   _calculateXPosition = () => {
     const { PlayerPosX } = this.props
-    return PlayerPosX
-    // TODO: This
+    const scale = 0.07290
+    const prefix = 224
+    if (PlayerPosX < 0) {
+      return (Math.abs(PlayerPosX) * (-scale)) + prefix
+    } else {
+      return (PlayerPosX * scale) + prefix
+    }
   }
+
   _calculateYPosition = () => {
     const { PlayerPosY } = this.props
-    return PlayerPosY
-    // TODO: This
+    const scale = -0.07300
+    const prefix = 254
+    if (PlayerPosY < 0) {
+      return (Math.abs(PlayerPosY) * (-scale)) + prefix
+    } else {
+      return (PlayerPosY * scale) + prefix
+    }
   }
 
   render () {

@@ -7,8 +7,14 @@ export type State = {
   showNavbar: boolean
 }
 
+const StatusState: Status = {
+  clientOnline: false,
+  gameOnline: false,
+  gameLive: false
+}
+
 const getDefaultState = (): State => ({
-  status: [false, false],
+  status: StatusState,
   showNavbar: true
 })
 

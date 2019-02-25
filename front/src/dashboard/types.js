@@ -1,7 +1,11 @@
 // @flow
 import type { Action as _Action } from './actions'
 
-export type Status = Array<boolean>
+export type Status = {
+  clientOnline: boolean,
+  gameOnline: boolean,
+  gameLive: boolean
+}
 
 export type Action = _Action
 

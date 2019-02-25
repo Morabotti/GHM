@@ -9,7 +9,7 @@ const checkResponse = (res: window.Response): window.Response => {
 }
 
 export const getStatus = () => window.fetch(
-  '/api/csgsi/isonline',
+  '/api/csgsi/online',
   {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }

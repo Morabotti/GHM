@@ -5,6 +5,7 @@ import { Icon } from 'semantic-ui-react'
 import { NavLink, Link, withRouter } from 'react-router-dom'
 
 import { ClientConnectButton, ServerConnectButton } from './'
+import { deepEqual } from '../lib/helpers'
 
 import { getStatus } from '../client'
 import { setStatus } from '../actions'
@@ -23,7 +24,7 @@ class SideBar extends Component<Props> {
 
   componentDidMount () {
     this._getStatus()
-    this.interval = setInterval(this._getStatus, 2000)
+    this.interval = setInterval(this._getStatus, 3000)
   }
 
   componentWillUnmount () {
@@ -33,7 +34,7 @@ class SideBar extends Component<Props> {
   _getStatus = () => getStatus()
     .then(setStatus)
     .then(i => {
-      if (i.status[0] !== this.props.status[0] || i.status[1] !== this.props.status[1]) {
+      if (!deepEqual(i.status, this.props.status)) {
         this.props.dispatch(i)
       }
     })
@@ -48,8 +49,8 @@ class SideBar extends Component<Props> {
           <ul className='Navigation-side'>
             <li className='ConnectionInfo'>
               <p>Connection status</p>
-              <ClientConnectButton connected={status[0]} />
-              <ServerConnectButton connected={status[1]} />
+              <ClientConnectButton connected={status.clientOnline} />
+              <ServerConnectButton connected={status.gameOnline} />
             </li>
             <li className='list-cont'>
               <NavLink className='Item-major-link' activeClassName='chosen' exact to={url + '/'}>

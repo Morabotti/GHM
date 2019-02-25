@@ -33,8 +33,8 @@ class TopBar extends Component<Props> {
             <Icon name='list' size='big' />
           </div>
           <ConnectionButton
-            clientConnection={status[0]}
-            serverConnection={status[1]}
+            clientConnection={status.clientOnline}
+            serverConnection={status.gameOnline}
             overlayConnection={false}
           />
           <div className='btn_nav'>
