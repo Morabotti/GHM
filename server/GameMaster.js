@@ -1,5 +1,10 @@
 const fs = require('fs');
 const moment = require('moment');
+const io = require('socket.io').listen(8081);
+
+io.of("/socket-overlay").on("connection", function (socket) {
+  console.log("[SOCKET HANDSHAKE - OVERLAY] "+ socket.handshake.address)
+});
 
 const TIMEOUT = 7500;
 const SETTINGS_PATH = './static/data/settings.json';
@@ -52,6 +57,13 @@ class GameMaster {
   }
 
   _handleGameData(state) {
+    let players = [];
+    Object.keys(state.allplayers).map(key => {
+      players.push(state.allplayers[key])
+    })
+    if( state.allplayers !== undefined ) {
+      io.of("/socket-overlay").emit("state", players);
+    }
     this.gameData = state;
   }
 

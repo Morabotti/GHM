@@ -19,9 +19,6 @@ app.get('/*', function(req, res) {
   })
 })
 
-
-
-
 const PORT = process.env.PORT || 8000;
 const server = app.listen(PORT, () => {
   console.log("Listening port: " + PORT)
