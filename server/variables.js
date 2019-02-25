@@ -52,7 +52,7 @@ function GlobalVariables () {
             score: user.match_stats.score,
           }
         })
-      })
+      })  
 
       const sentData = {
         round: data.map.round,
