@@ -57,14 +57,16 @@ class GameMaster {
   }
 
   _handleGameData(state) {
-    let players = [];
-    Object.keys(state.allplayers).map(key => {
-      players.push(state.allplayers[key])
-    })
-    if( state.allplayers !== undefined ) {
-      io.of("/socket-overlay").emit("state", players);
+    if(state.allplayers !== undefined) {
+      Object.keys(state.allplayers).map(key => {
+        const { position, forward } = state.allplayers[key]
+        state.allplayers[key].position = position.split(', ')
+        state.allplayers[key].forward = forward.split(', ')
+      })
+      io.of('/socket-overlay').emit('state', state.allplayers);
+      this.gameData = state;
     }
-    this.gameData = state;
+    
   }
 
   _logCurrentClassState() {

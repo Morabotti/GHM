@@ -1,46 +1,36 @@
 // @flow
 import React, { PureComponent } from 'react'
-import type { State } from '../../types'
+
 import { connect } from 'react-redux'
+
 import { RadarPlayer } from './'
-import openSocket from 'socket.io-client'
 
-const socketEndPoint = 'http://localhost:8081/socket-overlay'
+import type { State } from '../../types'
+import type { AllPlayers, Dispatch } from '../types'
 
-type Props = {}
+type Props = {
+  gameState: AllPlayers
+}
 
 class Radar extends PureComponent<Props> {
-  constructor () {
-    super()
-    this.state = {
-      allplayers: []
-    }
-  }
-
-  componentDidMount () {
-    const socket = openSocket(socketEndPoint)
-    socket.on('state', data => {
-      this.setState({ allplayers: data })
-    })
-  }
-
   render () {
+    const { gameState } = this.props
     return (
       <div className='radar'>
         <div className='radar-wrap' >
-          {this.state.allplayers.map((player, index) => {
-            const playerX = Number(player.position.substring(0, player.position.indexOf(',')))
-            const playerY = (player.position.substring(player.position.indexOf(',') + 1, player.position.indexOf(',', player.position.indexOf(',') + 1)))
+          {Object.keys(gameState).map((key, index) => {
+            const player = gameState[key];
             return (
               <RadarPlayer
                 key={index}
                 PlayerNumber={player.observer_slot}
                 PlayerTeam={player.team}
-                PlayerPosX={playerX}
-                PlayerPosY={playerY}
+                PlayerPosX={player.position[0]}
+                PlayerPosY={player.position[1]}
+                PlayerDead={player.state.health === 0}
               />
             )
-          })}
+            })}
         </div>
       </div>
     )
@@ -48,7 +38,7 @@ class Radar extends PureComponent<Props> {
 }
 
 const mapStateToProps = (state: State) => ({
-
+  gameState: state.overlay.gameState
 })
 
 export default connect(mapStateToProps)(Radar)

@@ -1,16 +1,22 @@
 // @flow
 import React, { PureComponent } from 'react'
 import { hot } from 'react-hot-loader'
+import { connect } from 'react-redux'
 import { Team, Radar, ScorePlate, PlayerPlate } from './'
-// import openSocket from 'socket.io-client';
+import { subscribeToSocket } from '../client'
 
 // $FlowIgnore
 import '../index.less'
-// const endpoint = 'http://localhost:8081/socket/overlay'
 
-type Props = {}
+type Props = {
+  dispatch: Dispatch,
+}
 
 class Main extends PureComponent<Props> {
+  componentDidMount () {
+    subscribeToSocket(this.props.dispatch)
+  }
+
   render () {
     return (
       <div className='overlay'>
@@ -32,4 +38,4 @@ class Main extends PureComponent<Props> {
   }
 }
 
-export default hot(module)(Main)
+export default hot(module)(connect()(Main))

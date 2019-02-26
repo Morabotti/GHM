@@ -21,6 +21,8 @@
   text-align: center;
   overflow: hidden;
   transition: 200ms all;
+  z-index: 5;
+  border: 0.6px solid black;
 
   span{
     color: black;
@@ -33,5 +35,11 @@
 
   &.ct{
     background-color: #2688f8;
+  }
+
+  &.dead{
+    background-color: rgba(153, 153, 153, 0.95) !important;
+    transition: 0 all;
+    z-index: 1;
   }
 }
