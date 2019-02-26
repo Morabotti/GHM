@@ -9,22 +9,48 @@ export type Teams = ('CT' | 'T')
 
 export type Vector = Array<string>
 
-export type AllPlayers {
-  [string]: PlayerKey
+export type Team = {
+  score: number;
+  timeouts_remaining: number;
+  matches_won_this_series: number;
 }
 
-export type PlayerKey {
+export type MapState = {
+  mode: string;
+  name: string;
+  phase: string;
+  round: number;
+  team_ct: Team;
+  team_t: Team;
+  num_matches_to_win_series: number;
+  current_spectators: number;
+  souvenirs_total: number;
+}
+
+export type WeaponMelee = {
   name: string,
-  observer_slot: number,
-  team: string,
-  state: PlayerState,
-  match_stats: MatchStats,
-  weapons: Weapons,
-  position: Vector,
-  forward: Vector
+  paintkit: string,
+  type: string,
+  state: string
 }
 
-export type PlayerState {
+export type WeaponDefault = {
+  name: string,
+  paintkit: string,
+  type: string,
+  ammo_clip: number,
+  ammo_clip_max: number,
+  ammo_reserve: number,
+  state: string
+}
+
+export type Weapons = {
+  weapon_0: WeaponMelee,
+  weapon_1?: WeaponDefault,
+  weapon_2?: WeaponDefault
+}
+
+export type PlayerState = {
   health: number,
   armor: number,
   helmet: boolean,
@@ -38,7 +64,7 @@ export type PlayerState {
   equip_value: number
 }
 
-export type MatchStats {
+export type MatchStats = {
   kills: number,
   assists: number,
   deaths: number,
@@ -46,26 +72,18 @@ export type MatchStats {
   score: number
 }
 
-export type Weapons {
-  weapon_0: WeaponMelee,
-  weapon_1?: WeaponDefault,
-  weapon_2?: WeaponDefault
-}
-
-export type WeaponMelee {
+export type PlayerKey = {
   name: string,
-  paintkit: string,
-  type: string,
-  state: string
+  observer_slot: number,
+  team: string,
+  state: PlayerState,
+  match_stats: MatchStats,
+  weapons: Weapons,
+  position: Vector,
+  forward: Vector,
+  watching: boolean
 }
 
-export type WeaponDefault {
-  name: string,
-  paintkit: string,
-  type: string,
-  ammo_clip: number,
-  ammo_clip_max: number,
-  ammo_reserve: number,
-  state: string
+export type AllPlayers = {
+  [string]: PlayerKey
 }
-

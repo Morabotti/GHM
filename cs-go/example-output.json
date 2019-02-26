@@ -51,7 +51,7 @@
   "allplayers": {
     "2": {
       "name": "Chris",
-      "observer_slot": 6,
+      "observer_slot": 6, 
       "team": "T",
       "state": {
         "health": 100,

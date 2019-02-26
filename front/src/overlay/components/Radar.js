@@ -6,20 +6,20 @@ import { connect } from 'react-redux'
 import { RadarPlayer } from './'
 
 import type { State } from '../../types'
-import type { AllPlayers, Dispatch } from '../types'
+import type { AllPlayers } from '../types'
 
 type Props = {
-  gameState: AllPlayers
+  allPlayers: AllPlayers
 }
 
 class Radar extends PureComponent<Props> {
   render () {
-    const { gameState } = this.props
+    const { allPlayers } = this.props
     return (
       <div className='radar'>
         <div className='radar-wrap' >
-          {Object.keys(gameState).map((key, index) => {
-            const player = gameState[key];
+          {Object.keys(allPlayers).map((key, index) => {
+            const player = allPlayers[key]
             return (
               <RadarPlayer
                 key={index}
@@ -30,7 +30,7 @@ class Radar extends PureComponent<Props> {
                 PlayerDead={player.state.health === 0}
               />
             )
-            })}
+          })}
         </div>
       </div>
     )
@@ -38,7 +38,7 @@ class Radar extends PureComponent<Props> {
 }
 
 const mapStateToProps = (state: State) => ({
-  gameState: state.overlay.gameState
+  allPlayers: state.overlay.gameStateAllPlayer
 })
 
 export default connect(mapStateToProps)(Radar)

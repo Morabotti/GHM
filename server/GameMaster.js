@@ -2,9 +2,9 @@ const fs = require('fs');
 const moment = require('moment');
 const io = require('socket.io').listen(8081);
 
-io.of("/socket-overlay").on("connection", function (socket) {
-  console.log("[SOCKET HANDSHAKE - OVERLAY] "+ socket.handshake.address)
-});
+//io.of("/socket-overlay").on("connection", function (socket) {
+//  console.log("[SOCKET HANDSHAKE - OVERLAY] "+ socket.handshake.address)
+//});
 
 const TIMEOUT = 7500;
 const SETTINGS_PATH = './static/data/settings.json';
@@ -12,14 +12,10 @@ const SETTINGS_PATH = './static/data/settings.json';
 class GameMaster {
   constructor() {
     this.gameData;
-
     this.isNotFirstTime = false;          //If have gotten even once data
     this.isClientOnline = false;          //Is client on CSGO
-    
     this.isGameOnline = false;            //Is client on server
-
     this.isGameLive = false;              //Is game live
-    
     this.settings;
     this.latestTime;
   }
@@ -57,28 +53,55 @@ class GameMaster {
   }
 
   _handleGameData(state) {
-    if(state.allplayers !== undefined) {
+    /if (this.gameData === undefined) {
       Object.keys(state.allplayers).map(key => {
         const { position, forward } = state.allplayers[key]
         state.allplayers[key].position = position.split(', ')
         state.allplayers[key].forward = forward.split(', ')
+        state.allplayers[key].watching = false
       })
-      io.of('/socket-overlay').emit('state', state.allplayers);
-      this.gameData = state;
+      io.of('/socket-overlay/allplayers').emit('state', state.allplayers)
+      io.of('/socket-overlay/player').emit('state', state.player)
+      io.of('/socket-overlay/map').emit('state', state.map)
+      this.gameData = state
+      return
     }
-    
+
+    // UPDATE SECTION => ONLY UPDATES WHEN THERE IS CHANGE => ALWAYS USEFUL
+    if (state.previously !== undefined) {
+      if ('allplayers' in state.previously) {
+        Object.keys(state.allplayers).map(key => {
+          const { position, forward } = state.allplayers[key]
+          state.allplayers[key].position = position.split(', ')
+          state.allplayers[key].forward = forward.split(', ')
+          state.allplayers[key].watching = false
+        })
+        if ('player' in state.previously) {
+          if ('spectarget' in state.previously.player && state.player.spectarget !== undefined) {
+            state.allplayers[state.player.spectarget].watching = true
+          }
+        }
+        io.of('/socket-overlay/allplayers').emit('state', state.allplayers);
+      }
+
+      if ('player' in state.previously) { io.of('/socket-overlay/player').emit('state', state.player) }
+      if ('map' in state.previously) { io.of('/socket-overlay/map').emit('state', state.map) }
+    }
+    this.gameData = state;
   }
 
   _logCurrentClassState() {
+    /*
     console.log({
-    isNotFirstTime: this.isNotFirstTime,
-    isClientOnline: this.isClientOnline,
-    isGameOnline: this.isGameOnline,
-    isGameLive: this.isGameLive,
-    currentSettings: this.settings,
-    latestTime: this.latestTime
-  }) }
-  
+      isNotFirstTime: this.isNotFirstTime,
+      isClientOnline: this.isClientOnline,
+      isGameOnline: this.isGameOnline,
+      isGameLive: this.isGameLive,
+      currentSettings: this.settings,
+      latestTime: this.latestTime
+    })
+    */
+  }
 
   _defaultCheckIfOffline() {
     const currentMoment = moment().unix();
@@ -95,6 +118,22 @@ class GameMaster {
       gameOnline: this.isGameOnline,
       gameLive: this.isGameLive
     }
+  }
+
+  _checkIfHasData() {
+    if (this.gameData === undefined) {
+      return false
+    } else {
+      this._sendLatestDispatch()
+      return true
+    }
+  }
+
+  _sendLatestDispatch() {
+    
+    io.of('/socket-overlay/allplayers').emit('state', this.gameData.allplayers)
+    io.of('/socket-overlay/player').emit('state', this.gameData.player)
+    io.of('/socket-overlay/map').emit('state', this.gameData.map)
   }
 
   _updateSettings() { this.settings = JSON.parse(fs.readFileSync(SETTINGS_PATH, 'utf8')) }

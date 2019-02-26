@@ -4,6 +4,7 @@ import { hot } from 'react-hot-loader'
 import { connect } from 'react-redux'
 import { Team, Radar, ScorePlate, PlayerPlate } from './'
 import { subscribeToSocket } from '../client'
+import type { Dispatch } from '../types'
 
 // $FlowIgnore
 import '../index.less'

@@ -19,4 +19,10 @@ router.get('/', (req, res) => {
   res.send(gameMaster._getLastestGameData())
 });
 
+router.get('/overlay/init', (req, res) => {
+  const ok = gameMaster._checkIfHasData();
+  if(ok) { res.sendStatus(200) }
+  else { res.sendStatus(403) }
+});
+
 module.exports = router

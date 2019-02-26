@@ -12,10 +12,15 @@ type Props = {
   PlayerDead: boolean
 }
 
-class Radar extends PureComponent<Props> {
+type ComponentState = {
+  deathPosX: number,
+  deathPosY: number
+}
+
+class Radar extends PureComponent<Props, ComponentState> {
   state = {
-    deathPosX: 0,
-    deathPosY: 0,
+    deathPosX: -30,
+    deathPosY: -30
   }
 
   _calculateXPosition = () => {
@@ -46,7 +51,7 @@ class Radar extends PureComponent<Props> {
     if (nextProp.PlayerDead === true && PlayerDead === false) {
       this.setState({
         deathPosX: this._calculateXPosition(),
-        deathPosY: this._calculateYPosition(),
+        deathPosY: this._calculateYPosition()
       })
     }
   }
