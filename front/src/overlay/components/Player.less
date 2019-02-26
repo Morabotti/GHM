@@ -16,7 +16,7 @@
     height: 35px;
 
     &.bigger{
-      width: 125px;
+      width: 130px;
     }
 
     img{
@@ -110,6 +110,20 @@
   .player-utility{
     width: 60px;
     text-align: center;
+    display: flex;
+
+    .item{
+      flex: 1;
+      margin-top: 2px;
+    }
+
+    .item-util{
+      flex: 1;
+      margin-top: 2px;
+      &.defuser{
+        margin-top: 5px;
+      }
+    }
   }
 }
 
@@ -123,17 +137,17 @@
   border-bottom-right-radius: 10px;
 }
 
-.overlay-left>.team.ct>.team-player>.player-area-upper{
+.overlay-left>.team.CT>.team-player>.player-area-upper{
   background: -webkit-linear-gradient(left, #004799 2%,#54A6E5 100%);
 }
-.overlay-right>.team.ct>.team-player>.player-area-upper{
+.overlay-right>.team.CT>.team-player>.player-area-upper{
   background: -webkit-linear-gradient(right, #004799 2%,#54A6E5 100%);
 }
 
-.overlay-left>.team.t>.team-player>.player-area-upper{
+.overlay-left>.team.T>.team-player>.player-area-upper{
   background: -webkit-linear-gradient(left, #5e3b00 0%,#ffb900 60%);
 }
-.overlay-right>.team.t>.team-player>.player-area-upper{
+.overlay-right>.team.T>.team-player>.player-area-upper{
   background: -webkit-linear-gradient(right, #5e3b00 0%,#ffb900 60%);
 }
 

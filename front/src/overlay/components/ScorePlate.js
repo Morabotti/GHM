@@ -33,7 +33,7 @@ class ScorePlate extends PureComponent<Props> {
           </div>
           <div className='score-time'>
             <div className='time'>
-              {phase === 'live' ? this.sectostr(Math.trunc(phase_ends_in)) : null }
+              {phase === 'live' || phase === 'warmup' ? this.sectostr(Math.trunc(phase_ends_in)) : null }
             </div>
             <div className='round'>
               {`Round ${round}/30`}

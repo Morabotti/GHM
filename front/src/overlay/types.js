@@ -40,11 +40,10 @@ export type WeaponMelee = {
   state: string
 }
 
-// FIX FLOW ERROR
 export type WeaponDefault = {
-  name?: string,
+  name: string,
   paintkit: string,
-  type?: string,
+  type: string,
   ammo_clip: number,
   ammo_clip_max: number,
   ammo_reserve: number,
@@ -53,15 +52,14 @@ export type WeaponDefault = {
 
 export type Weapons = {
   weapon_0: WeaponMelee,
-  weapon_1?: WeaponDefault,
-  weapon_2?: WeaponDefault
+  [string]: WeaponDefault
 }
 
 export type PlayerState = {
   health: number,
   armor: number,
   helmet: boolean,
-  defusekit: boolean,
+  defusekit?: boolean,
   flashed: number,
   burning: number,
   money: number,

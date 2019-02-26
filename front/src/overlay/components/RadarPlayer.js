@@ -60,7 +60,7 @@ class Radar extends PureComponent<Props, ComponentState> {
     const { PlayerNumber, PlayerTeam, PlayerDead } = this.props
     return (
       <div
-        className={`radar-player ${PlayerTeam === 'T' ? 't' : 'ct'} ${PlayerDead ? 'dead' : ''}`}
+        className={`radar-player ${PlayerTeam} ${PlayerDead ? 'dead' : ''}`}
         style={{
           left: PlayerDead ? this.state.deathPosX : this._calculateXPosition(),
           top: PlayerDead ? this.state.deathPosY : this._calculateYPosition()

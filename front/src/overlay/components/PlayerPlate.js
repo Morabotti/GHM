@@ -14,7 +14,7 @@ class PlayerPlate extends PureComponent<Props> {
 
     if (isWatching) {
       return (
-        <div className={`player-plate ${team === 'CT' ? 'ct' : 't'}`}>
+        <div className={`player-plate ${team}`}>
           <div className='grid'>
             <div className='grid-upper'>
               <p>{name}</p>

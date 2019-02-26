@@ -15,7 +15,7 @@ class Team extends PureComponent<Props> {
   render () {
     const { team, allPlayers } = this.props
     return (
-      <div className={`team ${team === 'CT' ? 'ct' : 't'}`}>
+      <div className={`team ${team}`}>
         <div className='team-info' />
         {Object.keys(allPlayers)
           .filter(key => {
@@ -24,6 +24,7 @@ class Team extends PureComponent<Props> {
           .map((player, index) => (
             <Player
               key={player}
+              team={team}
               first={index === 0}
               last={index === 4}
               name={allPlayers[player].name}

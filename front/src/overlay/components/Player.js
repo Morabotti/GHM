@@ -1,11 +1,12 @@
 // @flow
 import React, { PureComponent } from 'react'
-import type { Weapons, PlayerState, MatchStats } from '../types'
+import type { Weapons, PlayerState, MatchStats, Teams } from '../types'
 
 type Props = {
   first?: boolean,
   last?: boolean,
   name: string,
+  team: Teams,
   weapons: Weapons,
   state: PlayerState,
   stats: MatchStats,
@@ -15,7 +16,7 @@ type Props = {
 
 class Player extends PureComponent<Props> {
   render () {
-    const { first, last, name, observerSlot, state, weapons } = this.props
+    const { first, last, name, observerSlot, state, weapons, team } = this.props
 
     const hasMainWeapon = Object.keys(weapons)
       .find(weapon => weapons[weapon].type === 'Rifle' ||
@@ -33,6 +34,11 @@ class Player extends PureComponent<Props> {
       weapons[hasMainWeapon].name === 'weapon_nova' ||
       weapons[hasMainWeapon].name === 'weapon_xm1014')
     )
+
+    const hasBOMB = (team === 'T'
+      ? (Object.keys(weapons)
+        .find(weapon => weapons[weapon].type === 'C4') === undefined)
+      : null)
 
     return (
       <div className={`team-player ${first === true ? 'first' : ''}${last === true ? 'last' : ''}`}>
@@ -72,8 +78,28 @@ class Player extends PureComponent<Props> {
           <div className='player-money'>
             <p>${state.money}</p>
           </div>
-          <div className='player-utility'>
-            <p>KIT</p>
+          <div className={`player-utility`}>
+            {state.helmet ? (
+              <div className='item'>
+                <img src='/static/utils/armor_helmet.svg' height='26px' />
+              </div>
+            ) : state.armor > 0 ? (
+              <div className='item'>
+                <img src='/static/utils/armor.svg' height='26px' />
+              </div>
+            ) : null
+            }
+
+            {team === 'CT' ? state.defusekit ? (
+              <div className='item-util defuser'>
+                <img src='/static/utils/defuser.svg' height='22px' />
+              </div>
+            ) : null : hasBOMB ? (
+              <div className='item-util'>
+                <img src='/static/utils/c4.svg' height='26px' />
+              </div>
+            ) : null
+            }
           </div>
         </div>
       </div>
