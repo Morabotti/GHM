@@ -11,14 +11,14 @@
       display: flex;
       width: 100%;
 
-      &.ct{
+      &.CT{
         flex-direction: row;
         .team-logo{ border-top-left-radius: 15px; }
         .team-name, .team-score{ color: #2688f8; }
         .team-score{ border-bottom: 2px solid #2688f8; }
       }
 
-      &.t{
+      &.T{
         flex-direction: row-reverse;
         .team-logo{ border-top-right-radius: 15px; }
         .team-name, .team-score{ color: #ffb900; }
@@ -45,6 +45,10 @@
         font-weight: bold;
         flex: 1;
         background-color: rgba(1, 64, 137, 0.6);
+
+        &.smaller{
+          font-size: 26px;
+        }
       }
 
       .team-score{

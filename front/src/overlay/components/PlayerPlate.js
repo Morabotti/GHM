@@ -21,7 +21,17 @@ class PlayerPlate extends PureComponent<Props> {
             </div>
             <div className='grid-lower'>
               <div className='grid-lower-dark grid-hp'>
-                {`${state.health} / ${state.armor}`}
+                <div className='item'>
+                  <b>+</b>{state.health}
+                </div>
+                {state.armor > 0 ? (
+                  <div className='item'>
+                    {state.helmet
+                      ? (<img src='/static/utils/armor_helmet.svg' height='22px' />)
+                      : (<img src='/static/utils/armor.svg' height='26px' />)
+                    }{state.armor}
+                  </div>
+                ) : null}
               </div>
               <div className='grid-lower-light grid-stats'>
                 7 3 2 91

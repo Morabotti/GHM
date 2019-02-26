@@ -16,7 +16,7 @@ type Props = {
 
 class Player extends PureComponent<Props> {
   render () {
-    const { first, last, name, observerSlot, state, weapons, team } = this.props
+    const { first, last, name, observerSlot, state, weapons, team, watching } = this.props
 
     const hasMainWeapon = Object.keys(weapons)
       .find(weapon => weapons[weapon].type === 'Rifle' ||
@@ -37,11 +37,11 @@ class Player extends PureComponent<Props> {
 
     const hasBOMB = (team === 'T'
       ? (Object.keys(weapons)
-        .find(weapon => weapons[weapon].type === 'C4') === undefined)
+        .find(weapon => weapons[weapon].type === 'C4') !== undefined)
       : null)
 
     return (
-      <div className={`team-player ${first === true ? 'first' : ''}${last === true ? 'last' : ''}`}>
+      <div className={`team-player ${first === true ? 'first' : ''}${last === true ? 'last' : ''} ${watching ? 'watching' : ''}`}>
         <div className='player-area-upper'>
           <div className={`player-weapon-main ${MainWeaponBig ? 'bigger' : ''}`}>
             { hasMainWeapon !== undefined ? (
@@ -62,17 +62,30 @@ class Player extends PureComponent<Props> {
                 <img src={`/static/weapons/${weapons[hasSecondaryWeapon].name}.svg`} className='weapon-wrap' height='20px' />
               ) : null}
             </div>
-            <div className='player-grenade'>
-              <img src='' className='weapon-wrap' height='20px' />
-            </div>
-            <div className='player-grenade'>
-              <img src='' className='weapon-wrap' height='20px' />
-            </div>
-            <div className='player-grenade'>
-              <img src='' className='weapon-wrap' height='20px' />
-            </div>
-            <div className='player-grenade'>
-              <img src='' className='weapon-wrap' height='20px' />
+            <div className='weapon-grenades'>
+              {Object.keys(weapons)
+                .filter(weapon => weapons[weapon].type === 'Grenade')
+                .map((grenade, index) => {
+                  if (weapons[grenade].ammo_reserve === 2) {
+                    return (
+                      <div key={index}>
+                        <div className='player-grenade'>
+                          <img src={`/static/weapons/${weapons[grenade].name}.svg`} className='weapon-wrap' height='20px' />
+                        </div>
+                        <div className='player-grenade'>
+                          <img src={`/static/weapons/${weapons[grenade].name}.svg`} className='weapon-wrap' height='20px' />
+                        </div>
+                      </div>
+                    )
+                  } else {
+                    return (
+                      <div className='player-grenade' key={index}>
+                        <img src={`/static/weapons/${weapons[grenade].name}.svg`} className='weapon-wrap' height='20px' />
+                      </div>
+                    )
+                  }
+                })
+              }
             </div>
           </div>
           <div className='player-money'>

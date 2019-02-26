@@ -54,7 +54,7 @@ class GameMaster {
 
   _handleGameData(state) {
     if (this.gameData === undefined) {
-      if('allplayers' in state) {
+      if(state.allplayers !== undefined) {
         Object.keys(state.allplayers).map(key => {
           const { position, forward } = state.allplayers[key]
           state.allplayers[key].position = position.split(', ')
@@ -64,35 +64,39 @@ class GameMaster {
         io.of('/socket-overlay/allplayers').emit('state', state.allplayers)
       }
       
-      if('phase_countdowns' in state) io.of('/socket-overlay/phase').emit('state', state.phase_countdowns)
-      if('player' in state) io.of('/socket-overlay/player').emit('state', state.player)
-      if('map' in state) io.of('/socket-overlay/map').emit('state', state.map)
+      if(state.phase_countdowns !== undefined) io.of('/socket-overlay/phase').emit('state', state.phase_countdowns)
+      if(state.player !== undefined) io.of('/socket-overlay/player').emit('state', state.player)
+      if(state.map !== undefined) io.of('/socket-overlay/map').emit('state', state.map)
       this.gameData = state
       return
     }
-
+    
     // UPDATE SECTION => ONLY UPDATES WHEN THERE IS CHANGE => ALWAYS USEFUL
     if (state.previously !== undefined) {
-      if ('allplayers' in state.previously) {
+      if (state.previously.allplayers !== undefined) {
         Object.keys(state.allplayers).map(key => {
           const { position, forward } = state.allplayers[key]
           state.allplayers[key].position = position.split(', ')
           state.allplayers[key].forward = forward.split(', ')
           state.allplayers[key].watching = false
         })
-        if ('player' in state.previously) {
-          if ('spectarget' in state.previously.player && state.player.spectarget !== undefined) {
-            state.allplayers[state.player.spectarget].watching = true
-          }
-        }
-        io.of('/socket-overlay/allplayers').emit('state', state.allplayers);
+        if (state.player !== undefined && state.player.spectarget !== undefined) state.allplayers[state.player.spectarget].watching = true
+        io.of('/socket-overlay/allplayers').emit('state', state.allplayers)
+        this.gameData.allplayers = state.allplayers
       }
-
-      if ('player' in state.previously) { io.of('/socket-overlay/player').emit('state', state.player) }
-      if ('map' in state.previously) { io.of('/socket-overlay/map').emit('state', state.map) }
-      if('phase_countdowns' in state.previously) io.of('/socket-overlay/phase').emit('state', state.phase_countdowns)
+      if (state.previously.player !== undefined) {
+        io.of('/socket-overlay/player').emit('state', state.player)
+        this.gameData.player = state.player
+      }
+      if (state.previously.map !== undefined) {
+        io.of('/socket-overlay/map').emit('state', state.map)
+        this.gameData.map = state.map
+      }
+      if (state.previously.phase_countdowns !== undefined){
+        io.of('/socket-overlay/phase').emit('state', state.phase_countdowns)
+        this.gameData.phase_countdowns = state.phase_countdowns
+      }
     }
-    this.gameData = state;
   }
 
   _logCurrentClassState() {
@@ -135,10 +139,10 @@ class GameMaster {
   }
 
   _sendLatestDispatch() {
-    if('allplayers' in this.gameData) io.of('/socket-overlay/allplayers').emit('state', this.gameData.allplayers)
-    if('player' in this.gameData) io.of('/socket-overlay/player').emit('state', this.gameData.player)
-    if('map' in this.gameData) io.of('/socket-overlay/map').emit('state', this.gameData.map)
-    if('phase_countdowns' in this.gameData) io.of('/socket-overlay/phase').emit('state', this.gameData.phase_countdowns)
+    if(this.gameData.allplayers !== undefined) io.of('/socket-overlay/allplayers').emit('state', this.gameData.allplayers)
+    if(this.gameData.player !== undefined) io.of('/socket-overlay/player').emit('state', this.gameData.player)
+    if(this.gameData.map !== undefined) io.of('/socket-overlay/map').emit('state', this.gameData.map)
+    if(this.gameData.phase_countdowns !== undefined) io.of('/socket-overlay/phase').emit('state', this.gameData.phase_countdowns)
   }
 
   _updateSettings() { this.settings = JSON.parse(fs.readFileSync(SETTINGS_PATH, 'utf8')) }
