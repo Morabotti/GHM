@@ -9,22 +9,28 @@ export type Teams = ('CT' | 'T')
 
 export type Vector = Array<string>
 
+export type PhaseCooldowns = {
+  phase: string,
+  phase_ends_in: number
+}
+
 export type Team = {
-  score: number;
-  timeouts_remaining: number;
-  matches_won_this_series: number;
+  score: number,
+  name?: string,
+  timeouts_remaining: number,
+  matches_won_this_series: number
 }
 
 export type MapState = {
-  mode: string;
-  name: string;
-  phase: string;
-  round: number;
-  team_ct: Team;
-  team_t: Team;
-  num_matches_to_win_series: number;
-  current_spectators: number;
-  souvenirs_total: number;
+  mode: string,
+  name: string,
+  phase: string,
+  round: number,
+  team_ct: Team,
+  team_t: Team,
+  num_matches_to_win_series: number,
+  current_spectators: number,
+  souvenirs_total: number
 }
 
 export type WeaponMelee = {
@@ -34,10 +40,11 @@ export type WeaponMelee = {
   state: string
 }
 
+// FIX FLOW ERROR
 export type WeaponDefault = {
-  name: string,
+  name?: string,
   paintkit: string,
-  type: string,
+  type?: string,
   ammo_clip: number,
   ammo_clip_max: number,
   ammo_reserve: number,

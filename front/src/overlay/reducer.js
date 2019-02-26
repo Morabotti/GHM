@@ -1,17 +1,39 @@
 // @flow
 import type { Action } from './actions'
-import type { AllPlayers, MapState } from './types'
+import type { AllPlayers, MapState, PhaseCooldowns } from './types'
 
 export type State = {
   gameStateAllPlayer: AllPlayers,
   gameStatePlayer: any,
-  gameStateMap: MapState
+  gameStateMap: MapState,
+  gameStatePhase: PhaseCooldowns
 }
 
 const getDefaultState = (): State => ({
   gameStateAllPlayer: {},
   gameStatePlayer: {},
-  gameStateMap: {}
+  gameStateMap: {
+    mode: '',
+    name: '',
+    phase: '',
+    round: 0,
+    team_ct: {
+      score: 0,
+      name: '',
+      timeouts_remaining: 0,
+      matches_won_this_series: 0
+    },
+    team_t: {
+      score: 0,
+      name: '',
+      timeouts_remaining: 0,
+      matches_won_this_series: 0
+    },
+    num_matches_to_win_series: 0,
+    current_spectators: 0,
+    souvenirs_total: 0
+  },
+  gameStatePhase: {}
 })
 
 export default function reducer (
@@ -33,6 +55,11 @@ export default function reducer (
       return {
         ...state,
         gameStateMap: action.gameStateMap
+      }
+    case 'set-game-phase-state':
+      return {
+        ...state,
+        gameStatePhase: action.gameStatePhase
       }
     default:
       return state

@@ -6,7 +6,8 @@ import type { Dispatch } from './types'
 import {
   setGameAllPlayerState,
   setGamePlayerState,
-  setGameMapState
+  setGameMapState,
+  setGamePhaseState
 } from './actions'
 
 const socketIOPORT = 8081
@@ -15,11 +16,13 @@ const url = `${protocol}//${hostname}:${socketIOPORT}`
 const socketEndPointAllPlayer = `${url}/socket-overlay/allplayers`
 const socketEndPointPlayer = `${url}/socket-overlay/player`
 const socketEndPointMap = `${url}/socket-overlay/map`
+const socketEndPointPhase = `${url}/socket-overlay/phase`
 
 export const subscribeToSocket = (dispatch: Dispatch) => {
   subscribeToSocketAllPlayers(dispatch)
   subscribeToSocketPlayer(dispatch)
   subscribeToSocketMap(dispatch)
+  subscribeToSocketPhase(dispatch)
   setTimeout(getLatestData, 10)
 }
 
@@ -52,5 +55,12 @@ export const subscribeToSocketMap = (dispatch: Dispatch) => {
   const socket = openSocket(socketEndPointMap)
   socket.on('state', data => {
     dispatch(setGameMapState(data))
+  })
+}
+
+export const subscribeToSocketPhase = (dispatch: Dispatch) => {
+  const socket = openSocket(socketEndPointPhase)
+  socket.on('state', data => {
+    dispatch(setGamePhaseState(data))
   })
 }

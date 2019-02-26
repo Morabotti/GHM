@@ -53,16 +53,20 @@ class GameMaster {
   }
 
   _handleGameData(state) {
-    /if (this.gameData === undefined) {
-      Object.keys(state.allplayers).map(key => {
-        const { position, forward } = state.allplayers[key]
-        state.allplayers[key].position = position.split(', ')
-        state.allplayers[key].forward = forward.split(', ')
-        state.allplayers[key].watching = false
-      })
-      io.of('/socket-overlay/allplayers').emit('state', state.allplayers)
-      io.of('/socket-overlay/player').emit('state', state.player)
-      io.of('/socket-overlay/map').emit('state', state.map)
+    if (this.gameData === undefined) {
+      if('allplayers' in state) {
+        Object.keys(state.allplayers).map(key => {
+          const { position, forward } = state.allplayers[key]
+          state.allplayers[key].position = position.split(', ')
+          state.allplayers[key].forward = forward.split(', ')
+          state.allplayers[key].watching = false
+        })
+        io.of('/socket-overlay/allplayers').emit('state', state.allplayers)
+      }
+      
+      if('phase_countdowns' in state) io.of('/socket-overlay/phase').emit('state', state.phase_countdowns)
+      if('player' in state) io.of('/socket-overlay/player').emit('state', state.player)
+      if('map' in state) io.of('/socket-overlay/map').emit('state', state.map)
       this.gameData = state
       return
     }
@@ -86,6 +90,7 @@ class GameMaster {
 
       if ('player' in state.previously) { io.of('/socket-overlay/player').emit('state', state.player) }
       if ('map' in state.previously) { io.of('/socket-overlay/map').emit('state', state.map) }
+      if('phase_countdowns' in state.previously) io.of('/socket-overlay/phase').emit('state', state.phase_countdowns)
     }
     this.gameData = state;
   }
@@ -130,10 +135,10 @@ class GameMaster {
   }
 
   _sendLatestDispatch() {
-    
-    io.of('/socket-overlay/allplayers').emit('state', this.gameData.allplayers)
-    io.of('/socket-overlay/player').emit('state', this.gameData.player)
-    io.of('/socket-overlay/map').emit('state', this.gameData.map)
+    if('allplayers' in this.gameData) io.of('/socket-overlay/allplayers').emit('state', this.gameData.allplayers)
+    if('player' in this.gameData) io.of('/socket-overlay/player').emit('state', this.gameData.player)
+    if('map' in this.gameData) io.of('/socket-overlay/map').emit('state', this.gameData.map)
+    if('phase_countdowns' in this.gameData) io.of('/socket-overlay/phase').emit('state', this.gameData.phase_countdowns)
   }
 
   _updateSettings() { this.settings = JSON.parse(fs.readFileSync(SETTINGS_PATH, 'utf8')) }

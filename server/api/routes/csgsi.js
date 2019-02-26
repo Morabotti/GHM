@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
 router.get('/overlay/init', (req, res) => {
   const ok = gameMaster._checkIfHasData();
   if(ok) { res.sendStatus(200) }
-  else { res.sendStatus(403) }
+  else { res.sendStatus(404) }
 });
 
 module.exports = router

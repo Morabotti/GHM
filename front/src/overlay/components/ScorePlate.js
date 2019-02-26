@@ -1,12 +1,22 @@
 // @flow
 import React, { PureComponent } from 'react'
 import type { State } from '../../types'
+import type { PhaseCooldowns, MapState } from '../types'
 import { connect } from 'react-redux'
 
-type Props = {}
+type Props = {
+  mapData: MapState,
+  phaseData: PhaseCooldowns
+}
 
 class ScorePlate extends PureComponent<Props> {
+  sectostr (time) {
+    return ~~(time / 60) + ':' + (time % 60 < 10 ? '0' : '') + time % 60
+  }
+
   render () {
+    const { phase_ends_in, phase } = this.props.phaseData
+    const { round, team_ct, team_t } = this.props.mapData
     return (
       <div className='score-top'>
         <div className='score-top-upper'>
@@ -15,18 +25,18 @@ class ScorePlate extends PureComponent<Props> {
               <img src='/static/teams/team_ct.png' />
             </div>
             <div className='team-name'>
-              ENCE
+              {team_ct.name !== undefined ? team_ct.name : 'COUNTER-TERRORISTS'}
             </div>
             <div className='team-score'>
-              0
+              {team_ct.score}
             </div>
           </div>
           <div className='score-time'>
             <div className='time'>
-              0:12
+              {phase === 'live' ? this.sectostr(Math.trunc(phase_ends_in)) : null }
             </div>
             <div className='round'>
-              Round 9/30
+              {`Round ${round}/30`}
             </div>
           </div>
           <div className='score-area t'>
@@ -34,10 +44,10 @@ class ScorePlate extends PureComponent<Props> {
               <img src='/static/teams/team_t.png' />
             </div>
             <div className='team-name'>
-              ENCE
+              {team_t.name !== undefined ? team_t.name : 'TERRORISTS'}
             </div>
             <div className='team-score'>
-              10
+              {team_t.score}
             </div>
           </div>
         </div>
@@ -47,7 +57,8 @@ class ScorePlate extends PureComponent<Props> {
 }
 
 const mapStateToProps = (state: State) => ({
-
+  mapData: state.overlay.gameStateMap,
+  phaseData: state.overlay.gameStatePhase
 })
 
 export default connect(mapStateToProps)(ScorePlate)
