@@ -6,7 +6,8 @@
   transition: 80ms all;
 
   &.CT{
-    .grid-upper p{
+    .grid-upper p,
+    .ammo-off{
       color: #2688f8;
     }
 
@@ -16,9 +17,12 @@
   }
 
   &.T{
-    .grid-upper p{
+    .grid-upper p,
+    .ammo-off{
       color: #ffb900;
     }
+    
+    
 
     .grid-upper{
       border-bottom: 2px solid #ffb900;
@@ -55,7 +59,8 @@
       .grid-hp {
         border-top-left-radius: 20px;
         font-size: 26px;
-        line-height: 50px;
+        line-height: 48px;
+        padding-top: 2px;
         text-align: center;
         display: flex;
 
@@ -71,8 +76,32 @@
       .grid-ammo {
         border-top-right-radius: 20px;
         font-size: 26px;
-        line-height: 50px;
+        line-height: 48px;
+        padding-top: 2px;
         text-align: center;
+        display: flex;
+        overflow: hidden;
+
+        .item{
+          flex: 1;
+
+          &.grenades{
+            display: flex;
+            margin-left: 7px;
+
+            .multiple-grenades{
+              display: flex;
+            }
+
+            .player-grenade{
+              width: 22px;
+            }
+          }
+
+          .ammo-off{
+            font-size: 19px;
+          }
+        }
       }
 
       .grid-stats{

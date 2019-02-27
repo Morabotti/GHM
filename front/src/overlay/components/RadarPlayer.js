@@ -28,6 +28,8 @@ class Radar extends PureComponent<Props, ComponentState> {
     const { PlayerPosX } = this.props
     const scale = 0.07290
     const prefix = 224
+
+    if (isNaN(PlayerPosX)) return
     if (PlayerPosX < 0) {
       return (Math.abs(PlayerPosX) * (-scale)) + prefix
     } else {
@@ -39,6 +41,8 @@ class Radar extends PureComponent<Props, ComponentState> {
     const { PlayerPosY } = this.props
     const scale = -0.07300
     const prefix = 254
+
+    if (isNaN(PlayerPosY)) return
     if (PlayerPosY < 0) {
       return (Math.abs(PlayerPosY) * (-scale)) + prefix
     } else {

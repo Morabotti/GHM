@@ -4,7 +4,10 @@ import type {
   AllPlayers,
   MapState,
   PhaseCooldowns,
-  CurrentPlayer
+  CurrentPlayer,
+  PlayerState,
+  Team,
+  MatchStats
 } from './types'
 
 export type State = {
@@ -14,31 +17,83 @@ export type State = {
   gameStatePhase: PhaseCooldowns
 }
 
+const defaultTeamState: Team = {
+  score: 0,
+  name: '',
+  timeouts_remaining: 0,
+  matches_won_this_series: 0
+}
+
+const defaultPlayerState: PlayerState = {
+  health: 100,
+  armor: 100,
+  helmet: false,
+  defusekit: false,
+  flashed: 0,
+  smoked: 0,
+  burning: 0,
+  money: 0,
+  round_kills: 0,
+  round_killhs: 0,
+  round_totaldmg: 0,
+  equip_value: 0
+}
+
+const defaultStatsState: MatchStats = {
+  kills: 0,
+  assists: 0,
+  deaths: 0,
+  mvps: 0,
+  score: 0
+}
+
 const getDefaultState = (): State => ({
-  gameStateAllPlayer: {},
-  gameStatePlayer: {},
+  gameStateAllPlayer: {
+    '0': {
+      name: '',
+      observer_slot: 0,
+      team: '',
+      state: defaultPlayerState,
+      match_stats: defaultStatsState,
+      weapons: {
+        weapon_0: {
+          name: '',
+          paintkit: '',
+          type: '',
+          state: 'active'
+        }
+      },
+      position: [],
+      forward: [],
+      watching: false
+    }
+  },
+  gameStatePlayer: {
+    steamid: '',
+    name: '',
+    observer_slot: 0,
+    team: '',
+    activity: '',
+    state: defaultPlayerState,
+    spectarget: '',
+    position: [],
+    forward: []
+  },
   gameStateMap: {
     mode: '',
     name: '',
     phase: '',
     round: 0,
-    team_ct: {
-      score: 0,
-      name: '',
-      timeouts_remaining: 0,
-      matches_won_this_series: 0
-    },
-    team_t: {
-      score: 0,
-      name: '',
-      timeouts_remaining: 0,
-      matches_won_this_series: 0
-    },
+    team_ct: defaultTeamState,
+    team_t: defaultTeamState,
     num_matches_to_win_series: 0,
     current_spectators: 0,
     souvenirs_total: 0
   },
-  gameStatePhase: {}
+  gameStatePhase: {
+    phase: '',
+    phase_ends_in: 0
+  }
 })
 
 export default function reducer (

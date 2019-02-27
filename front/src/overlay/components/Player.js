@@ -77,7 +77,7 @@ class Player extends PureComponent<Props> {
                 .map((grenade, index) => {
                   if (weapons[grenade].ammo_reserve === 2) {
                     return (
-                      <div key={index}>
+                      <div className='multiple-grenades' key={index}>
                         <div className='player-grenade'>
                           <img
                             src={`/static/weapons/${weapons[grenade].name}.svg`}

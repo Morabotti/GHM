@@ -33,25 +33,17 @@ export type MapState = {
   souvenirs_total: number
 }
 
-export type WeaponMelee = {
-  name: string,
-  paintkit: string,
-  type: string,
-  state: string
-}
-
 export type WeaponDefault = {
   name: string,
   paintkit: string,
   type: string,
-  ammo_clip: number,
-  ammo_clip_max: number,
-  ammo_reserve: number,
+  ammo_clip?: number,
+  ammo_clip_max?: number,
+  ammo_reserve?: number,
   state: string
 }
 
 export type Weapons = {
-  weapon_0: WeaponMelee,
   [string]: WeaponDefault
 }
 
