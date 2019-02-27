@@ -57,13 +57,15 @@ class GameMaster {
       if(state.allplayers !== undefined) {
         Object.keys(state.allplayers).map(key => {
           const { position, forward } = state.allplayers[key]
-          state.allplayers[key].position = position.split(', ')
-          state.allplayers[key].forward = forward.split(', ')
-          state.allplayers[key].watching = false
+          state.allplayers[key] = {
+            ...state.allplayers[key],
+            position: position.split(', '),
+            forward: forward.split(', '),
+            watching: false
+          }
         })
         io.of('/socket-overlay/allplayers').emit('state', state.allplayers)
       }
-      
       if(state.phase_countdowns !== undefined) io.of('/socket-overlay/phase').emit('state', state.phase_countdowns)
       if(state.player !== undefined) io.of('/socket-overlay/player').emit('state', state.player)
       if(state.map !== undefined) io.of('/socket-overlay/map').emit('state', state.map)
@@ -76,25 +78,42 @@ class GameMaster {
       if (state.previously.allplayers !== undefined) {
         Object.keys(state.allplayers).map(key => {
           const { position, forward } = state.allplayers[key]
-          state.allplayers[key].position = position.split(', ')
-          state.allplayers[key].forward = forward.split(', ')
-          state.allplayers[key].watching = false
+          state.allplayers[key] = {
+            ...state.allplayers[key],
+            position: position.split(', '),
+            forward: forward.split(', '),
+            watching: false
+          }
         })
-        if (state.player !== undefined && state.player.spectarget !== undefined) state.allplayers[state.player.spectarget].watching = true
+        if (state.player !== undefined && state.player.spectarget !== undefined) {
+          state.allplayers[state.player.spectarget].watching = true
+        }
         io.of('/socket-overlay/allplayers').emit('state', state.allplayers)
-        this.gameData.allplayers = state.allplayers
+        this.gameData = {
+          ...this.gameData,
+          allplayers: state.allplayers
+        }
       }
       if (state.previously.player !== undefined) {
         io.of('/socket-overlay/player').emit('state', state.player)
-        this.gameData.player = state.player
+        this.gameData = {
+          ...this.gameData,
+          player: state.player
+        }
       }
       if (state.previously.map !== undefined) {
         io.of('/socket-overlay/map').emit('state', state.map)
-        this.gameData.map = state.map
+        this.gameData = {
+          ...this.gameData,
+          map: state.map
+        }
       }
-      if (state.previously.phase_countdowns !== undefined){
+      if (state.previously.phase_countdowns !== undefined) {
         io.of('/socket-overlay/phase').emit('state', state.phase_countdowns)
-        this.gameData.phase_countdowns = state.phase_countdowns
+        this.gameData = {
+          ...this.gameData,
+          phase_countdowns: state.phase_countdowns
+        }
       }
     }
   }

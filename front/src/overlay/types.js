@@ -89,6 +89,18 @@ export type PlayerKey = {
   watching: boolean
 }
 
+export type CurrentPlayer = {
+  steamid: string,
+  name: string,
+  observer_slot: number,
+  team: string,
+  activity: string,
+  state: PlayerState,
+  spectarget?: string,
+  position: Vector,
+  forward: Vector
+}
+
 export type AllPlayers = {
   [string]: PlayerKey
 }

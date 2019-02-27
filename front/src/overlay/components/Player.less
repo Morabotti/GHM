@@ -12,11 +12,15 @@
   line-height: 35px;
 
   .player-weapon-main{
-    width: 105px;
+    width: 100px;
     height: 35px;
 
     &.bigger{
-      width: 130px;
+      width: 125px;
+    }
+
+    &.biggest{
+      width: 143px;
     }
 
     img{
@@ -132,6 +136,11 @@
       }
     }
   }
+}
+
+img.holstered{
+  -webkit-filter: invert(20%) grayscale(100%) brightness(70%) contrast(4);
+  filter: invert(20%) grayscale(100%) brightness(70%) contrast(4);
 }
 
 .team-player.first .player-area-upper{

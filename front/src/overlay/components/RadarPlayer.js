@@ -1,8 +1,9 @@
 // @flow
 import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
+
 import type { State } from '../../types'
 import type { Teams } from '../types'
-import { connect } from 'react-redux'
 
 type Props = {
   PlayerNumber: number,

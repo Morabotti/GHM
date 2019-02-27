@@ -1,8 +1,13 @@
 // @flow
-import type { AllPlayers, MapState, PhaseCooldowns } from './types'
+import type {
+  AllPlayers,
+  MapState,
+  PhaseCooldowns,
+  CurrentPlayer
+} from './types'
 
 export type Action = { type: 'set-game-all-player-state', gameStateAllPlayer: AllPlayers}
-  | { type: 'set-game-player-state', gameStatePlayer: any}
+  | { type: 'set-game-player-state', gameStatePlayer: CurrentPlayer}
   | { type: 'set-game-map-state', gameStateMap: MapState}
   | { type: 'set-game-phase-state', gameStatePhase: PhaseCooldowns}
 
@@ -11,7 +16,7 @@ export const setGameAllPlayerState = (gameStateAllPlayer: AllPlayers) => ({
   gameStateAllPlayer
 })
 
-export const setGamePlayerState = (gameStatePlayer: any) => ({
+export const setGamePlayerState = (gameStatePlayer: CurrentPlayer) => ({
   type: 'set-game-player-state',
   gameStatePlayer
 })

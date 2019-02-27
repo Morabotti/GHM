@@ -1,8 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react'
-
 import { connect } from 'react-redux'
-
 import { RadarPlayer } from './'
 
 import type { State } from '../../types'

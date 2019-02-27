@@ -2,8 +2,9 @@
 import React, { PureComponent } from 'react'
 import { hot } from 'react-hot-loader'
 import { connect } from 'react-redux'
-import { Team, Radar, ScorePlate, PlayerPlate } from './'
 import { subscribeToSocket } from '../client'
+
+import { PlayerPlate, Radar, ScorePlate, Team } from './'
 import type { Dispatch } from '../types'
 
 // $FlowIgnore

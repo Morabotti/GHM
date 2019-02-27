@@ -1,16 +1,18 @@
 // @flow
 import React, { PureComponent } from 'react'
-import type { State } from '../../types'
 import { connect } from 'react-redux'
 
+import type { CurrentPlayer } from '../types'
+import type { State } from '../../types'
+
 type Props = {
-  playerData: any
+  playerData: CurrentPlayer
 }
 
 class PlayerPlate extends PureComponent<Props> {
   render () {
     const { name, team, state } = this.props.playerData
-    const isWatching = ('spectarget' in this.props.playerData)
+    const isWatching = (this.props.playerData.spectarget !== undefined)
 
     if (isWatching) {
       return (

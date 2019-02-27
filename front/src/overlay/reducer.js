@@ -1,10 +1,15 @@
 // @flow
 import type { Action } from './actions'
-import type { AllPlayers, MapState, PhaseCooldowns } from './types'
+import type {
+  AllPlayers,
+  MapState,
+  PhaseCooldowns,
+  CurrentPlayer
+} from './types'
 
 export type State = {
   gameStateAllPlayer: AllPlayers,
-  gameStatePlayer: any,
+  gameStatePlayer: CurrentPlayer,
   gameStateMap: MapState,
   gameStatePhase: PhaseCooldowns
 }

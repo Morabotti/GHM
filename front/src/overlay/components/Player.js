@@ -30,10 +30,11 @@ class Player extends PureComponent<Props> {
 
     // Prolly should be done with weapon type instead
     const MainWeaponBig = (hasMainWeapon !== undefined &&
-      (weapons[hasMainWeapon].name === 'weapon_awp' ||
-      weapons[hasMainWeapon].name === 'weapon_nova' ||
+      (weapons[hasMainWeapon].name === 'weapon_nova' ||
       weapons[hasMainWeapon].name === 'weapon_xm1014')
     )
+
+    const MainWeaponBigger = (hasMainWeapon !== undefined && weapons[hasMainWeapon].name === 'weapon_awp')
 
     const hasBOMB = (team === 'T'
       ? (Object.keys(weapons)
@@ -43,9 +44,13 @@ class Player extends PureComponent<Props> {
     return (
       <div className={`team-player ${first === true ? 'first' : ''}${last === true ? 'last' : ''} ${watching ? 'watching' : ''}`}>
         <div className='player-area-upper'>
-          <div className={`player-weapon-main ${MainWeaponBig ? 'bigger' : ''}`}>
+          <div className={`player-weapon-main ${MainWeaponBig ? 'bigger' : ''}${MainWeaponBigger ? 'biggest' : ''}`}>
             { hasMainWeapon !== undefined ? (
-              <img src={`/static/weapons/${weapons[hasMainWeapon].name}.svg`} className='weapon-wrap' height='25px' />
+              <img
+                src={`/static/weapons/${weapons[hasMainWeapon].name}.svg`}
+                className={`weapon-wrap ${weapons[hasMainWeapon].state === 'holstered' ? 'holstered' : ''}`}
+                height='25px'
+              />
             ) : null}
           </div>
           <div className='player-name'>
@@ -59,7 +64,11 @@ class Player extends PureComponent<Props> {
           <div className='player-weapon-secondary'>
             <div className='player-pistol'>
               {hasSecondaryWeapon !== undefined ? (
-                <img src={`/static/weapons/${weapons[hasSecondaryWeapon].name}.svg`} className='weapon-wrap' height='20px' />
+                <img
+                  src={`/static/weapons/${weapons[hasSecondaryWeapon].name}.svg`}
+                  className={`weapon-wrap ${weapons[hasSecondaryWeapon].state === 'holstered' ? 'holstered' : ''}`}
+                  height='20px'
+                />
               ) : null}
             </div>
             <div className='weapon-grenades'>
@@ -70,17 +79,29 @@ class Player extends PureComponent<Props> {
                     return (
                       <div key={index}>
                         <div className='player-grenade'>
-                          <img src={`/static/weapons/${weapons[grenade].name}.svg`} className='weapon-wrap' height='20px' />
+                          <img
+                            src={`/static/weapons/${weapons[grenade].name}.svg`}
+                            className={`weapon-wrap ${weapons[grenade].state === 'holstered' ? 'holstered' : ''}`}
+                            height='20px'
+                          />
                         </div>
                         <div className='player-grenade'>
-                          <img src={`/static/weapons/${weapons[grenade].name}.svg`} className='weapon-wrap' height='20px' />
+                          <img
+                            src={`/static/weapons/${weapons[grenade].name}.svg`}
+                            className={`weapon-wrap ${weapons[grenade].state === 'holstered' ? 'holstered' : ''}`}
+                            height='20px'
+                          />
                         </div>
                       </div>
                     )
                   } else {
                     return (
                       <div className='player-grenade' key={index}>
-                        <img src={`/static/weapons/${weapons[grenade].name}.svg`} className='weapon-wrap' height='20px' />
+                        <img
+                          src={`/static/weapons/${weapons[grenade].name}.svg`}
+                          className={`weapon-wrap ${weapons[grenade].state === 'holstered' ? 'holstered' : ''}`}
+                          height='20px'
+                        />
                       </div>
                     )
                   }

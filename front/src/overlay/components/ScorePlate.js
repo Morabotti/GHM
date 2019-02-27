@@ -1,8 +1,9 @@
 // @flow
 import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
+
 import type { State } from '../../types'
 import type { PhaseCooldowns, MapState } from '../types'
-import { connect } from 'react-redux'
 
 type Props = {
   mapData: MapState,
@@ -36,7 +37,7 @@ class ScorePlate extends PureComponent<Props> {
               {phase === 'live' || phase === 'freezetime' ? this.sectostr(Math.trunc(phase_ends_in)) : null }
             </div>
             <div className='round'>
-              {`Round ${round}/30`}
+              {phase === 'warmup' ? ('WARMUP') : (`Round ${round + 1}/30`)}
             </div>
           </div>
           <div className='score-area T'>
