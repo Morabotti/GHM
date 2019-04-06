@@ -4,6 +4,7 @@ import Radar from './Radar'
 import RadarPlayer from './RadarPlayer'
 import ScorePlate from './ScorePlate'
 import PlayerPlate from './PlayerPlate'
+import GameLoader from './GameLoader'
 
 export {
   Team,
@@ -11,5 +12,6 @@ export {
   Radar,
   RadarPlayer,
   ScorePlate,
-  PlayerPlate
+  PlayerPlate,
+  GameLoader
 }

@@ -10,6 +10,8 @@ import type {
   MatchStats
 } from './types'
 
+import type { Status } from '../dashboard/types'
+
 export type State = {
   gameStateAllPlayer: AllPlayers,
   gameStatePlayer: CurrentPlayer,
@@ -45,6 +47,12 @@ const defaultStatsState: MatchStats = {
   deaths: 0,
   mvps: 0,
   score: 0
+}
+
+const StatusState: Status = {
+  clientOnline: false,
+  gameOnline: false,
+  gameLive: false
 }
 
 const getDefaultState = (): State => ({
@@ -93,7 +101,8 @@ const getDefaultState = (): State => ({
   gameStatePhase: {
     phase: '',
     phase_ends_in: 0
-  }
+  },
+  status: StatusState,
 })
 
 export default function reducer (
@@ -120,6 +129,11 @@ export default function reducer (
       return {
         ...state,
         gameStatePhase: action.gameStatePhase
+      }
+    case 'set-status-overlay':
+      return {
+        ...state,
+        status: action.status
       }
     default:
       return state

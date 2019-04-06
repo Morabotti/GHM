@@ -35,7 +35,8 @@ const checkResponse = (res: window.Response): window.Response => {
 
 export const getLatestData = () => window.fetch(
   '/api/csgsi/overlay/init', { method: 'GET' }
-).then(checkResponse)
+)
+  .then(checkResponse)
 
 export const subscribeToSocketAllPlayers = (dispatch: Dispatch) => {
   const socket = openSocket(socketEndPointAllPlayer)
@@ -64,3 +65,14 @@ export const subscribeToSocketPhase = (dispatch: Dispatch) => {
     dispatch(setGamePhaseState(data))
   })
 }
+
+export const getStatus = () => window.fetch(
+  '/api/csgsi/online',
+  {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+  .then((res) => res.json())
+
