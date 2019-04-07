@@ -1,32 +1,44 @@
-const fs = require('fs');
-const moment = require('moment');
-const io = require('socket.io').listen(8081);
+import * as fs from 'fs'
+import * as moment from 'moment'
+import * as io from 'socket.io'
 
-//io.of("/socket-overlay").on("connection", function (socket) {
-//  console.log("[SOCKET HANDSHAKE - OVERLAY] "+ socket.handshake.address)
-//});
+io.listen(8081)
 
-const TIMEOUT = 7500;
-const SETTINGS_PATH = './static/data/settings.json';
+/*
+  io.of('/socket-overlay').on('connection', function (socket) {
+    console.log('[SOCKET HANDSHAKE - OVERLAY] '+ socket.handshake.address)
+  })
+*/
 
+const TIMEOUT = 7500
+const SETTINGS_PATH = './static/data/settings.json'
+
+//TODO REWRITE THIS. AGAIN
 class GameMaster {
+  gameData: any
+  isNotFirstTime: boolean
+  isClientOnline: boolean
+  isGameOnline: boolean
+  isGameLive: boolean
+  settings: any
+  latestTime: any
+  
   constructor() {
-    this.gameData;
-    this.isNotFirstTime = false;          //If have gotten even once data
-    this.isClientOnline = false;          //Is client on CSGO
-    this.isGameOnline = false;            //Is client on server
-    this.isGameLive = false;              //Is game live
-    this.settings;
-    this.latestTime;
+    this.gameData
+    this.isNotFirstTime = false          //If have gotten even once data
+    this.isClientOnline = false          //Is client on CSGO
+    this.isGameOnline = false            //Is client on server
+    this.isGameLive = false              //Is game live
+    this.settings
+    this.latestTime
   }
 
-  _handleNewData(state) {
+  _handleNewData(state: any) {
     if (this._validateData(state)) {
-      this.latestTime = moment().unix();
-      this._logCurrentClassState()
+      this.latestTime = moment().unix()
 
       if (!this.isClientOnline){
-        this.isNotFirstTime = true;
+        this.isNotFirstTime = true
         this._setClientOnline(true)
       }
 
@@ -40,9 +52,9 @@ class GameMaster {
     }
   }
 
-  _validateData(state) {
+  _validateData(state: any) {
     if (this.settings === null || this.settings === undefined) {
-      this._updateSettings();
+      this._updateSettings()
     }
 
     if (state.auth.token === this.settings.authKey) {
@@ -52,7 +64,7 @@ class GameMaster {
     }
   }
 
-  _handleGameData(state) {
+  _handleGameData(state: any) {
     if (this.gameData === undefined) {
       if(state.allplayers !== undefined) {
         Object.keys(state.allplayers).map(key => {
@@ -118,29 +130,16 @@ class GameMaster {
     }
   }
 
-  _logCurrentClassState() {
-    /*
-    console.log({
-      isNotFirstTime: this.isNotFirstTime,
-      isClientOnline: this.isClientOnline,
-      isGameOnline: this.isGameOnline,
-      isGameLive: this.isGameLive,
-      currentSettings: this.settings,
-      latestTime: this.latestTime
-    })
-    */
-  }
-
   _defaultCheckIfOffline() {
-    const currentMoment = moment().unix();
+    const currentMoment = moment().unix()
     if(this.isNotFirstTime && currentMoment - this.latestTime > 15 ) {
-      this._setClientOnline(false);
-      this._setGameOnline(false);
+      this._setClientOnline(false)
+      this._setGameOnline(false)
     }
   }
 
   _getCurrentStatus() {
-    this._defaultCheckIfOffline();
+    this._defaultCheckIfOffline()
     return {
       clientOnline: this.isClientOnline,
       gameOnline: this.isGameOnline,
@@ -171,9 +170,9 @@ class GameMaster {
   _getGameLive() { return this.isGameLive }
   _getLastestGameData() { return this.gameData }
 
-  _setClientOnline(bool) { this.isClientOnline = bool }
-  _setGameOnline(bool) { this.isGameOnline = bool }
-  _setGameLive(bool) { this.isGameLive = bool }
+  _setClientOnline(bool: boolean) { this.isClientOnline = bool }
+  _setGameOnline(bool: boolean) { this.isGameOnline = bool }
+  _setGameLive(bool: boolean) { this.isGameLive = bool }
 }
 
-module.exports = GameMaster;
+export default GameMaster

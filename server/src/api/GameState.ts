@@ -1,17 +1,25 @@
-const express = require('express')
-const GameMaster = require('../../GameMaster')
-const router = express.Router()
+import * as express from 'express'
+import * as bodyParser from 'body-parser'
 
+import config from '../config'
+import GameMaster from '../core/GameMaster'
+
+import { Request, Response } from 'express'
+
+const router = express.Router()
 const gameMaster = new GameMaster()
 
-router.post('/update', (req, res) => {
+router.use(bodyParser.urlencoded({ extended: false }))
+router.use(bodyParser.json())
+
+router.post('/update', (req: Request, res: Response) => {
   const data = req.body
   if(data === null ) { res.sendStatus(401); return}
   gameMaster._handleNewData(data)
   res.sendStatus(200)
 })
 
-router.get('/online', (req, res) => {
+router.get('/online', (req: Request, res: Response) => {
   res.send(gameMaster._getCurrentStatus())
 })
 
@@ -25,4 +33,4 @@ router.get('/overlay/init', (req, res) => {
   else { res.sendStatus(500) }
 })
 
-module.exports = router
+export default router

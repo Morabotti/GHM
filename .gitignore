@@ -3,4 +3,5 @@ front/build/
 front/color-pallet
 
 server/node_modules/
+server/dist/
 server/api-struct
