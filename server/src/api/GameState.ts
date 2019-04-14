@@ -2,35 +2,40 @@ import * as express from 'express'
 import * as bodyParser from 'body-parser'
 
 import config from '../config'
-import GameMaster from '../core/GameMaster'
+import gameEvents from '../core/GameEvents'
 
 import { Request, Response } from 'express'
 
 const router = express.Router()
-const gameMaster = new GameMaster()
 
 router.use(bodyParser.urlencoded({ extended: false }))
 router.use(bodyParser.json())
 
 router.post('/update', (req: Request, res: Response) => {
   const data = req.body
-  if(data === null ) { res.sendStatus(401); return}
-  gameMaster._handleNewData(data)
+  if (data === null) {
+    res.status(401).send({message: 'Data not sent'})
+    return
+  }
+  gameEvents.handleRequest(data)
   res.sendStatus(200)
 })
 
 router.get('/online', (req: Request, res: Response) => {
-  res.send(gameMaster._getCurrentStatus())
+  res.send(gameEvents.getCurrentStatus())
 })
 
-router.get('/', (req, res) => {
-  res.send(gameMaster._getLastestGameData())
+router.get('/', (req: Request, res: Response) => {
+  res.status(200).send(gameEvents.getGameState())
 })
 
-router.get('/overlay/init', (req, res) => {
-  const ok = gameMaster._checkIfHasData()
-  if(ok) { res.sendStatus(200) }
-  else { res.sendStatus(500) }
+router.get('/overlay/init', (req: Request, res: Response) => {
+  const ok = gameEvents.checkIfHasData()
+  if (ok) {
+    res.status(200).send({message: 'Data was found'})
+  } else {
+    res.status(400).send({message: 'Data was not found'})
+  }
 })
 
 export default router

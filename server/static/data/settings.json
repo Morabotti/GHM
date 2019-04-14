@@ -1,3 +1,9 @@
 {
-  "authKey": "SecretKEY"
+  "authKey": "SecretKEY",
+  "socketPaths": {
+    "allPlayers": "/socket-overlay/allplayers",
+    "player": "/socket-overlay/player",
+    "map": "/socket-overlay/map",
+    "phase": "/socket-overlay/phase"
+  }
 }
