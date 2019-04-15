@@ -3,20 +3,14 @@ import 'whatwg-fetch'
 import openSocket from 'socket.io-client'
 import type { Dispatch } from './types'
 
+import config from '../config'
+
 import {
   setGameAllPlayerState,
   setGamePlayerState,
   setGameMapState,
   setGamePhaseState
 } from './actions'
-
-const socketIOPORT = 8081
-const { hostname, protocol } = window.location
-const url = `${protocol}//${hostname}:${socketIOPORT}`
-const socketEndPointAllPlayer = `${url}/socket-overlay/allplayers`
-const socketEndPointPlayer = `${url}/socket-overlay/player`
-const socketEndPointMap = `${url}/socket-overlay/map`
-const socketEndPointPhase = `${url}/socket-overlay/phase`
 
 export const subscribeToSocket = (dispatch: Dispatch) => {
   subscribeToSocketAllPlayers(dispatch)
@@ -34,40 +28,41 @@ const checkResponse = (res: window.Response): window.Response => {
 }
 
 export const getLatestData = () => window.fetch(
-  '/api/csgsi/overlay/init', { method: 'GET' }
+  '/api/game/overlay/init', { method: 'GET' }
 )
   .then(checkResponse)
+  .catch(e => console.log(e))
 
 export const subscribeToSocketAllPlayers = (dispatch: Dispatch) => {
-  const socket = openSocket(socketEndPointAllPlayer)
+  const socket = openSocket(config.sockets.allPlayers)
   socket.on('state', data => {
     dispatch(setGameAllPlayerState(data))
   })
 }
 
 export const subscribeToSocketPlayer = (dispatch: Dispatch) => {
-  const socket = openSocket(socketEndPointPlayer)
+  const socket = openSocket(config.sockets.player)
   socket.on('state', data => {
     dispatch(setGamePlayerState(data))
   })
 }
 
 export const subscribeToSocketMap = (dispatch: Dispatch) => {
-  const socket = openSocket(socketEndPointMap)
+  const socket = openSocket(config.sockets.map)
   socket.on('state', data => {
     dispatch(setGameMapState(data))
   })
 }
 
 export const subscribeToSocketPhase = (dispatch: Dispatch) => {
-  const socket = openSocket(socketEndPointPhase)
+  const socket = openSocket(config.sockets.phase)
   socket.on('state', data => {
     dispatch(setGamePhaseState(data))
   })
 }
 
 export const getStatus = () => window.fetch(
-  '/api/csgsi/online',
+  '/api/game/online',
   {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
@@ -75,4 +70,3 @@ export const getStatus = () => window.fetch(
 )
   .then(checkResponse)
   .then((res) => res.json())
-

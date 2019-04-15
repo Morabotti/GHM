@@ -102,7 +102,7 @@ const getDefaultState = (): State => ({
     phase: '',
     phase_ends_in: 0
   },
-  status: StatusState,
+  status: StatusState
 })
 
 export default function reducer (

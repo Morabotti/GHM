@@ -1,11 +1,11 @@
 import * as fs from 'fs'
 import * as moment from 'moment'
-import * as io from 'socket.io'
+import * as SocketIO from 'socket.io'
 
 import { GameState, Settings } from '../types'
 import config from '../config'
 
-io.listen(8081)
+const io = SocketIO().listen(config.socketIoPort)
 
 class GameEvents {
   gameState?: GameState
@@ -19,13 +19,13 @@ class GameEvents {
 
   constructor() {
     this.gameState
-    this.isNotFirstTime = false          //If have gotten even once data
-    this.isClientOnline = false          //Is client on CSGO
-    this.isClientSpectating = false      //Is client spectating
-    this.isGameOnline = false            //Is client on server
-    this.isGameLive = false              //Is game on live
+    this.isNotFirstTime = false             //If have gotten even once data
+    this.isClientOnline = false             //Is client on CSGO
+    this.isClientSpectating = false         //Is client spectating
+    this.isGameOnline = false               //Is client on server
+    this.isGameLive = false                 //Is game on live
     this.settings = this.getSettings()
-    this.latestTime = 0                  //Default: 0, doesn't rly matter since code checks this.isNotFirstTime
+    this.latestTime = 0                     //Default: 0, doesn't rly matter since code checks this.isNotFirstTime
   }
 
   handleRequest(state: GameState) {
@@ -39,7 +39,7 @@ class GameEvents {
 
       this.analyzeCurrentState(state)
 
-      if(this.isGameOnline)
+      if (this.isGameOnline)
         this.handleGameState(state)
     }
   }
@@ -47,7 +47,6 @@ class GameEvents {
   handleGameState(state: GameState) {
     if (this.gameState === undefined) {
       if (state.allplayers !== undefined) {
-        // TODO CHECK IF WORKS LIKE THIS, MAYBE NEEDED TO BE CHANGED
         this.setVectors(state)
         this.dispatchAllPlayers(state.allplayers)
       }
@@ -63,7 +62,6 @@ class GameEvents {
     // * UPDATE SECTION => ONLY UPDATES WHEN THERE IS CHANGE => ALWAYS USEFUL * //
     if (state.previously !== undefined) {
       if (state.previously.allplayers !== undefined) {
-        // TODO CHECK IF WORKS LIKE THIS, MAYBE NEEDED TO BE CHANGED
         this.setVectors(state)
 
         if (state.player !== undefined && state.player.spectarget !== undefined) {
@@ -120,7 +118,7 @@ class GameEvents {
 
   checkOfflineStatus() {
     const currentMoment = moment().unix()
-    if(this.isNotFirstTime && currentMoment - this.latestTime > config.gameStateTimeout ) {
+    if (this.isNotFirstTime && currentMoment - this.latestTime > config.gameStateTimeout ) {
       this.isClientOnline = false
       this.isGameOnline = false
     }
@@ -151,16 +149,16 @@ class GameEvents {
   }
 
   dispatchAllPlayers(data = null) {
-    if(data === null) {
-      if(this.gameState)
-        if(this.gameState.allplayers !== undefined)
+    if (data === null) {
+      if (this.gameState)
+        if (this.gameState.allplayers !== undefined)
           this.dispatchSocket(
             this.settings.socketPaths.allPlayers,
             'state',
             this.gameState.allplayers
           )
     } else {
-      if(data !== undefined) {
+      if (data !== undefined) {
         this.dispatchSocket(
           this.settings.socketPaths.allPlayers,
           'state',
@@ -171,16 +169,16 @@ class GameEvents {
   }
 
   dispatchPlayer(data = null) {
-    if(data === null) {
-      if(this.gameState)
-        if(this.gameState.player !== undefined)
+    if (data === null) {
+      if (this.gameState)
+        if (this.gameState.player !== undefined)
           this.dispatchSocket(
             this.settings.socketPaths.player,
             'state',
             this.gameState.player
           )
     } else {
-      if(data !== undefined) {
+      if (data !== undefined) {
         this.dispatchSocket(
           this.settings.socketPaths.player,
           'state',
@@ -191,16 +189,16 @@ class GameEvents {
   }
 
   dispatchMap(data = null) {
-    if(data === null) {
-      if(this.gameState)
-        if(this.gameState.map !== undefined)
+    if (data === null) {
+      if (this.gameState)
+        if (this.gameState.map !== undefined)
           this.dispatchSocket(
             this.settings.socketPaths.map,
             'state',
             this.gameState.map
           )
     } else {
-      if(data !== undefined) {
+      if (data !== undefined) {
         this.dispatchSocket(
           this.settings.socketPaths.map,
           'state',
@@ -211,16 +209,16 @@ class GameEvents {
   }
 
   dispatchPhase(data = null) {
-    if(data === null) {
-      if(this.gameState)
-        if(this.gameState.phase_countdowns !== undefined)
+    if (data === null) {
+      if (this.gameState)
+        if (this.gameState.phase_countdowns !== undefined)
           this.dispatchSocket(
             this.settings.socketPaths.phase,
             'state',
             this.gameState.phase_countdowns
           )
     } else {
-      if(data !== undefined) {
+      if (data !== undefined) {
         this.dispatchSocket(
           this.settings.socketPaths.phase,
           'state',
@@ -239,13 +237,8 @@ class GameEvents {
   }
 
   // * SETTERS * //
-  setCurrentTime() {
-    this.latestTime = moment().unix()
-  }
-
-  setSettings() {
-    this.settings = this.getSettings()
-  }
+  setCurrentTime() { this.latestTime = moment().unix() }
+  setSettings() { this.settings = this.getSettings() }
 
   // * GETTERS * //
   getClientOnline() { return this.isClientOnline }

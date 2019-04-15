@@ -43,9 +43,9 @@ class Main extends PureComponent<Props> {
 
   render () {
     const { status } = this.props
-    if(!status.gameOnline)
+    if (!status.gameOnline)
       return <GameLoader status={status} />
-  
+
     return (
       <div className='overlay'>
         <div className='overlay-left'>

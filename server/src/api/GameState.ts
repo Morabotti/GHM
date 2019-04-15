@@ -1,7 +1,6 @@
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
 
-import config from '../config'
 import gameEvents from '../core/GameEvents'
 
 import { Request, Response } from 'express'
@@ -31,7 +30,9 @@ router.get('/', (req: Request, res: Response) => {
 
 router.get('/overlay/init', (req: Request, res: Response) => {
   const ok = gameEvents.checkIfHasData()
+  
   if (ok) {
+    gameEvents.sendLatestDispatch()
     res.status(200).send({message: 'Data was found'})
   } else {
     res.status(400).send({message: 'Data was not found'})

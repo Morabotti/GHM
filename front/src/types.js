@@ -5,3 +5,14 @@ export type State = {
   dashboard: DashboardState,
   overlay: OverlayState
 }
+
+export type SocketEndPoint = {
+  allPlayers: string,
+  player: string,
+  map: string,
+  phase: string
+}
+
+export type Config = {
+  sockets: SocketEndPoint
+}

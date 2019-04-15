@@ -5,9 +5,10 @@ import GameStateController from './api/GameState'
 
 const app: express.Application = express()
 
+app.use(express.static('../front/build'));
 app.use(express.json())
-app.use('/static', express.static(path.join(__dirname, 'static')))
 
 app.use('/api/game', GameStateController)
+app.use('/static', express.static(path.join(__dirname, '../static')))
 
 export default app

@@ -13,19 +13,17 @@ class GameLoader extends PureComponent<Props> {
     // TODO: Add CSS, animation, spinner?
     const { clientOnline, gameOnline } = this.props.status
 
-    if (!clientOnline)
-      return (
-        <div>
-          <h2>Loading, Client not connected</h2>
-        </div>
-      )
+    if (!clientOnline) return (
+      <div>
+        <h2>Loading, Client not connected</h2>
+      </div>
+    )
 
-    if (!gameOnline)
-      return (
-        <div>
-          <h2>Loading, Game not online</h2>
-        </div>
-      )
+    if (!gameOnline) return (
+      <div>
+        <h2>Loading, Game not online</h2>
+      </div>
+    )
 
     return (
       <div>
