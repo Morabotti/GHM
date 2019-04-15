@@ -34,6 +34,7 @@ class TopBar extends Component<Props> {
           </div>
           <ConnectionButton
             clientConnection={status.clientOnline}
+            clientSpectating={status.clientSpectating}
             serverConnection={status.gameOnline}
             overlayConnection={false}
           />

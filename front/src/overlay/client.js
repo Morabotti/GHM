@@ -9,7 +9,8 @@ import {
   setGameAllPlayerState,
   setGamePlayerState,
   setGameMapState,
-  setGamePhaseState
+  setGamePhaseState,
+  setStatus
 } from './actions'
 
 export const subscribeToSocket = (dispatch: Dispatch) => {
@@ -17,6 +18,7 @@ export const subscribeToSocket = (dispatch: Dispatch) => {
   subscribeToSocketPlayer(dispatch)
   subscribeToSocketMap(dispatch)
   subscribeToSocketPhase(dispatch)
+  subscribeToSocketUpdates(dispatch)
   setTimeout(getLatestData, 10)
 }
 
@@ -58,6 +60,13 @@ export const subscribeToSocketPhase = (dispatch: Dispatch) => {
   const socket = openSocket(config.sockets.phase)
   socket.on('state', data => {
     dispatch(setGamePhaseState(data))
+  })
+}
+
+export const subscribeToSocketUpdates = (dispatch: Dispatch) => {
+  const socket = openSocket(config.sockets.updates)
+  socket.on('state', data => {
+    dispatch(setStatus(data))
   })
 }
 

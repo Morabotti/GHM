@@ -8,7 +8,8 @@ export interface SocketPaths {
   allPlayers: string
   player: string
   map: string
-  phase: string
+  phase: string,
+  updates: string
 }
 
 // ! FIX any properties ! //

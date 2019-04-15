@@ -51,6 +51,7 @@ const defaultStatsState: MatchStats = {
 
 const StatusState: Status = {
   clientOnline: false,
+  clientSpectating: false,
   gameOnline: false,
   gameLive: false
 }

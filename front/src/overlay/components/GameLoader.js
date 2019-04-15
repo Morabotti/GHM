@@ -9,9 +9,8 @@ type Props = {
 
 class GameLoader extends PureComponent<Props> {
   render () {
-    // TODO: Add event for not spectating, but in game
     // TODO: Add CSS, animation, spinner?
-    const { clientOnline, gameOnline } = this.props.status
+    const { clientOnline, gameOnline, clientSpectating } = this.props.status
 
     if (!clientOnline) return (
       <div>
@@ -22,6 +21,12 @@ class GameLoader extends PureComponent<Props> {
     if (!gameOnline) return (
       <div>
         <h2>Loading, Game not online</h2>
+      </div>
+    )
+
+    if(!clientSpectating) return (
+      <div>
+        <h2>Loading, Client is not spectating</h2>
       </div>
     )
 

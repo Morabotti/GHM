@@ -3,6 +3,7 @@ import type { Action as _Action } from './actions'
 
 export type Status = {
   clientOnline: boolean,
+  clientSpectating: boolean,
   gameOnline: boolean,
   gameLive: boolean
 }
@@ -17,6 +18,7 @@ export type BigConnectionButtonType = {
 
 export type ConnectionButtonType = {
   clientConnection: boolean,
+  clientSpectating: boolean,
   serverConnection: boolean,
   overlayConnection: boolean
 }

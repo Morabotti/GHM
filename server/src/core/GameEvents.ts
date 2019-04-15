@@ -109,11 +109,31 @@ class GameEvents {
   }
 
   analyzeCurrentState(state: GameState) {
-    if (state.map !== undefined && this.isClientOnline) {
-      if (this.isGameOnline !== true) this.isGameOnline = true
+    if(state.map !== undefined && this.isClientOnline) {
+      if(!this.isGameOnline) {
+        this.isGameOnline = true
+        this.dispatchStatus()
+      }
     } else {
-      if (this.isGameOnline !== false) this.isGameOnline = false
+      if (this.isGameOnline) {
+        this.isGameOnline = false
+        this.dispatchStatus()
+      }
     }
+
+    if(this.isClientOnline && this.isGameOnline) {
+      if(state.allplayers !== undefined && state.phase_countdowns !== undefined) {
+        if(!this.isClientSpectating) {
+          this.isClientSpectating = true
+          this.dispatchStatus()
+        }
+      } else {
+        if(this.isClientSpectating) {
+          this.isClientSpectating = false
+          this.dispatchStatus()
+        }
+      }
+    } 
   }
 
   checkOfflineStatus() {
@@ -121,19 +141,22 @@ class GameEvents {
     if (this.isNotFirstTime && currentMoment - this.latestTime > config.gameStateTimeout ) {
       this.isClientOnline = false
       this.isGameOnline = false
+      this.isClientSpectating = false
     }
   }
 
   setVectors(state: GameState): GameState {
-    Object.keys(state.allplayers).map(key => {
-      const { position, forward } = state.allplayers[key]
-      state.allplayers[key] = {
-        ...state.allplayers[key],
-        position: position.split(', '),
-        forward: forward.split(', '),
-        watching: false
-      }
-    })
+    if(state.allplayers !== undefined) {
+      Object.keys(state.allplayers).map(key => {
+        const { position, forward } = state.allplayers[key]
+        state.allplayers[key] = {
+          ...state.allplayers[key],
+          position: position.split(', '),
+          forward: forward.split(', '),
+          watching: false
+        }
+      })
+    }
     return state
   }
 
@@ -221,6 +244,24 @@ class GameEvents {
       if (data !== undefined) {
         this.dispatchSocket(
           this.settings.socketPaths.phase,
+          'state',
+          data
+        )
+      }
+    }
+  }
+
+  dispatchStatus(data = null) {
+    if (data === null) {
+      this.dispatchSocket(
+        this.settings.socketPaths.updates,
+        'state',
+        this.getCurrentStatus()
+      )
+    } else {
+      if (data !== undefined) {
+        this.dispatchSocket(
+          this.settings.socketPaths.updates,
           'state',
           data
         )
