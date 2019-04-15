@@ -7,7 +7,8 @@
 
   &.CT{
     .grid-upper p,
-    .ammo-off{
+    .ammo-off,
+    .team-highlight{
       color: #2688f8;
     }
 
@@ -18,12 +19,11 @@
 
   &.T{
     .grid-upper p,
-    .ammo-off{
+    .ammo-off,
+    .team-highlight{
       color: #ffb900;
     }
     
-    
-
     .grid-upper{
       border-bottom: 2px solid #ffb900;
     }
@@ -105,9 +105,21 @@
       }
 
       .grid-stats{
-        font-size: 20px;
-        line-height: 50px;
-        text-align: center;
+        font-size: 18px;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+        display: grid;
+
+        .single-row{
+          line-height: 50px;
+          font-size: 20px;
+        }
+
+        .two-rows{
+          grid-template-rows: 1fr 1fr;
+          padding-top: 2px;
+          text-align: center;
+          display: grid;
+        }
       }
 
       .grid-lower-light{

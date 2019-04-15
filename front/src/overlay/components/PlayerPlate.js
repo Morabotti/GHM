@@ -22,6 +22,7 @@ class PlayerPlate extends PureComponent<Props> {
     const currentWeaponID = Object.keys(weapons).find(key => weapons[key].state === 'active')
     if (currentWeaponID === undefined) return null
 
+    const {assists, deaths, kills} = allPlayers[steamid].match_stats
     const currentWeapon = weapons[currentWeaponID]
 
     if (isWatching) {
@@ -44,7 +45,28 @@ class PlayerPlate extends PureComponent<Props> {
                 </div>
               </div>
               <div className='grid-lower-light grid-stats'>
-                7 3 2 91
+                <div className='stats-kills-current single-row'>
+                  
+                </div>
+                <div className='two-rows stats-kills'>
+                  <div className='team-highlight'>K</div>
+                  <div>{kills}</div>
+                </div>
+                <div className='two-rows stats-assists'>
+                  <div className='team-highlight'>A</div>
+                  <div>{assists}</div>
+                </div>
+                <div className='two-rows stats-deaths'>
+                  <div className='team-highlight'>D</div>
+                  <div>{deaths}</div>
+                </div>
+                <div className='two-rows stats-adr'>
+                  <div className='team-highlight'>KDA</div>
+                  <div>{(kills+assists) / (1 + deaths)}</div>
+                </div>
+                <div className='stats-utility'>
+
+                </div>
               </div>
               <div className='grid-lower-dark grid-ammo'>
                 <div className='item grenades'>
