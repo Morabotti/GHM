@@ -4,18 +4,25 @@ import { connect } from 'react-redux'
 import { RadarPlayer } from './'
 
 import type { State } from '../../types'
-import type { AllPlayers } from '../types'
+import type { AllPlayers, MapState } from '../types'
 
 type Props = {
-  allPlayers: AllPlayers
+  allPlayers: AllPlayers,
+  map: MapState
 }
 
 class Radar extends PureComponent<Props> {
   render () {
-    const { allPlayers } = this.props
+    const { allPlayers, map } = this.props
+    if(map.name === '') return <div>Loading Radar</div>
+
     return (
       <div className='radar'>
-        <div className='radar-wrap' >
+        <svg
+          viewBox='0 0 1024 1024'
+          className='wrap'
+          style={{ backgroundImage: `url(/static/map/${map.name}_radar.png)` }}
+        >
           {Object.keys(allPlayers).map((key, index) => {
             const player = allPlayers[key]
             return (
@@ -29,13 +36,14 @@ class Radar extends PureComponent<Props> {
               />
             )
           })}
-        </div>
+        </svg>
       </div>
     )
   }
 }
 
 const mapStateToProps = (state: State) => ({
+  map: state.overlay.gameStateMap,
   allPlayers: state.overlay.gameStateAllPlayer
 })
 

@@ -3,22 +3,24 @@
   margin-right: 5px;
   width: 340px;
   height: 340px;
-}
-
-.radar-wrap{
-  height: 100%;
-  width: 100%;
-  background-image: url('/static/map/de_dust2_radar.png');
-  background-size: contain;
   border: 4px solid lightblue;
+
+  .wrap {
+    background-size: contain;
+
+    foreignObject {
+      transition: 100ms all;
+    }
+  }
 }
 
 .radar-player{
-  position:absolute;
-  width: 18px;
-  height: 18px;
-  border-radius: 9px;
+  width: 48px;
+  height: 48px;
+  padding-top: 3px;
+  border-radius: 24px;
   text-align: center;
+  text-anchor: middle;
   overflow: hidden;
   transition: 200ms all;
   z-index: 5;
@@ -26,7 +28,7 @@
 
   span{
     color: black;
-    font-size: 12px;
+    font-size: 32px;
   }
 
   &.T{

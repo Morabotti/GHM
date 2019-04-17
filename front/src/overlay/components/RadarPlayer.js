@@ -2,15 +2,19 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
+import { getMapPrefix, getMapScale } from '../lib/MapPrefix'
+
 import type { State } from '../../types'
-import type { Teams } from '../types'
+import type { Teams, MapState } from '../types'
 
 type Props = {
   PlayerNumber: number,
   PlayerTeam: Teams,
   PlayerPosX: number,
   PlayerPosY: number,
-  PlayerDead: boolean
+  PlayerDead: boolean,
+  key: number,
+  map: MapState
 }
 
 type ComponentState = {
@@ -25,9 +29,9 @@ class Radar extends PureComponent<Props, ComponentState> {
   }
 
   _calculateXPosition = () => {
-    const { PlayerPosX } = this.props
-    const scale = 0.07290
-    const prefix = 224
+    const { PlayerPosX, map } = this.props
+    const prefix = getMapPrefix(map.name)[0]
+    const scale = getMapScale(map.name)[0]
 
     if (isNaN(PlayerPosX)) return
     if (PlayerPosX < 0) {
@@ -38,9 +42,10 @@ class Radar extends PureComponent<Props, ComponentState> {
   }
 
   _calculateYPosition = () => {
-    const { PlayerPosY } = this.props
-    const scale = -0.07300
-    const prefix = 254
+    const { PlayerPosY, map } = this.props
+    
+    const prefix = getMapPrefix(map.name)[1]
+    const scale = getMapScale(map.name)[1]
 
     if (isNaN(PlayerPosY)) return
     if (PlayerPosY < 0) {
@@ -64,21 +69,25 @@ class Radar extends PureComponent<Props, ComponentState> {
   render () {
     const { PlayerNumber, PlayerTeam, PlayerDead } = this.props
     return (
-      <div
-        className={`radar-player ${PlayerTeam} ${PlayerDead ? 'dead' : ''}`}
-        style={{
-          left: PlayerDead ? this.state.deathPosX : this._calculateXPosition(),
-          top: PlayerDead ? this.state.deathPosY : this._calculateYPosition()
-        }}
+      <foreignObject
+        x={PlayerDead ? this.state.deathPosX : this._calculateXPosition()}
+        y={PlayerDead ? this.state.deathPosY : this._calculateYPosition()}
+        width={48}
+        height={48}
+        key={this.props.key}
       >
-        <span>{PlayerNumber}</span>
-      </div>
+        <div
+          className={`radar-player ${PlayerTeam} ${PlayerDead ? 'dead' : ''}`}
+        >
+          <span>{PlayerNumber}</span>
+        </div>
+      </foreignObject>
     )
   }
 }
 
 const mapStateToProps = (state: State) => ({
-
+  map: state.overlay.gameStateMap
 })
 
 export default connect(mapStateToProps)(Radar)
