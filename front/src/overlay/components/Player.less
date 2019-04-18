@@ -1,3 +1,5 @@
+@import "../variables.less";
+
 .team-player{
   display: grid;
   grid-template-rows: 1fr 1fr;
@@ -65,7 +67,7 @@
   display: flex;
   align-self: stretch;
   line-height: 25px;
-  background-color: rgba(1, 64, 137, 0.5);
+  background-color: @ui-default-light;
   overflow: hidden;
 
   .player-weapon-secondary{
@@ -117,7 +119,7 @@
     p{
       font-weight: bold;
       font-size: 19px;
-      color: #21c650;
+      color: @money-color;
       text-shadow: 1px 1px 1px black;
     }
   }
@@ -158,17 +160,17 @@ img.holstered{
 }
 
 .overlay-left>.team.CT>.team-player>.player-area-upper{
-  background: -webkit-linear-gradient(left, #004799 2%,#54A6E5 100%);
+  background: -webkit-linear-gradient(left, @ct-color-gradient-off 2%, @ct-color-gradient-main 100%);
 }
 .overlay-right>.team.CT>.team-player>.player-area-upper{
-  background: -webkit-linear-gradient(right, #004799 2%,#54A6E5 100%);
+  background: -webkit-linear-gradient(right, @ct-color-gradient-off 2%, @ct-color-gradient-main 100%);
 }
 
 .overlay-left>.team.T>.team-player>.player-area-upper{
-  background: -webkit-linear-gradient(left, #5e3b00 0%,#ffb900 60%);
+  background: -webkit-linear-gradient(left, @t-color-gradient-off 0%, @t-color-main 60%);
 }
 .overlay-right>.team.T>.team-player>.player-area-upper{
-  background: -webkit-linear-gradient(right, #5e3b00 0%,#ffb900 60%);
+  background: -webkit-linear-gradient(right, @t-color-gradient-off 0%, @t-color-main 60%);
 }
 
 .overlay-left>.team>.team-player.watching>.player-area-lower{

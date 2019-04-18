@@ -1,3 +1,5 @@
+@import "../variables.less";
+
 .score-top{
   height: 95px;
   margin-left: 30px;
@@ -14,20 +16,20 @@
       &.CT{
         flex-direction: row;
         .team-logo{ border-top-left-radius: 15px; }
-        .team-name, .team-score{ color: #2688f8; }
-        .team-score{ border-bottom: 2px solid #2688f8; }
+        .team-name, .team-score{ color: @ct-color-main; }
+        .team-score{ border-bottom: 2px solid @ct-color-main; }
       }
 
       &.T{
         flex-direction: row-reverse;
         .team-logo{ border-top-right-radius: 15px; }
-        .team-name, .team-score{ color: #ffb900; }
-        .team-score{ border-bottom: 2px solid #ffb900; }
+        .team-name, .team-score{ color: @t-color-main; }
+        .team-score{ border-bottom: 2px solid @t-color-main; }
       }
 
       .team-logo{
         width: 75px;
-        background-color: #1d3b5d;
+        background-color: @ui-text-light;
 
         img{
           display: block;
@@ -44,7 +46,7 @@
         text-align: center;
         font-weight: bold;
         flex: 1;
-        background-color: rgba(1, 64, 137, 0.6);
+        background-color: @ui-default-dark;
 
         &.smaller{
           font-size: 26px;
@@ -56,7 +58,7 @@
         text-align: center;
         font-size: 55px;
         font-weight: bold;
-        background-color: #0c2045;
+        background-color: @ui-text-dark;
       }
     }
     .score-time{
@@ -65,7 +67,7 @@
       display: flex;
       flex-direction: column;
       width: 340px;
-      background-color: rgba(1, 64, 137, 0.6);
+      background-color: @ui-default-dark;
 
       .time{
         font-size: 42px;

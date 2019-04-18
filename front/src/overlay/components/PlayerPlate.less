@@ -1,3 +1,4 @@
+@import "../variables.less";
 
 .player-plate{
   margin-bottom: 15px;
@@ -9,11 +10,11 @@
     .grid-upper p,
     .ammo-off,
     .team-highlight{
-      color: #2688f8;
+      color: @ct-color-main;
     }
 
     .grid-upper{
-      border-bottom: 2px solid #2688f8;
+      border-bottom: 2px solid @ct-color-main;
     }
   }
 
@@ -21,11 +22,11 @@
     .grid-upper p,
     .ammo-off,
     .team-highlight{
-      color: #ffb900;
+      color: @t-color-main;
     }
     
     .grid-upper{
-      border-bottom: 2px solid #ffb900;
+      border-bottom: 2px solid @t-color-main;
     }
   }
 
@@ -39,7 +40,7 @@
       margin-left: auto;
       margin-right: auto;
       width: 350px;
-      background-color: rgba(3, 26, 54, 0.8);
+      background-color: @ui-default-darkest;
       border-radius: 20px 20px 0px 0px;
 
       p{
@@ -123,11 +124,11 @@
       }
 
       .grid-lower-light{
-        background-color: rgba(1, 64, 137, 0.6);
+        background-color: @ui-default-dark;
       }
 
       .grid-lower-dark{
-        background-color: rgba(3, 26, 54, 0.8);
+        background-color: @ui-default-darkest;
       }
     }
   }

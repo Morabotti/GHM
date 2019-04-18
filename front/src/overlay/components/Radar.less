@@ -1,3 +1,5 @@
+@import "../variables.less";
+
 .radar{
   margin-left: 10px;
   margin-right: 5px;
@@ -31,17 +33,13 @@
     font-size: 32px;
   }
 
-  &.T{
-    background-color: #ffb900;
-  }
+  &.T{ background-color: @t-color-main; }
 
-  &.CT{
-    background-color: #2688f8;
-  }
+  &.CT{ background-color: @ct-color-main; }
 
   &.dead{
-    background-color: rgba(153, 153, 153, 0.95) !important;
+    background-color: @dead-color-main !important;
     transition: 0 all;
-    z-index: 1;
+    z-index: 1 !important;
   }
 }

@@ -28,11 +28,11 @@ class Radar extends PureComponent<Props> {
             return (
               <RadarPlayer
                 key={index}
-                PlayerNumber={player.observer_slot}
-                PlayerTeam={player.team}
-                PlayerPosX={player.position[0]}
-                PlayerPosY={player.position[1]}
-                PlayerDead={player.state.health === 0}
+                playerNumber={player.observer_slot}
+                playerTeam={player.team}
+                playerPosX={player.position[0]}
+                playerPosY={player.position[1]}
+                playerDead={player.state.health === 0}
               />
             )
           })}
