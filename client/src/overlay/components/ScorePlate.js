@@ -10,6 +10,8 @@ type Props = {
   phaseData: PhaseCooldowns
 }
 
+const BOMB_TIMER = 45
+
 class ScorePlate extends PureComponent<Props> {
   sectostr (time) {
     return ~~(time / 60) + ':' + (time % 60 < 10 ? '0' : '') + time % 60
@@ -33,12 +35,26 @@ class ScorePlate extends PureComponent<Props> {
             </div>
           </div>
           <div className='score-time'>
-            <div className='time'>
-              {phase === 'live' || phase === 'freezetime' ? this.sectostr(Math.trunc(phase_ends_in)) : null }
-            </div>
-            <div className='round'>
-              {phase === 'warmup' ? ('WARMUP') : (`Round ${round + 1}/30`)}
-            </div>
+            {phase === 'bomb' ? (
+              <React.Fragment>
+                <div
+                  className='bomb-timer'
+                  style={{ height: `${100 - ((phase_ends_in/BOMB_TIMER) * 100)}%` }}
+                />
+                <div className='bomb-wrapper' style={{animationDuration: `${(phase_ends_in/BOMB_TIMER)+0.35}s`}}>
+                  <img src='/static/utils/bomb.svg' className='bomb-icon' />
+                </div>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <div className='time'>
+                  {phase === 'live' || phase === 'freezetime' ? this.sectostr(Math.trunc(phase_ends_in)) : null }
+                </div>
+                <div className='round'>
+                  {phase === 'warmup' ? ('WARMUP') : (`Round ${round + 1}/30`)}
+                </div>
+              </React.Fragment>
+            )}
           </div>
           <div className='score-area T'>
             <div className='team-logo'>

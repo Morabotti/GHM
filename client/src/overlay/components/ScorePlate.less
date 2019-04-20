@@ -64,10 +64,49 @@
     .score-time{
       color: white;
       font-weight: bold;
+      position: relative;
       display: flex;
+      overflow: hidden;
       flex-direction: column;
       width: 340px;
       background-color: @ui-default-dark;
+
+      .bomb-timer{
+        background-color: red;
+        bottom: 0;
+        transition: 200ms height;
+        position: absolute;
+        width: 100%;
+      }
+
+      .bomb-wrapper{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: scale(1.05);
+        transition: 75ms transform;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+        animation-name: bombeffect;
+        height: 100%;
+
+        .bomb-icon{
+          -webkit-filter: invert(100%) grayscale(100%) brightness(70%) contrast(4);
+          filter: invert(100%) grayscale(100%) brightness(70%) contrast(4);
+        }
+      }
+
+      @keyframes bombeffect {
+        from {
+          transform: scale(1.05);
+          opacity: 0.85;
+        }
+      
+        to {
+          transform: scale(1.15);
+          opacity: 1;
+        }
+      }
 
       .time{
         font-size: 42px;
@@ -81,6 +120,11 @@
         text-align: center;
         height: 30%;
         letter-spacing: 1px;
+      }
+
+      .time,
+      .round{
+        z-index: 3;
       }
     }
   }

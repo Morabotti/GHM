@@ -1,3 +1,5 @@
+@import "../variables.less";
+
 .team{
   width: 355px;
   display: flex;
@@ -5,7 +7,49 @@
   color: white;
 }
 
-.team-info{
-  flex: 1;
-  height: 55px;
+.team-container{
+  position: relative;
+  top: 65px;
+  transition: all 350ms linear 10s;
+  -webkit-transition: all 350ms linear 10s;
+  opacity: 0;
+  height: 60px;
+
+  &.show{
+    opacity: 1;
+    top: 0;
+    transition: 350ms all;
+  }
+  
+  .team-info{
+    width: 100%;
+    position: absolute;
+    display: grid;
+    grid-template-rows: 22px 1fr;
+    height: 60px;
+    border-radius: 10px;
+    background-color: @ui-default-dark;
+
+    .desc{
+      padding-left: 5px;
+      padding-top: 2px;
+      font-weight: bold;
+      font-size: 16px;
+
+      .good{
+        color: @status-good;
+      }
+  
+      .poor{
+        color: @status-poor;
+      }
+    }
+  
+    .utils{
+      display: flex;
+      div{
+        flex: 1;
+      }
+    }
+  }
 }

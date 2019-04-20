@@ -2,7 +2,7 @@
 
 .team-player{
   display: grid;
-  grid-template-rows: 0 1fr 1fr;
+  grid-template-rows: 0 0 1fr 1fr;
   height: 65px;
   margin-top: 1.5px;
   margin-bottom: 1.5px;
@@ -30,6 +30,48 @@
       padding-top: 2px;
       padding-left: 3px;
       width: 60px;
+    }
+  }
+}
+
+.player-extra-stats-parent{
+  position: relative;
+  .player-extra-stats{
+    position: absolute;
+    background-color: @ui-default-dark;
+    width: 200px;
+    height: 65px;
+    transition: all 350ms linear 10s;
+    -webkit-transition: all 350ms linear 10s;
+    display: flex;
+
+    .extra-money-lost{
+      width: 45%;
+    }
+
+    .extra-stats{
+      width: 55%;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+
+      .stats{
+        display: flex;
+        flex-direction: column;
+        div{
+          font-size: 20px;
+          font-weight: bold;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+
+    &.show{
+      transition: 350ms all;
     }
   }
 }
@@ -175,13 +217,15 @@ img.holstered{
   filter: invert(20%) grayscale(100%) brightness(70%) contrast(4);
 }
 
-.team-player.first .player-container{
+.team-player.first .player-container,
+.team-player.first .player-extra-stats-parent .player-extra-stats{
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   overflow: hidden;
 }
 
-.team-player.last .player-area-lower{
+.team-player.last .player-area-lower,
+.team-player.last .player-extra-stats-parent .player-extra-stats{
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -217,9 +261,9 @@ img.holstered{
   z-index: 3;
 }
 
-.overlay-right>.team>.team-player>.player-container>.player-health-bar,
-.overlay-right>.team>.team-player>.player-container>.player-health-bar-lost{
-  right: 0;
+// * DEAD PLAYER
+.team-player.dead>.player-container>.player-health-bar-lost{
+  display: none;
 }
 
 .overlay-right>.team>.team-player>.dead-player-parent>.dead-stats{
@@ -228,9 +272,9 @@ img.holstered{
   padding-left: 0;
 }
 
-// * Dead player
-.team-player.dead>.player-container>.player-health-bar-lost{
-  display: none;
+.overlay-right>.team>.team-player>.player-container>.player-health-bar,
+.overlay-right>.team>.team-player>.player-container>.player-health-bar-lost{
+  right: 0;
 }
 
 .overlay-left>.team>.team-player.dead>.player-area-lower,
@@ -268,8 +312,37 @@ img.holstered{
   background: -webkit-linear-gradient(right, rgba(199, 199, 199, 0.7) 0%,rgba(214, 214, 214, 0.8) 60%);
 }
 
+// * EXTRA INFO
+.overlay-left>.team>.team-player>.player-extra-stats-parent>.player-extra-stats{
+  right: 0;
+  opacity: 0;
+
+  &.show{
+    right: -205px;
+    opacity: 1;
+  }
+}
+.overlay-right>.team>.team-player>.player-extra-stats-parent>.player-extra-stats{
+  left: 0;
+  opacity: 0;
+
+  &.show{
+    left: -205px;
+    opacity: 1;
+  }
+}
+
+.team.T>.team-player>.player-extra-stats-parent>.player-extra-stats>.extra-stats>.stats>div:first-child{
+  color: @t-color-main;
+}
+
+.team.CT>.team-player>.player-extra-stats-parent>.player-extra-stats>.extra-stats>.stats>div:first-child{
+  color: @ct-color-main;
+}
+
 .overlay-left>.team>.team-player>.player-container>.player-area-upper,
-.overlay-left>.team>.team-player>.player-area-lower{
+.overlay-left>.team>.team-player>.player-area-lower,
+.overlay-left>.team>.team-player>.player-extra-stats-parent>.player-extra-stats{
   flex-direction: row-reverse;
   .player-name,
   .player-money{

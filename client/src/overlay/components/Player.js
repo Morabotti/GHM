@@ -11,12 +11,24 @@ type Props = {
   state: PlayerState,
   stats: MatchStats,
   watching: boolean,
-  observerSlot: string
+  observerSlot: string,
+  showStats: boolean
 }
 
 class Player extends PureComponent<Props> {
   render () {
-    const { first, last, name, observerSlot, state, weapons, team, watching } = this.props
+    const {
+      first,
+      last,
+      name,
+      observerSlot,
+      state,
+      weapons,
+      team,
+      watching,
+      stats,
+      showStats
+    } = this.props
 
     const hasMainWeapon = Object.keys(weapons)
       .find(weapon => weapons[weapon].type === 'Rifle' ||
@@ -44,13 +56,34 @@ class Player extends PureComponent<Props> {
 
     return (
       <div className={`team-player ${first ? 'first' : ''}${last ? 'last' : ''} ${watching ? 'watching' : ''} ${isDead ? 'dead' : ''}`}>
-        <div class='dead-player-parent'>
+        <div className='dead-player-parent'>
           <div className={`dead-stats ${isDead ? 'visible' : ''}`}>
             <div className='dead-icon'>
               <img
                 src='/static/utils/dead.png'
                 height='60px'
               />
+            </div>
+          </div>
+        </div>
+        <div className='player-extra-stats-parent'>
+          <div className={`player-extra-stats ${showStats ? 'show' : ''}`}>
+            <div className='extra-money-lost'>
+
+            </div>
+            <div className='extra-stats'>
+              <div className='stats'>
+                <div>K</div>
+                <div>{stats.kills}</div>
+              </div>
+              <div className='stats'>
+                <div>A</div>
+                <div>{stats.assists}</div>
+              </div>
+              <div className='stats'>
+                <div>D</div>
+                <div>{stats.deaths}</div>
+              </div>
             </div>
           </div>
         </div>

@@ -59,6 +59,7 @@ class Main extends PureComponent<Props> {
           <PlayerPlate />
         </div>
         <div className='overlay-right'>
+          <div className='overlay-right-dummy' />
           <Team team='T' />
         </div>
       </div>
