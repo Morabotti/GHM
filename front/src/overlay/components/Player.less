@@ -2,10 +2,36 @@
 
 .team-player{
   display: grid;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 0 1fr 1fr;
   height: 65px;
   margin-top: 1.5px;
   margin-bottom: 1.5px;
+}
+
+.player-container{
+  position: relative;
+  overflow: hidden;
+}
+
+.dead-player-parent {
+  position: relative;
+  .dead-stats{
+    position: absolute;
+    display: none;
+  
+    &.visible{
+      display: block;
+    }
+  
+    .dead-icon{
+      position: relative;
+      overflow: hidden;
+      z-index: 5;
+      padding-top: 2px;
+      padding-left: 3px;
+      width: 60px;
+    }
+  }
 }
 
 .player-area-upper{
@@ -149,9 +175,10 @@ img.holstered{
   filter: invert(20%) grayscale(100%) brightness(70%) contrast(4);
 }
 
-.team-player.first .player-area-upper{
+.team-player.first .player-container{
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  overflow: hidden;
 }
 
 .team-player.last .player-area-lower{
@@ -159,20 +186,81 @@ img.holstered{
   border-bottom-right-radius: 10px;
 }
 
-.overlay-left>.team.CT>.team-player>.player-area-upper{
+.player-health-background{
+  background-color: @ui-default-black;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.player-health-bar-lost{
+  height: 100%;
+  position: absolute;
+  background-color: @health-lost-color;
+  transition: width 150ms linear 1.5s;
+  -webkit-transition: width 150ms linear 1.5s;
+  z-index: 1;
+}
+
+.player-health-bar{
+  position: absolute;
+  overflow: hidden;
+  transition: width 80ms;
+  z-index: 2;
+  height: 100%;
+}
+
+.player-weapon-main,
+.player-name,
+.player-health,
+.player-dead{
+  z-index: 3;
+}
+
+.overlay-right>.team>.team-player>.player-container>.player-health-bar,
+.overlay-right>.team>.team-player>.player-container>.player-health-bar-lost{
+  right: 0;
+}
+
+.overlay-right>.team>.team-player>.dead-player-parent>.dead-stats{
+  right: 0;
+  padding-right: 4px;
+  padding-left: 0;
+}
+
+// * Dead player
+.team-player.dead>.player-container>.player-health-bar-lost{
+  display: none;
+}
+
+.overlay-left>.team>.team-player.dead>.player-area-lower,
+.overlay-left>.team>.team-player.dead>.player-container>.player-health-background{
+  background: -webkit-linear-gradient(left, @ui-default-darkest 5%,@ui-default-darkest-inv 75%) !important;
+}
+.overlay-right>.team>.team-player.dead>.player-area-lower,
+.overlay-right>.team>.team-player.dead>.player-container>.player-health-background{
+  background: -webkit-linear-gradient(right, @ui-default-darkest 5%,@ui-default-darkest-inv 75%) !important;
+}
+
+// * CT PLAYER
+.overlay-left>.team.CT>.team-player>.player-container>.player-health-bar{
   background: -webkit-linear-gradient(left, @ct-color-gradient-off 2%, @ct-color-gradient-main 100%);
 }
-.overlay-right>.team.CT>.team-player>.player-area-upper{
+
+.overlay-right>.team.CT>.team-player>.player-container>.player-health-bar{
   background: -webkit-linear-gradient(right, @ct-color-gradient-off 2%, @ct-color-gradient-main 100%);
 }
 
-.overlay-left>.team.T>.team-player>.player-area-upper{
+// * T PLAYER
+.overlay-left>.team.T>.team-player>.player-container>.player-health-bar{
   background: -webkit-linear-gradient(left, @t-color-gradient-off 0%, @t-color-main 60%);
 }
-.overlay-right>.team.T>.team-player>.player-area-upper{
+
+.overlay-right>.team.T>.team-player>.player-container>.player-health-bar{
   background: -webkit-linear-gradient(right, @t-color-gradient-off 0%, @t-color-main 60%);
 }
 
+// * SELECTED PLAYER
 .overlay-left>.team>.team-player.watching>.player-area-lower{
   background: -webkit-linear-gradient(left, rgba(199, 199, 199, 0.7) 0%,rgba(214, 214, 214, 0.8) 60%);
 }
@@ -180,7 +268,7 @@ img.holstered{
   background: -webkit-linear-gradient(right, rgba(199, 199, 199, 0.7) 0%,rgba(214, 214, 214, 0.8) 60%);
 }
 
-.overlay-left>.team>.team-player>.player-area-upper,
+.overlay-left>.team>.team-player>.player-container>.player-area-upper,
 .overlay-left>.team>.team-player>.player-area-lower{
   flex-direction: row-reverse;
   .player-name,
@@ -195,15 +283,7 @@ img.holstered{
   }
 }
 
-.overlay-left>.team>.team-player>.player-area-lower{
-  margin-right: 1px;
-}
-
-.overlay-left>.team>.team-player.watching>.player-area-lower{
-  margin-right: 0px;
-}
-
-.overlay-right>.team>.team-player>.player-area-upper,
+.overlay-right>.team>.team-player>.player-container>.player-area-upper,
 .overlay-right>.team>.team-player>.player-area-lower{
   .player-weapon-main img,
   .player-weapon-secondary img{

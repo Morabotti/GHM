@@ -29,12 +29,13 @@ class Player extends PureComponent<Props> {
       .find(weapon => weapons[weapon].type === 'Pistol')
 
     // Prolly should be done with weapon type instead
-    const MainWeaponBig = (hasMainWeapon !== undefined &&
+    const mainWeaponBig = (hasMainWeapon !== undefined &&
       (weapons[hasMainWeapon].name === 'weapon_nova' ||
       weapons[hasMainWeapon].name === 'weapon_xm1014')
     )
 
-    const MainWeaponBigger = (hasMainWeapon !== undefined && weapons[hasMainWeapon].name === 'weapon_awp')
+    const mainWeaponBigger = (hasMainWeapon !== undefined && weapons[hasMainWeapon].name === 'weapon_awp')
+    const isDead = state.health === 0
 
     const hasBOMB = (team === 'T'
       ? (Object.keys(weapons)
@@ -42,22 +43,37 @@ class Player extends PureComponent<Props> {
       : null)
 
     return (
-      <div className={`team-player ${first === true ? 'first' : ''}${last === true ? 'last' : ''} ${watching ? 'watching' : ''}`}>
-        <div className='player-area-upper'>
-          <div className={`player-weapon-main ${MainWeaponBig ? 'bigger' : ''}${MainWeaponBigger ? 'biggest' : ''}`}>
-            { hasMainWeapon !== undefined ? (
+      <div className={`team-player ${first ? 'first' : ''}${last ? 'last' : ''} ${watching ? 'watching' : ''} ${isDead ? 'dead' : ''}`}>
+        <div class='dead-player-parent'>
+          <div className={`dead-stats ${isDead ? 'visible' : ''}`}>
+            <div className='dead-icon'>
               <img
-                src={`/static/weapons/${weapons[hasMainWeapon].name}.svg`}
-                className={`weapon-wrap ${weapons[hasMainWeapon].state === 'holstered' ? 'holstered' : ''}`}
-                height='25px'
+                src='/static/utils/dead.png'
+                height='60px'
               />
-            ) : null}
+            </div>
           </div>
-          <div className='player-name'>
-            <div className='name'>{name}</div><div className='data-divider'>|</div><div className='spec-num'>{observerSlot}</div>
-          </div>
-          <div className='player-health'>
-            {state.health}
+        </div>
+        <div className='player-container'>
+          <div className='player-health-bar' style={{width: `${state.health}%`}} />
+          <div className='player-health-bar-lost' style={{width: `${state.health}%`}} />
+          <div className='player-health-background' />
+          <div className='player-area-upper'>
+            <div className={`player-weapon-main ${mainWeaponBig ? 'bigger' : ''}${mainWeaponBigger ? 'biggest' : ''}`}>
+              { hasMainWeapon !== undefined ? (
+                <img
+                  src={`/static/weapons/${weapons[hasMainWeapon].name}.svg`}
+                  className={`weapon-wrap ${weapons[hasMainWeapon].state === 'holstered' ? 'holstered' : ''}`}
+                  height='25px'
+                />
+              ) : null}
+            </div>
+            <div className='player-name'>
+              <div className='name'>{name}</div><div className='data-divider'>|</div><div className='spec-num'>{observerSlot}</div>
+            </div>
+            <div className='player-health'>
+              {isDead ? '' : state.health}
+            </div>
           </div>
         </div>
         <div className='player-area-lower'>
@@ -115,11 +131,11 @@ class Player extends PureComponent<Props> {
           <div className={`player-utility`}>
             {state.helmet ? (
               <div className='item'>
-                <img src='/static/utils/armor_helmet.svg' height='26px' />
+                <img src='/static/utils/armor_helmet.png' height='26px' />
               </div>
             ) : state.armor > 0 ? (
               <div className='item'>
-                <img src='/static/utils/armor.svg' height='26px' />
+                <img src='/static/utils/armor.png' height='26px' />
               </div>
             ) : null
             }

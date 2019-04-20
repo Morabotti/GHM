@@ -39,8 +39,8 @@ class PlayerPlate extends PureComponent<Props> {
                 </div>
                 <div className='item'>
                   {state.helmet
-                    ? (<img src='/static/utils/armor_helmet.svg' height='22px' />)
-                    : (<img src='/static/utils/armor.svg' height='22px' />)
+                    ? (<img src='/static/utils/armor_helmet.png' height='22px' />)
+                    : (<img src='/static/utils/armor.png' height='22px' />)
                   }{state.armor}
                 </div>
               </div>
@@ -62,7 +62,7 @@ class PlayerPlate extends PureComponent<Props> {
                 </div>
                 <div className='two-rows stats-adr'>
                   <div className='team-highlight'>KDA</div>
-                  <div>{(kills+assists) / (1 + deaths)}</div>
+                  <div>{((kills+assists) / (1 + deaths)).toFixed(2)}</div>
                 </div>
                 <div className='stats-utility'>
 
