@@ -15,16 +15,21 @@ export type EventsReducer = {
   moneyCount: boolean
 }
 
-export type NadeCalculation = {
-  CT: TeamStats,
-  T: TeamStats
+export type TeamStats = {
+  CT: TeamStat,
+  T: TeamStat
 }
 
-export type TeamStats =  {
+export type Nades = {
   smokes: number,
   grenades: number,
   molotovs: number,
   flashes: number
+}
+
+export type TeamStat =  {
+  nades: Nades,
+  teamEconomy: number
 }
 
 export type EventType = {

@@ -4,7 +4,7 @@ import type {
   MapState,
   PhaseCooldowns,
   CurrentPlayer,
-  NadeCalculation
+  TeamStats
 } from './types'
 
 import type { Status } from '../dashboard/types'
@@ -14,7 +14,7 @@ export type Action = { type: 'set-game-all-player-state', gameStateAllPlayer: Al
   | { type: 'set-game-map-state', gameStateMap: MapState}
   | { type: 'set-game-phase-state', gameStatePhase: PhaseCooldowns}
   | { type: 'set-status-overlay', status: Status }
-  | { type: 'set-team-stats', stats: NadeCalculation }
+  | { type: 'set-team-stats', stats: TeamStats }
   | { type: 'start-money-count' }
   | { type: 'end-money-count' }
 
@@ -51,7 +51,7 @@ export const endMoneyCount = () => ({
   type: 'end-money-count'
 })
 
-export const setNades = (stats: NadeCalculation) => ({
+export const setNades = (stats: TeamStats) => ({
   type: 'set-team-stats',
   stats
 })

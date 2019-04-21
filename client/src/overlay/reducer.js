@@ -9,8 +9,8 @@ import type {
   Team,
   MatchStats,
   EventsReducer,
-  TeamStats,
-  NadeCalculation
+  TeamStat,
+  TeamStats
 } from './types'
 
 import type { Status } from '../dashboard/types'
@@ -22,7 +22,7 @@ export type State = {
   gameStatePhase: PhaseCooldowns,
   status: Status,
   events: EventsReducer,
-  teamStats: NadeCalculation
+  teamStats: TeamStats
 }
 
 const defaultTeamState: Team = {
@@ -62,11 +62,14 @@ const statusState: Status = {
   gameLive: false
 }
 
-const teamStats: TeamStats = {
-  smokes: 0,
-  grenades: 0,
-  molotovs: 0,
-  flashes: 0
+const teamStats: TeamStat = {
+  nades: {
+    smokes: 0,
+    grenades: 0,
+    molotovs: 0,
+    flashes: 0
+  },
+  teamEconomy: 0
 }
 
 const getDefaultState = (): State => ({

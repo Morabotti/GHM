@@ -3,23 +3,27 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { Player } from './'
 
-import { calculateNadeGrade } from '../lib/NadeGrade'
+import {
+  calculateNadeGrade,
+  calculateEconomyGrade
+} from '../lib/TeamCalculationGrade'
 
 import type { State } from '../../types'
-import type { Teams, AllPlayers, PhaseCooldowns, NadeCalculation } from '../types'
+import type { Teams, AllPlayers, PhaseCooldowns, TeamStats } from '../types'
 
 type Props = {
   team: Teams,
   allPlayers: AllPlayers,
   phaseData: PhaseCooldowns,
-  teamStats: NadeCalculation
+  teamStats: TeamStats
 }
 
 class Team extends PureComponent<Props> {
   render () {
     const { team, allPlayers, teamStats } = this.props
     const isOnStart = this.props.phaseData.phase === 'freezetime'
-    const nadeGrade = calculateNadeGrade(teamStats[team])
+    const nadeGrade = calculateNadeGrade(teamStats[team].nades)
+    const economyGrade = calculateEconomyGrade(teamStats[team].teamEconomy)
 
     return (
       <div className={`team ${team}`}>
@@ -29,35 +33,38 @@ class Team extends PureComponent<Props> {
               <div>
                 Utility level - <span className={`color-grades ${nadeGrade.text}`}>{nadeGrade.output}</span>
               </div>
+              <div>
+                Economy level - <span className={`color-grades ${economyGrade.text}`}>{economyGrade.output}</span>
+              </div>
             </div>
             <div className='utils'>
               <div className='team-grenade-area'>
                 <div className='icon'>
-                  <img src='/static/weapons/weapon_smokegrenade.svg' />
+                  <img src={`/static/teams/${team.toLowerCase()}/smoke.svg`} />
                 </div>
                 <div className='multi'>X</div>
-                <div className='amount'>{teamStats[team].smokes}</div>
+                <div className='amount'>{teamStats[team].nades.smokes}</div>
               </div>
               <div className='team-grenade-area'>
                 <div className='icon'>
-                  <img src='/static/weapons/weapon_hegrenade.svg' />
+                  <img src={`/static/teams/${team.toLowerCase()}/hegrenade.svg`} />
                 </div>
                 <div className='multi'>X</div>
-                <div className='amount'>{teamStats[team].grenades}</div>
+                <div className='amount'>{teamStats[team].nades.grenades}</div>
               </div>
               <div className='team-grenade-area'>
                 <div className='icon'>
-                  <img src='/static/weapons/weapon_incgrenade.svg' />
+                  <img src={`/static/teams/${team.toLowerCase()}/incgrenade.svg`} />
                 </div>
                 <div className='multi'>X</div>
-                <div className='amount'>{teamStats[team].molotovs}</div>
+                <div className='amount'>{teamStats[team].nades.molotovs}</div>
               </div>
               <div className='team-grenade-area'>
                 <div className='icon decoy'>
-                  <img src='/static/weapons/weapon_decoy.svg' />
+                  <img src={`/static/teams/${team.toLowerCase()}/flash.svg`} />
                 </div>
                 <div className='multi'>X</div>
-                <div className='amount'>{teamStats[team].flashes}</div>
+                <div className='amount'>{teamStats[team].nades.flashes}</div>
               </div>
             </div>
           </div>

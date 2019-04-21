@@ -1,12 +1,12 @@
+import { dispatchSocket, openSockets } from '../models/SocketIo'
+import { deepEqual } from '../utils/helpers'
+
 import {
   TeamStats,
   GameState,
   TeamType,
-  NadeCalculation
+  StatsCalculation
 } from '../types'
-
-import { dispatchSocket, openSockets } from '../models/SocketIo'
-import { deepEqual } from '../utils/helpers'
 
 class GameStats {
   teamTerrorist: TeamStats
@@ -18,88 +18,114 @@ class GameStats {
   }
 
   initDefault = () => ({
-    smokes: 0,
-    grenades: 0,
-    molotovs: 0,
-    flashes: 0
+    nades: {
+      smokes: 0,
+      grenades: 0,
+      molotovs: 0,
+      flashes: 0
+    },
+    teamEconomy: 0
   })
 
   checkIfUpdated = (state: GameState) => {
-    const nades: NadeCalculation = this.calculateGrenades(state)
-    const oldNades: NadeCalculation = {
+    const stats: StatsCalculation = this.calculateStats(state)
+    const oldStats: StatsCalculation = {
       T: this.getTeamStats('T'),
       CT: this.getTeamStats('CT')
     }
-
-    const test = deepEqual(nades, oldNades)
+    
+    const test = deepEqual(stats, oldStats)
     if (!test) {
-      this.teamCounterTerrorist = nades.CT
-      this.teamTerrorist = nades.T
+      this.teamCounterTerrorist = stats.CT
+      this.teamTerrorist = stats.T
 
       dispatchSocket(
-        openSockets.nades,
+        openSockets.stats,
         'state',
-        nades
+        stats
       )
     }
   }
 
-  calculateGrenades = (state: GameState): NadeCalculation => {
-    let nades: NadeCalculation = {
+  calculateStats = (state: GameState): StatsCalculation => {
+    let stats: StatsCalculation = {
       T: this.initDefault(),
       CT: this.initDefault()
     }
 
     Object.keys(state.allplayers).map(player => {
       const players = state.allplayers
+      const user = players[player]
+      stats = {
+        ...stats,
+        [user.team]: {
+          ...stats[user.team],
+          teamEconomy: stats[user.team].teamEconomy + user.state.equip_value
+        }
+      }
+
       Object.keys(players[player].weapons)
         .filter(weapon => players[player].weapons[weapon].type === 'Grenade')
         .map(grenade => {
-          const user = players[player]
           const nade = user.weapons[grenade]
           switch(nade.name) {
             case 'weapon_flashbang':
-              nades = {
-                ...nades,
+              stats = {
+                ...stats,
                 [user.team]: {
-                  ...nades[user.team],
-                  flashes: nades[user.team].flashes+nade.ammo_reserve
+                  ...stats[user.team],
+                  nades: {
+                    ...stats[user.team].nades,
+                    flashes: stats[user.team].flashes + nade.ammo_reserve
+                  }
                 }
               }
               break
             case 'weapon_hegrenade':
-              nades = {
-                ...nades,
+              stats = {
+                ...stats,
                 [user.team]: {
-                  ...nades[user.team],
-                  grenades: nades[user.team].grenades+nade.ammo_reserve
+                  ...stats[user.team],
+                  nades: {
+                    ...stats[user.team].nades,
+                    grenades: stats[user.team].grenades + nade.ammo_reserve
+                  }
                 }
               }
               break
             case 'weapon_incgrenade':
-              nades = {
-                ...nades,
+              stats = {
+                ...stats,
                 [user.team]: {
-                  ...nades[user.team],
-                  molotovs: nades[user.team].molotovs+nade.ammo_reserve
+                  ...stats[user.team],
+                  nades: {
+                    ...stats[user.team].nades,
+                    molotovs: stats[user.team].molotovs + nade.ammo_reserve
+                  }
                 }
               }
               break
             case 'weapon_molotov':
-              nades = {
-                ...nades,
+              stats = {
+                ...stats,
                 [user.team]: {
-                  ...nades[user.team],
-                  molotovs: nades[user.team].molotovs+nade.ammo_reserve
+                  ...stats[user.team],
+                  nades: {
+                    ...stats[user.team].nades,
+                    molotovs: stats[user.team].molotovs + nade.ammo_reserve
+                  }
                 }
               }
               break
             case 'weapon_smokegrenade':
-              nades = {
-                ...nades,
+              stats = {
+                ...stats,
                 [user.team]: {
-                  ...nades[user.team],
-                  smokes: nades[user.team].smokes+nade.ammo_reserve
+                  ...stats[user.team],
+                  nades: {
+                    ...stats[user.team].nades,
+                    smokes: stats[user.team].smokes + nade.ammo_reserve
+                  }
                 }
               }
               break
@@ -107,7 +133,7 @@ class GameStats {
         }
       )
     })
-    return nades
+    return stats
   }
 
   getTeamStats = (team: TeamType) => {
@@ -119,15 +145,15 @@ class GameStats {
   }
 
   sendLatestDispatch = () => {
-    const nades: NadeCalculation = {
+    const stats: StatsCalculation = {
       T: this.getTeamStats('T'),
       CT: this.getTeamStats('CT')
     }
 
     dispatchSocket(
-      openSockets.nades,
+      openSockets.stats,
       'state',
-      nades
+      stats
     )
   }
 }

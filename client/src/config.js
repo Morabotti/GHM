@@ -14,9 +14,36 @@ const config: Config = {
     phase: `${url}/socket-overlay/phase`,
     updates: `${url}/socket-general/status`,
     events: `${url}/socket-general/events`,
-    nades: `${url}/socket-overlay/nades`
+    stats: `${url}/socket-overlay/stats`
   },
   teamNadeGrades: {
+    bad: {
+      range: 1,
+      text: 'bad',
+      output: 'Bad'
+    },
+    poor: {
+      range: 6,
+      text: 'poor',
+      output: 'Poor'
+    },
+    fair: {
+      range: 10,
+      text: 'fair',
+      output: 'Fair'
+    },
+    good: {
+      range: 17,
+      text: 'good',
+      output: 'Good'
+    },
+    excellent: {
+      range: 17,
+      text: 'excellent',
+      output: 'Excellent'
+    }
+  },
+  teamEconomyGrades: {
     bad: {
       range: 1,
       text: 'bad',

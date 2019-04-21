@@ -12,7 +12,7 @@ export type SocketEndPoint = {
   map: string,
   phase: string,
   events: string,
-  nades: string
+  stats: string
 }
 
 export type GradeType = {
@@ -21,11 +21,12 @@ export type GradeType = {
   output: string,
 }
 
-export type TeamNadeGrades = {
+export type Grades = {
   ['bad' | 'poor' | 'fair' | 'good' | 'excellent']: GradeType
 }
 
 export type Config = {
   sockets: SocketEndPoint,
-  teamNadeGrades: TeamNadeGrades
+  teamNadeGrades: Grades,
+  teamEconomyGrades: Grades
 }

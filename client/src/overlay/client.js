@@ -23,7 +23,7 @@ export const subscribeToSocket = (dispatch: Dispatch) => {
   subscribeToSocketPhase(dispatch)
   subscribeToSocketUpdates(dispatch)
   subscribeToSocketEvents(dispatch)
-  subscribeToSocketNades(dispatch)
+  subscribeToSocketStats(dispatch)
   setTimeout(getLatestData, 10)
 }
 
@@ -82,8 +82,8 @@ export const subscribeToSocketEvents = (dispatch: Dispatch) => {
   })
 }
 
-export const subscribeToSocketNades = (dispatch: Dispatch) => {
-  const socket = openSocket(config.sockets.nades)
+export const subscribeToSocketStats = (dispatch: Dispatch) => {
+  const socket = openSocket(config.sockets.stats)
   socket.on('state', data => {
     dispatch(setNades(data))
   })
