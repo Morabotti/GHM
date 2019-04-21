@@ -9,6 +9,17 @@ export type Teams = ('CT' | 'T')
 
 export type Vector = Array<string>
 
+export type Events = 'FREEZETIME_END' | 'FREEZETIME_START'
+
+export type EventsReducer = {
+  moneyCount: boolean
+}
+
+export type EventType = {
+  event: Events,
+  payload: any
+}
+
 export type PhaseCooldowns = {
   phase: string,
   phase_ends_in: number

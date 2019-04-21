@@ -1,7 +1,7 @@
 // @flow
 import 'whatwg-fetch'
 import openSocket from 'socket.io-client'
-import type { Dispatch } from './types'
+import type { Dispatch, EventType } from './types'
 
 import config from '../config'
 
@@ -10,7 +10,9 @@ import {
   setGamePlayerState,
   setGameMapState,
   setGamePhaseState,
-  setStatus
+  setStatus,
+  startMoneyCount,
+  endMoneyCount
 } from './actions'
 
 export const subscribeToSocket = (dispatch: Dispatch) => {
@@ -19,6 +21,7 @@ export const subscribeToSocket = (dispatch: Dispatch) => {
   subscribeToSocketMap(dispatch)
   subscribeToSocketPhase(dispatch)
   subscribeToSocketUpdates(dispatch)
+  subscribeToSocketEvents(dispatch)
   setTimeout(getLatestData, 10)
 }
 
@@ -70,6 +73,13 @@ export const subscribeToSocketUpdates = (dispatch: Dispatch) => {
   })
 }
 
+export const subscribeToSocketEvents = (dispatch: Dispatch) => {
+  const socket = openSocket(config.sockets.events)
+  socket.on('state', data => {
+    analyzeEvent(data, dispatch)
+  })
+}
+
 export const getStatus = () => window.fetch(
   '/api/game/online',
   {
@@ -79,3 +89,15 @@ export const getStatus = () => window.fetch(
 )
   .then(checkResponse)
   .then((res) => res.json())
+
+const analyzeEvent = (event: EventType, dispatch: Dispatch) => {
+  console.log(event)
+  switch(event.event) {
+    case 'FREEZETIME_END':
+      //dispatch(endMoneyCount())
+      break
+    case 'FREEZETIME_START':
+      //dispatch(startMoneyCount())
+      break
+  }
+}

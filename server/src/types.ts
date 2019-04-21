@@ -1,15 +1,40 @@
-
-export interface Settings {
-  authKey: string,
-  socketPaths: SocketPaths
+export enum EVENT {
+  BOMB_PLANT = 'BOMB_PLANT',
+  BOMB_DEFUSE = 'BOMB_DEFUSE',
+  BOMB_EXPLODE = 'BOMB_EXPLODE',
+  ROUND_START = 'ROUND_START',
+  ROUND_END = 'ROUND_END',
+  FREEZETIME_START = 'FREEZETIME_START',
+  FREEZETIME_END = 'FREEZETIME_END',
+  GAME_START = 'GAME_START',
+  GAME_END = 'GAME_END',
+  PAUSE_START = 'PAUSE_START',
+  PAUSE_END = 'PAUSE_END',
+  WARMUP_START = 'WARMUP_START',
+  WARMUP_END = 'WARMUP_END',
+  MAP_CHANGED = 'MAP_CHANGED',
+  CLIENT_DISCONNECT = 'CLIENT_DISCONNECT',
+  CLIENT_CONNECT = 'CLIENT_CONNECT',
+  SERVER_DISCONNECT = 'SERVER_DISCONNECT',
+  SERVER_CONNECT = 'SERVER_CONNECT'
 }
 
-export interface SocketPaths {
+export enum PHASE {
+  FREEZETIME = 'freezetime',
+  BOMB = 'bomb',
+  WARMUP = 'warmup',
+  LIVE = 'live',
+  OVER = 'over', // ? PAUSE & GAME END
+  DEFUSE ='defuse'
+}
+
+export interface Sockets {
   allPlayers: string
   player: string
   map: string
   phase: string,
-  updates: string
+  updates: string,
+  events: string
 }
 
 // ! FIX any properties ! //
@@ -19,8 +44,8 @@ export interface GameState {
   player: Player | any
   allplayers: Allplayers | any
   phase_countdowns: Phase_countdowns | any
-  grenades: Grenades | any
-  previously: Previously | any
+  grenades: Grenades
+  previously: Previously
   auth: Auth
 }
 
@@ -35,7 +60,7 @@ export interface Provider {
 export interface CurrentMap {
   mode: string
   name: string
-  phase: string
+  phase: PHASE
   round: number
   team_ct: Team
   team_t: Team
@@ -46,6 +71,7 @@ export interface CurrentMap {
 
 export interface Team {
   score: number
+  consecutive_round_losses: number,
   timeouts_remaining: number
   matches_won_this_series: number
 }
@@ -115,7 +141,7 @@ export interface Weapon {
 }
 
 interface Phase_countdowns {
-  phase?: string
+  phase: PHASE
   phase_ends_in: string
 }
 

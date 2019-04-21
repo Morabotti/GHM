@@ -15,7 +15,25 @@ type Props = {
   showStats: boolean
 }
 
-class Player extends PureComponent<Props> {
+type ComponentState = {
+  money: number
+}
+
+class Player extends PureComponent<Props, ComponentState> {
+  state = {
+    money: 0
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    //START
+    if(this.props.showStats && !prevProps.showStats)
+      this.setState({money: this.props.state.money})
+      
+    //END
+    if(!this.props.showStats && prevProps.showStats)
+      console.log("END")
+  }
+
   render () {
     const {
       first,
@@ -54,6 +72,8 @@ class Player extends PureComponent<Props> {
         .find(weapon => weapons[weapon].type === 'C4') !== undefined)
       : null)
 
+    const moneyLost = this.state.money - this.props.state.money
+
     return (
       <div className={`team-player ${first ? 'first' : ''}${last ? 'last' : ''} ${watching ? 'watching' : ''} ${isDead ? 'dead' : ''}`}>
         <div className='dead-player-parent'>
@@ -69,7 +89,11 @@ class Player extends PureComponent<Props> {
         <div className='player-extra-stats-parent'>
           <div className={`player-extra-stats ${showStats ? 'show' : ''}`}>
             <div className='extra-money-lost'>
-
+              {moneyLost === 0 ? (
+                <span className='plus'>{moneyLost}$</span>
+              ) : (
+                <span className='minus'>-{moneyLost}$</span>
+              )}
             </div>
             <div className='extra-stats'>
               <div className='stats'>

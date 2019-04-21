@@ -1,6 +1,5 @@
 client/node_modules/
 client/build/
-client/color-pallet
 
 server/node_modules/
 server/dist/

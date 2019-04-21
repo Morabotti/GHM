@@ -43,6 +43,7 @@ class Main extends PureComponent<Props> {
 
   render () {
     const { status } = this.props
+
     if (!status.clientSpectating)
       return <GameLoader status={status} />
 

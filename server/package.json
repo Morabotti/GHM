@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node --inspect=5858 -r ts-node/register ./src/server.ts",
     "dev": "nodemon",
-    "build": "tsc"
+    "build": "tsc",
+    "build:start": "tsc && node dist/server.js"
   },
   "nodemonConfig": {
     "ignore": [

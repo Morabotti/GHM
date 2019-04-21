@@ -25,6 +25,11 @@ class PlayerPlate extends PureComponent<Props> {
     const {assists, deaths, kills} = allPlayers[steamid].match_stats
     const currentWeapon = weapons[currentWeaponID]
 
+    const hasBOMB = (team === 'T'
+      ? (Object.keys(weapons)
+        .find(weapon => weapons[weapon].type === 'C4') !== undefined)
+      : null)
+
     if (isWatching) {
       return (
         <div className={`player-plate ${team}`}>
@@ -39,14 +44,26 @@ class PlayerPlate extends PureComponent<Props> {
                 </div>
                 <div className='item'>
                   {state.helmet
-                    ? (<img src='/static/utils/armor_helmet.png' height='22px' />)
-                    : (<img src='/static/utils/armor.png' height='22px' />)
+                    ? (<img src='/static/utils/armor_helmet.png' className='icon-center' />)
+                    : (<img src='/static/utils/armor.png' className='icon-center' />)
                   }{state.armor}
                 </div>
               </div>
               <div className='grid-lower-light grid-stats'>
                 <div className='stats-kills-current single-row'>
-                  
+                  {state.round_kills === 0 ? null : (
+                    <React.Fragment>
+                      <div className='logo'>
+                        <img
+                          src='/static/utils/dead.png'
+                          height='18px'
+                        />
+                      </div>
+                      <div className='kills team-highlight'>
+                        {state.round_kills}
+                      </div>
+                    </React.Fragment>
+                  )}
                 </div>
                 <div className='two-rows stats-kills'>
                   <div className='team-highlight'>K</div>
@@ -61,11 +78,16 @@ class PlayerPlate extends PureComponent<Props> {
                   <div>{deaths}</div>
                 </div>
                 <div className='two-rows stats-adr'>
-                  <div className='team-highlight'>KDA</div>
-                  <div>{((kills+assists) / (1 + deaths)).toFixed(2)}</div>
+                  <div className='team-highlight'>K/D</div>
+                  <div>{deaths === 0 ? kills.toFixed(2) : (kills / deaths).toFixed(2)}</div>
                 </div>
                 <div className='stats-utility'>
-
+                {team === 'CT' ? state.defusekit ? (
+                  <img src='/static/utils/defuser.svg' height='32px' />
+                ) : null : hasBOMB ? (
+                  <img src='/static/utils/c4.svg' />
+                ) : null
+                }
                 </div>
               </div>
               <div className='grid-lower-dark grid-ammo'>

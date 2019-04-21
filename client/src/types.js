@@ -10,7 +10,8 @@ export type SocketEndPoint = {
   allPlayers: string,
   player: string,
   map: string,
-  phase: string
+  phase: string,
+  events: string
 }
 
 export type Config = {

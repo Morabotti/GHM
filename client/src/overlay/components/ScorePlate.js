@@ -48,7 +48,7 @@ class ScorePlate extends PureComponent<Props> {
             ) : (
               <React.Fragment>
                 <div className='time'>
-                  {phase === 'live' || phase === 'freezetime' ? this.sectostr(Math.trunc(phase_ends_in)) : null }
+                  {phase === 'live' || phase === 'freezetime' ? this.sectostr(Math.trunc(phase_ends_in)) : phase === 'over' ? '0:00' : null }
                 </div>
                 <div className='round'>
                   {phase === 'warmup' ? ('WARMUP') : (`Round ${round + 1}/30`)}

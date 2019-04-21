@@ -11,10 +11,16 @@ type Props = {
   map: MapState
 }
 
+const RADAR_ENABLE = false
+
 class Radar extends PureComponent<Props> {
   render () {
     const { allPlayers, map } = this.props
-    if(map.name === '') return <div>Loading Radar</div>
+    if(!RADAR_ENABLE)
+      return <div />
+
+    if(map.name === '')
+      return <div />
 
     return (
       <div className='radar'>

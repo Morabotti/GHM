@@ -12,7 +12,8 @@ const config: Config = {
     player: `${url}/socket-overlay/player`,
     map: `${url}/socket-overlay/map`,
     phase: `${url}/socket-overlay/phase`,
-    updates: `${url}/socket-general/status`
+    updates: `${url}/socket-general/status`,
+    events: `${url}/socket-general/events`
   }
 }
 

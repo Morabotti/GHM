@@ -47,6 +47,14 @@
 
     .extra-money-lost{
       width: 45%;
+      font-weight: bold;
+      font-size: 20px;
+      text-shadow: 1px 1px 1px black;
+      display: flex;
+      align-self: center;
+
+      .plus{ color: @money-color }
+      .minus{ color: @status-poor }
     }
 
     .extra-stats{
@@ -321,6 +329,11 @@ img.holstered{
     right: -205px;
     opacity: 1;
   }
+
+  .extra-money-lost{
+    margin-right: 10px;
+    justify-content: flex-end;
+  }
 }
 .overlay-right>.team>.team-player>.player-extra-stats-parent>.player-extra-stats{
   left: 0;
@@ -329,6 +342,11 @@ img.holstered{
   &.show{
     left: -205px;
     opacity: 1;
+  }
+
+  .extra-money-lost{
+    margin-left: 10px;
+    justify-content: flex-start;
   }
 }
 
