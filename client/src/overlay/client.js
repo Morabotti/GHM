@@ -12,7 +12,8 @@ import {
   setGamePhaseState,
   setStatus,
   startMoneyCount,
-  endMoneyCount
+  endMoneyCount,
+  setNades
 } from './actions'
 
 export const subscribeToSocket = (dispatch: Dispatch) => {
@@ -22,6 +23,7 @@ export const subscribeToSocket = (dispatch: Dispatch) => {
   subscribeToSocketPhase(dispatch)
   subscribeToSocketUpdates(dispatch)
   subscribeToSocketEvents(dispatch)
+  subscribeToSocketNades(dispatch)
   setTimeout(getLatestData, 10)
 }
 
@@ -77,6 +79,13 @@ export const subscribeToSocketEvents = (dispatch: Dispatch) => {
   const socket = openSocket(config.sockets.events)
   socket.on('state', data => {
     analyzeEvent(data, dispatch)
+  })
+}
+
+export const subscribeToSocketNades = (dispatch: Dispatch) => {
+  const socket = openSocket(config.sockets.nades)
+  socket.on('state', data => {
+    dispatch(setNades(data))
   })
 }
 

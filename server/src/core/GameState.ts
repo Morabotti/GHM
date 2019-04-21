@@ -3,6 +3,7 @@ import * as moment from 'moment'
 import { GameState } from '../types'
 import { analyzeEvents } from './GameEvents'
 import { dispatchSocket, openSockets } from '../models/SocketIo'
+import gameStats from './GameStats'
 
 import config from '../config'
 
@@ -96,6 +97,7 @@ class GameEvents {
           phase_countdowns: state.phase_countdowns
         }
       }
+      gameStats.checkIfUpdated(state)
     }
   }
 

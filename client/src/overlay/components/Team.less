@@ -1,5 +1,24 @@
 @import "../variables.less";
 
+.color-grades{
+  &.bad{
+    color: @grades-color-bad
+  }
+  &.poor{
+    color: @grades-color-poor
+  }
+  &.fair{
+    color: @grades-color-fair
+  }
+  &.good{
+    color: @grades-color-good
+  }
+  &.excellent{
+    color: @grades-color-excellent
+  }
+}
+
+
 .team{
   width: 355px;
   display: flex;
@@ -31,24 +50,37 @@
     background-color: @ui-default-dark;
 
     .desc{
-      padding-left: 5px;
-      padding-top: 2px;
+      padding: 2px 10px 0;
       font-weight: bold;
-      font-size: 16px;
-
-      .good{
-        color: @status-good;
-      }
-  
-      .poor{
-        color: @status-poor;
-      }
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
     }
   
     .utils{
       display: flex;
-      div{
+      
+      .team-grenade-area{
         flex: 1;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 34px;
+        margin: 0 7px;
+        
+        .decoy{
+          margin-bottom: 4px;
+        }
+
+        .multi{
+          font-size: 20px;
+          padding: 0 3px;
+        }
+
+        .amount{
+          font-size: 30px;
+        }
       }
     }
   }

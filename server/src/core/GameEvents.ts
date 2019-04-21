@@ -21,7 +21,7 @@ export const analyzeEvents = (state: GameState) => {
   // * PHASE EVENTS
   if (state.previously.phase_countdowns !== undefined) {
     const { phase_countdowns } = state.previously
-    if(phase_countdowns.phase !== undefined) {
+    if (phase_countdowns.phase !== undefined) {
       switch(phase_countdowns.phase) {
         case PHASE.FREEZETIME:
           dispatchEvent(EVENT.FREEZETIME_END)
@@ -30,31 +30,6 @@ export const analyzeEvents = (state: GameState) => {
           if(state.phase_countdowns.phase === PHASE.FREEZETIME)
             dispatchEvent(EVENT.FREEZETIME_START)
           break
-        
-        /*
-        case PHASE.LIVE:
-          // ? WHERE
-          if(state.phase_countdowns.phase === PHASE.BOMB)
-            dispatchEvent(EVENT.BOMB_PLANT)
-          if(state.phase_countdowns.phase === PHASE.OVER)
-            dispatchEvent(EVENT.ROUND_END)
-          break
-        case PHASE.BOMB:
-          dispatchEvent(EVENT.BOMB_EXPLODE)
-          break
-        case PHASE.WARMUP:
-          dispatchEvent(EVENT.WARMUP_END)
-          break
-        case PHASE.DEFUSE:
-          dispatchEvent(EVENT.BOMB_DEFUSE)
-          break
-        case PHASE.OVER:
-          if(state.phase_countdowns.phase === PHASE.FREEZETIME)
-            dispatchEvent(EVENT.FREEZETIME_START)
-          // ? WHERE
-          //dispatchEvent(EVENT.GAME_END)
-          break
-        */
       }
     }
   }

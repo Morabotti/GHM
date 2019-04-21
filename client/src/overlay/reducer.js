@@ -8,7 +8,9 @@ import type {
   PlayerState,
   Team,
   MatchStats,
-  EventsReducer
+  EventsReducer,
+  TeamStats,
+  NadeCalculation
 } from './types'
 
 import type { Status } from '../dashboard/types'
@@ -19,7 +21,8 @@ export type State = {
   gameStateMap: MapState,
   gameStatePhase: PhaseCooldowns,
   status: Status,
-  events: EventsReducer
+  events: EventsReducer,
+  teamStats: NadeCalculation
 }
 
 const defaultTeamState: Team = {
@@ -52,11 +55,18 @@ const defaultStatsState: MatchStats = {
   score: 0
 }
 
-const StatusState: Status = {
+const statusState: Status = {
   clientOnline: false,
   clientSpectating: false,
   gameOnline: false,
   gameLive: false
+}
+
+const teamStats: TeamStats = {
+  smokes: 0,
+  grenades: 0,
+  molotovs: 0,
+  flashes: 0
 }
 
 const getDefaultState = (): State => ({
@@ -106,9 +116,13 @@ const getDefaultState = (): State => ({
     phase: '',
     phase_ends_in: 0
   },
-  status: StatusState,
+  status: statusState,
   events: {
     moneyCount: false
+  },
+  teamStats: {
+    CT: teamStats,
+    T: teamStats
   }
 })
 
@@ -157,6 +171,11 @@ export default function reducer (
           ...state.events,
           moneyCount: false,
         }
+      }
+    case 'set-team-stats':
+      return {
+        ...state,
+        teamStats: action.stats
       }
     default:
       return state

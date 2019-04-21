@@ -11,9 +11,21 @@ export type SocketEndPoint = {
   player: string,
   map: string,
   phase: string,
-  events: string
+  events: string,
+  nades: string
+}
+
+export type GradeType = {
+  range: number,
+  text: string,
+  output: string,
+}
+
+export type TeamNadeGrades = {
+  ['bad' | 'poor' | 'fair' | 'good' | 'excellent']: GradeType
 }
 
 export type Config = {
-  sockets: SocketEndPoint
+  sockets: SocketEndPoint,
+  teamNadeGrades: TeamNadeGrades
 }

@@ -2,6 +2,7 @@ import * as express from 'express'
 import * as bodyParser from 'body-parser'
 
 import gameState from '../core/GameState'
+import gameStats from '../core/GameStats';
 
 import { Request, Response } from 'express'
 
@@ -33,6 +34,7 @@ router.get('/overlay/init', (req: Request, res: Response) => {
   
   if (ok) {
     gameState.sendLatestDispatch()
+    gameStats.sendLatestDispatch()
     res.status(200).send({message: 'Data was found'})
   } else {
     res.status(400).send({message: 'Data was not found'})

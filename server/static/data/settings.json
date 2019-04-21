@@ -4,5 +4,6 @@
   "map": "/socket-overlay/map",
   "phase": "/socket-overlay/phase",
   "updates": "/socket-general/status",
-  "events": "/socket-general/events"
+  "events": "/socket-general/events",
+  "nades": "/socket-overlay/nades"
 }

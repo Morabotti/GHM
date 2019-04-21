@@ -3,28 +3,62 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { Player } from './'
 
+import { calculateNadeGrade } from '../lib/NadeGrade'
+
 import type { State } from '../../types'
-import type { Teams, AllPlayers, PhaseCooldowns } from '../types'
+import type { Teams, AllPlayers, PhaseCooldowns, NadeCalculation } from '../types'
 
 type Props = {
   team: Teams,
   allPlayers: AllPlayers,
-  phaseData: PhaseCooldowns
+  phaseData: PhaseCooldowns,
+  teamStats: NadeCalculation
 }
 
 class Team extends PureComponent<Props> {
   render () {
-    const { team, allPlayers } = this.props
+    const { team, allPlayers, teamStats } = this.props
     const isOnStart = this.props.phaseData.phase === 'freezetime'
+    const nadeGrade = calculateNadeGrade(teamStats[team])
+
     return (
       <div className={`team ${team}`}>
         <div className={`team-container ${isOnStart ? 'show' : ''}`}>
           <div className='team-info'>
             <div className='desc'>
-              Utility level - <span className='poor'>Good</span>
+              <div>
+                Utility level - <span className={`color-grades ${nadeGrade.text}`}>{nadeGrade.output}</span>
+              </div>
             </div>
             <div className='utils'>
-
+              <div className='team-grenade-area'>
+                <div className='icon'>
+                  <img src='/static/weapons/weapon_smokegrenade.svg' />
+                </div>
+                <div className='multi'>X</div>
+                <div className='amount'>{teamStats[team].smokes}</div>
+              </div>
+              <div className='team-grenade-area'>
+                <div className='icon'>
+                  <img src='/static/weapons/weapon_hegrenade.svg' />
+                </div>
+                <div className='multi'>X</div>
+                <div className='amount'>{teamStats[team].grenades}</div>
+              </div>
+              <div className='team-grenade-area'>
+                <div className='icon'>
+                  <img src='/static/weapons/weapon_incgrenade.svg' />
+                </div>
+                <div className='multi'>X</div>
+                <div className='amount'>{teamStats[team].molotovs}</div>
+              </div>
+              <div className='team-grenade-area'>
+                <div className='icon decoy'>
+                  <img src='/static/weapons/weapon_decoy.svg' />
+                </div>
+                <div className='multi'>X</div>
+                <div className='amount'>{teamStats[team].flashes}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -55,7 +89,8 @@ class Team extends PureComponent<Props> {
 
 const mapStateToProps = (state: State) => ({
   allPlayers: state.overlay.gameStateAllPlayer,
-  phaseData: state.overlay.gameStatePhase
+  phaseData: state.overlay.gameStatePhase,
+  teamStats: state.overlay.teamStats
 })
 
 export default connect(mapStateToProps)(Team)

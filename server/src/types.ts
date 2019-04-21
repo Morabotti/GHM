@@ -28,13 +28,28 @@ export enum PHASE {
   DEFUSE ='defuse'
 }
 
+export interface NadeCalculation {
+  CT: TeamStats,
+  T: TeamStats
+}
+
+export interface TeamStats {
+  smokes: number,
+  grenades: number,
+  molotovs: number,
+  flashes: number
+}
+
+export type TeamType = 'T' | 'CT'
+
 export interface Sockets {
   allPlayers: string
   player: string
   map: string
   phase: string,
   updates: string,
-  events: string
+  events: string,
+  nades: string
 }
 
 // ! FIX any properties ! //

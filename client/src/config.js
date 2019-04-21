@@ -13,7 +13,35 @@ const config: Config = {
     map: `${url}/socket-overlay/map`,
     phase: `${url}/socket-overlay/phase`,
     updates: `${url}/socket-general/status`,
-    events: `${url}/socket-general/events`
+    events: `${url}/socket-general/events`,
+    nades: `${url}/socket-overlay/nades`
+  },
+  teamNadeGrades: {
+    bad: {
+      range: 1,
+      text: 'bad',
+      output: 'Bad'
+    },
+    poor: {
+      range: 5,
+      text: 'poor',
+      output: 'Poor'
+    },
+    fair: {
+      range: 9,
+      text: 'fair',
+      output: 'Fair'
+    },
+    good: {
+      range: 14,
+      text: 'good',
+      output: 'Good'
+    },
+    excellent: {
+      range: 17,
+      text: 'excellent',
+      output: 'Excellent'
+    }
   }
 }
 
