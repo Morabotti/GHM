@@ -10,9 +10,32 @@ type Props = {
   phaseData: PhaseCooldowns
 }
 
+type ComponentState = {
+  bombTimerLeft: number,
+  showBomb: boolean
+}
+
 const BOMB_TIMER = 45
 
-class ScorePlate extends PureComponent<Props> {
+class ScorePlate extends PureComponent<Props, ComponentState> {
+  state = {
+    showBomb: false,
+    bombTimerLeft: 0
+  }
+
+  componentDidUpdate(prevProp: Props) {
+    if(prevProp.phaseData.phase === 'bomb' && this.props.phaseData.phase === 'defuse') {
+      this.setState({
+        showBomb: true,
+        bombTimerLeft: prevProp.phaseData.phase_ends_in
+      })
+    } else if(this.props.phaseData.phase !== 'defuse' && this.state.showBomb) {
+      this.setState({
+        showBomb: false
+      })
+    }
+  }
+
   sectostr (time) {
     return ~~(time / 60) + ':' + (time % 60 < 10 ? '0' : '') + time % 60
   }
@@ -20,6 +43,7 @@ class ScorePlate extends PureComponent<Props> {
   render () {
     const { phase_ends_in, phase } = this.props.phaseData
     const { round, team_ct, team_t } = this.props.mapData
+    const { showBomb, bombTimerLeft } = this.state
     return (
       <div className='score-top'>
         <div className='score-top-upper'>
@@ -35,13 +59,16 @@ class ScorePlate extends PureComponent<Props> {
             </div>
           </div>
           <div className='score-time'>
-            {phase === 'bomb' ? (
+            {phase === 'bomb' || showBomb ?  (
               <React.Fragment>
                 <div
                   className='bomb-timer'
-                  style={{ height: `${100 - ((phase_ends_in/BOMB_TIMER) * 100)}%` }}
+                  style={{ height: `${100 - (((showBomb ? bombTimerLeft : phase_ends_in)/BOMB_TIMER) * 100)}%`}}
                 />
-                <div className='bomb-wrapper' style={{animationDuration: `${(phase_ends_in/BOMB_TIMER)+0.35}s`}}>
+                <div
+                  className='bomb-wrapper'
+                  style={{animationDuration: `${((showBomb ? bombTimerLeft : phase_ends_in)/BOMB_TIMER) + 0.35}s`}}
+                >
                   <img src='/static/utils/bomb.svg' className='bomb-icon' />
                 </div>
               </React.Fragment>
@@ -51,7 +78,7 @@ class ScorePlate extends PureComponent<Props> {
                   {phase === 'live' || phase === 'freezetime' ? this.sectostr(Math.trunc(phase_ends_in)) : phase === 'over' ? '0:00' : null }
                 </div>
                 <div className='round'>
-                  {phase === 'warmup' ? ('WARMUP') : (`Round ${round + 1}/30`)}
+                  {phase === 'warmup' ? 'WARMUP' : `Round ${round + 1}/30`}
                 </div>
               </React.Fragment>
             )}

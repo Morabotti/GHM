@@ -1,4 +1,4 @@
-const deepEqual = (x: any, y: any) => {
+export const deepEqual = (x: any, y: any) => {
   const ok = Object.keys;
   const tx = typeof x;
   const ty = typeof y;
@@ -6,8 +6,4 @@ const deepEqual = (x: any, y: any) => {
     ok(x).length === ok(y).length &&
       ok(x).every(key => deepEqual(x[key], y[key]))
   ) : (x === y)
-}
-
-export {
-  deepEqual
 }

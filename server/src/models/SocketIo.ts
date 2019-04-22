@@ -9,6 +9,12 @@ const io = SocketIO().listen(config.socketIoPort)
 
 export const openSockets: Sockets = JSON.parse(fs.readFileSync(config.settingsPath, 'utf8'))
 
+io.on('connection', (socket) => {
+  Object.keys(openSockets).forEach(key => {
+    io.of(openSockets[key]).emit('connected')
+  })
+})
+
 export const dispatchSocket = (
   url: string,
   method: string,

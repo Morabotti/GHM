@@ -2,7 +2,7 @@ import * as express from 'express'
 import * as bodyParser from 'body-parser'
 
 import gameState from '../core/GameState'
-import gameStats from '../core/GameStats';
+import gameStats from '../core/GameStats'
 
 import { Request, Response } from 'express'
 

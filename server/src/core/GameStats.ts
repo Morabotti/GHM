@@ -28,6 +28,8 @@ class GameStats {
   })
 
   checkIfUpdated = (state: GameState) => {
+    if(state.allplayers === undefined) return
+
     const stats: StatsCalculation = this.calculateStats(state)
     const oldStats: StatsCalculation = {
       T: this.getTeamStats('T'),

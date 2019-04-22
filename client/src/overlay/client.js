@@ -38,7 +38,6 @@ export const getLatestData = () => window.fetch(
   '/api/game/overlay/init', { method: 'GET' }
 )
   .then(checkResponse)
-  .catch(e => console.log(e))
 
 export const subscribeToSocketAllPlayers = (dispatch: Dispatch) => {
   const socket = openSocket(config.sockets.allPlayers)

@@ -123,6 +123,8 @@ class GameEvents {
         if(!this.isClientSpectating) {
           this.isClientSpectating = true
           this.dispatchStatus()
+          //console.log(state)
+          //this.sendCurrentDispatch(state)
         }
       } else {
         if(this.isClientSpectating) {
@@ -159,6 +161,13 @@ class GameEvents {
 
   checkIfHasData() {
     return this.gameState === undefined ? false : true
+  }
+
+  sendCurrentDispatch(state: GameState) {
+    this.dispatchAllPlayers(state.allplayers)
+    this.dispatchPlayer(state.player)
+    this.dispatchMap(state.map)
+    this.dispatchPhase(state.phase_countdowns)
   }
 
   sendLatestDispatch() {

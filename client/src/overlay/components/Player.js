@@ -30,8 +30,7 @@ class Player extends PureComponent<Props, ComponentState> {
       this.setState({money: this.props.state.money})
       
     //END
-    if(!this.props.showStats && prevProps.showStats)
-      console.log("END")
+    // if(!this.props.showStats && prevProps.showStats) 
   }
 
   render () {

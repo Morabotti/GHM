@@ -45,22 +45,22 @@ const config: Config = {
   },
   teamEconomyGrades: {
     bad: {
-      range: 1,
+      range: 2300,
       text: 'bad',
       output: 'Bad'
     },
     poor: {
-      range: 5,
+      range: 10000,
       text: 'poor',
       output: 'Poor'
     },
     fair: {
-      range: 9,
+      range: 19000,
       text: 'fair',
       output: 'Fair'
     },
     good: {
-      range: 14,
+      range: 26000,
       text: 'good',
       output: 'Good'
     },
