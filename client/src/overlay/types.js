@@ -15,11 +15,6 @@ export type EventsReducer = {
   moneyCount: boolean
 }
 
-export type TeamStats = {
-  CT: TeamStat,
-  T: TeamStat
-}
-
 export type Nades = {
   smokes: number,
   grenades: number,
@@ -27,9 +22,14 @@ export type Nades = {
   flashes: number
 }
 
-export type TeamStat =  {
+export type TeamStat = {
   nades: Nades,
   teamEconomy: number
+}
+
+export type TeamStats = {
+  CT: TeamStat,
+  T: TeamStat
 }
 
 export type EventType = {

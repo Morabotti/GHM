@@ -11,7 +11,7 @@ const StatusState: Status = {
   clientOnline: false,
   clientSpectating: false,
   gameOnline: false,
-  gameLive: false,
+  gameLive: false
 }
 
 const getDefaultState = (): State => ({

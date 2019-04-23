@@ -23,13 +23,13 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
     bombTimerLeft: 0
   }
 
-  componentDidUpdate(prevProp: Props) {
-    if(prevProp.phaseData.phase === 'bomb' && this.props.phaseData.phase === 'defuse') {
+  componentDidUpdate (prevProp: Props) {
+    if (prevProp.phaseData.phase === 'bomb' && this.props.phaseData.phase === 'defuse') {
       this.setState({
         showBomb: true,
         bombTimerLeft: prevProp.phaseData.phase_ends_in
       })
-    } else if(this.props.phaseData.phase !== 'defuse' && this.state.showBomb) {
+    } else if (this.props.phaseData.phase !== 'defuse' && this.state.showBomb) {
       this.setState({
         showBomb: false
       })
@@ -59,15 +59,15 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
             </div>
           </div>
           <div className='score-time'>
-            {phase === 'bomb' || showBomb ?  (
+            {phase === 'bomb' || showBomb ? (
               <React.Fragment>
                 <div
                   className='bomb-timer'
-                  style={{ height: `${100 - (((showBomb ? bombTimerLeft : phase_ends_in)/BOMB_TIMER) * 100)}%`}}
+                  style={{ height: `${100 - (((showBomb ? bombTimerLeft : phase_ends_in) / BOMB_TIMER) * 100)}%` }}
                 />
                 <div
                   className='bomb-wrapper'
-                  style={{animationDuration: `${((showBomb ? bombTimerLeft : phase_ends_in)/BOMB_TIMER) + 0.35}s`}}
+                  style={{ animationDuration: `${((showBomb ? bombTimerLeft : phase_ends_in) / BOMB_TIMER) + 0.35}s` }}
                 >
                   <img src='/static/utils/bomb.svg' className='bomb-icon' />
                 </div>

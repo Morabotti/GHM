@@ -82,12 +82,12 @@ class PlayerPlate extends PureComponent<Props> {
                   <div>{deaths === 0 ? kills.toFixed(2) : (kills / deaths).toFixed(2)}</div>
                 </div>
                 <div className='stats-utility'>
-                {team === 'CT' ? state.defusekit ? (
-                  <img src='/static/utils/defuser.svg' height='32px' />
-                ) : null : hasBOMB ? (
-                  <img src='/static/utils/c4.svg' />
-                ) : null
-                }
+                  {team === 'CT' ? state.defusekit ? (
+                    <img src='/static/utils/defuser.svg' height='32px' />
+                  ) : null : hasBOMB ? (
+                    <img src='/static/utils/c4.svg' />
+                  ) : null
+                  }
                 </div>
               </div>
               <div className='grid-lower-dark grid-ammo'>

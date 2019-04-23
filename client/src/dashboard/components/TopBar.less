@@ -1,4 +1,4 @@
-.TopBar{
+.top-bar{
   z-index: 2;
   display: flex;
   justify-content: flex-start;
@@ -11,57 +11,56 @@
   padding-right: 20px;
 
   .logo{
-      width: 300px;
+    width: 300px;
   }
 
   .dummy{
-      flex: 1;
+    flex: 1;
   }
 
 
   .btn_nav{
-      height: 50px;
-      width: 50px;
-      transition: 200ms;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      text-align: center;
+    height: 50px;
+    width: 50px;
+    transition: 200ms;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-align: center;
 
-      &:hover{
-        color: white;
-        background-color: #cc3700;
-      }
+    &:hover{
+      color: white;
+      background-color: #cc3700;
+    }
 
-      &.selected{
-        color: #fdf498;
-        background-color: #cc3700;
-      }
+    &.selected{
+      color: #fdf498;
+      background-color: #cc3700;
+    }
   }
 
   .settings{
-      display: flex;
-      justify-content: flex-end;
-      width: 200px;
+    display: flex;
+    justify-content: flex-end;
+    width: 200px;
   }
 
   .logo-cont h2{
-      margin: 0;
-      line-height: 50px;
-      font-size: 1.7em;
-      text-align: center;
-      background-color: #ff6932;
+    margin: 0;
+    line-height: 50px;
+    font-size: 1.7em;
+    text-align: center;
+    background-color: #ff6932;
   }
 }
 
 @media only screen and (max-width: 768px) {
-    .TopBar{
-        position: absolute;
-    }
+  .top-bar{
+    position: absolute;
+  }
 
-    .TopBar .settings{
-        width: auto;
-
-    }
+  .top-bar .settings{
+    width: auto;
+  }
 }

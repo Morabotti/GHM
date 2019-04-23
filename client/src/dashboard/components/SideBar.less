@@ -1,4 +1,4 @@
-.SideBar{
+.side-bar{
   min-height: 100%;
   width: 300px;
   z-index: 1;
@@ -13,7 +13,7 @@
     left: -300px;
   }
 
-  .Navigation-side{
+  .navigation-side{
     padding-left: 0;
     margin: 0;
 
@@ -25,13 +25,13 @@
   }
 }
 
-.ConnectionInfo{
+.connection-info{
   text-align: center;
   padding: 20px;
   font-size: 1.5rem
 }
 
-.ConnectionInfo p{
+.connection-info p{
   margin-bottom: 10px;
 }
 
@@ -41,15 +41,14 @@
 
 .list-cont{
   font-size: 1.5rem;
-}
 
-.list-cont a{
-  color: #f2f2f2;
-}
+  a{
+    color: #f2f2f2;
 
-.list-cont a:hover{
-  color: white;
-
+    &:hover{
+      color: white;
+    }
+  }
 }
 
 .link-normal{
@@ -59,59 +58,45 @@
   display: block
 }
 
-.Item-name-header{
+.item-name-header{
   padding: 15px 25px;
   cursor: pointer;
   display: block
 }
 
-.Item-major-link span{
+.item-link span{
   transition: 150ms background-color;
 }
 
-.chosen.Item-major-link span{
+.chosen.item-link span{
+  background-color: #12215D;
+
+  i{
+    color: #db2828!important;
+  }
+}
+
+.chosen.item-link:hover span{
   background-color: #12215D;
 }
 
-.Item-major-link:hover span{
-  background-color: #12215D;
+.item-link:hover span{
+  background-color: #182c7a;
 }
 
-
-.list-spacer{
-  margin-bottom: 5px;
-}
-
-
-.is-sublink{
-  background-color: #1F2C62;
-  cursor: pointer;
-  transition: 200ms background-color;
-}
-
-.is-sublink:hover{
-  background-color: #121E50;
-}
-
-.selected-header{
-  background-color: #142366;
-}
-
-.chosen{
-  color: white;
-  background-color: #121E50;
-}
-
-.Item-name{
+.item-name{
   padding-left: 28px;
 }
 
+.owner-panel{
+  margin-top: 10px;
+}
+
 @media only screen and (max-width: 768px) {
-  .SideBar{
+  .side-bar{
     display: block;
     position: relative;
     width: 100%;
-    padding-bottom: 10px;
     transition: top 200ms;
 
     &.hidden{

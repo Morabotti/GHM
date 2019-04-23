@@ -164,7 +164,7 @@ export default function reducer (
         ...state,
         events: {
           ...state.events,
-          moneyCount: true,
+          moneyCount: true
         }
       }
     case 'end-money-count':
@@ -172,7 +172,7 @@ export default function reducer (
         ...state,
         events: {
           ...state.events,
-          moneyCount: false,
+          moneyCount: false
         }
       }
     case 'set-team-stats':

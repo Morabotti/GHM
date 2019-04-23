@@ -11,8 +11,6 @@ import {
   setGameMapState,
   setGamePhaseState,
   setStatus,
-  startMoneyCount,
-  endMoneyCount,
   setNades
 } from './actions'
 
@@ -100,12 +98,12 @@ export const getStatus = () => window.fetch(
 
 const analyzeEvent = (event: EventType, dispatch: Dispatch) => {
   console.log(event)
-  switch(event.event) {
+  switch (event.event) {
     case 'FREEZETIME_END':
-      //dispatch(endMoneyCount())
+      // dispatch(endMoneyCount())
       break
     case 'FREEZETIME_START':
-      //dispatch(startMoneyCount())
+      // dispatch(startMoneyCount())
       break
   }
 }

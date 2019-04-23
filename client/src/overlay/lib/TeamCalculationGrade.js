@@ -4,7 +4,7 @@ import config from '../../config'
 import type { Nades } from '../types'
 import type { GradeType } from '../../types'
 
-export const calculateNadeGrade = (nades: Nades): GradeType  => {
+export const calculateNadeGrade = (nades: Nades): GradeType => {
   const { bad, poor, fair, good, excellent } = config.teamNadeGrades
   const amount = Object.values(nades).reduce((a, b) => Number(a) + Number(b))
   if (amount <= bad.range)

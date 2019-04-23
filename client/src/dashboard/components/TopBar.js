@@ -18,7 +18,7 @@ class TopBar extends Component<Props> {
   render () {
     const { status, show, toggleShow } = this.props
     return (
-      <div className='TopBar'>
+      <div className='top-bar'>
         <div className='logo'>
           <div className='logo-cont'>
             <h2>GHM</h2>
@@ -27,7 +27,7 @@ class TopBar extends Component<Props> {
         <div className='dummy' />
         <div className='settings'>
           <div
-            className={show ? 'btn_nav' : 'btn_nav selected'}
+            className={`btn_nav ${show ? 'selected' : ''}`}
             onClick={toggleShow}
           >
             <Icon name='list' size='big' />

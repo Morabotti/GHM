@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
-import { NavLink, Link, withRouter } from 'react-router-dom'
+import { NavLink, withRouter } from 'react-router-dom'
 
 import { ClientConnectButton, ServerConnectButton } from './'
 import { deepEqual } from '../lib/helpers'
@@ -16,7 +16,7 @@ import type { State } from '../../types'
 type Props = {
   dispatch: Dispatch,
   status: Status,
-  show: boolean,
+  show: boolean
 }
 
 class SideBar extends Component<Props> {
@@ -34,9 +34,8 @@ class SideBar extends Component<Props> {
   _getStatus = () => getStatus()
     .then(setStatus)
     .then(i => {
-      if (!deepEqual(i.status, this.props.status)) {
+      if (!deepEqual(i.status, this.props.status))
         this.props.dispatch(i)
-      }
     })
 
   render () {
@@ -44,50 +43,55 @@ class SideBar extends Component<Props> {
     const { status, show } = this.props
 
     return (
-      <div className={show ? 'SideBar' : 'SideBar hidden'}>
+      <div className={`side-bar ${show ? '' : 'hidden'}`}>
         <div className='collapse'>
-          <ul className='Navigation-side'>
-            <li className='ConnectionInfo'>
+          <ul className='navigation-side'>
+            <li className='connection-info'>
               <p>Connection status</p>
               <ClientConnectButton connected={status.clientOnline} />
               <ServerConnectButton connected={status.gameOnline} />
             </li>
             <li className='list-cont'>
-              <NavLink className='Item-major-link' activeClassName='chosen' exact to={url + '/'}>
-                <span className='Item-name-header'> <Icon color='green' name='home' /> Home</span>
+              <NavLink className='item-link' activeClassName='chosen' exact to={url + '/'}>
+                <span className='item-name-header'> <Icon color='green' name='home' /> Home</span>
+              </NavLink>
+            </li>
+            <li className='connection-info'>
+              <p>Game</p>
+            </li>
+            <li className='list-cont'>
+              <NavLink className='item-link' activeClassName='chosen' exact to={url + '/live'}>
+                <span className='item-name-header'> <Icon color='green' name='fire' /> Live</span>
               </NavLink>
             </li>
             <li className='list-cont'>
-              <NavLink className='Item-major-link' activeClassName='chosen' to={url + '/credits'}>
-                <span className='Item-name-header'> <Icon color='green' name='question circle outline' /> Credits</span>
-              </NavLink>
-            </li>
-            <li className='list-cont selected-header'>
-              <Link to={url + '/csgo/general/'}>
-                <span className='Item-name-header'> <Icon color='green' name='th' /> CSGO</span>
-              </Link>
-            </li>
-            <li className='list-cont'>
-              <NavLink className='link-normal is-sublink' activeClassName='chosen' to={url + '/csgo/general/'}>
-                <span className='Item-name'>General</span>
+              <NavLink className='item-link' activeClassName='chosen' to={url + '/overlay'}>
+                <span className='item-name-header'> <Icon color='green' name='book' /> Overlay</span>
               </NavLink>
             </li>
             <li className='list-cont'>
-              <NavLink className='link-normal is-sublink' activeClassName='chosen' to={url + '/csgo/schedule/'}>
-                <span className='Item-name'>Schedule</span>
+              <NavLink className='item-link' activeClassName='chosen' to={url + '/config'}>
+                <span className='item-name-header'> <Icon color='green' name='info circle' /> Config</span>
               </NavLink>
             </li>
-            <li className='list-cont is-sublink'>
-              <NavLink className='link-normal' activeClassName='chosen' to={url + '/csgo/statistics/'}>
-                <span className='Item-name'>Statistics</span>
-              </NavLink>
-            </li>
-            <li className='list-cont is-sublink'>
-              <NavLink className='link-normal' activeClassName='chosen' to={url + '/csgo/settings/'}>
-                <span className='Item-name'>Settings</span>
+            <li className='list-cont'>
+              <NavLink className='item-link' activeClassName='chosen' to={url + '/options'}>
+                <span className='item-name-header'> <Icon color='green' name='calendar alternate' /> Options</span>
               </NavLink>
             </li>
           </ul>
+          <div className='owner-panel'>
+            <ul className='navigation-side'>
+              <li className='connection-info'>
+                <p>Dashboard</p>
+              </li>
+              <li className='list-cont'>
+                <NavLink className='item-link' activeClassName='chosen' to={url + '/settings'}>
+                  <span className='item-name-header'> <Icon color='green' name='user' /> Settings</span>
+                </NavLink>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     )

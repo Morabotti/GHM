@@ -24,7 +24,7 @@ class GameLoader extends PureComponent<Props> {
       </div>
     )
 
-    if(!clientSpectating) return (
+    if (!clientSpectating) return (
       <div>
         <h2>Loading, Client is not spectating</h2>
       </div>

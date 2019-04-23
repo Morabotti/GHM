@@ -16,10 +16,10 @@ const RADAR_ENABLE = false
 class Radar extends PureComponent<Props> {
   render () {
     const { allPlayers, map } = this.props
-    if(!RADAR_ENABLE)
+    if (!RADAR_ENABLE)
       return <div />
 
-    if(map.name === '')
+    if (map.name === '')
       return <div />
 
     return (

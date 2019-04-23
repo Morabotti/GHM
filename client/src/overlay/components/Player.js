@@ -24,12 +24,12 @@ class Player extends PureComponent<Props, ComponentState> {
     money: 0
   }
 
-  componentDidUpdate(prevProps: Props) {
-    //START
-    if(this.props.showStats && !prevProps.showStats)
-      this.setState({money: this.props.state.money})
-      
-    //END
+  componentDidUpdate (prevProps: Props) {
+    // START
+    if (this.props.showStats && !prevProps.showStats)
+      this.setState({ money: this.props.state.money })
+
+    // END
     // if(!this.props.showStats && prevProps.showStats) 
   }
 
@@ -111,8 +111,8 @@ class Player extends PureComponent<Props, ComponentState> {
           </div>
         </div>
         <div className='player-container'>
-          <div className='player-health-bar' style={{width: `${state.health}%`}} />
-          <div className='player-health-bar-lost' style={{width: `${state.health}%`}} />
+          <div className='player-health-bar' style={{ width: `${state.health}%` }} />
+          <div className='player-health-bar-lost' style={{ width: `${state.health}%` }} />
           <div className='player-health-background' />
           <div className='player-area-upper'>
             <div className={`player-weapon-main ${mainWeaponBig ? 'bigger' : ''}${mainWeaponBigger ? 'biggest' : ''}`}>

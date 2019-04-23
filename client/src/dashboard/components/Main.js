@@ -11,12 +11,7 @@ import { toggleNavBar } from '../actions'
 import {
   SideBar,
   TopBar,
-  Home,
-  Credits,
-  CSGOGeneral,
-  CSGOSchedule,
-  CSGOSettings,
-  CSGOStatistic
+  HomePage
 } from './'
 
 // $FlowIgnore
@@ -43,14 +38,9 @@ class Main extends PureComponent<Props> {
         <Fragment>
           <TopBar show={show} toggleShow={this._toggleShow} />
           <SideBar show={show} />
-          <div className={show ? 'main-container' : 'main-container fullscreen'}>
+          <div className={`main-container ${!show ? 'fullscreen' : ''}`}>
             <Switch>
-              <Route path={url + '/'} exact component={Home} />
-              <Route path={url + '/credits/'} component={Credits} />
-              <Route path={url + '/csgo/general/'} component={CSGOGeneral} />
-              <Route path={url + '/csgo/schedule/'} component={CSGOSchedule} />
-              <Route path={url + '/csgo/statistics/'} component={CSGOStatistic} />
-              <Route path={url + '/csgo/settings/'} component={CSGOSettings} />
+              <Route path={url + '/'} exact component={HomePage} />
             </Switch>
           </div>
         </Fragment>

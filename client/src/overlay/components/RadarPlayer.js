@@ -36,7 +36,7 @@ class Radar extends PureComponent<Props, ComponentState> {
     scaleY: 0
   }
 
-  componentWillMount() {
+  componentWillMount () {
     const { map } = this.props
     this.setState({
       prefixX: getMapPrefix(map.name)[0],
@@ -54,7 +54,7 @@ class Radar extends PureComponent<Props, ComponentState> {
 
     if (playerPosX < 0)
       return (Math.abs(playerPosX) * (-scaleX)) + prefixX
-    else 
+    else
       return (playerPosX * scaleX) + prefixX
   }
 

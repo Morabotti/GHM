@@ -1,7 +1,7 @@
 // @flow
 
 export const getMapPrefix = (map: string) => {
-  switch(map) {
+  switch (map) {
     case 'de_dust2':
       return [540, 715]
     case 'de_train':
@@ -24,7 +24,7 @@ export const getMapPrefix = (map: string) => {
 }
 
 export const getMapScale = (map: string) => {
-  switch(map) {
+  switch (map) {
     case 'de_dust2':
       return [0.2256, -0.2256]
     case 'de_train':
