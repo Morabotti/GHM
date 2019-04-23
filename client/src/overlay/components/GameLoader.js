@@ -4,35 +4,45 @@ import React, { PureComponent } from 'react'
 import type { Status } from '../../dashboard/types'
 
 type Props = {
-  status: Status
+  status: Status,
+  showMessage: boolean
 }
 
 class GameLoader extends PureComponent<Props> {
   render () {
-    // TODO: Add CSS, animation, spinner?
     const { clientOnline, gameOnline, clientSpectating } = this.props.status
 
-    if (!clientOnline) return (
-      <div>
-        <h2>Loading, Client not connected</h2>
-      </div>
-    )
+    if (!this.props.showMessage) return <div />
 
-    if (!gameOnline) return (
-      <div>
-        <h2>Loading, Game not online</h2>
-      </div>
-    )
+    const message = !clientOnline
+      ? 'Client not connected'
+      : !gameOnline
+      ? 'Game not online'
+      : !clientSpectating
+      ? 'Client is not spectating'
+      : 'Error'
 
-    if (!clientSpectating) return (
-      <div>
-        <h2>Loading, Client is not spectating</h2>
-      </div>
-    )
+    const color = !clientOnline
+      ? 'error'
+      : !gameOnline
+      ? 'warning'
+      : !clientSpectating
+      ? 'info'
+      : ''
 
     return (
-      <div>
-        <h2>Random loading?</h2>
+      <div className='loader-message-container'>
+        <div>
+          <div className={`message-with-icon ${color}`}>
+            <div className='loading'>Loading...</div>
+            <div className='content'>
+              <div className='content-header'>Loading...</div>
+              <div className='content-sub'>
+                {message}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }

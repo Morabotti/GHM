@@ -45,7 +45,7 @@ class Main extends PureComponent<Props> {
     const { status } = this.props
 
     if (!status.clientSpectating)
-      return <GameLoader status={status} />
+      return <GameLoader showMessage status={status} />
 
     return (
       <div className='overlay'>
