@@ -4,3 +4,5 @@ client/build/
 server/node_modules/
 server/dist/
 server/api-struct
+
+ui/node_modules/
