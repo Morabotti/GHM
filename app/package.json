@@ -1,0 +1,20 @@
+{
+  "name": "ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron index.js",
+    "build": "electron-builder --dir",
+    "dist": "electron-builder --x64"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^5.0.0",
+    "electron-builder": "^20.39.0"
+  },
+  "dependencies": {
+    "electron-reload": "^1.4.0"
+  }
+}

@@ -22,7 +22,7 @@ export const subscribeToSocket = (dispatch: Dispatch) => {
   subscribeToSocketUpdates(dispatch)
   subscribeToSocketEvents(dispatch)
   subscribeToSocketStats(dispatch)
-  setTimeout(getLatestData, 10)
+  setTimeout(getLatestData, 50)
 }
 
 const checkResponse = (res: window.Response): window.Response => {
