@@ -3,11 +3,19 @@
   width: 300px;
   z-index: 1;
   position: fixed;
+  overflow-y: scroll;
   padding-top: 45px;
   background-color: #303D74;
   color: white;
   left: 0px;
+  top: 0;
+  bottom: 0;
   transition: left 200ms;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar{
+    display: none;
+  }
 
   &.hidden{
     left: -300px;
@@ -90,6 +98,7 @@
 
 .owner-panel{
   margin-top: 10px;
+  margin-bottom: 60px;
 }
 
 @media only screen and (max-width: 768px) {
@@ -98,11 +107,16 @@
     position: relative;
     width: 100%;
     transition: top 200ms;
+    overflow-y: auto;
 
     &.hidden{
       left: 0;
       display: none;
     }
+  }
+
+  .owner-panel{
+    margin-bottom: 0;
   }
 
   .link-normal{

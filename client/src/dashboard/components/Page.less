@@ -1,8 +1,36 @@
 .f-container{
   box-sizing: border-box;
+  padding: 20px;
+}
+
+.f-container-header{
+  padding: 20px;
+  background-color: #fff;
+  margin-bottom: 10px;
 }
 
 .f-container-wrap{
   padding: 10px;
   background-color: #fff;
+  margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+  .f-container-inner{
+    padding: 0;
+  }
+
+  .f-container-header{
+    margin-bottom: 0;
+    padding: 20px;
+  }
+
+  .f-container-wrap{
+    margin-bottom: 0;
+    padding: 10px;
+  }
+
+  .f-container{
+    padding: 20px 0;  
+  }
 }

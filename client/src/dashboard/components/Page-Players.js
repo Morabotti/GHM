@@ -4,16 +4,16 @@ import { Grid, Icon, Breadcrumb } from 'semantic-ui-react'
 
 type Props = {}
 
-class HomePage extends Component<Props> {
+class PlayersPage extends Component<Props> {
   render () {
     return (
       <React.Fragment>
-        <div className='f-container-wrap'>
+        <div className='f-container-header'>
           <Breadcrumb size='massive' >
-            <Breadcrumb.Section>General</Breadcrumb.Section>
+            <Breadcrumb.Section>Team Management</Breadcrumb.Section>
             <Breadcrumb.Divider icon='right angle' />
             <Breadcrumb.Section active>
-              <Icon name='home' />Home
+              <Icon name='user' />Players
             </Breadcrumb.Section>
           </Breadcrumb>
         </div>
@@ -40,4 +40,4 @@ class HomePage extends Component<Props> {
   }
 }
 
-export default HomePage
+export default PlayersPage

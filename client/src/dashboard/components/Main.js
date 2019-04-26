@@ -11,7 +11,9 @@ import { toggleNavBar } from '../actions'
 import {
   SideBar,
   TopBar,
-  HomePage
+  HomePage,
+  TeamsPage,
+  PlayersPage
 } from './'
 
 // $FlowIgnore
@@ -41,6 +43,8 @@ class Main extends PureComponent<Props> {
           <div className={`main-container ${!show ? 'fullscreen' : ''}`}>
             <Switch>
               <Route path={url + '/'} exact component={HomePage} />
+              <Route path={url + '/teams'} exact component={TeamsPage} />
+              <Route path={url + '/players'} exact component={PlayersPage} />
             </Switch>
           </div>
         </Fragment>

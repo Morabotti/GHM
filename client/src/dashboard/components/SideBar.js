@@ -66,17 +66,30 @@ class SideBar extends Component<Props> {
             </li>
             <li className='list-cont'>
               <NavLink className='item-link' activeClassName='chosen' to={url + '/overlay'}>
-                <span className='item-name-header'> <Icon color='green' name='book' /> Overlay</span>
+                <span className='item-name-header'> <Icon color='green' name='globe' /> Overlay</span>
               </NavLink>
             </li>
             <li className='list-cont'>
               <NavLink className='item-link' activeClassName='chosen' to={url + '/config'}>
-                <span className='item-name-header'> <Icon color='green' name='info circle' /> Config</span>
+                <span className='item-name-header'> <Icon color='green' name='configure' /> Config</span>
               </NavLink>
             </li>
             <li className='list-cont'>
               <NavLink className='item-link' activeClassName='chosen' to={url + '/options'}>
-                <span className='item-name-header'> <Icon color='green' name='calendar alternate' /> Options</span>
+                <span className='item-name-header'> <Icon color='green' name='options' /> Options</span>
+              </NavLink>
+            </li>
+            <li className='connection-info'>
+              <p>Team Management</p>
+            </li>
+            <li className='list-cont'>
+              <NavLink className='item-link' activeClassName='chosen' to={url + '/teams'}>
+                <span className='item-name-header'> <Icon color='green' name='users' /> Teams</span>
+              </NavLink>
+            </li>
+            <li className='list-cont'>
+              <NavLink className='item-link' activeClassName='chosen' to={url + '/players'}>
+                <span className='item-name-header'> <Icon color='green' name='user' /> Players</span>
               </NavLink>
             </li>
           </ul>
@@ -87,7 +100,7 @@ class SideBar extends Component<Props> {
               </li>
               <li className='list-cont'>
                 <NavLink className='item-link' activeClassName='chosen' to={url + '/settings'}>
-                  <span className='item-name-header'> <Icon color='green' name='user' /> Settings</span>
+                  <span className='item-name-header'> <Icon color='green' name='cog' /> Settings</span>
                 </NavLink>
               </li>
             </ul>
