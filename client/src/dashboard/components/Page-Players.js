@@ -1,8 +1,10 @@
 // @flow
 import React, { Component } from 'react'
-import { Grid, Icon, Breadcrumb } from 'semantic-ui-react'
+import { Grid, Icon, Breadcrumb, Header, Form } from 'semantic-ui-react'
 
-type Props = {}
+type Props = {
+  
+}
 
 class PlayersPage extends Component<Props> {
   render () {
@@ -19,16 +21,30 @@ class PlayersPage extends Component<Props> {
         </div>
         <div className='f-container'>
           <div className='f-container-inner'>
-            <Grid columns='2' stackable>
+            <Grid stackable>
               <Grid.Row>
                 <Grid.Column>
                   <div className='f-container-wrap'>
-                    <h2>Data</h2>
-                  </div>
-                </Grid.Column>
-                <Grid.Column>
-                  <div className='f-container-wrap'>
-                    <h2>Something</h2>
+                  <Header as='h2'>
+                    <Icon name='user plus' />
+                    <Header.Content>Add player</Header.Content>
+                  </Header>
+                    <Form>
+                      <Form.Group widths='equal'>
+                        <Form.Input fluid label='First name' placeholder='First name' required />
+                        <Form.Input fluid label='Last name' placeholder='Last name' required />
+                        <Form.Input fluid label='Gamer name' placeholder='Gamer name' required />
+                      </Form.Group>
+                      <Form.Group widths='equal'>
+                        <Form.Select label='Team' placeholder='Team' required />
+                        <Form.Select label='Country' placeholder='Country' />
+                      </Form.Group>
+                      <Form.Group widths='equal'>
+                        <Form.Input fluid label='SteamID64' placeholder='SteamID64' required />
+                      </Form.Group>
+                      
+                      <Form.Button primary>Submit</Form.Button>
+                    </Form>
                   </div>
                 </Grid.Column>
               </Grid.Row>

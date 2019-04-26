@@ -4,6 +4,8 @@ client/build/
 server/node_modules/
 server/dist/
 server/api-struct
+server/.env
+server/static/uploads
 
 app/node_modules/
 app/dist/

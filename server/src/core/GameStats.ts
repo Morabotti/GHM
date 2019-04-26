@@ -1,4 +1,4 @@
-import { dispatchSocket, openSockets } from '../models/SocketIo'
+import { dispatchSocket, openSockets } from '../handler/SocketIo'
 import { deepEqual } from '../utils/helpers'
 
 import {

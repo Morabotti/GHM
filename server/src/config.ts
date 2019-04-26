@@ -7,7 +7,9 @@ interface ConfigType {
   socketIoPort: number,
   gameStateToken: string,
   settingsPath: string,
-  gameStateTimeout: number
+  gameStateTimeout: number,
+  steamApiKey: string,
+  dbConnection: string | null
 }
 
 const config: ConfigType = {
@@ -15,7 +17,9 @@ const config: ConfigType = {
   'socketIoPort': Number(process.env.SOCKET_PORT) || 8081,
   'gameStateToken': process.env.TOKEN_SECRET || 'SecretKEY',
   'settingsPath': process.env.SETTINGS_PATH || './static/data/settings.json',
-  'gameStateTimeout': Number(process.env.TIMEOUT_TIME) || 15
+  'gameStateTimeout': Number(process.env.TIMEOUT_TIME) || 15,
+  'steamApiKey': process.env.STEAM_API_KEY || '',
+  'dbConnection': process.env.DB_CONNECTION || null,
 }
 
 export default config

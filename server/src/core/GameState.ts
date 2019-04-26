@@ -2,7 +2,7 @@ import * as moment from 'moment'
 
 import { GameState } from '../types'
 import { analyzeEvents } from './GameEvents'
-import { dispatchSocket, openSockets } from '../models/SocketIo'
+import { dispatchSocket, openSockets } from '../handler/SocketIo'
 import gameStats from './GameStats'
 
 import config from '../config'

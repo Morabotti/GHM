@@ -43,6 +43,25 @@ export interface TeamStats {
   teamEconomy: number
 }
 
+export interface PlayerSchema {
+  firstName: string
+  lastName: string
+  gameName: string
+  country: string
+  steam64id: string
+  team: string
+  hasImage: boolean
+  imagePath: string | null
+}
+
+export interface TeamSchema {
+  teamNameShort: string
+  teamNameLong: string
+  country: string
+  hasLogo: boolean
+  logoPath: string
+}
+
 export type TeamType = 'T' | 'CT'
 
 export interface Sockets {
