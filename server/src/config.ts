@@ -9,17 +9,19 @@ interface ConfigType {
   settingsPath: string,
   gameStateTimeout: number,
   steamApiKey: string,
-  dbConnection: string | null
+  dbConnection: string | null,
+  countriesPath: string
 }
 
 const config: ConfigType = {
   'port': Number(process.env.SERVER_PORT) || 8080,
   'socketIoPort': Number(process.env.SOCKET_PORT) || 8081,
   'gameStateToken': process.env.TOKEN_SECRET || 'SecretKEY',
-  'settingsPath': process.env.SETTINGS_PATH || './static/data/settings.json',
+  'settingsPath': process.env.SETTINGS_PATH || './static/config/settings.json',
   'gameStateTimeout': Number(process.env.TIMEOUT_TIME) || 15,
   'steamApiKey': process.env.STEAM_API_KEY || '',
   'dbConnection': process.env.DB_CONNECTION || null,
+  'countriesPath': process.env.COUNTRIES_PATH || './static/config/countries.json'
 }
 
 export default config

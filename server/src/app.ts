@@ -6,6 +6,7 @@ import { Request, Response } from 'express'
 import GameStateController from './api/GameStateController'
 import PlayerController from './api/PlayerController'
 import TeamController from './api/TeamController'
+import GeneralController from './api/GeneralController'
 
 const app: express.Application = express()
 
@@ -15,6 +16,7 @@ app.use(express.static('../client/build'))
 app.use('/api/game', GameStateController)
 app.use('/api/players', PlayerController)
 app.use('/api/teams', TeamController)
+app.use('/api/general', GeneralController)
 
 app.use('/static', express.static(path.join(__dirname, '../static')))
 

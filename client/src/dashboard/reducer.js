@@ -1,10 +1,13 @@
 // @flow
 import type { Action } from './actions'
-import type { Status } from './types'
+import type { Status, Country, Players, Teams } from './types'
 
 export type State = {
   status: Status,
-  showNavbar: boolean
+  showNavbar: boolean,
+  countries: Array<Country>,
+  teams: Teams,
+  players: Players
 }
 
 const StatusState: Status = {
@@ -16,6 +19,9 @@ const StatusState: Status = {
 
 const getDefaultState = (): State => ({
   status: StatusState,
+  countries: [],
+  teams: [],
+  players: [],
   showNavbar: true
 })
 
@@ -33,6 +39,21 @@ export default function reducer (
       return {
         ...state,
         showNavbar: action.showNavbar
+      }
+    case 'set-countries':
+      return {
+        ...state,
+        countries: action.countries.countries
+      }
+    case 'set-players':
+      return {
+        ...state,
+        players: action.players
+      }
+    case 'set-teams':
+      return {
+        ...state,
+        teams: action.teams
       }
     default:
       return state

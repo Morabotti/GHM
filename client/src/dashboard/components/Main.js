@@ -1,12 +1,24 @@
 // @flow
 import React, { PureComponent, Fragment } from 'react'
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
-import type { Dispatch } from '../types'
-import type { State } from '../../types'
 import { connect } from 'react-redux'
 import { hot } from 'react-hot-loader'
 
-import { toggleNavBar } from '../actions'
+import type { Dispatch } from '../types'
+import type { State } from '../../types'
+
+import {
+  toggleNavBar,
+  setCountries,
+  setTeams,
+  setPlayers
+} from '../actions'
+
+import {
+  getCountries,
+  getTeams,
+  getPlayers
+} from '../client'
 
 import {
   SideBar,
@@ -26,11 +38,29 @@ type Props = {
 }
 
 class Main extends PureComponent<Props> {
+  componentDidMount() {
+    this._getCountries()
+    this._getTeams()
+    this._getPlayers()
+  }
+
   _toggleShow = () => {
     const { dispatch, show } = this.props
     const toggle = toggleNavBar(!show)
     dispatch(toggle)
   }
+
+  _getCountries = () => getCountries()
+    .then(countries => setCountries(countries))
+    .then(this.props.dispatch)
+
+  _getTeams = () => getTeams()
+    .then(teams => setTeams(teams))
+    .then(this.props.dispatch)
+
+  _getPlayers = () => getPlayers()
+    .then(players => setPlayers(players))
+    .then(this.props.dispatch)
 
   render () {
     const { show } = this.props

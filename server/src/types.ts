@@ -43,6 +43,17 @@ export interface TeamStats {
   teamEconomy: number
 }
 
+export interface Country {
+  key: string,
+  value: string,
+  flag: string,
+  text: string
+}
+
+export interface Countries {
+  countries: Array<Country>
+}
+
 export interface PlayerSchema {
   firstName: string
   lastName: string
