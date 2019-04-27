@@ -3,6 +3,7 @@ import * as bodyParser from 'body-parser'
 
 import { Request, Response } from 'express'
 import { Error } from 'mongoose'
+import { ListElement } from '../types'
 
 import { uploadTeamsLogo } from '../handler/Multer'
 import Team from '../models/Team'
@@ -33,12 +34,36 @@ router.post('/', uploadTeamsLogo.single('logo'), (req: Request, res: Response) =
 })
 
 router.get('/', (req: Request, res: Response) => {
-  Team.find({}, { password: 0 }, (err: Error, team: any) => {
+  Team.find({}, (err: Error, team: any) => {
     if (err) return res
         .status(500)
         .send('There was a problem finding the team.')
 
     res.status(200).send(team)
+  })
+})
+
+router.get('/dropdown', (req: Request, res: Response) => {
+  Team.find({}, (err: Error, teams: any) => {
+    if (err) return res
+        .status(500)
+        .send('There was a problem finding the team.')
+      
+    let newArray:Array<ListElement> = []
+
+    teams.forEach(team => {
+      newArray = [
+        ...newArray,
+        {
+          key: team.teamNameShort,
+          value: team.teamNameShort,
+          text: team.teamNameLong,
+          image: { avatar: true, src: `/${team.logoPath}` }
+        }
+      ]
+    });
+
+    res.status(200).send(newArray)
   })
 })
 

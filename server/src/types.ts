@@ -50,6 +50,13 @@ export interface Country {
   text: string
 }
 
+export type ListElement = {
+  key: string,
+  value: string,
+  text: string,
+  image: { avatar: boolean, src: string }
+}
+
 export interface Countries {
   countries: Array<Country>
 }

@@ -3,7 +3,8 @@ import type {
   Status,
   Countries,
   Teams,
-  Players
+  Players,
+  ListElement
 } from './types'
 
 export type Action = { type: 'set-status', status: Status }
@@ -11,6 +12,7 @@ export type Action = { type: 'set-status', status: Status }
   | { type: 'set-countries', countries: Countries }
   | { type: 'set-players', players: Players }
   | { type: 'set-teams', teams: Teams }
+  | { type: 'set-teams-dropdown', teamsDropdown: Array<ListElement> }
 
 export const setStatus = (status: Status) => ({
   type: 'set-status',
@@ -20,6 +22,11 @@ export const setStatus = (status: Status) => ({
 export const setTeams = (teams: Teams) => ({
   type: 'set-teams',
   teams
+})
+
+export const setTeamsDropdown = (teamsDropdown: Array<ListElement>) => ({
+  type: 'set-teams-dropdown',
+  teamsDropdown
 })
 
 export const setPlayers = (players: Players) => ({

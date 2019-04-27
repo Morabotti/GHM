@@ -11,13 +11,15 @@ import {
   toggleNavBar,
   setCountries,
   setTeams,
-  setPlayers
+  setPlayers,
+  setTeamsDropdown
 } from '../actions'
 
 import {
   getCountries,
   getTeams,
-  getPlayers
+  getPlayers,
+  getTeamsDropdown
 } from '../client'
 
 import {
@@ -42,6 +44,7 @@ class Main extends PureComponent<Props> {
     this._getCountries()
     this._getTeams()
     this._getPlayers()
+    this._getTeamsDropdown()
   }
 
   _toggleShow = () => {
@@ -56,6 +59,10 @@ class Main extends PureComponent<Props> {
 
   _getTeams = () => getTeams()
     .then(teams => setTeams(teams))
+    .then(this.props.dispatch)
+
+  _getTeamsDropdown = () => getTeamsDropdown()
+    .then(teams => setTeamsDropdown(teams))
     .then(this.props.dispatch)
 
   _getPlayers = () => getPlayers()

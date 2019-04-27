@@ -50,6 +50,16 @@ export const getTeams = () => window.fetch(
   .then(checkResponse)
   .then((res) => res.json())
 
+export const getTeamsDropdown = () => window.fetch(
+  '/api/teams/dropdown',
+  {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+  .then((res) => res.json())
+
 // * PLAYER METHODS
 
 export const getPlayers = () => window.fetch(

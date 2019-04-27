@@ -9,7 +9,9 @@ const storageTeams = multer.diskStorage({
   filename: function(req: Request, file, cb) {
     if (file.originalname.includes('.png')) {
       cb(null, `${req.body.teamNameShort}.png`)
-    } else {
+    } else if(file.originalname.includes('.svg')) {
+      cb(null, `${req.body.teamNameShort}.svg`)
+    } else{
       cb(null, `${req.body.teamNameShort}.jpeg`)
     }
   }
@@ -20,7 +22,7 @@ const fileFilterTeams = (req: Request, file, cb) => {
   if(logo === 'true' || logo === 'false') {
     const hasLogo = JSON.parse(logo)
     if (hasLogo) {
-      if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg')
+      if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/svg+xml')
         cb(null, true)
       else
         cb(null, false)
