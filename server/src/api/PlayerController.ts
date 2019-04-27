@@ -6,6 +6,7 @@ import { Error } from 'mongoose'
 
 import { uploadPlayerImages } from '../handler/Multer'
 import Player from '../models/Player'
+import { deleteFile } from '../utils/files';
 
 const router = express.Router()
 
@@ -67,6 +68,12 @@ router.delete('/:id', (req: Request, res: Response) => {
     if (err) return res
         .status(500)
         .send('There was a problem deleting the player.')
+
+    if (player.imagePath !== null)
+        deleteFile(player.imagePath)
+          .catch(e => res
+            .status(500)
+            .send(`Team: ${player.gameName} was deleted, but image was not.`))
 
     res.status(200).send(`Player: ${player.gameName} was deleted.`)
   })

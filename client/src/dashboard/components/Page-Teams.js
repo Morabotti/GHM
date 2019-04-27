@@ -2,9 +2,22 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { TeamSubmit } from '../lib/FormDataWrap'
-import { ConfirmModal } from './'
-import { toggleConfirmModal, setSelectedItem, deleteTeam, setTeams } from '../actions'
-import { removeTeam } from '../client'
+import { ConfirmModal, ViewTeamModal } from './'
+
+import {
+  toggleConfirmModal,
+  setSelectedItem,
+  deleteTeam,
+  setTeams,
+  setTeamsDropdown,
+  toggleViewModal,
+  deletePlayersFromTeam
+} from '../actions'
+
+import {
+  removeTeam,
+  getTeamsDropdown
+} from '../client'
 
 import {
   Grid,
@@ -26,7 +39,7 @@ import type {
   Players,
   Teams,
   ListElement,
-  Team,
+  Player
 } from '../types'
 
 import { addTeam } from '../client'
@@ -36,10 +49,12 @@ import type { State } from '../../types'
 type Props = {
   dispatch: Dispatch,
   countries: Array<Country>,
-  teams: Array<Team>,
+  teams: Teams,
+  players: Array<Player>,
   teamsDropdown: Array<ListElement>,
   confirmModalOpen: boolean,
-  selectedItem: number
+  selectedItem: number,
+  viewModalOpen: boolean
 }
 
 type ComponentState = {
@@ -118,6 +133,7 @@ class TeamsPage extends Component<Props, ComponentState> {
         })
         this.fileInputRef.current.value = '';
         resolve()}))
+      .then(this._getTeamsDropdown)
       .catch(e => {
         this.setState({
           stateLoading: false,
@@ -138,6 +154,10 @@ class TeamsPage extends Component<Props, ComponentState> {
     this._toggleConfirmModal()
   }
 
+  _getTeamsDropdown = () => getTeamsDropdown()
+    .then(teams => setTeamsDropdown(teams))
+    .then(this.props.dispatch)
+
   _deleteTeam = () => {
     const { dispatch, selectedItem, teams } = this.props
     if (
@@ -146,10 +166,23 @@ class TeamsPage extends Component<Props, ComponentState> {
       teams[selectedItem]._id !== undefined
     ) {
       removeTeam(teams[selectedItem]._id)
+        .then(dispatch(deletePlayersFromTeam()))
         .then(dispatch(deleteTeam()))
         .then(this._toggleConfirmModal)
+        .then(this._getTeamsDropdown)
         .catch(e => console.log(e))
     }
+  }
+
+  _toggleViewModal = () => {
+    const { dispatch, viewModalOpen } = this.props
+    const toggle = toggleViewModal(!viewModalOpen)
+    dispatch(toggle)
+  }
+
+  _openViewModal = (index: number) => () => {
+    this.props.dispatch(setSelectedItem(index))
+    this._toggleViewModal()
   }
 
   render () {
@@ -157,7 +190,10 @@ class TeamsPage extends Component<Props, ComponentState> {
       countries,
       teamsDropdown,
       teams,
-      confirmModalOpen
+      selectedItem,
+      confirmModalOpen,
+      players,
+      viewModalOpen
     } = this.props
 
     const {
@@ -170,7 +206,9 @@ class TeamsPage extends Component<Props, ComponentState> {
       stateError
     } = this.state
 
-    // TODO: Add warning that team deleation will delete players too.
+    const affected = selectedItem !== null
+      ? players.filter(player => player.team === teams[selectedItem].teamNameShort)
+      : []
 
     return (
       <React.Fragment>
@@ -194,7 +232,7 @@ class TeamsPage extends Component<Props, ComponentState> {
                       <Header.Content>Add team</Header.Content>
                     </Header>
                     <Form onSubmit={this._handleSubmit} loading={stateLoading} error={stateError}>
-                      <Grid>
+                      <Grid stackable>
                         <Grid.Row>
                           <Grid.Column width={teamHasLogo ? 11 : 16}>
                             <Form.Group widths='equal'>
@@ -248,7 +286,7 @@ class TeamsPage extends Component<Props, ComponentState> {
                             </div>
                           </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row>
+                        <Grid.Row className='actions-reverse-mobile'>
                           <Grid.Column floated='left' width={11}>
                             <Form.Button type='submit' primary>Save</Form.Button>
                           </Grid.Column>
@@ -320,7 +358,7 @@ class TeamsPage extends Component<Props, ComponentState> {
                                 trigger={<Button
                                   primary
                                   icon='eye'
-                                  onClick={null}
+                                  onClick={this._openViewModal(index)}
                                 />}
                                 content='Show Team'
                               />
@@ -352,9 +390,16 @@ class TeamsPage extends Component<Props, ComponentState> {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
+            <ViewTeamModal
+              isOpen={viewModalOpen}
+              toggleModal={this._toggleViewModal}
+              currentTeam={teams[selectedItem]}
+              currentPlayers={affected}
+            />
             <ConfirmModal
               modalHeader='Delete team'
               modalBody='Are you sure you want to delete this team'
+              affectedTargets={affected}
               isOpen={confirmModalOpen}
               toggleModal={this._toggleConfirmModal}
               onDelete={this._deleteTeam}
@@ -369,7 +414,9 @@ class TeamsPage extends Component<Props, ComponentState> {
 const mapStateToProps = (state: State) => ({
   countries: state.dashboard.countries,
   teams: state.dashboard.teams,
+  players: state.dashboard.players,
   teamsDropdown: state.dashboard.teamsDropdown,
+  viewModalOpen: state.dashboard.modals.viewModalOpen,
   confirmModalOpen: state.dashboard.modals.confirmModalOpen,
   selectedItem: state.dashboard.selectedItem,
 })

@@ -3,10 +3,12 @@ import * as bodyParser from 'body-parser'
 
 import { Request, Response } from 'express'
 import { Error } from 'mongoose'
-import { ListElement } from '../types'
+import { ListElement, TeamSchema } from '../types'
 
 import { uploadTeamsLogo } from '../handler/Multer'
 import Team from '../models/Team'
+import Player from '../models/Player'
+import { deleteFile } from '../utils/files';
 
 const router = express.Router()
 
@@ -51,14 +53,14 @@ router.get('/dropdown', (req: Request, res: Response) => {
       
     let newArray:Array<ListElement> = []
 
-    teams.forEach(team => {
+    teams.forEach((team: TeamSchema) => {
       newArray = [
         ...newArray,
         {
           key: team.teamNameShort,
           value: team.teamNameShort,
           text: team.teamNameLong,
-          image: { avatar: true, src: `/${team.logoPath}` }
+          image: { avatar: true, src: `/${team.logoPath === null ? 'static/default/default-team.png' : team.logoPath}` }
         }
       ]
     });
@@ -86,8 +88,16 @@ router.delete('/:id', (req: Request, res: Response) => {
     if (err) return res
         .status(500)
         .send('There was a problem deleting the team.')
+    
+    Player.deleteMany({team: team.teamNameShort}).exec()
+    
+    if (team.logoPath !== null)
+      deleteFile(team.logoPath)
+        .catch(e => res
+          .status(500)
+          .send(`Team: ${team.teamNameShort} was deleted, but image was not.`))
 
-    res.status(200).send(`Team: ${team.gameName} was deleted.`)
+    res.status(200).send(`Team: ${team.teamNameShort} was deleted.`)
   })
 })
 

@@ -17,7 +17,8 @@ export type State = {
   players: Players,
   selectedItem: number | null,
   modals: {
-    confirmModalOpen: boolean
+    confirmModalOpen: boolean,
+    viewModalOpen: boolean
   }
 }
 
@@ -36,7 +37,8 @@ const getDefaultState = (): State => ({
   players: [],
   selectedItem: null,
   modals: {
-    confirmModalOpen: false
+    confirmModalOpen: false,
+    viewModalOpen: false
   },
   showNavbar: true
 })
@@ -89,12 +91,27 @@ export default function reducer (
           confirmModalOpen: action.confirmModalOpen
         }
       }
+    case 'toggle-view-modal-player':
+      return {
+        ...state,
+        modals: {
+          ...state.modals,
+          viewModalOpen: action.viewModalOpen
+        }
+      }
     case 'delete-player':
       return {
         ...state,
         players: state.players
           .filter((value, index) => index !== state.selectedItem),
         selectedItem: null
+      }
+    case 'delete-players-from-select':
+      return {
+        ...state,
+        players: state.players
+          .filter((player) => 
+            player.team !== state.teams[state.selectedItem === null ? 0 : state.selectedItem].teamNameShort)
       }
     case 'delete-team':
       return {

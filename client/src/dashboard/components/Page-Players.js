@@ -2,15 +2,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { PlayerSubmit } from '../lib/FormDataWrap'
-import { addPlayer } from '../client'
+import { addPlayer, removePlayer } from '../client'
 
 import {
   toggleConfirmModal,
   deletePlayer,
   setSelectedItem,
-  setPlayers
+  setPlayers,
+  toggleViewModal
 } from '../actions'
-import { removePlayer } from '../client'
 
 import {
   Grid,
@@ -36,7 +36,8 @@ import type {
 } from '../types'
 
 import {
-  ConfirmModal
+  ConfirmModal,
+  ViewPlayerModal
 } from './'
 
 import type { State } from '../../types'
@@ -48,7 +49,8 @@ type Props = {
   teams: Array<Team>,
   teamsDropdown: Array<ListElement>,
   confirmModalOpen: boolean,
-  selectedItem: number
+  selectedItem: number,
+  viewModalOpen: boolean
 }
 
 type ComponentState = {
@@ -164,6 +166,17 @@ class PlayersPage extends Component<Props, ComponentState> {
     this._toggleConfirmModal()
   }
 
+  _toggleViewModal = () => {
+    const { dispatch, viewModalOpen } = this.props
+    const toggle = toggleViewModal(!viewModalOpen)
+    dispatch(toggle)
+  }
+
+  _openViewModal = (index: number) => () => {
+    this.props.dispatch(setSelectedItem(index))
+    this._toggleViewModal()
+  }
+
   _deletePlayer = () => {
     const { dispatch, selectedItem, players } = this.props
     if (
@@ -184,7 +197,9 @@ class PlayersPage extends Component<Props, ComponentState> {
       teamsDropdown,
       players,
       teams,
-      confirmModalOpen
+      confirmModalOpen,
+      viewModalOpen,
+      selectedItem
     } = this.props
 
     const {
@@ -199,6 +214,10 @@ class PlayersPage extends Component<Props, ComponentState> {
       stateLoading,
       stateError
     } = this.state
+
+    const teamTarget = selectedItem !== null
+      ? teams.find(team => team.teamNameShort === players[selectedItem].team)
+      : null
 
     return (
       <React.Fragment>
@@ -394,7 +413,7 @@ class PlayersPage extends Component<Props, ComponentState> {
                                   trigger={<Button
                                     primary
                                     icon='eye'
-                                    onClick={null}
+                                    onClick={this._openViewModal(index)}
                                   />}
                                   content='Show player'
                                 />
@@ -426,6 +445,13 @@ class PlayersPage extends Component<Props, ComponentState> {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
+            <ViewPlayerModal
+              isOpen={viewModalOpen}
+              toggleModal={this._toggleViewModal}
+              currentView={players[selectedItem]}
+              players={players}
+              currentTeam={teamTarget}
+            />
             <ConfirmModal
               modalHeader='Delete player'
               modalBody='Are you sure you want to delete this player'
@@ -445,6 +471,7 @@ const mapStateToProps = (state: State) => ({
   players: state.dashboard.players,
   teams: state.dashboard.teams,
   confirmModalOpen: state.dashboard.modals.confirmModalOpen,
+  viewModalOpen: state.dashboard.modals.viewModalOpen,
   selectedItem: state.dashboard.selectedItem,
   teamsDropdown: state.dashboard.teamsDropdown
 })

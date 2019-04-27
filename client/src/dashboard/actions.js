@@ -15,7 +15,9 @@ export type Action = { type: 'set-status', status: Status }
   | { type: 'set-teams-dropdown', teamsDropdown: Array<ListElement> }
   | { type: 'delete-player' }
   | { type: 'delete-team' }
+  | { type: 'delete-players-from-select' }
   | { type: 'toggle-confirm-modal', confirmModalOpen: boolean }
+  | { type: 'toggle-view-modal-player', viewModalOpen: boolean }
   | { type: 'set-selected-item', selectedItem: number }
 
 export const setStatus = (status: Status) => ({
@@ -56,9 +58,18 @@ export const deleteTeam = () => ({
   type: 'delete-team'
 })
 
+export const deletePlayersFromTeam = () => ({
+  type: 'delete-players-from-select'
+})
+
 export const toggleConfirmModal = (confirmModalOpen: boolean) => ({
   type: 'toggle-confirm-modal',
   confirmModalOpen
+})
+
+export const toggleViewModal = (viewModalOpen: boolean) => ({
+  type: 'toggle-view-modal-player',
+  viewModalOpen
 })
 
 export const setSelectedItem = (selectedItem: number) => ({
