@@ -6,6 +6,7 @@ const dbConnect = () => {
     mongoose.connect(config.dbConnection, {
       useNewUrlParser: true,
       useCreateIndex: true,
+      useFindAndModify: false
     })
   } else {
     console.log('Cannot access to mongoDB. DB connection string is wrong.')

@@ -14,9 +14,9 @@ router.use(bodyParser.urlencoded({ extended: false }))
 router.use(bodyParser.json())
 
 router.post('/', uploadTeamsLogo.single('logo'), (req: Request, res: Response) => {
-  const { teamNameShort, teamNameLong, hasLogo } = req.body
-  const country = req.body.country === undefined ? 'un' : req.body.country
-  const isLogo = JSON.parse(hasLogo)
+  const { teamNameShort, teamNameLong, hasLogo, } = req.body
+  const country = req.body.country === undefined ? 'eu' : req.body.country
+  const isLogo = hasLogo === 'true'
   
   Team.create({
     teamNameShort,

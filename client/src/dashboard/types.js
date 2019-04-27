@@ -58,6 +58,15 @@ export type Player = {
   imagePath: string,
 }
 
+export type File = {
+  lastModified: number,
+  lastModifiedDate: string,
+  name: string,
+  size: number,
+  type: string,
+  webkitRelativePath: string
+}
+
 export type Players = Array<Player>
 
 export type Teams = Array<Team>

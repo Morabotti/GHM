@@ -2,26 +2,26 @@ import * as mongoose from 'mongoose'
 import { PlayerSchema } from '../types'
 
 const playerSchema = new mongoose.Schema<PlayerSchema>({
-  firstName: {
-    type: String,
-    required: true
-  },
-  lastName: {
-    type: String,
-    required: true
-  },
-  gameName: {
-    type: String,
-    required: true
-  },
-  country: {
-    type: String,
-    required: false
-  },
   steam64id: {
     type: String,
     required: true,
     unique: true
+  },
+  firstName: {
+    type: String,
+    required: false
+  },
+  lastName: {
+    type: String,
+    required: false
+  },
+  gameName: {
+    type: String,
+    required: false
+  },
+  country: {
+    type: String,
+    required: false
   },
   team: {
     type: String,

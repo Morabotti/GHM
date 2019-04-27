@@ -38,7 +38,7 @@ export const updateCountries = () => window.fetch(
   .then(checkResponse)
   .then((res) => res.json())
 
-// * TEAM METHODS
+// ! TEAM METHODS
 
 export const getTeams = () => window.fetch(
   '/api/teams',
@@ -50,6 +50,33 @@ export const getTeams = () => window.fetch(
   .then(checkResponse)
   .then((res) => res.json())
 
+export const removeTeam = (
+  id: string
+) => window.fetch(
+  '/api/teams/' + id,
+  {
+    method: 'DELETE',
+    headers: {
+      'content-type': 'application/json'
+    }
+  }
+)
+  .then(checkResponse)
+
+export const addTeam = (data: any) => {
+  const options = {
+    method: 'POST',
+    body: data,
+    headers: { 'content-type': 'multipart/form-data'}
+  }
+
+  delete options.headers['content-type'];
+
+  return window.fetch('/api/teams', options)
+    .then(checkResponse)
+    .then((res) => res.json())
+}
+
 export const getTeamsDropdown = () => window.fetch(
   '/api/teams/dropdown',
   {
@@ -60,7 +87,7 @@ export const getTeamsDropdown = () => window.fetch(
   .then(checkResponse)
   .then((res) => res.json())
 
-// * PLAYER METHODS
+// ! PLAYER METHODS
 
 export const getPlayers = () => window.fetch(
   '/api/players',
@@ -71,3 +98,31 @@ export const getPlayers = () => window.fetch(
 )
   .then(checkResponse)
   .then((res) => res.json())
+
+export const addPlayer = (data: any) => {
+  const options = {
+    method: 'POST',
+    body: data,
+    headers: { 'content-type': 'multipart/form-data'}
+  }
+
+  delete options.headers['content-type'];
+
+  return window.fetch('/api/players', options)
+    .then(checkResponse)
+    .then((res) => res.json())
+}
+
+export const removePlayer = (
+  id: string
+) => window.fetch(
+  '/api/players/' + id,
+  {
+    method: 'DELETE',
+    headers: {
+      'content-type': 'application/json'
+    }
+  }
+)
+  .then(checkResponse)
+

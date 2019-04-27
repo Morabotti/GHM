@@ -6,6 +6,7 @@ import TeamsPage from './Page-Teams'
 import PlayersPage from './Page-Players'
 import { ClientConnectButton, ConnectionButton, ServerConnectButton } from './Buttons'
 import { SubHeaderWithIcon } from './Headers'
+import { ConfirmModal } from './Modals'
 
 export {
   SideBar,
@@ -16,5 +17,6 @@ export {
   ConnectionButton,
   SubHeaderWithIcon,
   TeamsPage,
-  PlayersPage
+  PlayersPage,
+  ConfirmModal
 }

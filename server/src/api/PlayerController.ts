@@ -14,29 +14,32 @@ router.use(bodyParser.json())
 
 router.post('/', uploadPlayerImages.single('image'), (req: Request, res: Response) => {
   const { firstName, lastName, gameName, steam64id, team, hasImage } = req.body
-  const country = req.body.country === undefined ? 'un' : req.body.country
-  const isImage = JSON.parse(hasImage)
+  const country = req.body.country === undefined ? 'eu' : req.body.country
+  const isImage = hasImage === 'true'
 
   Player.create({
-    firstName,
-    lastName,
-    gameName,
-    country,
-    steam64id,
-    team,
+    steam64id: steam64id,
+    firstName: firstName,
+    lastName: lastName,
+    gameName: gameName,
+    country: country,
+    team: team,
     hasImage: isImage,
     imagePath: isImage ? req.file.path : null
   }, (err: Error, player: any) => {
-    if (err) return res
+    if (err) {
+      console.log(err)
+      return res
         .status(500)
         .send('There was a problem adding the information to the database.')
+    }
 
     res.status(200).send(player)
   })
 })
 
 router.get('/', (req: Request, res: Response) => {
-  Player.find({}, { password: 0 }, (err: Error, player: any) => {
+  Player.find({}, (err: Error, player: any) => {
     if (err) return res
         .status(500)
         .send('There was a problem finding the players.')

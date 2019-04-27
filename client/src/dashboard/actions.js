@@ -13,6 +13,10 @@ export type Action = { type: 'set-status', status: Status }
   | { type: 'set-players', players: Players }
   | { type: 'set-teams', teams: Teams }
   | { type: 'set-teams-dropdown', teamsDropdown: Array<ListElement> }
+  | { type: 'delete-player' }
+  | { type: 'delete-team' }
+  | { type: 'toggle-confirm-modal', confirmModalOpen: boolean }
+  | { type: 'set-selected-item', selectedItem: number }
 
 export const setStatus = (status: Status) => ({
   type: 'set-status',
@@ -42,4 +46,22 @@ export const setCountries = (countries: Countries) => ({
 export const toggleNavBar = (showNavbar: boolean) => ({
   type: 'toggle-navbar',
   showNavbar
+})
+
+export const deletePlayer = () => ({
+  type: 'delete-player'
+})
+
+export const deleteTeam = () => ({
+  type: 'delete-team'
+})
+
+export const toggleConfirmModal = (confirmModalOpen: boolean) => ({
+  type: 'toggle-confirm-modal',
+  confirmModalOpen
+})
+
+export const setSelectedItem = (selectedItem: number) => ({
+  type: 'set-selected-item',
+  selectedItem
 })

@@ -10,9 +10,32 @@
   margin-bottom: 10px;
 }
 
+.image-container{
+  border: 3px solid #f4f4f4
+}
+
+.do-not-show{
+  display: none;
+}
+
+.button-layout{
+  display: flex;
+
+  button,
+  input{
+    flex: 1;
+    cursor: pointer;
+    margin: 0 5px !important;
+  }
+}
+
 @media only screen and (max-width: 768px) {
   .f-container-inner{
     padding: 0;
+  }
+
+  .actions-reverse-mobile{
+    flex-direction: column-reverse !important;
   }
 
   .f-container-header{
