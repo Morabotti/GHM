@@ -4,6 +4,8 @@ import type {
   Countries,
   Teams,
   Players,
+  Team,
+  Player,
   ListElement
 } from './types'
 
@@ -12,11 +14,14 @@ export type Action = { type: 'set-status', status: Status }
   | { type: 'set-countries', countries: Countries }
   | { type: 'set-players', players: Players }
   | { type: 'set-teams', teams: Teams }
+  | { type: 'set-updated-team', teams: Array<Team> }
+  | { type: 'set-updated-player', players: Array<Player> }
   | { type: 'set-teams-dropdown', teamsDropdown: Array<ListElement> }
   | { type: 'delete-player' }
   | { type: 'delete-team' }
   | { type: 'delete-players-from-select' }
   | { type: 'toggle-confirm-modal', confirmModalOpen: boolean }
+  | { type: 'toggle-edit-modal', editModalOpen: boolean }
   | { type: 'toggle-view-modal-player', viewModalOpen: boolean }
   | { type: 'set-selected-item', selectedItem: number }
 
@@ -28,6 +33,16 @@ export const setStatus = (status: Status) => ({
 export const setTeams = (teams: Teams) => ({
   type: 'set-teams',
   teams
+})
+
+export const updatedTeam = (teams: Array<Team>) => ({
+  type: 'set-updated-team',
+  teams
+})
+
+export const updatedPlayer = (players: Array<Player>) => ({
+  type: 'set-updated-player',
+  players
 })
 
 export const setTeamsDropdown = (teamsDropdown: Array<ListElement>) => ({
@@ -65,6 +80,11 @@ export const deletePlayersFromTeam = () => ({
 export const toggleConfirmModal = (confirmModalOpen: boolean) => ({
   type: 'toggle-confirm-modal',
   confirmModalOpen
+})
+
+export const toggleEditModal = (editModalOpen: boolean) => ({
+  type: 'toggle-edit-modal',
+  editModalOpen
 })
 
 export const toggleViewModal = (viewModalOpen: boolean) => ({

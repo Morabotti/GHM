@@ -2,7 +2,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { TeamSubmit } from '../lib/FormDataWrap'
-import { ConfirmModal, ViewTeamModal } from './'
+import {
+  ConfirmModal,
+  ViewTeamModal,
+  EditTeamModal
+} from './'
 
 import {
   toggleConfirmModal,
@@ -11,12 +15,18 @@ import {
   setTeams,
   setTeamsDropdown,
   toggleViewModal,
-  deletePlayersFromTeam
+  deletePlayersFromTeam,
+  toggleEditModal,
+  updatedTeam,
+  setPlayers
 } from '../actions'
 
 import {
   removeTeam,
-  getTeamsDropdown
+  getTeamsDropdown,
+  updateTeamWithLogo,
+  updateTeam,
+  getPlayers
 } from '../client'
 
 import {
@@ -38,6 +48,7 @@ import type {
   Country,
   Players,
   Teams,
+  NewTeam,
   ListElement,
   Player
 } from '../types'
@@ -54,7 +65,8 @@ type Props = {
   teamsDropdown: Array<ListElement>,
   confirmModalOpen: boolean,
   selectedItem: number,
-  viewModalOpen: boolean
+  viewModalOpen: boolean,
+  editModalOpen: boolean
 }
 
 type ComponentState = {
@@ -157,6 +169,10 @@ class TeamsPage extends Component<Props, ComponentState> {
   _getTeamsDropdown = () => getTeamsDropdown()
     .then(teams => setTeamsDropdown(teams))
     .then(this.props.dispatch)
+  
+  _getPlayers = () => getPlayers()
+    .then(players => setPlayers(players))
+    .then(this.props.dispatch)
 
   _deleteTeam = () => {
     const { dispatch, selectedItem, teams } = this.props
@@ -185,6 +201,59 @@ class TeamsPage extends Component<Props, ComponentState> {
     this._toggleViewModal()
   }
 
+  _toggleEditModal = () => {
+    const { dispatch, editModalOpen } = this.props
+    const toggle = toggleEditModal(!editModalOpen)
+    dispatch(toggle)
+  }
+
+  _openEditModal = (index: number) => () => {
+    this.props.dispatch(setSelectedItem(index))
+    this._toggleEditModal()
+  }
+
+  _submitEdit = (newTeam: NewTeam) => () => {
+    const { teams, selectedItem, dispatch } = this.props
+
+    const teamShortName = newTeam.nameShort
+    const teamLongName = newTeam.nameLong
+    const teamCountry = newTeam.country
+    const teamHasLogo = newTeam.hasLogo
+    const oldLogo = newTeam.logoPath
+    const teamLogo = newTeam.newLogo
+
+    if (newTeam.hasChangedLogo) {
+      const data = TeamSubmit({
+        teamShortName,
+        teamLongName,
+        teamCountry,
+        teamHasLogo,
+        teamLogo
+      })
+      updateTeamWithLogo(data, teams[selectedItem]._id)
+        .then(teams => dispatch(updatedTeam([teams])))
+        .then(this._getTeamsDropdown)
+        .then(this._getPlayers)
+        .then(this._toggleEditModal)
+        .catch(e => console.log(e))
+    } else {
+      const data = {
+        teamNameShort: teamShortName,
+        teamNameLong: teamLongName,
+        country: teamCountry,
+        hasLogo: teamHasLogo,
+        logoPath: oldLogo
+      }
+
+      updateTeam(data, teams[selectedItem]._id)
+        .then(teams => dispatch(updatedTeam([teams])))
+        .then(this._getTeamsDropdown)
+        .then(this._getPlayers)
+        .then(this._toggleEditModal)
+        .catch(e => console.log(e))
+    }
+  }
+
   render () {
     const {
       countries,
@@ -193,7 +262,8 @@ class TeamsPage extends Component<Props, ComponentState> {
       selectedItem,
       confirmModalOpen,
       players,
-      viewModalOpen
+      viewModalOpen,
+      editModalOpen
     } = this.props
 
     const {
@@ -367,7 +437,7 @@ class TeamsPage extends Component<Props, ComponentState> {
                                 trigger={<Button
                                   positive
                                   icon='edit'
-                                  onClick={null}
+                                  onClick={this._openEditModal(index)}
                                 />}
                                 content='Edit Team'
                               />
@@ -390,20 +460,34 @@ class TeamsPage extends Component<Props, ComponentState> {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <ViewTeamModal
-              isOpen={viewModalOpen}
-              toggleModal={this._toggleViewModal}
-              currentTeam={teams[selectedItem]}
-              currentPlayers={affected}
-            />
-            <ConfirmModal
-              modalHeader='Delete team'
-              modalBody='Are you sure you want to delete this team'
-              affectedTargets={affected}
-              isOpen={confirmModalOpen}
-              toggleModal={this._toggleConfirmModal}
-              onDelete={this._deleteTeam}
-            />
+            {viewModalOpen ? 
+              <ViewTeamModal
+                isOpen={viewModalOpen}
+                toggleModal={this._toggleViewModal}
+                currentTeam={teams[selectedItem]}
+                currentPlayers={affected}
+              /> : null
+            }
+            {editModalOpen ?
+              <EditTeamModal
+                isOpen={editModalOpen}
+                toggleModal={this._toggleEditModal}
+                currentTeam={teams[selectedItem]}
+                currentPlayers={affected}
+                onEditDone={this._submitEdit}
+                countries={countries}
+              /> : null
+            }
+            {confirmModalOpen ?
+              <ConfirmModal
+                modalHeader='Delete team'
+                modalBody='Are you sure you want to delete this team'
+                affectedTargets={affected}
+                isOpen={confirmModalOpen}
+                toggleModal={this._toggleConfirmModal}
+                onDelete={this._deleteTeam}
+              /> : null
+            }
           </div>
         </div>
       </React.Fragment>
@@ -417,6 +501,7 @@ const mapStateToProps = (state: State) => ({
   players: state.dashboard.players,
   teamsDropdown: state.dashboard.teamsDropdown,
   viewModalOpen: state.dashboard.modals.viewModalOpen,
+  editModalOpen: state.dashboard.modals.editModalOpen,
   confirmModalOpen: state.dashboard.modals.confirmModalOpen,
   selectedItem: state.dashboard.selectedItem,
 })

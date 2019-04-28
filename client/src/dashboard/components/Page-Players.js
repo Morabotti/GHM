@@ -2,28 +2,26 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { PlayerSubmit } from '../lib/FormDataWrap'
-import { addPlayer, removePlayer } from '../client'
+import {
+  addPlayer,
+  removePlayer,
+  updatePlayerWithImage,
+  updatePlayer
+} from '../client'
 
 import {
   toggleConfirmModal,
   deletePlayer,
   setSelectedItem,
   setPlayers,
-  toggleViewModal
+  toggleViewModal,
+  toggleEditModal,
+  updatedPlayer
 } from '../actions'
 
 import {
-  Grid,
-  Icon,
-  Breadcrumb,
-  Header,
-  Form,
-  Table,
-  Image,
-  Flag,
-  Button,
-  Popup,
-  Checkbox
+  Grid, Icon, Breadcrumb, Header, Form,
+  Table, Image, Flag, Button, Popup,Checkbox
 } from 'semantic-ui-react'
 
 import type {
@@ -32,12 +30,14 @@ import type {
   Players,
   Teams,
   ListElement,
-  Team
+  Team,
+  newPlayer
 } from '../types'
 
 import {
   ConfirmModal,
-  ViewPlayerModal
+  ViewPlayerModal,
+  EditPlayerModal
 } from './'
 
 import type { State } from '../../types'
@@ -50,7 +50,8 @@ type Props = {
   teamsDropdown: Array<ListElement>,
   confirmModalOpen: boolean,
   selectedItem: number,
-  viewModalOpen: boolean
+  viewModalOpen: boolean,
+  editModalOpen: boolean
 }
 
 type ComponentState = {
@@ -177,6 +178,17 @@ class PlayersPage extends Component<Props, ComponentState> {
     this._toggleViewModal()
   }
 
+  _toggleEditModal = () => {
+    const { dispatch, editModalOpen } = this.props
+    const toggle = toggleEditModal(!editModalOpen)
+    dispatch(toggle)
+  }
+
+  _openEditModal = (index: number) => () => {
+    this.props.dispatch(setSelectedItem(index))
+    this._toggleEditModal()
+  }
+
   _deletePlayer = () => {
     const { dispatch, selectedItem, players } = this.props
     if (
@@ -191,28 +203,58 @@ class PlayersPage extends Component<Props, ComponentState> {
     }
   }
 
+  _submitEdit = (newPlayer: newPlayer) => () => {
+    const { players, selectedItem, dispatch } = this.props
+
+    const playerFirstName = newPlayer.firstName
+    const playerLastName = newPlayer.lastName
+    const playerName = newPlayer.gameName
+    const playerCountry = newPlayer.country
+    const playerTeam = newPlayer.team
+    const playerSteam64ID = newPlayer.steam64Id
+    const playerHasImg = newPlayer.hasImage
+    const playerImg = newPlayer.newImage
+    const playerOldImg = newPlayer.imagePath
+
+    if (newPlayer.hasNewImage) {
+      const data = PlayerSubmit({
+        playerFirstName, playerLastName, playerName, playerCountry,
+        playerTeam, playerSteam64ID, playerHasImg, playerImg
+      })
+      updatePlayerWithImage(data, players[selectedItem]._id)
+        .then(players => dispatch(updatedPlayer([players])))
+        .then(this._toggleEditModal)
+        .catch(e => console.log(e))
+    } else {
+      const data = {
+        steam64id: playerSteam64ID,
+        firstName: playerFirstName,
+        lastName: playerLastName,
+        gameName: playerName,
+        country: playerCountry,
+        team: playerTeam,
+        hasImage: playerHasImg
+      }
+
+      updatePlayer(data, players[selectedItem]._id)
+        .then(players => dispatch(updatedPlayer([players])))
+        .then(this._toggleEditModal)
+        .catch(e => console.log(e))
+    }
+    
+  }
+
   render () {
     const {
-      countries,
-      teamsDropdown,
-      players,
-      teams,
-      confirmModalOpen,
-      viewModalOpen,
-      selectedItem
+      countries, teamsDropdown, players, teams,
+      confirmModalOpen, viewModalOpen, selectedItem,
+      editModalOpen
     } = this.props
 
     const {
-      playerFirstName,
-      playerLastName,
-      playerName,
-      playerCountry,
-      playerTeam,
-      playerSteam64ID,
-      playerHasImg,
-      playerImg,
-      stateLoading,
-      stateError
+      playerFirstName, playerLastName, playerName, playerCountry,
+      playerTeam, playerSteam64ID, playerHasImg, playerImg,
+      stateLoading,stateError
     } = this.state
 
     const teamTarget = selectedItem !== null
@@ -422,7 +464,7 @@ class PlayersPage extends Component<Props, ComponentState> {
                                   trigger={<Button
                                     positive
                                     icon='edit'
-                                    onClick={null}
+                                    onClick={this._openEditModal(index)}
                                   />}
                                   content='Edit player'
                                 />
@@ -445,20 +487,35 @@ class PlayersPage extends Component<Props, ComponentState> {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <ViewPlayerModal
-              isOpen={viewModalOpen}
-              toggleModal={this._toggleViewModal}
-              currentView={players[selectedItem]}
-              players={players}
-              currentTeam={teamTarget}
-            />
-            <ConfirmModal
-              modalHeader='Delete player'
-              modalBody='Are you sure you want to delete this player'
-              isOpen={confirmModalOpen}
-              toggleModal={this._toggleConfirmModal}
-              onDelete={this._deletePlayer}
-            />
+            {viewModalOpen ? 
+              <ViewPlayerModal
+                isOpen={viewModalOpen}
+                toggleModal={this._toggleViewModal}
+                currentView={players[selectedItem]}
+                players={players}
+                currentTeam={teamTarget}
+              /> : null
+            }
+            {editModalOpen ?
+              <EditPlayerModal
+                isOpen={editModalOpen}
+                toggleModal={this._toggleEditModal}
+                currentPlayer={players[selectedItem]}
+                currentTeam={teamTarget}
+                teams={teamsDropdown}
+                onEditDone={this._submitEdit}
+                countries={countries}
+              /> : null
+            }
+            {confirmModalOpen ?
+              <ConfirmModal
+                modalHeader='Delete player'
+                modalBody='Are you sure you want to delete this player'
+                isOpen={confirmModalOpen}
+                toggleModal={this._toggleConfirmModal}
+                onDelete={this._deletePlayer}
+              /> : null
+            }
           </div>
         </div>
       </React.Fragment>
@@ -471,6 +528,7 @@ const mapStateToProps = (state: State) => ({
   players: state.dashboard.players,
   teams: state.dashboard.teams,
   confirmModalOpen: state.dashboard.modals.confirmModalOpen,
+  editModalOpen: state.dashboard.modals.editModalOpen,
   viewModalOpen: state.dashboard.modals.viewModalOpen,
   selectedItem: state.dashboard.selectedItem,
   teamsDropdown: state.dashboard.teamsDropdown

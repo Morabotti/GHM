@@ -1,5 +1,6 @@
 import * as multer from 'multer'
 import { Request } from 'express'
+import { getFileExtension } from '../utils/files';
 
 // * TEAMS
 const storageTeams = multer.diskStorage({
@@ -7,12 +8,18 @@ const storageTeams = multer.diskStorage({
     cb(null, './static/uploads/teams/')
   },
   filename: function(req: Request, file, cb) {
-    if (file.originalname.includes('.png')) {
-      cb(null, `${req.body.teamNameShort}.png`)
-    } else if(file.originalname.includes('.svg')) {
-      cb(null, `${req.body.teamNameShort}.svg`)
-    } else{
-      cb(null, `${req.body.teamNameShort}.jpeg`)
+    switch(getFileExtension(file.originalname)) {
+      case 'png':
+        cb(null, `${req.body.teamNameShort}.png`)
+        break
+      case 'svg':
+        cb(null, `${req.body.teamNameShort}.svg`)
+        break
+      case 'jpeg':
+        cb(null, `${req.body.teamNameShort}.jpeg`)
+        break
+      default:
+        cb(null, `${req.body.teamNameShort}.png`)
     }
   }
 })
@@ -40,10 +47,15 @@ const storagePlayers = multer.diskStorage({
     cb(null, './static/uploads/players/')
   },
   filename: function(req: Request, file, cb) {
-    if (file.originalname.includes('.png')) {
-      cb(null, `${req.body.gameName}_${req.body.steam64id}.png`)
-    } else {
-      cb(null, `${req.body.gameName}_${req.body.steam64id}.jpeg`)
+    switch(getFileExtension(file.originalname)){
+      case 'png':
+        cb(null, `${req.body.gameName}_${req.body.steam64id}.png`)
+        break
+      case 'jpeg':
+        cb(null, `${req.body.gameName}_${req.body.steam64id}.jpeg`)
+        break
+      default:
+        cb(null, `${req.body.gameName}_${req.body.steam64id}.png`)
     }
   }
 })

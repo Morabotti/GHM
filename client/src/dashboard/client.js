@@ -77,8 +77,36 @@ export const addTeam = (data: any) => {
     .then((res) => res.json())
 }
 
+export const updateTeamWithLogo = (data: any, id: string) => {
+  const options = {
+    method: 'PUT',
+    body: data,
+    headers: { 'content-type': 'multipart/form-data' }
+  }
+
+  delete options.headers['content-type'];
+
+  return window.fetch(`/api/teams/newlogo/${id}`, options)
+    .then(checkResponse)
+    .then((res) => res.json())
+}
+
+export const updateTeam = (
+  data: any,
+  id: string
+) => window.fetch(
+  `/api/teams/${id}`,
+  {
+    method: 'PUT',
+    body: JSON.stringify({data}),
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+  .then((res) => res.json())
+
 export const getTeamsDropdown = () => window.fetch(
-  '/api/teams/dropdown',
+  '/api/teams/dropdown/',
   {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
@@ -126,3 +154,31 @@ export const removePlayer = (
 )
   .then(checkResponse)
 
+export const updatePlayerWithImage = (data: any, id: string) => {
+  const options = {
+    method: 'PUT',
+    body: data,
+    headers: { 'content-type': 'multipart/form-data' }
+  }
+
+  delete options.headers['content-type'];
+
+  return window.fetch(`/api/players/newimg/${id}`, options)
+    .then(checkResponse)
+    .then((res) => res.json())
+}
+
+export const updatePlayer = (
+  data: any,
+  id: string
+) => window.fetch(
+  `/api/players/${id}`,
+  {
+    method: 'PUT',
+    body: JSON.stringify({data}),
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+  .then((res) => res.json())
+  

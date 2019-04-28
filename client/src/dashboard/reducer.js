@@ -5,6 +5,7 @@ import type {
   Country,
   Players,
   Teams,
+  Team,
   ListElement
 } from './types'
 
@@ -18,7 +19,8 @@ export type State = {
   selectedItem: number | null,
   modals: {
     confirmModalOpen: boolean,
-    viewModalOpen: boolean
+    viewModalOpen: boolean,
+    editModalOpen: boolean
   }
 }
 
@@ -38,7 +40,8 @@ const getDefaultState = (): State => ({
   selectedItem: null,
   modals: {
     confirmModalOpen: false,
-    viewModalOpen: false
+    viewModalOpen: false,
+    editModalOpen: false
   },
   showNavbar: true
 })
@@ -73,6 +76,20 @@ export default function reducer (
         ...state,
         teams: action.teams
       }
+    case 'set-updated-team':
+      const newTeam = action.teams
+      return {
+        ...state,
+        teams: state.teams.map(team => newTeam.find(t => t._id === team._id) || team),
+        selectedItem: null
+      }
+    case 'set-updated-player':
+      const newPlayer = action.players
+      return {
+        ...state,
+        players: state.players.map(player => newPlayer.find(p => p._id === player._id) || player),
+        selectedItem: null
+      }
     case 'set-teams-dropdown':
       return {
         ...state,
@@ -89,6 +106,14 @@ export default function reducer (
         modals: {
           ...state.modals,
           confirmModalOpen: action.confirmModalOpen
+        }
+      }
+    case 'toggle-edit-modal':
+      return {
+        ...state,
+        modals: {
+          ...state.modals,
+          editModalOpen: action.editModalOpen
         }
       }
     case 'toggle-view-modal-player':

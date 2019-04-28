@@ -18,9 +18,13 @@ export const renameFile = (
   newPath: string
 ): Promise<void> => {
   return new Promise((resolve, reject) => {
-    fs.rename(`/${oldPath}`, `/${newPath}`, function(err) {
-      if ( err ) reject()
+    fs.rename(`${oldPath}`, `${newPath}`, function(err) {
+      if ( err ) reject( err )
       resolve()
     })
   })
+}
+
+export const getFileExtension = (filename: string) => {
+  return filename.split('.').pop();
 }

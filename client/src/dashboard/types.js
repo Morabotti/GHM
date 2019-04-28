@@ -46,6 +46,29 @@ export type Team = {
   logoPath: string
 }
 
+export type NewTeam = {
+  nameShort: string,
+  nameLong: string,
+  country: string,
+  hasLogo: boolean,
+  logoPath: string,
+  hasChangedLogo: boolean,
+  newLogo: any
+}
+
+export type newPlayer = {
+  firstName: string,
+  lastName: string,
+  gameName: string,
+  team: string,
+  country: string,
+  steam64Id: string,
+  hasImage: boolean,
+  imagePath: string,
+  hasNewImage: boolean,
+  newImage: any
+}
+
 export type Player = {
   hasImage: boolean,
   _id: string,

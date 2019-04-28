@@ -8,7 +8,7 @@ import { ListElement, TeamSchema } from '../types'
 import { uploadTeamsLogo } from '../handler/Multer'
 import Team from '../models/Team'
 import Player from '../models/Player'
-import { deleteFile } from '../utils/files';
+import { deleteFile, getFileExtension, renameFile } from '../utils/files';
 
 const router = express.Router()
 
@@ -101,8 +101,103 @@ router.delete('/:id', (req: Request, res: Response) => {
   })
 })
 
+/*
+ ! FIX WHEN USER HAS PUT CHECKBOX (hasLogo) TRUE
+ */
 router.put('/:id', (req: Request, res: Response) => {
-  Team.findByIdAndUpdate(req.params.id, req.body.team, { new: true }, (err: Error, team: any) => {
+  const {
+    teamNameShort,
+    teamNameLong,
+    country,
+    hasLogo
+  } = req.body.data
+  
+  Team.findById(req.params.id, (err: Error, team: any) => {
+    if (err) return res
+        .status(400)
+        .send('There was problem finding old team.')
+
+    const newName = teamNameShort !== team.teamNameShort
+
+    const newLogoPath = newName
+      ? `static/uploads/teams/${teamNameShort}.${getFileExtension(team.logoPath)}`
+      : team.logoPath
+
+    if (!hasLogo && team.hasLogo)
+      deleteFile(team.logoPath)
+        .catch(e => console.log(e))
+
+    if(hasLogo && newLogoPath && team.hasLogo)
+      renameFile(team.logoPath, newLogoPath)
+        .catch(e => console.log(e))
+
+    if (newName) {
+      Player.updateMany(
+        {team: team.teamNameShort},
+        {$set: {team: teamNameShort}},
+        {multi: true},
+        (err: Error, player: any) => {
+          if (err) return res
+              .status(400)
+              .send('There was problem replacing players new team')
+        })
+    }
+
+    Team.findByIdAndUpdate(
+      req.params.id,
+      {
+        teamNameShort, teamNameLong, 
+        country, hasLogo,
+        logoPath: hasLogo ? newLogoPath : null
+      },
+      { new: true },
+      (err: Error, newTeam: any) => {
+      if (err) return res
+          .status(500)
+          .send('There was a problem updating the team.')
+
+      res.status(200).send(newTeam)
+    })
+  })
+  
+})
+
+router.put('/newlogo/:id', uploadTeamsLogo.single('logo'),  (req: Request, res: Response) => {
+  const { teamNameShort, teamNameLong, hasLogo, } = req.body
+  const country = req.body.country === undefined ? 'eu' : req.body.country
+  const isLogo = hasLogo === 'true'
+
+  Team.findById(req.params.id, function (err: Error, team: any) {
+    if (err) return res
+        .status(400)
+        .send('There was problem finding old team.')
+
+
+    if(team.hasLogo && (teamNameShort !== team.teamNameShort))
+      deleteFile(team.logoPath)
+        .catch(e => console.log(e))
+
+    if (teamNameShort !== team.teamNameShort)
+      Player.updateMany(
+        {team: team.teamNameShort},
+        {$set: {team: teamNameShort}},
+        {multi: true},
+        (err: Error, player: any) => {
+          if (err) return res
+              .status(400)
+              .send('There was problem replacing players new team')
+        })
+  })
+
+  const newProfile = {
+    teamNameShort: teamNameShort,
+    teamNameLong: teamNameLong,
+    country: country,
+    hasLogo: isLogo,
+    logoPath: isLogo ? req.file.path : null
+  }
+
+  Team.findByIdAndUpdate(req.params.id, newProfile, { new: true }, (err: Error, team: any) => {
     if (err) return res
         .status(500)
         .send('There was a problem updating the team.')

@@ -28,13 +28,15 @@ export const TeamSubmit = (team: TeamData) => {
     teamLogo
   } = team
 
+  const hasLogo = (teamHasLogo && teamLogo !== null && teamLogo !== undefined)
+
   const data = new FormData()
   data.append('teamNameShort', teamShortName)
   data.append('teamNameLong', teamLongName)
   data.append('country', teamCountry === '' ? 'eu': teamCountry)
-  data.append('hasLogo', teamHasLogo.toString())
+  data.append('hasLogo', hasLogo.toString())
 
-  if(teamHasLogo && teamLogo !== null && teamLogo !== undefined)
+  if(hasLogo)
     data.append('logo', teamLogo)
 
   return data
@@ -52,6 +54,8 @@ export const PlayerSubmit = (player: PlayerData) => {
     playerImg
   } = player
 
+  const hasImage = (playerHasImg && playerImg !== null && playerImg !== undefined)
+
   const data = new FormData()
   data.append('steam64id', playerSteam64ID)
   data.append('firstName', playerFirstName)
@@ -59,9 +63,9 @@ export const PlayerSubmit = (player: PlayerData) => {
   data.append('gameName', playerName)
   data.append('country', playerCountry === '' ? 'eu' : playerCountry)
   data.append('team', playerTeam)
-  data.append('hasImage', playerHasImg.toString())
+  data.append('hasImage', hasImage.toString())
 
-  if(playerHasImg && playerImg !== null && playerImg !== undefined)
+  if(hasImage) 
     data.append('image', playerImg)
 
   return data

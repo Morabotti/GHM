@@ -6,7 +6,7 @@ import { Error } from 'mongoose'
 
 import { uploadPlayerImages } from '../handler/Multer'
 import Player from '../models/Player'
-import { deleteFile } from '../utils/files';
+import { deleteFile, getFileExtension, renameFile } from '../utils/files';
 
 const router = express.Router()
 
@@ -79,8 +79,84 @@ router.delete('/:id', (req: Request, res: Response) => {
   })
 })
 
+/*
+ ! FIX WHEN USER HAS PUT CHECKBOX (hasImage) TRUE
+ */
 router.put('/:id', (req: Request, res: Response) => {
-  Player.findByIdAndUpdate(req.params.id, req.body.player, { new: true }, (err: Error, player: any) => {
+  const {
+    steam64id,
+    firstName,
+    lastName,
+    gameName,
+    country,
+    team,
+    hasImage
+  } = req.body.data
+
+  Player.findById(req.params.id, (err: Error, player: any) => {
+    if (err) return res
+        .status(400)
+        .send('There was a problem finding the player.')
+
+    const imgRename = (gameName !== player.gameName || steam64id !== player.steam64id)
+    const imgPath = (imgRename && player.hasImage)
+      ? `static/uploads/players/${gameName}_${steam64id}.${getFileExtension(player.imagePath)}`
+      : player.imagePath
+
+    if (!hasImage && player.hasImage)
+      deleteFile(player.imagePath)
+        .catch(e => console.log(e))
+
+    if (imgRename && hasImage && player.hasImage)
+      renameFile(player.imagePath, imgPath)
+        .catch(e => console.log(e))
+
+    Player.findByIdAndUpdate(
+      req.params.id,
+      {
+        steam64id, firstName, lastName,
+        gameName, country, team,
+        hasImage,
+        imagePath: hasImage ? imgPath : null
+      },
+      { new: true },
+      (err: Error, player: any) => {
+      if (err) return res
+          .status(500)
+          .send('There was a problem updating the player.')
+
+      res.status(200).send(player)
+    })
+  })
+})
+
+router.put('/newimg/:id', uploadPlayerImages.single('image'), (req: Request, res: Response) => {
+  const { firstName, lastName, gameName, steam64id, team, hasImage } = req.body
+  const country = req.body.country === undefined ? 'eu' : req.body.country
+  const isImage = hasImage === 'true'
+
+  Player.findById(req.params.id, function (err: Error, player: any) {
+    if (err) return res
+        .status(400)
+        .send('There was problem finding old player.')
+
+    if(player.hasImage && (gameName !== player.gameName || steam64id !== player.steam64id))
+      deleteFile(player.imagePath)
+        .catch(e => console.log(e))
+  })
+
+  const newProfile = {
+    steam64id: steam64id,
+    firstName: firstName,
+    lastName: lastName,
+    gameName: gameName,
+    country: country,
+    team: team,
+    hasImage: isImage,
+    imagePath: isImage ? req.file.path : null
+  }
+
+  Player.findByIdAndUpdate(req.params.id, newProfile, { new: true }, (err: Error, player: any) => {
     if (err) return res
         .status(500)
         .send('There was a problem updating the player.')
