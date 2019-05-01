@@ -4,6 +4,7 @@ import TopBar from './TopBar'
 import HomePage from './Page-Home'
 import TeamsPage from './Page-Teams'
 import PlayersPage from './Page-Players'
+import LivePage from './Page-Live'
 import { ClientConnectButton, ConnectionButton, ServerConnectButton } from './Buttons'
 import { SubHeaderWithIcon } from './Headers'
 import {
@@ -11,7 +12,8 @@ import {
   ViewPlayerModal,
   ViewTeamModal,
   EditTeamModal,
-  EditPlayerModal
+  EditPlayerModal,
+  TeamSelectionModal
 } from './Modals'
 
 export {
@@ -28,5 +30,7 @@ export {
   ViewPlayerModal,
   ViewTeamModal,
   EditTeamModal,
-  EditPlayerModal
+  EditPlayerModal,
+  TeamSelectionModal,
+  LivePage
 }

@@ -1,0 +1,53 @@
+.new-match{
+  display: grid;
+  height: 350px;
+  grid-template-columns: 1fr 150px 1fr;
+
+  .vs{
+    text-align: center;
+    font-size: 3em;
+    margin-top: 100px;
+    font-weight: bold;
+
+    .margin-bottom-default{
+      margin-bottom: 25px;
+    }
+
+    .margin-top-default{
+      margin-top: 25px;
+    }
+  }
+
+  .team-a,
+  .team-b{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .select-team{
+      height: 150px;
+      width: 150px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: scale(1);
+      transition: transform 200ms;
+
+      .chosen{
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      &:hover{
+        transform: scale(1.11);
+      }
+
+    }
+  }
+}
+
+.bo-selector{
+  display: flex;
+}

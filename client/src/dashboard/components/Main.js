@@ -12,14 +12,16 @@ import {
   setCountries,
   setTeams,
   setPlayers,
-  setTeamsDropdown
+  setTeamsDropdown,
+  setMaps
 } from '../actions'
 
 import {
   getCountries,
   getTeams,
   getPlayers,
-  getTeamsDropdown
+  getTeamsDropdown,
+  getMaps
 } from '../client'
 
 import {
@@ -27,7 +29,8 @@ import {
   TopBar,
   HomePage,
   TeamsPage,
-  PlayersPage
+  PlayersPage,
+  LivePage
 } from './'
 
 // $FlowIgnore
@@ -45,6 +48,7 @@ class Main extends PureComponent<Props> {
     this._getTeams()
     this._getPlayers()
     this._getTeamsDropdown()
+    this._getMaps()
   }
 
   _toggleShow = () => {
@@ -55,6 +59,10 @@ class Main extends PureComponent<Props> {
 
   _getCountries = () => getCountries()
     .then(countries => setCountries(countries))
+    .then(this.props.dispatch)
+  
+  _getMaps = () => getMaps()
+    .then(data => setMaps(data.maps))
     .then(this.props.dispatch)
 
   _getTeams = () => getTeams()
@@ -80,6 +88,7 @@ class Main extends PureComponent<Props> {
           <div className={`main-container ${!show ? 'fullscreen' : ''}`}>
             <Switch>
               <Route path={url + '/'} exact component={HomePage} />
+              <Route path={url + '/live'} exact component={LivePage} />
               <Route path={url + '/teams'} exact component={TeamsPage} />
               <Route path={url + '/players'} exact component={PlayersPage} />
             </Switch>

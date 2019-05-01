@@ -61,6 +61,10 @@ export interface Countries {
   countries: Array<Country>
 }
 
+export interface Maps {
+  maps: Array<string>
+}
+
 export interface PlayerSchema {
   firstName: string
   lastName: string

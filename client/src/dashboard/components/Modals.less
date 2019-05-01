@@ -18,3 +18,32 @@
     cursor: pointer;
   }
 }
+
+.team-selection-modal{
+  display: flex;
+  margin: 15px;
+
+  .selection-box{
+    margin: 20px;
+    height: 150px;
+    width: 150px;
+    border-radius: 10px;
+    cursor: pointer;
+    transform: scale(1);
+    transition: transform 200ms;
+    
+    &:hover {
+      transform: scale(1.15);
+    }
+
+    p{
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.4em;
+    }
+  }
+}
+.selection-header{
+  display: flex !important;
+  justify-content: center;
+}

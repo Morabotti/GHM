@@ -18,6 +18,16 @@ export const getStatus = () => window.fetch(
   .then(checkResponse)
   .then((res) => res.json())
 
+export const getMaps = () => window.fetch(
+  '/api/general/maps',
+  {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+  .then((res) => res.json())
+
 export const getCountries = () => window.fetch(
   '/api/general/countries',
   {

@@ -16,11 +16,14 @@ export type State = {
   teamsDropdown: Array<ListElement>,
   teams: Teams,
   players: Players,
+  maps: Array<string>,
   selectedItem: number | null,
+  selectedId: string | null,
   modals: {
     confirmModalOpen: boolean,
     viewModalOpen: boolean,
-    editModalOpen: boolean
+    editModalOpen: boolean,
+    teamSelectionModalOpen: boolean
   }
 }
 
@@ -38,10 +41,13 @@ const getDefaultState = (): State => ({
   teamsDropdown: [],
   players: [],
   selectedItem: null,
+  selectedId: null,
+  maps: [],
   modals: {
     confirmModalOpen: false,
     viewModalOpen: false,
-    editModalOpen: false
+    editModalOpen: false,
+    teamSelectionModalOpen: false
   },
   showNavbar: true
 })
@@ -55,6 +61,16 @@ export default function reducer (
       return {
         ...state,
         status: action.status
+      }
+    case 'set-maps':
+      return {
+        ...state,
+        maps: action.maps
+      }
+    case 'set-selected-id':
+      return {
+        ...state,
+        selectedId: action.selectedId
       }
     case 'toggle-navbar':
       return {
@@ -114,6 +130,14 @@ export default function reducer (
         modals: {
           ...state.modals,
           editModalOpen: action.editModalOpen
+        }
+      }
+    case 'toggle-team-selection-modal':
+      return {
+        ...state,
+        modals: {
+          ...state.modals,
+          teamSelectionModalOpen: action.teamSelectionModalOpen
         }
       }
     case 'toggle-view-modal-player':

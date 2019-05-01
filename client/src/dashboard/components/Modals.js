@@ -21,6 +21,35 @@ import {
   Checkbox
 } from 'semantic-ui-react'
 
+type TeamSelectionProps = {
+  isOpen: boolean,
+  toggleModal: () => void,
+  onSelected: (id: string) => () => Promise<void>,
+  teams: Array<any>
+}
+
+export const TeamSelectionModal = (props: TeamSelectionProps) => {
+  const { isOpen, toggleModal, teams, onSelected } = props
+  return (
+    <Modal open={isOpen} onClose={toggleModal} centered={false} basic size='large'>
+      <Header className='selection-header' icon='users' content='Select Team' />
+      <div className='team-selection-modal'>
+        {teams.map((team, ind) =>(
+          <div key={team._id} className='selection-box' onClick={onSelected(team._id)}>
+            <Image
+              src={`/${team.logoPath === null ? 'static/default/default-team.png' : team.logoPath}`}
+              wrapped
+              size='small'
+              centered
+            />
+            <p>{team.teamNameShort}</p>
+          </div>
+        ))}
+      </div>
+    </Modal>
+  )
+}
+
 type ConfirmModalProps = {
   isOpen: boolean,
   toggleModal: () => void,

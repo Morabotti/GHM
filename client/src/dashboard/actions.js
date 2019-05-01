@@ -11,8 +11,10 @@ import type {
 
 export type Action = { type: 'set-status', status: Status }
   | { type: 'toggle-navbar', showNavbar: boolean }
+  | { type: 'set-maps', maps: Array<string> }
   | { type: 'set-countries', countries: Countries }
   | { type: 'set-players', players: Players }
+  | { type: 'set-selected-id', selectedId: string | null }
   | { type: 'set-teams', teams: Teams }
   | { type: 'set-updated-team', teams: Array<Team> }
   | { type: 'set-updated-player', players: Array<Player> }
@@ -21,6 +23,7 @@ export type Action = { type: 'set-status', status: Status }
   | { type: 'delete-team' }
   | { type: 'delete-players-from-select' }
   | { type: 'toggle-confirm-modal', confirmModalOpen: boolean }
+  | { type: 'toggle-team-selection-modal', teamSelectionModalOpen: boolean }
   | { type: 'toggle-edit-modal', editModalOpen: boolean }
   | { type: 'toggle-view-modal-player', viewModalOpen: boolean }
   | { type: 'set-selected-item', selectedItem: number }
@@ -28,6 +31,11 @@ export type Action = { type: 'set-status', status: Status }
 export const setStatus = (status: Status) => ({
   type: 'set-status',
   status
+})
+
+export const setSelectedId = (selectedId: string | null) => ({
+  type: 'set-selected-id',
+  selectedId
 })
 
 export const setTeams = (teams: Teams) => ({
@@ -38,6 +46,11 @@ export const setTeams = (teams: Teams) => ({
 export const updatedTeam = (teams: Array<Team>) => ({
   type: 'set-updated-team',
   teams
+})
+
+export const setMaps = (maps: Array<string>) => ({
+  type: 'set-maps',
+  maps
 })
 
 export const updatedPlayer = (players: Array<Player>) => ({
@@ -90,6 +103,11 @@ export const toggleEditModal = (editModalOpen: boolean) => ({
 export const toggleViewModal = (viewModalOpen: boolean) => ({
   type: 'toggle-view-modal-player',
   viewModalOpen
+})
+
+export const toggleTeamSelectionModal = (teamSelectionModalOpen: boolean) => ({
+  type: 'toggle-team-selection-modal',
+  teamSelectionModalOpen
 })
 
 export const setSelectedItem = (selectedItem: number) => ({
