@@ -16,6 +16,13 @@ export type BigConnectionButtonType = {
   connected: boolean
 }
 
+export type Match = {
+  _id?: string,
+  teamA: string,
+  teamB: string,
+  isLive: boolean
+}
+
 export type ConnectionButtonType = {
   clientConnection: boolean,
   clientSpectating: boolean,

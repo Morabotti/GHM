@@ -70,7 +70,7 @@ router.get('/dropdown', (req: Request, res: Response) => {
 })
 
 router.get('/:id', (req: Request, res: Response) => {
-  Team.findById(req.params.id, function (err: Error, team: any) {
+  Team.findById(req.params.id, (err: Error, team: any) => {
     if (err) return res
         .status(500)
         .send('There was a problem finding the team.')
@@ -167,7 +167,7 @@ router.put('/newlogo/:id', uploadTeamsLogo.single('logo'),  (req: Request, res: 
   const country = req.body.country === undefined ? 'eu' : req.body.country
   const isLogo = hasLogo === 'true'
 
-  Team.findById(req.params.id, function (err: Error, team: any) {
+  Team.findById(req.params.id, (err: Error, team: any) => {
     if (err) return res
         .status(400)
         .send('There was problem finding old team.')

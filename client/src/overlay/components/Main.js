@@ -72,4 +72,4 @@ const mapStateToProps = (state: State) => ({
   status: state.overlay.status
 })
 
-export default hot(module)(connect(mapStateToProps)(Main))
+export default connect(mapStateToProps)(Main)

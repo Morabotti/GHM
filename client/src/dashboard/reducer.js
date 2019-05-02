@@ -6,8 +6,17 @@ import type {
   Players,
   Teams,
   Team,
-  ListElement
+  ListElement,
+  Match
 } from './types'
+
+export type Modals = {
+  confirmModalOpen: boolean,
+  viewModalOpen: boolean,
+  editModalOpen: boolean,
+  teamSelectionModalOpen: boolean,
+  confirmLiveModalOpen: boolean
+}
 
 export type State = {
   status: Status,
@@ -17,25 +26,29 @@ export type State = {
   teams: Teams,
   players: Players,
   maps: Array<string>,
+  matches: Array<Match>,
   selectedItem: number | null,
   selectedId: string | null,
-  modals: {
-    confirmModalOpen: boolean,
-    viewModalOpen: boolean,
-    editModalOpen: boolean,
-    teamSelectionModalOpen: boolean
-  }
+  modals: Modals
 }
 
-const StatusState: Status = {
+const statusState: Status = {
   clientOnline: false,
   clientSpectating: false,
   gameOnline: false,
   gameLive: false
 }
 
+const modals: Modals = {
+  confirmModalOpen: false,
+  viewModalOpen: false,
+  editModalOpen: false,
+  teamSelectionModalOpen: false,
+  confirmLiveModalOpen: false,
+}
+
 const getDefaultState = (): State => ({
-  status: StatusState,
+  status: statusState,
   countries: [],
   teams: [],
   teamsDropdown: [],
@@ -43,12 +56,8 @@ const getDefaultState = (): State => ({
   selectedItem: null,
   selectedId: null,
   maps: [],
-  modals: {
-    confirmModalOpen: false,
-    viewModalOpen: false,
-    editModalOpen: false,
-    teamSelectionModalOpen: false
-  },
+  matches: [],
+  modals: modals,
   showNavbar: true
 })
 
@@ -124,6 +133,14 @@ export default function reducer (
           confirmModalOpen: action.confirmModalOpen
         }
       }
+    case 'toggle-live-modal':
+      return {
+        ...state,
+        modals: {
+          ...state.modals,
+          confirmLiveModalOpen: action.confirmLiveModalOpen
+        }
+      }
     case 'toggle-edit-modal':
       return {
         ...state,
@@ -148,10 +165,22 @@ export default function reducer (
           viewModalOpen: action.viewModalOpen
         }
       }
+    case 'set-matches':
+      return {
+        ...state,
+        matches: action.matches
+      }
     case 'delete-player':
       return {
         ...state,
         players: state.players
+          .filter((value, index) => index !== state.selectedItem),
+        selectedItem: null
+      }
+    case 'delete-match':
+      return {
+        ...state,
+        matches: state.matches
           .filter((value, index) => index !== state.selectedItem),
         selectedItem: null
       }

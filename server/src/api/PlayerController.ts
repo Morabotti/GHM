@@ -50,7 +50,7 @@ router.get('/', (req: Request, res: Response) => {
 })
 
 router.get('/:id', (req: Request, res: Response) => {
-  Player.findById(req.params.id, function (err: Error, player: any) {
+  Player.findById(req.params.id, (err: Error, player: any) => {
     if (err) return res
         .status(500)
         .send('There was a problem finding the player.')
@@ -135,7 +135,7 @@ router.put('/newimg/:id', uploadPlayerImages.single('image'), (req: Request, res
   const country = req.body.country === undefined ? 'eu' : req.body.country
   const isImage = hasImage === 'true'
 
-  Player.findById(req.params.id, function (err: Error, player: any) {
+  Player.findById(req.params.id, (err: Error, player: any) => {
     if (err) return res
         .status(400)
         .send('There was problem finding old player.')

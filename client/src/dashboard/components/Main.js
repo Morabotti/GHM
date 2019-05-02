@@ -13,7 +13,8 @@ import {
   setTeams,
   setPlayers,
   setTeamsDropdown,
-  setMaps
+  setMaps,
+  setMatches
 } from '../actions'
 
 import {
@@ -21,7 +22,8 @@ import {
   getTeams,
   getPlayers,
   getTeamsDropdown,
-  getMaps
+  getMaps,
+  getMatches
 } from '../client'
 
 import {
@@ -49,6 +51,7 @@ class Main extends PureComponent<Props> {
     this._getPlayers()
     this._getTeamsDropdown()
     this._getMaps()
+    this._getMatches()
   }
 
   _toggleShow = () => {
@@ -59,6 +62,10 @@ class Main extends PureComponent<Props> {
 
   _getCountries = () => getCountries()
     .then(countries => setCountries(countries))
+    .then(this.props.dispatch)
+
+  _getMatches = () => getMatches()
+    .then(matches => setMatches(matches))
     .then(this.props.dispatch)
   
   _getMaps = () => getMaps()
@@ -103,4 +110,4 @@ const mapStateToProps = (state: State) => ({
   show: state.dashboard.showNavbar
 })
 
-export default hot(module)(connect(mapStateToProps)(Main))
+export default connect(mapStateToProps)(Main)

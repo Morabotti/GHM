@@ -3,10 +3,13 @@ import * as path from 'path'
 
 import { Request, Response } from 'express'
 
-import GameStateController from './api/GameStateController'
-import PlayerController from './api/PlayerController'
-import TeamController from './api/TeamController'
-import GeneralController from './api/GeneralController'
+import {
+  GameStateController,
+  PlayerController,
+  TeamController,
+  GeneralController,
+  MatchController
+} from './api/'
 
 const app: express.Application = express()
 
@@ -17,6 +20,7 @@ app.use('/api/game', GameStateController)
 app.use('/api/players', PlayerController)
 app.use('/api/teams', TeamController)
 app.use('/api/general', GeneralController)
+app.use('/api/matches', MatchController)
 
 app.use('/static', express.static(path.join(__dirname, '../static')))
 

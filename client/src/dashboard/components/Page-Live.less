@@ -49,5 +49,66 @@
 }
 
 .bo-selector{
+  margin-top: 35px;
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  height: 200px;
+}
+
+.current-game{
+  display: grid;
+  height: auto;
+  margin-bottom: 40px;
+  grid-template-columns: 1fr 250px 1fr;
+
+  .vs{
+    text-align: center;
+    font-size: 3em;
+    margin-top: 100px;
+    font-weight: bold;
+
+    .margin-bottom-default{
+      margin-bottom: 25px;
+    }
+
+    .margin-top-default{
+      margin-top: 25px;
+    }
+  }
+
+  .team-a,
+  .team-b{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    div{
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .current-game,
+  .new-match{
+    display: block;
+    height: auto;
+
+    .team-a{
+      padding-top: 50px;
+      padding-bottom: 140px;
+    }
+    .team-b{
+      padding-bottom: 150px;
+      padding-top: 100px;
+    }
+
+    .vs{
+      margin-top: 0;
+    }
+  }
 }

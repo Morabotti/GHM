@@ -49,7 +49,6 @@ export const updateCountries = () => window.fetch(
   .then((res) => res.json())
 
 // ! TEAM METHODS
-
 export const getTeams = () => window.fetch(
   '/api/teams',
   {
@@ -126,7 +125,6 @@ export const getTeamsDropdown = () => window.fetch(
   .then((res) => res.json())
 
 // ! PLAYER METHODS
-
 export const getPlayers = () => window.fetch(
   '/api/players',
   {
@@ -192,3 +190,54 @@ export const updatePlayer = (
   .then(checkResponse)
   .then((res) => res.json())
   
+// ! MATCHES METHODS
+export const getMatches = () => window.fetch(
+  '/api/matches',
+  {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+  .then((res) => res.json())
+
+export const setMatch = (data: any) => window.fetch(
+  '/api/matches',
+  {
+    method: 'POST',
+    body:  JSON.stringify({ match: data }),
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+  .then((res) => res.json())
+
+export const setMatchToLive = (id: string) => window.fetch(
+  `/api/matches/live/${id}`,
+  {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+  .then((res) => res.json())
+
+export const removeMatch = (id: string) => window.fetch(
+  `/api/matches/${id}`,
+  {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+
+export const updateMatch = (data: any, id: string) => window.fetch(
+  `/api/matches/${id}`,
+  {
+    method: 'PUT',
+    body: JSON.stringify({ data }),
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+  .then((res) => res.json())

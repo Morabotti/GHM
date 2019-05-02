@@ -84,6 +84,12 @@ export interface TeamSchema {
   logoPath: string
 }
 
+export interface MatchSchema {
+  teamA: string
+  teamB: string
+  isLive: boolean
+}
+
 export type TeamType = 'T' | 'CT'
 
 export interface Sockets {
