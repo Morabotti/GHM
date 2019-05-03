@@ -13,16 +13,22 @@
       display: flex;
       width: 100%;
 
-      &.CT{
+      &.area-right{
+        flex-direction: row-reverse;
+        .team-logo{ border-top-right-radius: 15px; }
+      }
+
+      &.area-left{
         flex-direction: row;
         .team-logo{ border-top-left-radius: 15px; }
+      }
+
+      &.CT{
         .team-name, .team-score{ color: @ct-color-main; }
         .team-score{ border-bottom: 2px solid @ct-color-main; }
       }
 
       &.T{
-        flex-direction: row-reverse;
-        .team-logo{ border-top-right-radius: 15px; }
         .team-name, .team-score{ color: @t-color-main; }
         .team-score{ border-bottom: 2px solid @t-color-main; }
       }

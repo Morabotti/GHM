@@ -184,8 +184,8 @@ class LivePage extends Component<Props, ComponentState> {
       : null
 
     const isMatchLive = matches.find((val, index) => val.isLive === true)
-    const currentTeamA = isMatchLive ? teams.find((team, index) => isMatchLive.teamA === team._id) : null
-    const currentTeamB = isMatchLive ? teams.find((team, index) => isMatchLive.teamB === team._id) : null
+    const currentTeamA: any = isMatchLive ? teams.find((team, index) => isMatchLive.teamA === team._id) : null
+    const currentTeamB: any = isMatchLive ? teams.find((team, index) => isMatchLive.teamB === team._id) : null
 
     return (
       <React.Fragment>

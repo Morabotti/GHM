@@ -3,11 +3,12 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
 import type { State } from '../../types'
-import type { PhaseCooldowns, MapState } from '../types'
+import type { PhaseCooldowns, MapState, StateTeamConfig } from '../types'
 
 type Props = {
   mapData: MapState,
-  phaseData: PhaseCooldowns
+  phaseData: PhaseCooldowns,
+  teamConfiguration: StateTeamConfig
 }
 
 type ComponentState = {
@@ -43,19 +44,29 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
   render () {
     const { phase_ends_in, phase } = this.props.phaseData
     const { round, team_ct, team_t } = this.props.mapData
+    const { teamA, teamB } = this.props.teamConfiguration
     const { showBomb, bombTimerLeft } = this.state
     return (
       <div className='score-top'>
         <div className='score-top-upper'>
-          <div className='score-area CT'>
+          <div className={`score-area area-left ${teamA.team}`}>
             <div className='team-logo'>
-              <img src='/static/teams/team_ct.png' />
+              {teamA.team === 'CT'
+                ? <img src='/static/teams/team_ct.png' />
+                : <img src='/static/teams/team_t.png' />
+              }
             </div>
             <div className={`team-name ${team_ct.name === undefined ? 'smaller' : ''}`}>
-              {team_ct.name !== undefined ? team_ct.name : 'COUNTER-TERRORISTS'}
+              {teamA.team === 'CT'
+                ? team_ct.name !== undefined ? team_ct.name : 'COUNTER-TERRORISTS'
+                : team_t.name !== undefined ? team_t.name : 'TERRORISTS'
+              }
             </div>
             <div className='team-score'>
-              {team_ct.score}
+              {teamA.team === 'CT'
+                ? team_ct.score
+                : team_t.score
+              }
             </div>
           </div>
           <div className='score-time'>
@@ -83,15 +94,24 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
               </React.Fragment>
             )}
           </div>
-          <div className='score-area T'>
+          <div className={`score-area area-right ${teamB.team}`}>
             <div className='team-logo'>
-              <img src='/static/teams/team_t.png' />
+              {teamB.team === 'T'
+                ? <img src='/static/teams/team_t.png' />
+                : <img src='/static/teams/team_ct.png' />
+              }
             </div>
             <div className={`team-name ${team_ct.name === undefined ? 'smaller' : ''}`}>
-              {team_t.name !== undefined ? team_t.name : 'TERRORISTS'}
+              {teamB.team === 'T'
+                ? team_t.name !== undefined ? team_t.name : 'TERRORISTS'
+                : team_ct.name !== undefined ? team_ct.name : 'COUNTER-TERRORISTS'
+              }
             </div>
             <div className='team-score'>
-              {team_t.score}
+              {teamB.team === 'T'
+                ? team_t.score
+                : team_ct.score
+              }
             </div>
           </div>
         </div>
@@ -102,7 +122,8 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
 
 const mapStateToProps = (state: State) => ({
   mapData: state.overlay.gameStateMap,
-  phaseData: state.overlay.gameStatePhase
+  phaseData: state.overlay.gameStatePhase,
+  teamConfiguration: state.overlay.teamConfiguration
 })
 
 export default connect(mapStateToProps)(ScorePlate)

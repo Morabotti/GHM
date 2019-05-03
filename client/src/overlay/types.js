@@ -109,6 +109,31 @@ export type PlayerKey = {
   watching: boolean
 }
 
+export type TeamConfig = {
+  team: Teams,
+  customName: null | string,
+  customLogo: null | string,
+  country: null | string,
+  players: {
+    [string]: PlayerConfig
+  }
+}
+
+export type StateTeamConfig ={
+  teamA: TeamConfig,
+  teamB: TeamConfig
+}
+
+export type PlayerConfig = {
+  teamName: string,
+  firstName: string | null,
+  lastName: string | null,
+  gameName: string | null,
+  country: string | null,
+  hasImage: boolean,
+  imagePath: string | null
+}
+
 export type CurrentPlayer = {
   steamid: string,
   name: string,

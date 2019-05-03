@@ -25,12 +25,8 @@ class Player extends PureComponent<Props, ComponentState> {
   }
 
   componentDidUpdate (prevProps: Props) {
-    // START
     if (this.props.showStats && !prevProps.showStats)
       this.setState({ money: this.props.state.money })
-
-    // END
-    // if(!this.props.showStats && prevProps.showStats) 
   }
 
   render () {

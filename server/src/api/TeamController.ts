@@ -8,7 +8,7 @@ import { ListElement, TeamSchema } from '../types'
 import { uploadTeamsLogo } from '../handler/Multer'
 import Team from '../models/Team'
 import Player from '../models/Player'
-import { deleteFile, getFileExtension, renameFile } from '../utils/files';
+import { deleteFile, getFileExtension, renameFile } from '../utils/files'
 
 const router = express.Router()
 

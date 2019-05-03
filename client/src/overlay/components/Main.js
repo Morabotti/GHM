@@ -8,7 +8,7 @@ import { getStatus, subscribeToSocket } from '../client'
 import { deepEqual } from '../../dashboard/lib/helpers'
 import { PlayerPlate, Radar, ScorePlate, Team, GameLoader } from './'
 
-import type { Dispatch } from '../types'
+import type { Dispatch, StateTeamConfig } from '../types'
 import type { Status } from '../../dashboard/types'
 import type { State } from '../../types'
 
@@ -17,7 +17,8 @@ import '../index.less'
 
 type Props = {
   dispatch: Dispatch,
-  status: Status
+  status: Status,
+  teamConfiguration: StateTeamConfig
 }
 
 class Main extends PureComponent<Props> {
@@ -43,6 +44,7 @@ class Main extends PureComponent<Props> {
 
   render () {
     const { status } = this.props
+    const { teamA, teamB } = this.props.teamConfiguration
 
     if (!status.clientSpectating)
       return <GameLoader showMessage status={status} />
@@ -52,7 +54,7 @@ class Main extends PureComponent<Props> {
         <div className='overlay-left'>
           <Radar />
           <div className='overlay-left-dummy' />
-          <Team team='CT' />
+          <Team team={teamA.team} />
         </div>
         <div className='overlay-center'>
           <ScorePlate />
@@ -61,7 +63,7 @@ class Main extends PureComponent<Props> {
         </div>
         <div className='overlay-right'>
           <div className='overlay-right-dummy' />
-          <Team team='T' />
+          <Team team={teamB.team} />
         </div>
       </div>
     )
@@ -69,7 +71,8 @@ class Main extends PureComponent<Props> {
 }
 
 const mapStateToProps = (state: State) => ({
-  status: state.overlay.status
+  status: state.overlay.status,
+  teamConfiguration: state.overlay.teamConfiguration
 })
 
 export default connect(mapStateToProps)(Main)

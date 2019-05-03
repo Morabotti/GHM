@@ -4,7 +4,8 @@ import * as bodyParser from 'body-parser'
 import { Request, Response } from 'express'
 import { Error } from 'mongoose'
 
-import Match from '../models/Match';
+import Match from '../models/Match'
+import { getActiveMatchData, filterActiveMatchData } from '../core/MatchCore'
 
 const router = express.Router()
 
@@ -67,6 +68,16 @@ router.post('/live/:id', (req: Request, res: Response) => {
       })
     }
   })
+})
+
+router.get('/overlay', async (req: Request, res: Response) => {
+  try {
+    const activeData = await getActiveMatchData()
+    const refactored = filterActiveMatchData(activeData)
+    return res.status(200).send(refactored)
+  } catch(e) {
+    return res.status(400).send(e)
+  }
 })
 
 router.get('/', (req: Request, res: Response) => {
