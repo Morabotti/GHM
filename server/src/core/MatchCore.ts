@@ -47,7 +47,7 @@ export const filterActiveMatchData = (data: any) => {
   })
 
   const teamA = {
-    team: 'T',
+    team: 'CT',
     customName: data.teams[0].teamNameShort,
     customLogo: data.teams[0].hasLogo ? data.teams[0].logoPath : null,
     country: data.teams[0].country,
@@ -55,7 +55,7 @@ export const filterActiveMatchData = (data: any) => {
   }
 
   const teamB = {
-    team: 'CT',
+    team: 'T',
     customName: data.teams[1].teamNameShort,
     customLogo: data.teams[1].hasLogo ? data.teams[1].logoPath : null,
     country: data.teams[1].country,
@@ -64,6 +64,7 @@ export const filterActiveMatchData = (data: any) => {
   
   return {
     teamA,
-    teamB
+    teamB,
+    players: { ...teamAPlayers, ...teamBPlayers }
   }
 }

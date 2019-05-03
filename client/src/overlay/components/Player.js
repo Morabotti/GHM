@@ -2,6 +2,9 @@
 import React, { PureComponent } from 'react'
 import type { Weapons, PlayerState, MatchStats, Teams } from '../types'
 
+import HEAD_ARMOR from '../../assets/util/armor_head.svg'
+import ARMOR from '../../assets/util/armor.svg'
+
 type Props = {
   first?: boolean,
   last?: boolean,
@@ -183,11 +186,11 @@ class Player extends PureComponent<Props, ComponentState> {
           <div className={`player-utility`}>
             {state.helmet ? (
               <div className='item'>
-                <img src='/static/utils/armor_helmet.png' height='26px' />
+                <img src={HEAD_ARMOR} height='23px' />
               </div>
             ) : state.armor > 0 ? (
               <div className='item'>
-                <img src='/static/utils/armor.png' height='26px' />
+                <img src={ARMOR} height='23px' />
               </div>
             ) : null
             }

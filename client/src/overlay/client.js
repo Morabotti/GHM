@@ -96,14 +96,21 @@ export const getStatus = () => window.fetch(
   .then(checkResponse)
   .then((res) => res.json())
 
+export const getActiveMatch = () => window.fetch(
+  '/api/matches/overlay',
+  {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+  .then((res) => res.json())
+
 const analyzeEvent = (event: EventType, dispatch: Dispatch) => {
-  console.log(event)
   switch (event.event) {
     case 'FREEZETIME_END':
-      // dispatch(endMoneyCount())
       break
     case 'FREEZETIME_START':
-      // dispatch(startMoneyCount())
       break
   }
 }

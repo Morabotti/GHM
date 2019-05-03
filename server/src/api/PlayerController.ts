@@ -35,7 +35,7 @@ router.post('/', uploadPlayerImages.single('image'), (req: Request, res: Respons
         .send('There was a problem adding the information to the database.')
     }
 
-    res.status(200).send(player)
+    return res.status(200).send(player)
   })
 })
 
@@ -45,7 +45,7 @@ router.get('/', (req: Request, res: Response) => {
         .status(500)
         .send('There was a problem finding the players.')
 
-    res.status(200).send(player)
+    return res.status(200).send(player)
   })
 })
 
@@ -59,7 +59,7 @@ router.get('/:id', (req: Request, res: Response) => {
         .status(404)
         .send('No player found.')
 
-    res.status(200).send(player)
+    return res.status(200).send(player)
   })
 })
 
@@ -75,7 +75,7 @@ router.delete('/:id', (req: Request, res: Response) => {
             .status(500)
             .send(`Team: ${player.gameName} was deleted, but image was not.`))
 
-    res.status(200).send(`Player: ${player.gameName} was deleted.`)
+    return res.status(200).send(`Player: ${player.gameName} was deleted.`)
   })
 })
 
@@ -125,7 +125,7 @@ router.put('/:id', (req: Request, res: Response) => {
           .status(500)
           .send('There was a problem updating the player.')
 
-      res.status(200).send(player)
+      return res.status(200).send(player)
     })
   })
 })
@@ -161,7 +161,7 @@ router.put('/newimg/:id', uploadPlayerImages.single('image'), (req: Request, res
         .status(500)
         .send('There was a problem updating the player.')
 
-    res.status(200).send(player)
+    return res.status(200).send(player)
   })
 })
 

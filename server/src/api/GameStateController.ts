@@ -13,20 +13,26 @@ router.use(bodyParser.json())
 
 router.post('/update', (req: Request, res: Response) => {
   const data = req.body
-  if (data === null) {
-    res.status(401).send({message: 'Data not sent'})
-    return
-  }
+  if (data === null) 
+    return res
+        .status(401)
+        .send({message: 'Data not sent'})
+
   gameState.handleRequest(data)
-  res.sendStatus(200)
+  return res
+      .sendStatus(200)
 })
 
 router.get('/online', (req: Request, res: Response) => {
-  res.send(gameState.getCurrentStatus())
+  return res
+      .status(200)
+      .send(gameState.getCurrentStatus())
 })
 
 router.get('/', (req: Request, res: Response) => {
-  res.status(200).send(gameState.getGameState())
+  return res
+      .status(200)
+      .send(gameState.getGameState())
 })
 
 router.get('/overlay/init', (req: Request, res: Response) => {
@@ -35,9 +41,13 @@ router.get('/overlay/init', (req: Request, res: Response) => {
   if (ok) {
     gameState.sendLatestDispatch()
     gameStats.sendLatestDispatch()
-    res.status(200).send({message: 'Data was found'})
+    return res
+        .status(200)
+        .send({message: 'Data was found'})
   } else {
-    res.status(400).send({message: 'Data was not found'})
+    return res
+        .status(400)
+        .send({message: 'Data was not found'})
   }
 })
 

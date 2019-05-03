@@ -59,7 +59,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       inject: true,
-      template: resolve('./src/index.html'),
+      template: resolve('./public/index.html'),
       chunks: ['js']
     }),
     new webpack.HotModuleReplacementPlugin(),

@@ -121,7 +121,10 @@ export type TeamConfig = {
 
 export type StateTeamConfig ={
   teamA: TeamConfig,
-  teamB: TeamConfig
+  teamB: TeamConfig,
+  players: {
+    [string]: PlayerConfig
+  }
 }
 
 export type PlayerConfig = {

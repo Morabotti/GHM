@@ -31,7 +31,7 @@ router.post('/', uploadTeamsLogo.single('logo'), (req: Request, res: Response) =
         .status(500)
         .send('There was a problem adding the information to the database.')
 
-    res.status(200).send(team)
+    return res.status(200).send(team)
   })
 })
 
@@ -41,7 +41,7 @@ router.get('/', (req: Request, res: Response) => {
         .status(500)
         .send('There was a problem finding the team.')
 
-    res.status(200).send(team)
+    return res.status(200).send(team)
   })
 })
 
@@ -65,7 +65,7 @@ router.get('/dropdown', (req: Request, res: Response) => {
       ]
     });
 
-    res.status(200).send(newArray)
+    return res.status(200).send(newArray)
   })
 })
 
@@ -79,7 +79,7 @@ router.get('/:id', (req: Request, res: Response) => {
         .status(404)
         .send('No team found.')
 
-    res.status(200).send(team)
+    return res.status(200).send(team)
   })
 })
 
@@ -97,7 +97,7 @@ router.delete('/:id', (req: Request, res: Response) => {
           .status(500)
           .send(`Team: ${team.teamNameShort} was deleted, but image was not.`))
 
-    res.status(200).send(`Team: ${team.teamNameShort} was deleted.`)
+    return res.status(200).send(`Team: ${team.teamNameShort} was deleted.`)
   })
 })
 
@@ -156,7 +156,7 @@ router.put('/:id', (req: Request, res: Response) => {
           .status(500)
           .send('There was a problem updating the team.')
 
-      res.status(200).send(newTeam)
+      return res.status(200).send(newTeam)
     })
   })
   
@@ -202,7 +202,7 @@ router.put('/newlogo/:id', uploadTeamsLogo.single('logo'),  (req: Request, res: 
         .status(500)
         .send('There was a problem updating the team.')
 
-    res.status(200).send(team)
+    return res.status(200).send(team)
   })
 })
 

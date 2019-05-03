@@ -78,7 +78,7 @@ class GameStats {
                   ...stats[user.team],
                   nades: {
                     ...stats[user.team].nades,
-                    flashes: stats[user.team].flashes + nade.ammo_reserve
+                    flashes: stats[user.team].nades.flashes + nade.ammo_reserve
                   }
                 }
               }
@@ -90,7 +90,7 @@ class GameStats {
                   ...stats[user.team],
                   nades: {
                     ...stats[user.team].nades,
-                    grenades: stats[user.team].grenades + nade.ammo_reserve
+                    grenades: stats[user.team].nades.grenades + nade.ammo_reserve
                   }
                 }
               }
@@ -102,7 +102,7 @@ class GameStats {
                   ...stats[user.team],
                   nades: {
                     ...stats[user.team].nades,
-                    molotovs: stats[user.team].molotovs + nade.ammo_reserve
+                    molotovs: stats[user.team].nades.molotovs + nade.ammo_reserve
                   }
                 }
               }
@@ -114,7 +114,7 @@ class GameStats {
                   ...stats[user.team],
                   nades: {
                     ...stats[user.team].nades,
-                    molotovs: stats[user.team].molotovs + nade.ammo_reserve
+                    molotovs: stats[user.team].nades.molotovs + nade.ammo_reserve
                   }
                 }
               }
@@ -126,7 +126,7 @@ class GameStats {
                   ...stats[user.team],
                   nades: {
                     ...stats[user.team].nades,
-                    smokes: stats[user.team].smokes + nade.ammo_reserve
+                    smokes: stats[user.team].nades.smokes + nade.ammo_reserve
                   }
                 }
               }

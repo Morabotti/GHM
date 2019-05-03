@@ -3,8 +3,8 @@ import React, { PureComponent } from 'react'
 import { hot } from 'react-hot-loader'
 import { connect } from 'react-redux'
 
-import { setStatus } from '../actions'
-import { getStatus, subscribeToSocket } from '../client'
+import { setStatus, setActiveMatch } from '../actions'
+import { getStatus, getActiveMatch, subscribeToSocket } from '../client'
 import { deepEqual } from '../../dashboard/lib/helpers'
 import { PlayerPlate, Radar, ScorePlate, Team, GameLoader } from './'
 
@@ -26,6 +26,7 @@ class Main extends PureComponent<Props> {
 
   componentDidMount () {
     this._getStatus()
+    this._getActiveMatch()
     this.interval = setInterval(this._getStatus, 3000)
     subscribeToSocket(this.props.dispatch)
   }
@@ -34,12 +35,15 @@ class Main extends PureComponent<Props> {
     clearInterval(this.interval)
   }
 
+  _getActiveMatch = () => getActiveMatch()
+    .then(match => setActiveMatch(match))
+    .then(this.props.dispatch)
+
   _getStatus = () => getStatus()
     .then(setStatus)
     .then(i => {
-      if (!deepEqual(i.status, this.props.status)) {
+      if (!deepEqual(i.status, this.props.status))
         this.props.dispatch(i)
-      }
     })
 
   render () {

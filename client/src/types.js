@@ -12,7 +12,8 @@ export type SocketEndPoint = {
   map: string,
   phase: string,
   events: string,
-  stats: string
+  stats: string,
+  gameConfig: string
 }
 
 export type GradeType = {

@@ -99,7 +99,8 @@ export interface Sockets {
   phase: string,
   updates: string,
   events: string,
-  stats: string
+  stats: string,
+  gameconfig: string
 }
 
 // ! FIX any properties ! //

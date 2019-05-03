@@ -5,5 +5,6 @@
   "phase": "/socket-overlay/phase",
   "updates": "/socket-general/status",
   "events": "/socket-general/events",
-  "stats": "/socket-overlay/stats"
+  "stats": "/socket-overlay/stats",
+  "gameconfig": "/socket-overlay/gameconfig"
 }

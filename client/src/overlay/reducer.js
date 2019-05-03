@@ -11,7 +11,8 @@ import type {
   EventsReducer,
   TeamStat,
   TeamStats,
-  TeamConfig
+  TeamConfig,
+  PlayerConfig
 } from './types'
 
 import type { Status } from '../dashboard/types'
@@ -26,7 +27,10 @@ export type State = {
   teamStats: TeamStats,
   teamConfiguration: {
     teamA: TeamConfig,
-    teamB: TeamConfig
+    teamB: TeamConfig,
+    players: {
+      [string]: PlayerConfig
+    }
   }
 }
 
@@ -146,7 +150,8 @@ const getDefaultState = (): State => ({
       customLogo: null,
       country: null,
       players: { }
-    }
+    },
+    players: { }
   }
 })
 
@@ -200,6 +205,11 @@ export default function reducer (
       return {
         ...state,
         teamStats: action.stats
+      }
+    case 'set-team-configuration':
+      return {
+        ...state,
+        teamConfiguration: action.teamConfiguration
       }
     default:
       return state

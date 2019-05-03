@@ -55,27 +55,50 @@
       display: grid;
       grid-template-columns: 1fr 350px 1fr;
       font-weight: bold;
+      overflow: visible;
       color: white;
       
-      .grid-hp {
-        border-top-left-radius: 20px;
-        font-size: 26px;
-        line-height: 48px;
-        padding-top: 2px;
-        text-align: center;
-        display: flex;
+      .grid-health-container{
+        position: relative;
 
-        .item{
-          flex: 1;
-
-          .icon-center{
-            vertical-align: text-top;
-            height: 30px;
-            padding-bottom: 1px;
+        .grid-player-image{
+          position: absolute;
+          height: 200px;
+          margin-top: -200px;
+          overflow: hidden;
+          width: 100%;
+          background-color: @ui-image-bg;
+          border-top-left-radius: 20px;
+          border-top-right-radius: 20px;
+          border-bottom-left-radius: 20px;
+          z-index: -1;
+          img{
+            object-fit: contain;
+            height: 200px;
           }
+        }
 
-          img, b{
-            margin-right: 3px;
+        .grid-hp {
+          border-top-left-radius: 20px;
+          font-size: 26px;
+          line-height: 48px;
+          padding-top: 2px;
+          overflow: hidden;
+          text-align: center;
+          display: flex;
+  
+          .item{
+            flex: 1;
+  
+            .icon-center{
+              vertical-align: middle;
+              height: 26px;
+              padding-bottom: 5px;
+            }
+  
+            img, b{
+              margin-right: 3px;
+            }
           }
         }
       }
@@ -131,10 +154,14 @@
         }
 
         .two-rows{
-          grid-template-rows: 1fr 1fr;
+          grid-template-rows: 0.7fr 1fr;
           padding-top: 2px;
           text-align: center;
           display: grid;
+
+          .raw-data{
+            font-size: 1.3em;
+          }
         }
 
         .stats-utility{

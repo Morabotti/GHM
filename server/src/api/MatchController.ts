@@ -5,6 +5,7 @@ import { Request, Response } from 'express'
 import { Error } from 'mongoose'
 
 import Match from '../models/Match'
+import { dispatchSocket, openSockets } from '../handler/SocketIo'
 import { getActiveMatchData, filterActiveMatchData } from '../core/MatchCore'
 
 const router = express.Router()
@@ -23,7 +24,7 @@ router.post('/', (req: Request, res: Response) => {
         .status(500)
         .send('There was a problem adding the information to the database.')
 
-    res.status(200).send(match)
+    return res.status(200).send(match)
   })
 })
 
@@ -42,7 +43,7 @@ router.post('/live/:id', (req: Request, res: Response) => {
               .status(400)
               .send('There was a problem updating the match.')
 
-          res.status(200).send(newMatch)
+          return res.status(200).send(newMatch)
       })
     } else {
       Match.updateMany(
@@ -63,7 +64,7 @@ router.post('/live/:id', (req: Request, res: Response) => {
                 .status(500)
                 .send('There was a problem updating the match.')
 
-            res.status(200).send(newMatch)
+            return res.status(200).send(newMatch)
         })
       })
     }
@@ -80,13 +81,35 @@ router.get('/overlay', async (req: Request, res: Response) => {
   }
 })
 
+/*
+ * Needs to be tought better, (Ideal would be that GameStateCore would handle all these?)
+ * Maybe needs to be done a extra core for handling these data?
+router.get('/overlay/teams/switch', async (req: Request, res: Response) => {
+  Match.find({ isLive: true }, (err: Error, match: any) => {
+    if (err) return res
+        .status(400)
+        .send('There was a problem finding the match.')
+    
+    Match.findByIdAndUpdate(match._id,
+      {$set: {teamA: match.teamB, teamB: match.teamA}},
+      { new: true }, (err: Error, newMatch: any) => {
+        if (err) return res
+            .status(400)
+            .send('There was a problem switching the sides match.')
+        
+        return res.status(200).send(newMatch)
+    })
+  })
+})
+*/
+
 router.get('/', (req: Request, res: Response) => {
   Match.find({}, (err: Error, match: any) => {
     if (err) return res
         .status(500)
         .send('There was a problem finding the match.')
 
-    res.status(200).send(match)
+    return res.status(200).send(match)
   })
 })
 
@@ -100,7 +123,7 @@ router.get('/:id', (req: Request, res: Response) => {
         .status(404)
         .send('No match found.')
 
-    res.status(200).send(match)
+    return res.status(200).send(match)
   })
 })
 
@@ -110,7 +133,7 @@ router.delete('/:id', (req: Request, res: Response) => {
         .status(500)
         .send('There was a problem deleting the match.')
 
-    res.status(200).send(`Match was deleted.`)
+    return res.status(200).send(`Match was deleted.`)
   })
 })
 
@@ -122,7 +145,7 @@ router.put('/:id',  (req: Request, res: Response) => {
         .status(500)
         .send('There was a problem updating the match.')
 
-    res.status(200).send(match)
+    return res.status(200).send(match)
   })
 })
 

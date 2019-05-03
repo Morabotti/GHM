@@ -2,20 +2,27 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
-import type { CurrentPlayer, AllPlayers } from '../types'
+import type { CurrentPlayer, AllPlayers, StateTeamConfig } from '../types'
 import type { State } from '../../types'
+
+import HEAD_ARMOR from '../../assets/util/armor_head.svg'
+import ARMOR from '../../assets/util/armor.svg'
 
 type Props = {
   playerData: CurrentPlayer,
-  allPlayers: AllPlayers
+  allPlayers: AllPlayers,
+  teamConfiguration: StateTeamConfig
 }
 
 class PlayerPlate extends PureComponent<Props> {
   render () {
     const { name, team, state, steamid } = this.props.playerData
-    const { allPlayers } = this.props
+    const { allPlayers, teamConfiguration } = this.props
 
     const isWatching = (this.props.playerData.spectarget !== undefined)
+    const hasExtraInfo = (teamConfiguration.players[steamid] !== undefined)
+
+    const extraInfoPlayer = teamConfiguration.players[steamid]
 
     if (allPlayers[steamid] === 0 || allPlayers[steamid] === undefined) return null
     const weapons = allPlayers[steamid].weapons
@@ -38,15 +45,25 @@ class PlayerPlate extends PureComponent<Props> {
               <p>{name}</p>
             </div>
             <div className='grid-lower'>
-              <div className='grid-lower-dark grid-hp'>
-                <div className='item'>
-                  <b>+</b>{state.health}
+              <div className='grid-health-container'>
+                <div className='grid-player-image'>
+                  <img src={`/${hasExtraInfo 
+                    ? extraInfoPlayer.imagePath !== null && extraInfoPlayer.hasImage
+                    ? extraInfoPlayer.imagePath
+                    : 'static/default/default-player.png'
+                    : 'static/default/default-player.png'}`}
+                  />
                 </div>
-                <div className='item'>
-                  {state.helmet
-                    ? (<img src='/static/utils/armor_helmet.png' className='icon-center' />)
-                    : (<img src='/static/utils/armor.png' className='icon-center' />)
-                  }{state.armor}
+                <div className='grid-lower-dark grid-hp'>
+                  <div className='item'>
+                    <b>+</b>{state.health}
+                  </div>
+                  <div className='item'>
+                    {state.helmet
+                      ? (<img src={HEAD_ARMOR} className='icon-center' />)
+                      : (<img src={ARMOR} className='icon-center' />)
+                    }{state.armor}
+                  </div>
                 </div>
               </div>
               <div className='grid-lower-light grid-stats'>
@@ -67,19 +84,19 @@ class PlayerPlate extends PureComponent<Props> {
                 </div>
                 <div className='two-rows stats-kills'>
                   <div className='team-highlight'>K</div>
-                  <div>{kills}</div>
+                  <div className='raw-data'>{kills}</div>
                 </div>
                 <div className='two-rows stats-assists'>
                   <div className='team-highlight'>A</div>
-                  <div>{assists}</div>
+                  <div className='raw-data'>{assists}</div>
                 </div>
                 <div className='two-rows stats-deaths'>
                   <div className='team-highlight'>D</div>
-                  <div>{deaths}</div>
+                  <div className='raw-data'>{deaths}</div>
                 </div>
                 <div className='two-rows stats-adr'>
                   <div className='team-highlight'>K/D</div>
-                  <div>{deaths === 0 ? kills.toFixed(2) : (kills / deaths).toFixed(2)}</div>
+                  <div className='raw-data'>{deaths === 0 ? kills.toFixed(2) : (kills / deaths).toFixed(2)}</div>
                 </div>
                 <div className='stats-utility'>
                   {team === 'CT' ? state.defusekit ? (
@@ -151,7 +168,8 @@ class PlayerPlate extends PureComponent<Props> {
 
 const mapStateToProps = (state: State) => ({
   playerData: state.overlay.gameStatePlayer,
-  allPlayers: state.overlay.gameStateAllPlayer
+  allPlayers: state.overlay.gameStateAllPlayer,
+  teamConfiguration: state.overlay.teamConfiguration
 })
 
 export default connect(mapStateToProps)(PlayerPlate)
