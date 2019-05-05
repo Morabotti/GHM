@@ -350,7 +350,7 @@ class PlayersPage extends Component<Props, ComponentState> {
                               <Checkbox
                                 label='User has Image'
                                 name='playerHasImg'
-                                defaultChecked={playerHasImg}
+                                checked={playerHasImg}
                                 onChange={this._onCheckboxChange}
                               />
                             </Form.Field>

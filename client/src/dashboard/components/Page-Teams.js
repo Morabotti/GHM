@@ -338,7 +338,7 @@ class TeamsPage extends Component<Props, ComponentState> {
                               <Checkbox
                                 label='Team has Image'
                                 name='teamHasLogo'
-                                defaultChecked={teamHasLogo}
+                                checked={teamHasLogo}
                                 onChange={this._onCheckboxChange}
                               />
                             </Form.Field>

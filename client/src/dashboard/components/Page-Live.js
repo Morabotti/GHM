@@ -260,6 +260,18 @@ class LivePage extends Component<Props, ComponentState> {
                                 centered
                               />
                               <h2>{currentTeamB.teamNameShort}</h2>
+                              <List selection verticalAlign='middle'>
+                                {players.filter(player => player.team === currentTeamB.teamNameShort)
+                                  .map((player, index) =>(
+                                    <List.Item key={player._id}>
+                                      <Image avatar src={`/${player.imagePath === null ? 'static/default/default-player.png' : player.imagePath }`} />
+                                      <List.Content>
+                                        <List.Header>{player.firstName} '{player.gameName}' {player.lastName}</List.Header>
+                                      </List.Content>
+                                    </List.Item>
+                                  ))
+                                }
+                              </List>
                             </div>
                           </div>
                         </div>

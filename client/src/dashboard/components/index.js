@@ -6,6 +6,7 @@ import TeamsPage from './Page-Teams'
 import PlayersPage from './Page-Players'
 import ConfigPage from './Page-Config'
 import LivePage from './Page-Live'
+import SettingsPage from './Page-Settings'
 import { ClientConnectButton, ConnectionButton, ServerConnectButton } from './Buttons'
 import { SubHeaderWithIcon } from './Headers'
 
@@ -35,5 +36,6 @@ export {
   EditPlayerModal,
   TeamSelectionModal,
   LivePage,
-  ConfigPage
+  ConfigPage,
+  SettingsPage
 }

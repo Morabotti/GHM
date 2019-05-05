@@ -18,6 +18,10 @@ export type Modals = {
   confirmLiveModalOpen: boolean
 }
 
+export type GameSettings = {
+  useCustomRadar: boolean
+}
+
 export type State = {
   status: Status,
   showNavbar: boolean,
@@ -47,8 +51,13 @@ const modals: Modals = {
   confirmLiveModalOpen: false,
 }
 
+const gameSettings: GameSettings = {
+  useCustomRadar: false
+}
+
 const getDefaultState = (): State => ({
   status: statusState,
+  gameSettings: gameSettings,
   countries: [],
   teams: [],
   teamsDropdown: [],

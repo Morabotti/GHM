@@ -1,27 +1,44 @@
 // @flow
 import React from 'react'
 import { Icon, Popup } from 'semantic-ui-react'
-import type { BigConnectionButtonType, ConnectionButtonType } from '../types'
+import type {
+  BigConnectionButtonType,
+  ConnectionButtonType
+} from '../types'
 
-export const ClientConnectButton = (props: BigConnectionButtonType) => {
-  const { connected } = props
-  if (connected) return <span className='status connected'>Connected</span>
-  else return <span className='status disconnected'>Not Connected</span>
-}
+export const ClientConnectButton = (props: BigConnectionButtonType) => (
+  <span className={`status ${props.connected ? 'connected' : 'disconnected'}`}>
+    {props.connected ? 'Connected' : 'Not Connected'}
+  </span>
+)
 
-export const ServerConnectButton = (props: BigConnectionButtonType) => {
-  const { connected } = props
-  if (connected) return <span className='status connected'>Server connected</span>
-  else return <span className='status warning'>Server not connected</span>
-}
+export const ServerConnectButton = (props: BigConnectionButtonType) => (
+  <span className={`status ${props.connected ? 'connected' : 'warning'}`}>
+    {props.connected ? 'Server connected' : 'Server not connected'}
+  </span>
+)
+
+const StatusBtn = (props: any) => (
+  <span className={`status-tag ${
+    props.disconnected
+    ? 'connected'
+    : 'disconnected'}`}
+    >{props.disconnected ? 'Online' : 'Offline'}</span>
+)
 
 export const ConnectionButton = (props: ConnectionButtonType) => {
-  const { clientConnection, serverConnection, overlayConnection } = props
-  let cornerIcon, CSGOonlineTag, SERVERonlineTag, OVERLAYonlineTag
+  const {
+    clientConnection,
+    serverConnection,
+    overlayConnection,
+    clientSpectating
+  } = props
 
-  if (clientConnection === false) cornerIcon = <Icon corner name='close' color='orange' />
-  else if (serverConnection === false) cornerIcon = <Icon corner name='check circle' color='yellow' />
-  else cornerIcon = <Icon corner name='check circle' color='green' />
+  const cornerIcon = !clientConnection 
+    ? <Icon corner name='close' color='orange' />
+    : !serverConnection
+    ? <Icon corner name='check circle' color='yellow' />
+    : <Icon corner name='check circle' color='green' />
 
   const BtnIcon = (
     <Icon.Group size='big'>
@@ -30,15 +47,6 @@ export const ConnectionButton = (props: ConnectionButtonType) => {
     </Icon.Group>
   )
 
-  if (clientConnection) CSGOonlineTag = <span className='statusTag connected'>Online</span>
-  else CSGOonlineTag = <span className='statusTag disconnected'>Offline</span>
-
-  if (serverConnection) SERVERonlineTag = <span className='statusTag connected'>Online</span>
-  else SERVERonlineTag = <span className='statusTag warning'>Offline</span>
-
-  if (overlayConnection) OVERLAYonlineTag = <span className='statusTag connected'>Online</span>
-  else OVERLAYonlineTag = <span className='statusTag disconnected'>Offline</span>
-
   return (
     <div className='btn_nav'>
       <Popup
@@ -46,10 +54,11 @@ export const ConnectionButton = (props: ConnectionButtonType) => {
         trigger={BtnIcon}
         position='bottom right'
       >
-        <div className='popUpCont'>
-          <p>CSGO client status: {CSGOonlineTag}</p>
-          <p>CSGO server status: {SERVERonlineTag}</p>
-          <p>Stream overlay status: {OVERLAYonlineTag}</p>
+        <div className='pop-up-cont'>
+          <p>CSGO client status: <StatusBtn disconnected={clientConnection} /></p>
+          <p>CSGO server status: <StatusBtn disconnected={serverConnection} /></p>
+          <p>Client spectating status: <StatusBtn disconnected={clientSpectating} /></p>
+          <p>Overlay status: <StatusBtn disconnected={overlayConnection} /></p>
         </div>
       </Popup>
     </div>

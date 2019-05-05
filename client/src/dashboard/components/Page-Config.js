@@ -1,6 +1,12 @@
 // @flow
 import React, { Component } from 'react'
-import { Grid, Icon, Breadcrumb, Accordion } from 'semantic-ui-react'
+import {
+  Grid,
+  Icon,
+  Breadcrumb,
+  Accordion,
+  Checkbox
+} from 'semantic-ui-react'
 
 type Props = {}
 
@@ -45,12 +51,9 @@ class ConfigPage extends Component<Props, PageState> {
                       General
                     </Accordion.Title>
                     <Accordion.Content active={activeIndex === 0}>
-                    </Accordion.Content>
-                    <Accordion.Title active={activeIndex === 1} index={0} onClick={this.handleClick}>
-                      <Icon name='dropdown' />
-                      Overlay
-                    </Accordion.Title>
-                    <Accordion.Content active={activeIndex === 1}>
+                      <div className='settings-group'>
+                        <Checkbox toggle label='Use custom radar' />
+                      </div>
                     </Accordion.Content>
                   </Accordion>
                   </div>

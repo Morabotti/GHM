@@ -1,10 +1,14 @@
 # GHM Game State Integration
 
-## Preview:
+## Dashboard:
 
-[WIP Preview of UI](https://www.youtube.com/watch?v=XFpE2l7AzMc)
+![Dashboard live tab](https://i.imgur.com/unOBwmF.png)
 
-[![UI Demo](https://i.imgur.com/6Ba908v.jpg)](https://www.youtube.com/watch?v=XFpE2l7AzMc)
+## UI Preview:
+
+[WIP Preview of UI](https://www.youtube.com/watch?v=aX5zolo5rQ8)
+
+[![UI Demo](https://i.imgur.com/6Ba908v.jpg)](https://www.youtube.com/watch?v=aX5zolo5rQ8)
 
 ## App shortcuts:
 

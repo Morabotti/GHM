@@ -33,7 +33,8 @@ import {
   TeamsPage,
   PlayersPage,
   LivePage,
-  ConfigPage
+  ConfigPage,
+  SettingsPage
 } from './'
 
 // $FlowIgnore
@@ -100,6 +101,7 @@ class Main extends PureComponent<Props> {
               <Route path={url + '/config'} exact component={ConfigPage} />
               <Route path={url + '/teams'} exact component={TeamsPage} />
               <Route path={url + '/players'} exact component={PlayersPage} />
+              <Route path={url + '/settings'} exact component={SettingsPage} />
             </Switch>
           </div>
         </Fragment>
