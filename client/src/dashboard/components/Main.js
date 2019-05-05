@@ -32,7 +32,8 @@ import {
   HomePage,
   TeamsPage,
   PlayersPage,
-  LivePage
+  LivePage,
+  ConfigPage
 } from './'
 
 // $FlowIgnore
@@ -96,6 +97,7 @@ class Main extends PureComponent<Props> {
             <Switch>
               <Route path={url + '/'} exact component={HomePage} />
               <Route path={url + '/live'} exact component={LivePage} />
+              <Route path={url + '/config'} exact component={ConfigPage} />
               <Route path={url + '/teams'} exact component={TeamsPage} />
               <Route path={url + '/players'} exact component={PlayersPage} />
             </Switch>

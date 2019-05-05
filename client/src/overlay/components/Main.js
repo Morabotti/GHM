@@ -22,7 +22,7 @@ type Props = {
 }
 
 class Main extends PureComponent<Props> {
-  interval: any
+  interval: window.TimerHandler
 
   componentDidMount () {
     this._getStatus()
@@ -47,8 +47,10 @@ class Main extends PureComponent<Props> {
     })
 
   render () {
-    const { status } = this.props
-    const { teamA, teamB } = this.props.teamConfiguration
+    const {
+      teamConfiguration: { teamA, teamB },
+      status
+    } = this.props
 
     if (!status.clientSpectating)
       return <GameLoader showMessage status={status} />

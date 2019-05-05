@@ -12,7 +12,8 @@ import type {
   TeamStat,
   TeamStats,
   TeamConfig,
-  PlayerConfig
+  PlayerConfig,
+  BombState
 } from './types'
 
 import type { Status } from '../dashboard/types'
@@ -22,6 +23,7 @@ export type State = {
   gameStatePlayer: CurrentPlayer,
   gameStateMap: MapState,
   gameStatePhase: PhaseCooldowns,
+  gameStateBomb: BombState,
   status: Status,
   events: EventsReducer,
   teamStats: TeamStats,
@@ -35,7 +37,7 @@ export type State = {
 }
 
 const defaultTeamState: Team = {
-  score: 0,
+  score: null,
   name: '',
   timeouts_remaining: 0,
   matches_won_this_series: 0
@@ -128,6 +130,11 @@ const getDefaultState = (): State => ({
     phase: '',
     phase_ends_in: 0
   },
+  gameStateBomb: {
+    state: 'dropped',
+    position: '0',
+    countdown: '0'
+  },
   status: statusState,
   events: {
     moneyCount: false
@@ -138,14 +145,14 @@ const getDefaultState = (): State => ({
   },
   teamConfiguration: {
     teamA: {
-      team: 'T',
+      team: 'CT',
       customName: null,
       customLogo: null,
       country: null,
       players: { }
     },
     teamB: {
-      team: 'CT',
+      team: 'T',
       customName: null,
       customLogo: null,
       country: null,
@@ -179,6 +186,11 @@ export default function reducer (
       return {
         ...state,
         gameStatePhase: action.gameStatePhase
+      }
+    case 'set-game-bomb':
+      return {
+        ...state,
+        gameStateBomb: action.gameStateBomb
       }
     case 'set-status-overlay':
       return {

@@ -9,6 +9,9 @@ export const getActiveMatchData = () => {
     Match.findOne({ isLive: true }, (err: Error, match: any) => {
       if (err) reject(err)
 
+      if (match === null)
+        return reject('No live match configuration active')
+
       Team.find({'_id': {$in: [
         match.teamA,
         match.teamB

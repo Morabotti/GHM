@@ -63,14 +63,13 @@
 
         .grid-player-image{
           position: absolute;
-          height: 200px;
-          margin-top: -200px;
+          height: 180px;
+          margin-top: -180px;
           overflow: hidden;
           width: 100%;
           background-color: @ui-image-bg;
           border-top-left-radius: 20px;
           border-top-right-radius: 20px;
-          border-bottom-left-radius: 20px;
           z-index: -1;
           img{
             object-fit: contain;
@@ -86,6 +85,10 @@
           overflow: hidden;
           text-align: center;
           display: flex;
+
+          &.no-corner{
+            border-top-left-radius: 0;
+          }
   
           .item{
             flex: 1;

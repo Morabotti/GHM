@@ -11,7 +11,8 @@ import {
   setGameMapState,
   setGamePhaseState,
   setStatus,
-  setNades
+  setNades,
+  setBomb
 } from './actions'
 
 export const subscribeToSocket = (dispatch: Dispatch) => {
@@ -22,6 +23,7 @@ export const subscribeToSocket = (dispatch: Dispatch) => {
   subscribeToSocketUpdates(dispatch)
   subscribeToSocketEvents(dispatch)
   subscribeToSocketStats(dispatch)
+  subscribeToSocketBomb(dispatch)
   setTimeout(getLatestData, 50)
 }
 
@@ -83,6 +85,13 @@ export const subscribeToSocketStats = (dispatch: Dispatch) => {
   const socket = openSocket(config.sockets.stats)
   socket.on('state', data => {
     dispatch(setNades(data))
+  })
+}
+
+export const subscribeToSocketBomb = (dispatch: Dispatch) => {
+  const socket = openSocket(config.sockets.bomb)
+  socket.on('state', data => {
+    dispatch(setBomb(data))
   })
 }
 

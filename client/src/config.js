@@ -15,7 +15,8 @@ const config: Config = {
     updates: `${url}/socket-general/status`,
     events: `${url}/socket-general/events`,
     stats: `${url}/socket-overlay/stats`,
-    gameConfig: `${url}/socket-overlay/gameconfig`
+    gameConfig: `${url}/socket-overlay/gameconfig`,
+    bomb: `${url}/socket-overlay/bomb`
   },
   teamNadeGrades: {
     bad: {

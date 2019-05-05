@@ -9,62 +9,141 @@
     display: flex;
     height: 65px;
 
-    .score-area{
+    .score-area-container{
       display: flex;
+      position: relative;
       width: 100%;
 
-      &.area-right{
-        flex-direction: row-reverse;
-        .team-logo{ border-top-right-radius: 15px; }
-      }
-
-      &.area-left{
-        flex-direction: row;
-        .team-logo{ border-top-left-radius: 15px; }
-      }
-
       &.CT{
-        .team-name, .team-score{ color: @ct-color-main; }
+        .team-name, .team-score, .team-event{ color: @ct-color-main; }
         .team-score{ border-bottom: 2px solid @ct-color-main; }
+
+        .show-defuse{
+          opacity: 1;
+          margin-top: 65px;
+        }
       }
 
       &.T{
-        .team-name, .team-score{ color: @t-color-main; }
+        .team-name, .team-score, .team-event{ color: @t-color-main; }
         .team-score{ border-bottom: 2px solid @t-color-main; }
-      }
 
-      .team-logo{
-        width: 75px;
-        background-color: @ui-text-light;
-
-        img{
-          display: block;
-          height: 50px;
-          margin-left: auto;
-          margin-right: auto;
-          margin-top: 7px;
+        .show-bomb{
+          opacity: 1;
+          margin-top: 65px;
         }
       }
 
-      .team-name{
-        line-height: 65px;
-        font-size: 30px;
-        text-align: center;
-        font-weight: bold;
-        flex: 1;
-        background-color: @ui-default-dark /* REDO COLOR */;
+      .team-event-container{
+        position: absolute;
+        width: 100%;
+        height: 55px;
+        background-color: @ui-default-darkest;
+        z-index: -1;
+        opacity: 0;
+        margin-top: 0;
+        border-radius: 0 0 20px 20px;
+        transition: opacity 150ms linear, margin 350ms linear;
 
-        &.smaller{
-          font-size: 26px;
+        &.show-win{
+          opacity: 1;
+          margin-top: 65px;
+        }
+
+        .team-event{
+          line-height: 55px;
+          font-size: 30px;
+          text-align: center;
+          font-weight: bold;
+
+          &.defuse-container{
+            padding: 7px 25px;
+
+            .defuse-progress{
+              position: relative;
+              height: 40px;
+              width: 100%;
+              border: 3px solid white;
+
+              span{
+                margin: 0;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+              }
+
+              .progress{
+                position: absolute;
+                background-color: rgba(255, 255, 255, 0.88);
+                animation-name: defuseTimer;
+                animation-timing-function: linear;
+                animation-iteration-count: 1;
+                animation-direction: normal;
+                animation-fill-mode: forwards;
+                width: 0%;
+                height: 100%;
+
+                &.kit{
+                  animation-duration: 4.85s;
+                }
+
+                &.nokit{
+                  animation-duration: 9.7s;
+                }
+              }
+            }
+          }
         }
       }
 
-      .team-score{
-        width: 75px;
-        text-align: center;
-        font-size: 55px;
-        font-weight: bold;
-        background-color: @ui-text-dark;
+      .score-area{
+        display: flex;
+        width: 100%;
+
+        &.area-right{
+          flex-direction: row-reverse;
+          .team-logo{ border-top-right-radius: 15px; }
+        }
+
+        &.area-left{
+          flex-direction: row;
+          .team-logo{ border-top-left-radius: 15px; }
+        }
+
+        .team-logo{
+          width: 75px;
+          background-color: @ui-text-light;
+
+          img{
+            display: block;
+            height: 50px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 7px;
+          }
+        }
+
+        .team-name{
+          line-height: 65px;
+          font-size: 30px;
+          text-align: center;
+          font-weight: bold;
+          flex: 1;
+          background-color: @ui-default-dark;
+
+          &.smaller{
+            font-size: 26px;
+          }
+        }
+
+        .team-score{
+          width: 75px;
+          text-align: center;
+          font-size: 55px;
+          font-weight: bold;
+          background-color: @ui-text-dark;
+        }
       }
     }
     .score-time{
@@ -80,7 +159,13 @@
       .bomb-timer{
         background-color: red;
         bottom: 0;
-        transition: 200ms height;
+        height: 0%;
+        animation-name: bombTimer;
+        animation-duration: 40s;
+        animation-timing-function: linear;
+        animation-iteration-count: 1;
+        animation-direction: normal;
+        animation-fill-mode: forwards;
         position: absolute;
         width: 100%;
       }
@@ -105,7 +190,7 @@
       @keyframes bombeffect {
         from {
           transform: scale(1.05);
-          opacity: 0.85;
+          opacity: 0.9;
         }
       
         to {
@@ -133,5 +218,23 @@
         z-index: 3;
       }
     }
+  }
+}
+
+@keyframes bombTimer {
+  from {
+    height: 0%;
+  }
+  to {
+    height: 100%;
+  }
+}
+
+@keyframes defuseTimer {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
   }
 }

@@ -74,11 +74,6 @@ class SideBar extends Component<Props> {
                 <span className='item-name-header'> <Icon color='green' name='configure' /> Config</span>
               </NavLink>
             </li>
-            <li className='list-cont'>
-              <NavLink className='item-link' activeClassName='chosen' to={url + '/options'}>
-                <span className='item-name-header'> <Icon color='green' name='options' /> Options</span>
-              </NavLink>
-            </li>
             <li className='connection-info'>
               <p>Team Management</p>
             </li>

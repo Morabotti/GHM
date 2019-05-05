@@ -7,7 +7,7 @@ import config from '../config'
 
 const io = SocketIO().listen(config.socketIoPort)
 
-export const openSockets: Sockets = JSON.parse(fs.readFileSync(config.settingsPath, 'utf8'))
+export const openSockets: Sockets = JSON.parse(fs.readFileSync(config.socketsPath, 'utf8'))
 
 io.on('connection', (socket) => {
   Object.keys(openSockets).forEach(key => {

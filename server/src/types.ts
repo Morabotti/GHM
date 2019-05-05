@@ -29,31 +29,31 @@ export enum PHASE {
 }
 
 export interface StatsCalculation {
-  CT: TeamStats,
+  CT: TeamStats
   T: TeamStats
 }
 
 export interface TeamStats {
   nades: {
-    smokes: number,
-    grenades: number,
-    molotovs: number,
+    smokes: number
+    grenades: number
+    molotovs: number
     flashes: number
-  },
+  }
   teamEconomy: number
 }
 
 export interface Country {
-  key: string,
-  value: string,
-  flag: string,
+  key: string
+  value: string
+  flag: string
   text: string
 }
 
 export type ListElement = {
-  key: string,
-  value: string,
-  text: string,
+  key: string
+  value: string
+  text: string
   image: { avatar: boolean, src: string }
 }
 
@@ -96,11 +96,12 @@ export interface Sockets {
   allPlayers: string
   player: string
   map: string
-  phase: string,
-  updates: string,
-  events: string,
-  stats: string,
+  phase: string
+  updates: string
+  events: string
+  stats: string
   gameconfig: string
+  bomb: string
 }
 
 // ! FIX any properties ! //
@@ -112,7 +113,15 @@ export interface GameState {
   phase_countdowns: Phase_countdowns | any
   grenades: Grenades
   previously: Previously
+  bomb: BombState | any
   auth: Auth
+}
+
+export interface BombState {
+  state: 'planted' | 'planting' | 'exploded' | 'defusing' | 'defused' | 'carried' | 'dropped'
+  position: string
+  player?: number
+  countdown?: string
 }
 
 export interface Provider {
@@ -133,11 +142,12 @@ export interface CurrentMap {
   num_matches_to_win_series: number
   current_spectators: number
   souvenirs_total: number
+  round_wins: { [key: string]: string}
 }
 
 export interface Team {
   score: number
-  consecutive_round_losses: number,
+  consecutive_round_losses: number
   timeouts_remaining: number
   matches_won_this_series: number
 }
@@ -228,8 +238,9 @@ export interface Previously {
   player?: Player
   allplayers?: Allplayers
   phase_countdowns?: Phase_countdowns
-  grenades?: Grenades,
+  grenades?: Grenades
   map?: CurrentMap
+  bomb?: BombState
 }
 
 export interface Auth {

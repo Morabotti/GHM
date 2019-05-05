@@ -16,22 +16,25 @@ type Props = {
 
 class PlayerPlate extends PureComponent<Props> {
   render () {
-    const { name, team, state, steamid } = this.props.playerData
-    const { allPlayers, teamConfiguration } = this.props
+    const {
+      playerData: { name, team, state, steamid },
+      allPlayers,
+      teamConfiguration
+    } = this.props
 
     const isWatching = (this.props.playerData.spectarget !== undefined)
     const hasExtraInfo = (teamConfiguration.players[steamid] !== undefined)
-
     const extraInfoPlayer = teamConfiguration.players[steamid]
 
     if (allPlayers[steamid] === 0 || allPlayers[steamid] === undefined) return null
+
     const weapons = allPlayers[steamid].weapons
     const currentWeaponID = Object.keys(weapons).find(key => weapons[key].state === 'active')
+
     if (currentWeaponID === undefined) return null
 
     const {assists, deaths, kills} = allPlayers[steamid].match_stats
     const currentWeapon = weapons[currentWeaponID]
-
     const hasBOMB = (team === 'T'
       ? (Object.keys(weapons)
         .find(weapon => weapons[weapon].type === 'C4') !== undefined)
@@ -54,7 +57,7 @@ class PlayerPlate extends PureComponent<Props> {
                     : 'static/default/default-player.png'}`}
                   />
                 </div>
-                <div className='grid-lower-dark grid-hp'>
+                <div className={`grid-lower-dark grid-hp no-corner`}>
                   <div className='item'>
                     <b>+</b>{state.health}
                   </div>

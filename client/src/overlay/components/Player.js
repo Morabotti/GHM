@@ -124,7 +124,9 @@ class Player extends PureComponent<Props, ComponentState> {
               ) : null}
             </div>
             <div className='player-name'>
-              <div className='name'>{name}</div><div className='data-divider'>|</div><div className='spec-num'>{observerSlot}</div>
+              <div className='name'>{name}</div>
+              <div className='data-divider'>|</div>
+              <div className='spec-num'>{observerSlot}</div>
             </div>
             <div className='player-health'>
               {isDead ? '' : state.health}

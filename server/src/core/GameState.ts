@@ -52,6 +52,7 @@ class GameEvents {
       this.dispatchPhase(state.phase_countdowns)
       this.dispatchPlayer(state.player)
       this.dispatchMap(state.map)
+      this.dispatchBomb(state.bomb)
       
       this.gameState = state
       return
@@ -78,6 +79,14 @@ class GameEvents {
         this.gameState = {
           ...this.gameState,
           player: state.player
+        }
+      }
+
+      if (state.previously.bomb !== undefined) {
+        this.dispatchBomb(state.bomb)
+        this.gameState = {
+          ...this.gameState,
+          bomb: state.bomb
         }
       }
 
@@ -166,6 +175,7 @@ class GameEvents {
     this.dispatchPlayer(state.player)
     this.dispatchMap(state.map)
     this.dispatchPhase(state.phase_countdowns)
+    this.dispatchBomb(state.bomb)
   }
 
   sendLatestDispatch() {
@@ -173,6 +183,7 @@ class GameEvents {
     this.dispatchPlayer()
     this.dispatchMap()
     this.dispatchPhase()
+    this.dispatchBomb()
   }
 
   dispatchAllPlayers(data = null) {
@@ -235,6 +246,26 @@ class GameEvents {
     }
   }
 
+  dispatchBomb(data = null) {
+    if (data === null) {
+      if (this.gameState)
+        if (this.gameState.bomb !== undefined)
+          dispatchSocket(
+            openSockets.bomb,
+            'state',
+            this.gameState.bomb
+          )
+    } else {
+      if (data !== undefined) {
+        dispatchSocket(
+          openSockets.bomb,
+          'state',
+          data
+        )
+      }
+    }
+  }
+  
   dispatchPhase(data = null) {
     if (data === null) {
       if (this.gameState)

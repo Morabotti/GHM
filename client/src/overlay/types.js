@@ -32,6 +32,13 @@ export type TeamStats = {
   T: TeamStat
 }
 
+export type BombState = {
+  state: ('planted' | 'exploded' | 'planting' | 'defusing' | 'defused' | 'carried' | 'dropped'),
+  position: string,
+  player?: string,
+  countdown?: string
+}
+
 export type EventType = {
   event: Events,
   payload: any
@@ -43,7 +50,7 @@ export type PhaseCooldowns = {
 }
 
 export type Team = {
-  score: number,
+  score: number | null,
   name?: string,
   timeouts_remaining: number,
   matches_won_this_series: number

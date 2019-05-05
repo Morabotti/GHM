@@ -5,7 +5,8 @@ import type {
   PhaseCooldowns,
   CurrentPlayer,
   TeamStats,
-  StateTeamConfig
+  StateTeamConfig,
+  BombState
 } from './types'
 
 import type { Status } from '../dashboard/types'
@@ -14,6 +15,7 @@ export type Action = { type: 'set-game-all-player-state', gameStateAllPlayer: Al
   | { type: 'set-game-player-state', gameStatePlayer: CurrentPlayer}
   | { type: 'set-game-map-state', gameStateMap: MapState}
   | { type: 'set-game-phase-state', gameStatePhase: PhaseCooldowns}
+  | { type: 'set-game-bomb', gameStateBomb: BombState}
   | { type: 'set-status-overlay', status: Status }
   | { type: 'set-team-stats', stats: TeamStats }
   | { type: 'set-team-configuration', teamConfiguration: StateTeamConfig }
@@ -56,6 +58,11 @@ export const endMoneyCount = () => ({
 export const setNades = (stats: TeamStats) => ({
   type: 'set-team-stats',
   stats
+})
+
+export const setBomb = (gameStateBomb: BombState) => ({
+  type: 'set-game-bomb',
+  gameStateBomb
 })
 
 export const setActiveMatch = (teamConfiguration: StateTeamConfig) => ({

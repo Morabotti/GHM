@@ -3,82 +3,187 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
 import type { State } from '../../types'
-import type { PhaseCooldowns, MapState, StateTeamConfig } from '../types'
+import type {
+  PhaseCooldowns,
+  MapState,
+  StateTeamConfig,
+  BombState,
+  AllPlayers
+} from '../types'
 
 type Props = {
   mapData: MapState,
   phaseData: PhaseCooldowns,
-  teamConfiguration: StateTeamConfig
+  teamConfiguration: StateTeamConfig,
+  gameStateBomb: BombState,
+  allPlayers: AllPlayers
 }
 
 type ComponentState = {
   bombTimerLeft: number,
-  showBomb: boolean
+  plantedBomb: boolean,
+  aTeamWin: boolean,
+  bTeamWin: boolean
 }
 
-const BOMB_TIMER = 45
+const BOMB_TIMER = 40
+const EVENT_TIMEOUT = 5000
 
 class ScorePlate extends PureComponent<Props, ComponentState> {
+  bombTimeout: window.TimerHandler
+  defuseTimeout: window.TimerHandler
+  aWinTimeout: window.TimerHandler
+  bWinTimeout: window.TimerHandler
+
   state = {
-    showBomb: false,
-    bombTimerLeft: 0
+    plantedBomb: false,
+    bombTimerLeft: 10,
+    aTeamWin: false,
+    bTeamWin: false
   }
 
   componentDidUpdate (prevProp: Props) {
-    if (prevProp.phaseData.phase === 'bomb' && this.props.phaseData.phase === 'defuse') {
-      this.setState({
-        showBomb: true,
-        bombTimerLeft: prevProp.phaseData.phase_ends_in
-      })
-    } else if (this.props.phaseData.phase !== 'defuse' && this.state.showBomb) {
-      this.setState({
-        showBomb: false
-      })
+    const {
+      phaseData: { phase },
+      gameStateBomb: { state },
+      mapData: { team_ct, team_t },
+      phaseData: { phase_ends_in },
+      teamConfiguration: { teamA, teamB },
+      allPlayers
+    } = this.props
+
+    const {
+      plantedBomb
+    } = this.state
+
+    if (prevProp.gameStateBomb.state === 'planting' && state === 'planted') {
+      this.setState({ plantedBomb: true })
+      this.bombTimeout = setTimeout(this._removeBombNotify, EVENT_TIMEOUT)
+    }
+
+    if (prevProp.mapData.team_ct.score !== null && prevProp.mapData.team_ct.score + 1 === team_ct.score) {
+      const ROUND_END_TIME = phase_ends_in * 1000 > 10000
+        ? 10000
+        : phase_ends_in * 1000 < 3000
+        ? 3000
+        : phase_ends_in * 1000
+
+      if(teamA.team === 'CT') {
+        this.setState({ aTeamWin: true })
+        this.aWinTimeout = setTimeout(this._removeTeamANotify, ROUND_END_TIME)
+      } else {
+        this.setState({ bTeamWin: true })
+        this.bWinTimeout = setTimeout(this._removeTeamBNotify, ROUND_END_TIME)
+      }
+    }
+
+    if(prevProp.mapData.team_t.score !== null && prevProp.mapData.team_t.score + 1 === team_t.score) {
+      const ROUND_END_TIME = phase_ends_in * 1000 >= 10000
+        ? 10000
+        : phase_ends_in * 1000 < 3000
+        ? 3000
+        : phase_ends_in * 1000
+
+      if(teamA.team === 'T') {
+        this.setState({ aTeamWin: true })
+        this.aWinTimeout = setTimeout(this._removeTeamANotify, ROUND_END_TIME)
+      } else {
+        this.setState({ bTeamWin: true })
+        this.bWinTimeout = setTimeout(this._removeTeamBNotify, ROUND_END_TIME)
+      }
     }
   }
+
+  componentWillUnmount() {
+    clearTimeout(this.bombTimeout)
+    clearTimeout(this.defuseTimeout)
+    clearTimeout(this.aWinTimeout)
+    clearTimeout(this.bWinTimeout)
+  }
+
+  _removeBombNotify = () => this.setState({ plantedBomb: false })
+  _removeTeamANotify = () => this.setState({ aTeamWin: false })
+  _removeTeamBNotify = () => this.setState({ bTeamWin: false })
 
   sectostr (time) {
     return ~~(time / 60) + ':' + (time % 60 < 10 ? '0' : '') + time % 60
   }
 
   render () {
-    const { phase_ends_in, phase } = this.props.phaseData
-    const { round, team_ct, team_t } = this.props.mapData
-    const { teamA, teamB } = this.props.teamConfiguration
-    const { showBomb, bombTimerLeft } = this.state
+    const {
+      phaseData: { phase_ends_in, phase },
+      mapData: { round, team_ct, team_t },
+      teamConfiguration: { teamA, teamB },
+      gameStateBomb: { state, player },
+      allPlayers
+    } = this.props
+
+    const { bombTimerLeft, plantedBomb, aTeamWin, bTeamWin } = this.state
+
+    const showBomb = phase === 'bomb' || phase === 'defuse'
+    const displayBomb = state === 'planted' || state === 'defusing'
+    const defusingBomb = state === 'defusing'
+    const eventText = (aTeamWin || bTeamWin) ? 'WINS THE ROUND' : plantedBomb ? 'PLANTED THE BOMB' : ''
+    const defuserHasKit = (player !== undefined
+      && allPlayers[player] !== undefined
+      && allPlayers[player].state !== undefined
+      && allPlayers[player].state.defusekit !== undefined)
+      ? allPlayers[player].state.defusekit
+      : false
+
     return (
       <div className='score-top'>
         <div className='score-top-upper'>
-          <div className={`score-area area-left ${teamA.team}`}>
-            <div className='team-logo'>
-              {teamA.team === 'CT'
-                ? <img src='/static/teams/team_ct.png' />
-                : <img src='/static/teams/team_t.png' />
-              }
+          <div className={`score-area-container ${teamA.team}`}>
+            <div className={`team-event-container
+              ${plantedBomb ? 'show-bomb' : ''}
+              ${defusingBomb ? 'show-defuse' : ''}
+              ${aTeamWin ? ' show-win' : ''}`}>
+              <div className={`team-event ${defusingBomb ? 'defuse-container' : ''}`}>
+                {defusingBomb ? (
+                  <div className='defuse-progress'>
+                    <div className={`progress ${defuserHasKit ? 'kit' : 'nokit'}`} />
+                    <span>DEFUSING</span>
+                  </div>
+                ) : (
+                  eventText
+                )}
+              </div>
             </div>
-            <div className={`team-name ${team_ct.name === undefined ? 'smaller' : ''}`}>
-              {teamA.team === 'CT'
-                ? team_ct.name !== undefined ? team_ct.name : 'COUNTER-TERRORISTS'
-                : team_t.name !== undefined ? team_t.name : 'TERRORISTS'
-              }
-            </div>
-            <div className='team-score'>
-              {teamA.team === 'CT'
-                ? team_ct.score
-                : team_t.score
-              }
+            <div className='score-area area-left'>
+              <div className='team-logo'>
+                {teamA.customLogo !== null
+                  ? <img src={`/${teamA.customLogo}`} />
+                  : teamA.team === 'CT'
+                  ? <img src='/static/teams/team_ct.png' />
+                  : <img src='/static/teams/team_t.png' />
+                }
+              </div>
+              <div className={`team-name ${team_ct.name === undefined ? 'smaller' : ''}`}>
+                {teamA.customName !== null
+                  ? teamA.customName
+                  : teamA.team === 'CT'
+                  ? team_ct.name !== undefined ? team_ct.name : 'COUNTER-TERRORISTS'
+                  : team_t.name !== undefined ? team_t.name : 'TERRORISTS'
+                }
+              </div>
+              <div className='team-score'>
+                {teamA.team === 'CT'
+                  ? team_ct.score
+                  : team_t.score
+                }
+              </div>
             </div>
           </div>
           <div className='score-time'>
-            {phase === 'bomb' || showBomb ? (
+            {showBomb ? (
               <React.Fragment>
                 <div
                   className='bomb-timer'
-                  style={{ height: `${100 - (((showBomb ? bombTimerLeft : phase_ends_in) / BOMB_TIMER) * 100)}%` }}
                 />
                 <div
                   className='bomb-wrapper'
-                  style={{ animationDuration: `${((showBomb ? bombTimerLeft : phase_ends_in) / BOMB_TIMER) + 0.35}s` }}
+                  style={{ animationDuration: `${((displayBomb ? bombTimerLeft : phase_ends_in) / BOMB_TIMER) + 0.35}s` }}
                 >
                   <img src='/static/utils/bomb.svg' className='bomb-icon' />
                 </div>
@@ -94,24 +199,45 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
               </React.Fragment>
             )}
           </div>
-          <div className={`score-area area-right ${teamB.team}`}>
-            <div className='team-logo'>
-              {teamB.team === 'T'
-                ? <img src='/static/teams/team_t.png' />
-                : <img src='/static/teams/team_ct.png' />
-              }
+          <div className={`score-area-container ${teamB.team}`}>
+            <div className={`team-event-container
+              ${plantedBomb ? 'show-bomb' : ''}
+              ${defusingBomb ? 'show-defuse' : ''}
+              ${bTeamWin ? ' show-win' : ''}`}>
+              <div className={`team-event ${defusingBomb ? 'defuse-container' : ''}`}>
+                {defusingBomb ? (
+                  <div className='defuse-progress'>
+                    <div className={`progress ${defuserHasKit ? 'kit' : 'nokit'}`} />
+                    <span>DEFUSING</span>
+                  </div>
+                ) : (
+                  eventText
+                )}
+              </div>
             </div>
-            <div className={`team-name ${team_ct.name === undefined ? 'smaller' : ''}`}>
-              {teamB.team === 'T'
-                ? team_t.name !== undefined ? team_t.name : 'TERRORISTS'
-                : team_ct.name !== undefined ? team_ct.name : 'COUNTER-TERRORISTS'
-              }
-            </div>
-            <div className='team-score'>
-              {teamB.team === 'T'
-                ? team_t.score
-                : team_ct.score
-              }
+            <div className='score-area area-right'>
+              <div className='team-logo'>
+                {teamB.customLogo !== null
+                  ? <img src={`/${teamB.customLogo}`} />
+                  : teamB.team === 'T'
+                  ? <img src='/static/teams/team_t.png' />
+                  : <img src='/static/teams/team_ct.png' />
+                }
+              </div>
+              <div className={`team-name ${team_ct.name === undefined ? 'smaller' : ''}`}>
+                {teamB.customName !== null
+                  ? teamB.customName
+                  : teamB.team === 'T'
+                  ? team_t.name !== undefined ? team_t.name : 'TERRORISTS'
+                  : team_ct.name !== undefined ? team_ct.name : 'COUNTER-TERRORISTS'
+                }
+              </div>
+              <div className='team-score'>
+                {teamB.team === 'T'
+                  ? team_t.score
+                  : team_ct.score
+                }
+              </div>
             </div>
           </div>
         </div>
@@ -123,7 +249,9 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
 const mapStateToProps = (state: State) => ({
   mapData: state.overlay.gameStateMap,
   phaseData: state.overlay.gameStatePhase,
-  teamConfiguration: state.overlay.teamConfiguration
+  teamConfiguration: state.overlay.teamConfiguration,
+  allPlayers: state.overlay.gameStateAllPlayer,
+  gameStateBomb: state.overlay.gameStateBomb
 })
 
 export default connect(mapStateToProps)(ScorePlate)

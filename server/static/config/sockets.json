@@ -6,5 +6,6 @@
   "updates": "/socket-general/status",
   "events": "/socket-general/events",
   "stats": "/socket-overlay/stats",
-  "gameconfig": "/socket-overlay/gameconfig"
+  "gameconfig": "/socket-overlay/gameconfig",
+  "bomb": "/socket-overlay/bomb"
 }
