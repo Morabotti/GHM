@@ -201,6 +201,15 @@ export const getMatches = () => window.fetch(
   .then(checkResponse)
   .then((res) => res.json())
 
+export const forceLoadMatches = () => window.fetch(
+  '/api/matches/live',
+  {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+
 export const setMatch = (data: any) => window.fetch(
   '/api/matches',
   {

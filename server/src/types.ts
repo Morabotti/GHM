@@ -256,6 +256,40 @@ export interface RefactoredMatch {
   }
 }
 
+export interface RawMatch {
+  match: RMatch
+  teams: Array<RTeam>
+  players: Array<RPlayer>
+}
+
+export interface RMatch {
+  isLive: boolean
+  _id: string
+  teamA: string
+  teamB: string
+}
+
+export interface RTeam {
+  hasLogo: boolean
+  _id: string
+  teamNameShort: string
+  teamNameLong: string | null
+  country: string | null
+  logoPath: string | null
+}
+
+export interface RPlayer {
+  hasImage: boolean
+  _id: string
+  steam64id: string,
+  firstName: string | null,
+  lastName: string | null,
+  gameName: string,
+  country: string | null,
+  team: string,
+  imagePath: string | null,
+}
+
 export interface TeamConfig {
   team: TeamType
   customName: null | string

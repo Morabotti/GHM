@@ -2,13 +2,23 @@ import Player from '../models/Player'
 import Match from '../models/Match'
 import Team from '../models/Team'
 
-import { dispatchSocket, openSockets } from '../handler/SocketIo'
+import {
+  dispatchSocket,
+  openSockets
+} from '../handler/SocketIo'
 
 import { Error } from 'mongoose'
-import { RefactoredMatch, Allplayers } from '../types'
+import {
+  RefactoredMatch,
+  Allplayers,
+  RawMatch,
+  RPlayer
+} from '../types'
+
+const TIMEOUT_TEAMCHANGE = 5000
 
 class MatchCore {
-  raw: any
+  raw: RawMatch | any
   refactored: RefactoredMatch | any
   latelyChanged: boolean
 
@@ -18,7 +28,7 @@ class MatchCore {
     this.latelyChanged = false
   }
 
-  testTeamSides = (allplayers: any) => {
+  testTeamSides = (allplayers: Allplayers) => {
     if (this.refactored !== null) {
       const needSwitch = this.calculateTeams(allplayers)
 
@@ -26,7 +36,7 @@ class MatchCore {
         this.latelyChanged = true
         setTimeout(() => {
           this.latelyChanged = false
-        }, 5000);
+        }, TIMEOUT_TEAMCHANGE)
 
         this._switchActiveTeams()
           .then(x => this.dispatchActive())
@@ -35,7 +45,7 @@ class MatchCore {
     }
   }
 
-  calculateTeams = (allplayers: Allplayers) => {
+  calculateTeams = (allplayers: Allplayers): boolean => {
     let aOnSame = 0
     let aOnDifferent = 0
     let bOnSame = 0
@@ -73,14 +83,19 @@ class MatchCore {
     return false
   }
 
-  filterActiveMatchData = (data: any) => {
+  filterActiveMatchData = (data: RawMatch): RefactoredMatch | null => {
     let teamAPlayers = { }
     let teamBPlayers = { }
 
     const pTeamA = data.teams.find((val: any) => val._id == data.match.teamA )
     const pTeamB = data.teams.find((val: any) => val._id == data.match.teamB )
 
-    data.players.map((player: any) => {
+    if (pTeamA === undefined || pTeamB === undefined) {
+      console.log("No team found!")
+      return null
+    }
+
+    data.players.map((player: RPlayer) => {
       const playerData = {
         teamName: player.team,
         firstName: player.firstName,
@@ -197,7 +212,7 @@ class MatchCore {
     })
   }
 
-  _getActiveMatchData = () => {
+  _getActiveMatchData = ():Promise<RawMatch> => {
     return new Promise((resolve, reject) => {
       Match.findOne({ isLive: true }, (err: Error, match: any) => {
         if (err) reject(err)

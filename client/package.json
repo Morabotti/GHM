@@ -1,8 +1,15 @@
 {
-  "name": "ghm",
+  "name": "ghm-client",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "GHM observator UI | Client",
+  "author": "Jesse Båtman (http://jessebatman.fi)",
+  "private": true,
+  "main": "src/index.js",
+  "license": "Creative Commons 4.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Morabotti/GHM.git"
+  },
   "scripts": {
     "start": "webpack-dev-server --config webpack.config.dev.js",
     "build": "webpack --mode production --config webpack.config.js",

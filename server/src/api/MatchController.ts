@@ -36,6 +36,11 @@ router.post('/live/:id', async (req: Request, res: Response) => {
   }
 })
 
+router.get('/live', async (req: Request, res: Response) => {
+  await matchCore.dispatchActive()
+  res.sendStatus(200)
+})
+
 router.get('/overlay', async (req: Request, res: Response) => {
   try {
     const activeData = await matchCore._getActiveMatchData()

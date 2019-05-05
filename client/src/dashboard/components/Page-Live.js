@@ -14,7 +14,7 @@ import {
   toggleLiveConfirmModal
 } from '../actions'
 
-import { getMatches, setMatch, removeMatch, setMatchToLive } from '../client'
+import { getMatches, setMatch, removeMatch, setMatchToLive, forceLoadMatches } from '../client'
 import { TeamSelectionModal, ConfirmModal } from './'
 import { formats } from '../lib/helpers'
 
@@ -101,6 +101,16 @@ class LivePage extends Component<Props, ComponentState> {
     this._toggleLiveConfirmModal()
   }
 
+  _forceLoad = () => forceLoadMatches()
+
+  _openCurrentLiveConfirmModal = (match: Match) => () => {
+    if (match !== undefined) {
+      const index = this.props.matches.findIndex((currMatch: Match) => currMatch._id === match._id)
+      this.props.dispatch(setSelectedItem(index))
+      this._toggleLiveConfirmModal()
+    }
+  }
+
   _deleteMatch = () => {
     const { dispatch, selectedItem, matches } = this.props
     if (
@@ -166,10 +176,7 @@ class LivePage extends Component<Props, ComponentState> {
       players
     } = this.props
 
-    const {
-      a,
-      b,
-    } = this.state
+    const { a, b } = this.state
 
     const teamA: PossibleTeam = a !== null
       ? teams.find(team => team._id === a) !== undefined 
@@ -271,10 +278,12 @@ class LivePage extends Component<Props, ComponentState> {
                         <Button
                           fluid
                           color='google plus'
+                          onClick={this._forceLoad}
                         >Force load</Button>
                         <Button
                           fluid
                           color='instagram'
+                          onClick={this._openCurrentLiveConfirmModal(isMatchLive)}
                         >Unload match</Button>
                       </div> : null
                     } 
@@ -465,8 +474,8 @@ class LivePage extends Component<Props, ComponentState> {
             }
             {confirmLiveModalOpen ? 
               <ConfirmModal
-                modalHeader='Set match to live'
-                modalBody='Are you sure you want to set this match to live.'
+                modalHeader='Set match to (un)live'
+                modalBody='Are you sure you want to set this match to (un)live.'
                 isOpen={confirmLiveModalOpen}
                 toggleModal={this._toggleLiveConfirmModal}
                 onDelete={this._setMatchToLive}

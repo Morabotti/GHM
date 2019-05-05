@@ -1,8 +1,14 @@
 {
-  "name": "server",
+  "name": "ghm-server",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
+  "description": "GHM observator UI | Server",
+  "author": "Jesse Båtman (http://jessebatman.fi)",
+  "private": true,
+  "main": "src/server.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Morabotti/GHM.git"
+  },
   "scripts": {
     "start": "node --inspect=5858 -r ts-node/register ./src/server.ts",
     "dev": "nodemon",
@@ -23,8 +29,7 @@
     "exec": "npm start",
     "ext": "ts"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "Creative Commons 4.0",
   "dependencies": {
     "body-parser": "^1.18.3",
     "dotenv": "^7.0.0",
