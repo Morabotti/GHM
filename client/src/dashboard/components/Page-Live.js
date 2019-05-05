@@ -202,7 +202,7 @@ class LivePage extends Component<Props, ComponentState> {
           <div className='f-container-inner'>
             <Grid stackable>
               <Grid.Row>
-                <Grid.Column>
+                <Grid.Column width={11}>
                   <div className='f-container-wrap'>
                     <Header as='h2'>
                       <Icon name='fire' />
@@ -240,14 +240,8 @@ class LivePage extends Component<Props, ComponentState> {
                             </div>
                           </div>
                           <div className='vs'>
-                            <div className='margin-bottom-default'>
+                            <div>
                               <span>VS</span>
-                              <div className='margin-top-default'>
-                                <Button
-                                  primary
-                                  onClick={() => null}
-                                >Force load</Button>
-                              </div>
                             </div>
                           </div>
                           <div className='team-b'>
@@ -264,6 +258,26 @@ class LivePage extends Component<Props, ComponentState> {
                         </div>
                       </React.Fragment>
                     )}
+                  </div>
+                </Grid.Column>
+                <Grid.Column width={5}>
+                  <div className='f-container-wrap'>
+                    <Header as='h2'>
+                      <Icon name='fire' />
+                      <Header.Content>Live match actions</Header.Content>
+                    </Header>
+                    {isMatchLive !== undefined ?
+                      <div className='actions-container'>
+                        <Button
+                          fluid
+                          color='google plus'
+                        >Force load</Button>
+                        <Button
+                          fluid
+                          color='instagram'
+                        >Unload match</Button>
+                      </div> : null
+                    } 
                   </div>
                 </Grid.Column>
               </Grid.Row>

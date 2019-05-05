@@ -7,7 +7,7 @@
   transition: 80ms all;
 
   &.CT{
-    .grid-upper p,
+    .grid-upper .upper-name p,
     .ammo-off,
     .team-highlight{
       color: @ct-color-main;
@@ -19,7 +19,7 @@
   }
 
   &.T{
-    .grid-upper p,
+    .grid-upper .upper-name p,
     .ammo-off,
     .team-highlight{
       color: @t-color-main;
@@ -39,15 +39,32 @@
     .grid-upper{
       margin-left: auto;
       margin-right: auto;
+      display: grid;
+      grid-template-columns: 55px 1fr 55px; 
       width: 350px;
       background-color: @ui-default-darkest;
       border-radius: 20px 20px 0px 0px;
 
-      p{
+      .upper-team{
+        display: flex;
+        height: 100%;
+      }
+
+      .upper-team img{
+        height: 32px;
+        margin: auto;
+        display: block;
+      }
+
+      .upper-name p{
         font-size: 30px;
         line-height: 50px;
         text-align: center;
         font-weight: bold;
+
+        &.long-name{
+          font-size: 24px;
+        }
       }
     }
 

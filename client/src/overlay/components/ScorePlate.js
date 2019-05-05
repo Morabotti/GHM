@@ -159,7 +159,7 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
                   : <img src='/static/teams/team_t.png' />
                 }
               </div>
-              <div className={`team-name ${team_ct.name === undefined ? 'smaller' : ''}`}>
+              <div className={`team-name smaller`}>
                 {teamA.customName !== null
                   ? teamA.customName
                   : teamA.team === 'CT'
@@ -224,7 +224,7 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
                   : <img src='/static/teams/team_ct.png' />
                 }
               </div>
-              <div className={`team-name ${team_ct.name === undefined ? 'smaller' : ''}`}>
+              <div className={`team-name smaller`}>
                 {teamB.customName !== null
                   ? teamB.customName
                   : teamB.team === 'T'

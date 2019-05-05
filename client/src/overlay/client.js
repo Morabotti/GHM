@@ -12,7 +12,9 @@ import {
   setGamePhaseState,
   setStatus,
   setNades,
-  setBomb
+  setBomb,
+  setActiveMatch,
+  setActiveToNull
 } from './actions'
 
 export const subscribeToSocket = (dispatch: Dispatch) => {
@@ -24,6 +26,7 @@ export const subscribeToSocket = (dispatch: Dispatch) => {
   subscribeToSocketEvents(dispatch)
   subscribeToSocketStats(dispatch)
   subscribeToSocketBomb(dispatch)
+  subscribeToSocketTeamConfigurations(dispatch)
   setTimeout(getLatestData, 50)
 }
 
@@ -92,6 +95,17 @@ export const subscribeToSocketBomb = (dispatch: Dispatch) => {
   const socket = openSocket(config.sockets.bomb)
   socket.on('state', data => {
     dispatch(setBomb(data))
+  })
+}
+
+export const subscribeToSocketTeamConfigurations = (dispatch: Dispatch) => {
+  const socket = openSocket(config.sockets.teamConfiguration)
+  socket.on('state', data => {
+    dispatch(setActiveMatch(data))
+  })
+
+  socket.on('reset', () => {
+    dispatch(setActiveToNull())
   })
 }
 

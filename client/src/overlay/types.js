@@ -116,19 +116,19 @@ export type PlayerKey = {
   watching: boolean
 }
 
-export type TeamConfig = {
-  team: Teams,
-  customName: null | string,
-  customLogo: null | string,
-  country: null | string,
+export type StateTeamConfig ={
+  teamA: TeamConfig,
+  teamB: TeamConfig,
   players: {
     [string]: PlayerConfig
   }
 }
 
-export type StateTeamConfig ={
-  teamA: TeamConfig,
-  teamB: TeamConfig,
+export type TeamConfig = {
+  team: Teams,
+  customName: null | string,
+  customLogo: null | string,
+  country: null | string,
   players: {
     [string]: PlayerConfig
   }

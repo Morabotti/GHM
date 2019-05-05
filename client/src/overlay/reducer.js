@@ -223,6 +223,11 @@ export default function reducer (
         ...state,
         teamConfiguration: action.teamConfiguration
       }
+    case 'set-team-configuration-reset':
+      return {
+        ...state,
+        teamConfiguration: getDefaultState().teamConfiguration
+      }
     default:
       return state
   }

@@ -4,6 +4,7 @@ import { GameState } from '../types'
 import { analyzeEvents } from './GameEvents'
 import { dispatchSocket, openSockets } from '../handler/SocketIo'
 import gameStats from './GameStats'
+import matchCore from './MatchCore'
 
 import config from '../config'
 
@@ -63,6 +64,7 @@ class GameEvents {
       if (state.previously.allplayers !== undefined) {
         this.setVectors(state)
         analyzeEvents(state)
+        matchCore.testTeamSides(state.allplayers)
 
         if (state.player !== undefined && state.player.spectarget !== undefined) {
           state.allplayers[state.player.spectarget].watching = true

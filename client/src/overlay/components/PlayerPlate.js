@@ -19,12 +19,23 @@ class PlayerPlate extends PureComponent<Props> {
     const {
       playerData: { name, team, state, steamid },
       allPlayers,
-      teamConfiguration
+      teamConfiguration: { players, teamA, teamB }
     } = this.props
 
     const isWatching = (this.props.playerData.spectarget !== undefined)
-    const hasExtraInfo = (teamConfiguration.players[steamid] !== undefined)
-    const extraInfoPlayer = teamConfiguration.players[steamid]
+
+    const hasExtraInfo = (players[steamid] !== undefined)
+    const extraInfoPlayer = players[steamid]
+
+    const teamLogoPath = hasExtraInfo
+      ? extraInfoPlayer.teamName === teamA.customName
+      ? teamA.customLogo !== null
+      ? teamA.customLogo
+      : teamB.customLogo !== null
+      ? teamB.customLogo
+      : null
+      : null
+      : null
 
     if (allPlayers[steamid] === 0 || allPlayers[steamid] === undefined) return null
 
@@ -45,7 +56,18 @@ class PlayerPlate extends PureComponent<Props> {
         <div className={`player-plate ${team}`}>
           <div className='grid'>
             <div className='grid-upper'>
-              <p>{name}</p>
+              <div className='upper-team'>
+                {teamLogoPath !== null ?
+                  <img src={`/${teamLogoPath}`} /> : null
+                }
+              </div>
+              <div className='upper-name'>
+                <p className={name.length >= 10 ? 'long-name' : ''}>{name}</p>
+              </div>
+              <div className='upper-flag'>
+
+              </div>
+              
             </div>
             <div className='grid-lower'>
               <div className='grid-health-container'>

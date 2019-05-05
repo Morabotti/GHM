@@ -2,72 +2,229 @@ import Player from '../models/Player'
 import Match from '../models/Match'
 import Team from '../models/Team'
 
+import { dispatchSocket, openSockets } from '../handler/SocketIo'
+
 import { Error } from 'mongoose'
+import { RefactoredMatch, Allplayers } from '../types'
 
-export const getActiveMatchData = () => {
-  return new Promise((resolve, reject) => {
-    Match.findOne({ isLive: true }, (err: Error, match: any) => {
-      if (err) reject(err)
+class MatchCore {
+  raw: any
+  refactored: RefactoredMatch | any
+  latelyChanged: boolean
 
-      if (match === null)
-        return reject('No live match configuration active')
+  constructor () {
+    this.raw = null
+    this.refactored = null
+    this.latelyChanged = false
+  }
 
-      Team.find({'_id': {$in: [
-        match.teamA,
-        match.teamB
-      ]}}, (err: Error, teams: any) => {
-        if (err) reject(err)
+  testTeamSides = (allplayers: any) => {
+    if (this.refactored !== null) {
+      const needSwitch = this.calculateTeams(allplayers)
 
-        Player.find({$or:[ {team: teams[0].teamNameShort},{team: teams[1].teamNameShort} ]}, (err: Error, players: any) => {
-          if (err) reject(err)
+      if (needSwitch && !this.latelyChanged) {
+        this.latelyChanged = true
+        setTimeout(() => {
+          this.latelyChanged = false
+        }, 5000);
 
-          resolve({match, teams, players})
+        this._switchActiveTeams()
+          .then(x => this.dispatchActive())
+          .catch(e => console.log(e))
+      }
+    }
+  }
+
+  calculateTeams = (allplayers: Allplayers) => {
+    let aOnSame = 0
+    let aOnDifferent = 0
+    let bOnSame = 0
+    let bOnDifferent = 0
+
+    const teamATeam = this.refactored.teamA.team
+    const teamBTeam = this.refactored.teamB.team
+
+    const teamAPlayers = this.refactored.teamA.players
+    const teamBPlayers = this.refactored.teamB.players
+
+    Object.keys(teamAPlayers).forEach((value, index) => {
+      if (allplayers[value] !== undefined) {
+        if(allplayers[value].team === teamATeam)
+          aOnSame++
+          
+        else if(allplayers[value].team === teamBTeam)
+          aOnDifferent++
+      }
+    })
+
+    Object.keys(teamBPlayers).forEach((value, index) => {
+      if (allplayers[value] !== undefined) {
+        if(allplayers[value].team === teamBTeam)
+          bOnSame++
+
+        else if(allplayers[value].team === teamATeam)
+          bOnDifferent++
+      }
+    })
+
+    if(aOnDifferent >= 3 || bOnDifferent >= 3)
+      return true
+
+    return false
+  }
+
+  filterActiveMatchData = (data: any) => {
+    let teamAPlayers = { }
+    let teamBPlayers = { }
+
+    const pTeamA = data.teams.find((val: any) => val._id == data.match.teamA )
+    const pTeamB = data.teams.find((val: any) => val._id == data.match.teamB )
+
+    data.players.map((player: any) => {
+      const playerData = {
+        teamName: player.team,
+        firstName: player.firstName,
+        lastName: player.lastName,
+        gameName: player.gameName,
+        country: player.country,
+        hasImage: player.hasImage,
+        imagePath: player.hasImage ? player.imagePath : null
+      }
+
+      if(player.team === pTeamA.teamNameShort)
+        teamAPlayers[player.steam64id] = playerData
+      else
+        teamBPlayers[player.steam64id] = playerData
+    })
+
+    const teamA = {
+      team: 'CT',
+      customName: pTeamA.teamNameShort,
+      customLogo: pTeamA.hasLogo ? pTeamA.logoPath : null,
+      country: pTeamA.country,
+      players: teamAPlayers
+    }
+
+    const teamB = {
+      team: 'T',
+      customName: pTeamB.teamNameShort,
+      customLogo: pTeamB.hasLogo ? pTeamB.logoPath : null,
+      country: pTeamB.country,
+      players: teamBPlayers
+    }
+    
+    this.refactored = {teamA, teamB, players: { ...teamAPlayers, ...teamBPlayers }}
+    return this.refactored
+  }
+
+  _toggleActiveMatch = (id: string) => {
+    return new Promise((resolve, reject) => {
+      Match.findById(id, (err: Error, match: any) => {
+        if (err) return reject('There was a problem finding the match.')
+    
+        if (match.isLive) {
+          Match.findByIdAndUpdate(
+            id,
+            {$set: {isLive: false}},
+            (err: Error, newMatch: any) => {
+              if (err) return reject('There was a problem updating the match.')
+
+              this.dispatchActive()
+
+              return resolve(newMatch)
+          })
+        } else {
+          Match.updateMany(
+            {isLive: true},
+            {$set: {isLive: false}},
+            {multi: true},
+            (err: Error, match: any) => {
+              if (err) return reject('There was problem replacing players new team')
+
+              Match.findByIdAndUpdate(
+                id,
+                {$set: {isLive: true}},
+                { new: true },
+                (err: Error, newMatch: any) => {
+                if (err) return reject('There was a problem updating the match.')
+
+                this.dispatchActive()
+
+                return resolve(newMatch)
+            })
+          })
+        }
+      })
+    })
+  }
+
+  dispatchActive = async () => {
+    try {
+      const activeData = await matchCore._getActiveMatchData()
+      const refactored = matchCore.filterActiveMatchData(activeData)
+
+      dispatchSocket(
+        openSockets.teamconfig,
+        'state',
+        refactored
+      )
+    } catch(e) {
+      return console.log(e)
+    }
+  }
+
+  dispatchActiveDelete = () => {
+    dispatchSocket(
+      openSockets.teamconfig,
+      'reset',
+      null
+    )
+  }
+
+  _switchActiveTeams = (): Promise<any> => {
+    return new Promise((resolve, reject) => {
+      Match.findOne({ isLive: true }, (err: Error, match: any) => {
+        if (err) return reject('There was a problem finding the match.')
+
+        Match.findByIdAndUpdate(match._id,
+          {$set: {teamA: match.teamB, teamB: match.teamA}},
+          { new: true }, (err: Error, newMatch: any) => {
+            if (err) return reject('There was a problem switching the sides.')
+
+            return resolve(newMatch)
         })
       })
     })
-  })
-}
-
-export const filterActiveMatchData = (data: any) => {
-  let teamAPlayers = { }
-  let teamBPlayers = { }
-
-  data.players.map(player => {
-    const playerData = {
-      teamName: player.team,
-      firstName: player.firstName,
-      lastName: player.lastName,
-      gameName: player.gameName,
-      country: player.country,
-      hasImage: player.hasImage,
-      imagePath: player.hasImage ? player.imagePath : null
-    }
-
-    if(player.team === data.teams[0].teamNameShort)
-      teamAPlayers[player.steam64id] = playerData
-    else
-      teamBPlayers[player.steam64id] = playerData
-  })
-
-  const teamA = {
-    team: 'CT',
-    customName: data.teams[0].teamNameShort,
-    customLogo: data.teams[0].hasLogo ? data.teams[0].logoPath : null,
-    country: data.teams[0].country,
-    players: teamAPlayers
   }
 
-  const teamB = {
-    team: 'T',
-    customName: data.teams[1].teamNameShort,
-    customLogo: data.teams[1].hasLogo ? data.teams[1].logoPath : null,
-    country: data.teams[1].country,
-    players: teamBPlayers
-  }
+  _getActiveMatchData = () => {
+    return new Promise((resolve, reject) => {
+      Match.findOne({ isLive: true }, (err: Error, match: any) => {
+        if (err) reject(err)
   
-  return {
-    teamA,
-    teamB,
-    players: { ...teamAPlayers, ...teamBPlayers }
+        if (match === null) {
+          this.dispatchActiveDelete()
+          return reject('Clearing match.')
+        }
+
+        Team.find({'_id': {$in: [
+          match.teamA,
+          match.teamB
+        ]}}, (err: Error, teams: any) => {
+          if (err) reject(err)
+  
+          Player.find({$or:[ {team: teams[0].teamNameShort},{team: teams[1].teamNameShort} ]}, (err: Error, players: any) => {
+            if (err) reject(err)
+  
+            this.raw = {match, teams, players}
+            resolve(this.raw)
+          })
+        })
+      })
+    })
   }
 }
+
+const matchCore = new MatchCore()
+
+export default matchCore

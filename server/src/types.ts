@@ -43,6 +43,8 @@ export interface TeamStats {
   teamEconomy: number
 }
 
+export type TeamType = 'T' | 'CT'
+
 export interface Country {
   key: string
   value: string
@@ -90,8 +92,6 @@ export interface MatchSchema {
   isLive: boolean
 }
 
-export type TeamType = 'T' | 'CT'
-
 export interface Sockets {
   allPlayers: string
   player: string
@@ -101,7 +101,8 @@ export interface Sockets {
   events: string
   stats: string
   gameconfig: string
-  bomb: string
+  bomb: string,
+  teamconfig: string
 }
 
 // ! FIX any properties ! //
@@ -245,4 +246,32 @@ export interface Previously {
 
 export interface Auth {
   token: string
+}
+
+export interface RefactoredMatch {
+  teamA: TeamConfig
+  teamB: TeamConfig
+  players: {
+    [key: string]: PlayerConfig
+  }
+}
+
+export interface TeamConfig {
+  team: TeamType
+  customName: null | string
+  customLogo: null | string
+  country: null | string
+  players: {
+    [key: string]: PlayerConfig
+  }
+}
+
+export interface PlayerConfig {
+  teamName: string
+  firstName: string | null
+  lastName: string | null
+  gameName: string | null
+  country: string | null
+  hasImage: boolean
+  imagePath: string | null
 }

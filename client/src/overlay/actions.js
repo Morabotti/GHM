@@ -20,6 +20,7 @@ export type Action = { type: 'set-game-all-player-state', gameStateAllPlayer: Al
   | { type: 'set-team-stats', stats: TeamStats }
   | { type: 'set-team-configuration', teamConfiguration: StateTeamConfig }
   | { type: 'start-money-count' }
+  | { type: 'set-team-configuration-reset' }
   | { type: 'end-money-count' }
 
 export const setGameAllPlayerState = (gameStateAllPlayer: AllPlayers) => ({
@@ -68,4 +69,8 @@ export const setBomb = (gameStateBomb: BombState) => ({
 export const setActiveMatch = (teamConfiguration: StateTeamConfig) => ({
   type: 'set-team-configuration',
   teamConfiguration
+})
+
+export const setActiveToNull = () => ({
+  type: 'set-team-configuration-reset',
 })
