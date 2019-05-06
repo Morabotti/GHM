@@ -7,7 +7,18 @@ import config from '../config'
 
 const io = SocketIO().listen(config.socketIoPort)
 
-export const openSockets: Sockets = JSON.parse(fs.readFileSync(config.socketsPath, 'utf8'))
+export const openSockets: Sockets = {
+  allPlayers: "/socket-overlay/allplayers",
+  player: "/socket-overlay/player",
+  map: "/socket-overlay/map",
+  phase: "/socket-overlay/phase",
+  updates: "/socket-general/status",
+  events: "/socket-general/events",
+  stats: "/socket-overlay/stats",
+  gameconfig: "/socket-overlay/gameconfig",
+  bomb: "/socket-overlay/bomb",
+  teamconfig: "/socket-overlay/teamconfig"
+}
 
 io.on('connection', (socket) => {
   Object.keys(openSockets).forEach(key => {

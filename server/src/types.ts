@@ -24,8 +24,18 @@ export enum PHASE {
   BOMB = 'bomb',
   WARMUP = 'warmup',
   LIVE = 'live',
-  OVER = 'over', // ? PAUSE & GAME END
+  OVER = 'over',
   DEFUSE ='defuse'
+}
+
+export enum BOMB {
+  PLANTED = 'planted',
+  PLANTING = 'planting',
+  EXPLODED = 'exploded',
+  DEFUSING = 'defusing',
+  DEFUSED = 'defused',
+  CARRIED = 'carried',
+  DROPPED = 'dropped'
 }
 
 export interface StatsCalculation {
@@ -119,7 +129,7 @@ export interface GameState {
 }
 
 export interface BombState {
-  state: 'planted' | 'planting' | 'exploded' | 'defusing' | 'defused' | 'carried' | 'dropped'
+  state: BOMB
   position: string
   player?: number
   countdown?: string

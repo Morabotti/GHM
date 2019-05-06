@@ -58,7 +58,8 @@ class Player extends PureComponent<Props, ComponentState> {
 
     // Prolly should be done with weapon type instead
     const mainWeaponBig = (hasMainWeapon !== undefined &&
-      (weapons[hasMainWeapon].name === 'weapon_nova' ||
+      (weapons[hasMainWeapon].name === 'weapon_m4a1_silencer' ||
+      weapons[hasMainWeapon].name === 'weapon_nova' ||
       weapons[hasMainWeapon].name === 'weapon_xm1014')
     )
 
@@ -90,7 +91,7 @@ class Player extends PureComponent<Props, ComponentState> {
               {moneyLost === 0 ? (
                 <span className='plus'>{moneyLost}$</span>
               ) : (
-                <span className='minus'>-{moneyLost}$</span>
+                <span className='minus'>-{Math.abs(moneyLost)}$</span>
               )}
             </div>
             <div className='extra-stats'>
@@ -118,7 +119,7 @@ class Player extends PureComponent<Props, ComponentState> {
               { hasMainWeapon !== undefined ? (
                 <img
                   src={`/static/weapons/${weapons[hasMainWeapon].name}.svg`}
-                  className={`weapon-wrap ${weapons[hasMainWeapon].state === 'holstered' ? 'holstered' : ''}`}
+                  className={`weapon-wrap shadowed ${weapons[hasMainWeapon].state === 'holstered' ? 'holstered' : ''}`}
                   height='25px'
                 />
               ) : null}
@@ -139,7 +140,7 @@ class Player extends PureComponent<Props, ComponentState> {
               {hasSecondaryWeapon !== undefined ? (
                 <img
                   src={`/static/weapons/${weapons[hasSecondaryWeapon].name}.svg`}
-                  className={`weapon-wrap ${weapons[hasSecondaryWeapon].state === 'holstered' ? 'holstered' : ''}`}
+                  className={`weapon-wrap shadowed ${weapons[hasSecondaryWeapon].state === 'holstered' ? 'holstered' : ''}`}
                   height='20px'
                 />
               ) : null}
@@ -154,14 +155,14 @@ class Player extends PureComponent<Props, ComponentState> {
                         <div className='player-grenade'>
                           <img
                             src={`/static/weapons/${weapons[grenade].name}.svg`}
-                            className={`weapon-wrap ${weapons[grenade].state === 'holstered' ? 'holstered' : ''}`}
+                            className={`weapon-wrap shadowed ${weapons[grenade].state === 'holstered' ? 'holstered' : ''}`}
                             height='20px'
                           />
                         </div>
                         <div className='player-grenade'>
                           <img
                             src={`/static/weapons/${weapons[grenade].name}.svg`}
-                            className={`weapon-wrap ${weapons[grenade].state === 'holstered' ? 'holstered' : ''}`}
+                            className={`weapon-wrap shadowed ${weapons[grenade].state === 'holstered' ? 'holstered' : ''}`}
                             height='20px'
                           />
                         </div>
@@ -172,7 +173,7 @@ class Player extends PureComponent<Props, ComponentState> {
                       <div className='player-grenade' key={index}>
                         <img
                           src={`/static/weapons/${weapons[grenade].name}.svg`}
-                          className={`weapon-wrap ${weapons[grenade].state === 'holstered' ? 'holstered' : ''}`}
+                          className={`weapon-wrap shadowed ${weapons[grenade].state === 'holstered' ? 'holstered' : ''}`}
                           height='20px'
                         />
                       </div>

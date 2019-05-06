@@ -27,14 +27,11 @@ class PlayerPlate extends PureComponent<Props> {
     const hasExtraInfo = (players[steamid] !== undefined)
     const extraInfoPlayer = players[steamid]
 
-    // ! RETOUGHT THIS SO BOTH TEAMS CAN HAVE LOGO IF NEEDED
     const teamLogoPath = hasExtraInfo
       ? extraInfoPlayer.teamName === teamA.customName
-      ? teamA.customLogo !== null
-      ? teamA.customLogo
-      : teamB.customLogo !== null
-      ? teamB.customLogo
-      : null
+      ? teamA.customLogo !== null ? teamA.customLogo : null
+      : extraInfoPlayer.teamName === teamB.customName
+      ? teamB.customLogo !== null ? teamB.customLogo : null
       : null
       : null
 
@@ -65,10 +62,7 @@ class PlayerPlate extends PureComponent<Props> {
               <div className='upper-name'>
                 <p className={name.length >= 10 ? 'long-name' : ''}>{name}</p>
               </div>
-              <div className='upper-flag'>
-
-              </div>
-              
+              <div className='upper-flag' />
             </div>
             <div className='grid-lower'>
               <div className='grid-health-container'>

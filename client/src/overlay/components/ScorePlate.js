@@ -61,7 +61,7 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
       this.bombTimeout = setTimeout(this._removeBombNotify, EVENT_TIMEOUT)
     }
 
-    if (prevProp.mapData.team_ct.score !== null && prevProp.mapData.team_ct.score + 1 === team_ct.score) {
+    if (phase === 'over' && prevProp.mapData.team_ct.score !== null && prevProp.mapData.team_ct.score + 1 === team_ct.score) {
       const ROUND_END_TIME = phase_ends_in * 1000 > 10000
         ? 10000
         : phase_ends_in * 1000 < 3000
@@ -77,7 +77,7 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
       }
     }
 
-    if(prevProp.mapData.team_t.score !== null && prevProp.mapData.team_t.score + 1 === team_t.score) {
+    if(phase === 'over' && prevProp.mapData.team_t.score !== null && prevProp.mapData.team_t.score + 1 === team_t.score) {
       const ROUND_END_TIME = phase_ends_in * 1000 >= 10000
         ? 10000
         : phase_ends_in * 1000 < 3000

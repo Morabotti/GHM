@@ -225,9 +225,14 @@
   }
 }
 
+img.shadowed{
+  -webkit-filter: drop-shadow(0px 0px 2px #222);
+  filter: drop-shadow(0px 0px 2px #222);
+}
+
 img.holstered{
-  -webkit-filter: invert(20%) grayscale(100%) brightness(70%) contrast(4);
-  filter: invert(20%) grayscale(100%) brightness(70%) contrast(4);
+  -webkit-filter: invert(20%) grayscale(100%) brightness(70%) contrast(4) drop-shadow(0px 0px 0.8px #000);
+  filter: invert(20%) grayscale(100%) brightness(70%) contrast(4) drop-shadow(0px 0px 0.8px #000);
 }
 
 .team-player.first .player-container,
