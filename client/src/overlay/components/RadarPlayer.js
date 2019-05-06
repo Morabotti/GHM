@@ -22,9 +22,10 @@ type ComponentState = {
   deathPosY: number,
   prefixX: number,
   prefixY: number,
-  scaleX: number,
-  scaleY: number
+  scale: number
 }
+
+const PLAYER_SIZE = 5
 
 class Radar extends PureComponent<Props, ComponentState> {
   state = {
@@ -32,8 +33,7 @@ class Radar extends PureComponent<Props, ComponentState> {
     deathPosY: -30,
     prefixX: 0,
     prefixY: 0,
-    scaleX: 0,
-    scaleY: 0
+    scale: 0
   }
 
   componentWillMount () {
@@ -41,33 +41,26 @@ class Radar extends PureComponent<Props, ComponentState> {
     this.setState({
       prefixX: getMapPrefix(map.name)[0],
       prefixY: getMapPrefix(map.name)[1],
-      scaleX: getMapScale(map.name)[0],
-      scaleY: getMapScale(map.name)[1]
+      scale: getMapScale(map.name)
     })
   }
 
   _calculateXPosition = () => {
     const { playerPosX } = this.props
-    const { prefixX, scaleX } = this.state
+    const { prefixX, scale } = this.state
 
     if (isNaN(playerPosX)) return
 
-    if (playerPosX < 0)
-      return (Math.abs(playerPosX) * (-scaleX)) + prefixX
-    else
-      return (playerPosX * scaleX) + prefixX
+    return (Math.abs((playerPosX - (prefixX)) / scale) - PLAYER_SIZE/2)
   }
 
   _calculateYPosition = () => {
     const { playerPosY } = this.props
-    const { prefixY, scaleY } = this.state
+    const { prefixY, scale } = this.state
 
     if (isNaN(playerPosY)) return
 
-    if (playerPosY < 0)
-      return (Math.abs(playerPosY) * (-scaleY)) + prefixY
-    else
-      return (playerPosY * scaleY) + prefixY
+    return (Math.abs((playerPosY - (prefixY)) / scale) - PLAYER_SIZE/2)
   }
 
   componentWillUpdate (nextProp: Props) {
@@ -86,8 +79,8 @@ class Radar extends PureComponent<Props, ComponentState> {
       <foreignObject
         x={playerDead ? this.state.deathPosX : this._calculateXPosition()}
         y={playerDead ? this.state.deathPosY : this._calculateYPosition()}
-        width={48}
-        height={48}
+        width={PLAYER_SIZE}
+        height={PLAYER_SIZE}
         key={this.props.key}
       >
         <div

@@ -124,6 +124,18 @@ export type StateTeamConfig ={
   }
 }
 
+export type LevelRange = {
+  min: number,
+  max: number
+}
+
+export type MultipleLevels = {
+  lower: LevelRange,
+  default: LevelRange
+}
+
+export type HasMultipleLevels = null | MultipleLevels
+
 export type TeamConfig = {
   team: Teams,
   customName: null | string,

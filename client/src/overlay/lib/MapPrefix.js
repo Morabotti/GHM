@@ -1,47 +1,77 @@
 // @flow
+import type { HasMultipleLevels } from '../types'
 
 export const getMapPrefix = (map: string) => {
   switch (map) {
     case 'de_dust2':
-      return [540, 715]
+      return [-2476, 3239]
     case 'de_train':
-      return [507, 484]
+      return [-2477, 2392]
     case 'de_mirage':
-      return [621, 320]
+      return [-3230, 1713]
     case 'de_vertigo':
-      return [0, 0]
+      return [-3168, 1762]
     case 'de_cache':
-      return [333, 565]
+      return [-2000, 3250]
     case 'de_overpass':
-      return [910, 317]
+      return [-4831, 1781]
     case 'de_cbble':
-      return [0, 0]
+      return [-3840, 3072]
     case 'de_nuke':
-      return [475, 393]
+      return [-3453, 2887]
     default:
-      return [0, 0]
+      return [-3000, 2000]
   }
 }
 
-export const getMapScale = (map: string) => {
+export const getMapScale = (map: string): number => {
   switch (map) {
     case 'de_dust2':
-      return [0.2256, -0.2256]
+      return 4.4
     case 'de_train':
-      return [0.2092, -0.2070]
+      return 4.7
     case 'de_mirage':
-      return [0.1949, -0.1990]
+      return 5.0
     case 'de_vertigo':
-      return [0, 0]
+      return 4.0
     case 'de_cache':
-      return [0.1835, -0.1800]
+      return 5.5
     case 'de_overpass':
-      return [0.1926, -0.1902]
+      return 5.2
     case 'de_cbble':
-      return [0, 0]
+      return 6
     case 'de_nuke':
-      return [0.1386, -0.1386]
+      return 7
     default:
-      return [0, 0]
+      return 5
+  }
+}
+
+export const mapMultipleLevels = (map: string): HasMultipleLevels => {
+  switch (map) {
+    case 'de_vertigo':
+      return {
+        default: {
+          max: 20000,
+          min: 11700
+        },
+        lower: {
+          max: 11700,
+          min: -10000
+        }
+      }
+    case 'de_nuke':
+      return {
+        default: {
+          max: 10000,
+          min: -495
+        },
+        lower: {
+          max: -495,
+          min: -10000
+        }
+      }
+    default:
+      return null
   }
 }

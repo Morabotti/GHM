@@ -14,6 +14,11 @@ type Props = {
 const RADAR_ENABLE = false
 
 class Radar extends PureComponent<Props> {
+  /*
+   * function map(x, in_min, in_max, out_min, out_max) {
+   *   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+   * }
+   */
   render () {
     const { allPlayers, map } = this.props
     if (!RADAR_ENABLE)
