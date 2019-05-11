@@ -11,6 +11,7 @@
     background-size: contain;
 
     foreignObject {
+      overflow: visible;
       transition: 230ms all;
     }
   }
@@ -23,13 +24,17 @@
   border-radius: 200px;
   text-align: center;
   text-anchor: middle;
-  overflow: hidden;
-  transition: 200ms all;
   z-index: 5;
+  position: relative;
   border: 0.6px solid black;
 
   span{
     color: black;
+    position: absolute;
+    top:50%; 
+    left:50%;
+    font-weight: bolder;
+    transform:translate(-50%, -50%);
     font-size: 32px;
   }
 
@@ -41,5 +46,21 @@
     background-color: @dead-color-main !important;
     transition: 0 all;
     z-index: 1 !important;
+  }
+
+  &.spectating{
+    border: 3px white solid;
+  }
+}
+
+.radar-player-triangle{
+  width: 0;
+  transform-origin: bottom center;
+  height: 0;
+  position: absolute;
+  z-index: 2;
+
+  &.dead{
+    display: none;
   }
 }

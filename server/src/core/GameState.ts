@@ -69,6 +69,7 @@ class GameEvents {
         if (state.player !== undefined && state.player.spectarget !== undefined) {
           state.allplayers[state.player.spectarget].watching = true
         }
+        
         this.dispatchAllPlayers(state.allplayers)
         this.gameState = {
           ...this.gameState,

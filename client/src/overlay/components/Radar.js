@@ -11,14 +11,9 @@ type Props = {
   map: MapState
 }
 
-const RADAR_ENABLE = false
+const RADAR_ENABLE = true
 
 class Radar extends PureComponent<Props> {
-  /*
-   * function map(x, in_min, in_max, out_min, out_max) {
-   *   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-   * }
-   */
   render () {
     const { allPlayers, map } = this.props
     if (!RADAR_ENABLE)
@@ -38,12 +33,13 @@ class Radar extends PureComponent<Props> {
             const player = allPlayers[key]
             return (
               <RadarPlayer
-                key={index}
+                key={player.observer_slot}
                 playerNumber={player.observer_slot}
                 playerTeam={player.team}
-                playerPosX={player.position[0]}
-                playerPosY={player.position[1]}
+                playerPosition={player.position}
+                playerForward={player.forward}
                 playerDead={player.state.health === 0}
+                isSpectating={player.watching}
               />
             )
           })}
