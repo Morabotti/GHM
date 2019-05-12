@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react'
+import React, { PureComponent, Fragment } from 'react'
 import { connect } from 'react-redux'
 
 import { getMapPrefix, getMapScale } from '../lib/MapPrefix'
@@ -89,21 +89,31 @@ class Radar extends PureComponent<Props, ComponentState> {
         height={PLAYER_SIZE}
         key={this.props.key}
       >
-        <div
-          className={`radar-player ${playerTeam} ${playerDead ? 'dead' : ''} ${isSpectating ? 'spectating' : ''}`}
-        >
-          <span>{playerNumber}</span>
-        </div>
-        <div
-          className={`radar-player-triangle ${playerDead ? 'dead' : ''}`}
-          style={{
-            transform: `rotate(${deg}deg)`,
-            borderLeft: `${PLAYER_SIZE/2}px solid transparent`,
-            borderRight: `${PLAYER_SIZE/2}px solid transparent`,
-            bottom: `${PLAYER_SIZE/2}px`,
-            borderBottom: `${PLAYER_SIZE - 10}px solid white`
-          }}
-        />
+        {!playerDead ?
+          <Fragment>
+            <div
+              className={`radar-player ${playerTeam} ${isSpectating ? 'spectating' : ''}`}
+            >
+              <span>{playerNumber}</span>
+            </div>
+            <div
+              className={`radar-player-triangle ${playerDead ? 'dead' : ''}`}
+              style={{
+                transform: `rotate(${deg}deg)`,
+                borderLeft: `${PLAYER_SIZE/2}px solid transparent`,
+                borderRight: `${PLAYER_SIZE/2}px solid transparent`,
+                bottom: `${PLAYER_SIZE/2}px`,
+                borderBottom: `${PLAYER_SIZE - 10}px solid white`
+              }}
+            >
+              <img
+                src='/static/utils/radar-cone.svg'
+                className={`cone ${isSpectating ? 'spectating' : ''}`}
+              />
+            </div> 
+          </Fragment>
+          : <div className={`radar-player-dead ${playerTeam}`}>X</div>
+        }
       </foreignObject>
     )
   }

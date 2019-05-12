@@ -34,7 +34,7 @@ export type TeamStats = {
 
 export type BombState = {
   state: ('planted' | 'exploded' | 'planting' | 'defusing' | 'defused' | 'carried' | 'dropped'),
-  position: string,
+  position: Array<number>,
   player?: string,
   countdown?: string
 }

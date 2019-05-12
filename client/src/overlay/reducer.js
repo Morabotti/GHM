@@ -132,7 +132,7 @@ const getDefaultState = (): State => ({
   },
   gameStateBomb: {
     state: 'dropped',
-    position: '0',
+    position: [],
     countdown: '0'
   },
   status: statusState,

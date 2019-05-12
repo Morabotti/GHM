@@ -53,8 +53,12 @@ class GameEvents {
       this.dispatchPhase(state.phase_countdowns)
       this.dispatchPlayer(state.player)
       this.dispatchMap(state.map)
-      this.dispatchBomb(state.bomb)
       
+      if(state.bomb !== undefined) {
+        this.setBombVectors(state)
+        this.dispatchBomb(state.bomb)
+      }
+
       this.gameState = state
       return
     }
@@ -86,6 +90,7 @@ class GameEvents {
       }
 
       if (state.previously.bomb !== undefined) {
+        this.setBombVectors(state)
         this.dispatchBomb(state.bomb)
         this.gameState = {
           ...this.gameState,
@@ -165,6 +170,13 @@ class GameEvents {
           watching: false
         }
       })
+    }
+    return state
+  }
+
+  setBombVectors(state: GameState): GameState {
+    if (state.bomb !== undefined) {
+      state.bomb.position = state.bomb.position.split(', ')
     }
     return state
   }
