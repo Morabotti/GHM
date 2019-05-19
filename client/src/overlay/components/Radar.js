@@ -24,7 +24,7 @@ type ComponentState = {
   scale: number
 }
 
-const RADAR_ENABLE = true
+const RADAR_ENABLE = false
 const BOMB_SIZE = 40
 
 class Radar extends PureComponent<Props, ComponentState> {

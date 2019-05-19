@@ -38,7 +38,7 @@
   position: relative;
   .player-extra-stats{
     position: absolute;
-    background-color: @ui-default-dark;
+    background-color: @ui-background-main;
     width: 200px;
     height: 65px;
     transition: all 350ms linear 10s;
@@ -143,7 +143,7 @@
   display: flex;
   align-self: stretch;
   line-height: 25px;
-  background-color: @ui-default-light;
+  background-color: @ui-background-main;
   overflow: hidden;
 
   .player-weapon-secondary{
@@ -249,7 +249,7 @@ img.holstered{
 }
 
 .player-health-background{
-  background-color: @ui-default-black;
+  background-color: @ui-background-main-light;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -297,11 +297,11 @@ img.holstered{
 
 .overlay-left>.team>.team-player.dead>.player-area-lower,
 .overlay-left>.team>.team-player.dead>.player-container>.player-health-background{
-  background: -webkit-linear-gradient(left, @ui-default-darkest 5%,@ui-default-darkest-inv 75%) !important;
+  background: -webkit-linear-gradient(left, @ui-background-dark 5%, @ui-background-dark-inv 75%) !important;
 }
 .overlay-right>.team>.team-player.dead>.player-area-lower,
 .overlay-right>.team>.team-player.dead>.player-container>.player-health-background{
-  background: -webkit-linear-gradient(right, @ui-default-darkest 5%,@ui-default-darkest-inv 75%) !important;
+  background: -webkit-linear-gradient(right, @ui-background-dark 5%, @ui-background-dark-inv 75%) !important;
 }
 
 // * CT PLAYER
@@ -324,10 +324,10 @@ img.holstered{
 
 // * SELECTED PLAYER
 .overlay-left>.team>.team-player.watching>.player-area-lower{
-  background: -webkit-linear-gradient(left, rgba(199, 199, 199, 0.7) 0%,rgba(214, 214, 214, 0.8) 60%);
+  background: -webkit-linear-gradient(left, @ui-background-light 0%,@ui-background-light-inv 60%);
 }
 .overlay-right>.team>.team-player.watching>.player-area-lower{
-  background: -webkit-linear-gradient(right, rgba(199, 199, 199, 0.7) 0%,rgba(214, 214, 214, 0.8) 60%);
+  background: -webkit-linear-gradient(right, @ui-background-light 0%,@ui-background-light-inv 60%);
 }
 
 // * EXTRA INFO

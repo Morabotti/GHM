@@ -23,7 +23,9 @@ type ComponentState = {
   bombTimerLeft: number,
   plantedBomb: boolean,
   aTeamWin: boolean,
-  bTeamWin: boolean
+  bTeamWin: boolean,
+  defuseTime: number,
+  defusing: boolean
 }
 
 const BOMB_TIMER = 40
@@ -39,16 +41,18 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
     plantedBomb: false,
     bombTimerLeft: 10,
     aTeamWin: false,
-    bTeamWin: false
+    bTeamWin: false,
+    defuseTime: 10,
+    defusing: false
   }
 
   componentDidUpdate (prevProp: Props) {
     const {
       phaseData: { phase },
-      gameStateBomb: { state },
       mapData: { team_ct, team_t },
       phaseData: { phase_ends_in },
       teamConfiguration: { teamA, teamB },
+      gameStateBomb,
       allPlayers
     } = this.props
 
@@ -56,12 +60,29 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
       plantedBomb
     } = this.state
 
-    if (prevProp.gameStateBomb.state === 'planting' && state === 'planted') {
+    if (prevProp.gameStateBomb.state === 'planting' && gameStateBomb.state === 'planted') {
       this.setState({ plantedBomb: true })
-      this.bombTimeout = setTimeout(this._removeBombNotify, EVENT_TIMEOUT)
+      this.bombTimeout = setTimeout(
+        this._removeBombNotify,
+        EVENT_TIMEOUT
+      )
     }
 
-    if (phase === 'over' && prevProp.mapData.team_ct.score !== null && prevProp.mapData.team_ct.score + 1 === team_ct.score) {
+    if (prevProp.gameStateBomb.state === 'planted' && gameStateBomb.state === 'defusing') {
+      this.setState({
+        defuseTime: Number(gameStateBomb.countdown),
+        defusing: true
+      })
+      this.defuseTimeout = setTimeout(
+        this._removeDefuseNotify,
+        Number(gameStateBomb.countdown) * 1000 - 100
+      )
+    }
+
+    if (phase === 'over' &&
+      prevProp.mapData.team_ct.score !== null &&
+      prevProp.mapData.team_ct.score + 1 === team_ct.score
+    ) {
       const ROUND_END_TIME = phase_ends_in * 1000 > 10000
         ? 10000
         : phase_ends_in * 1000 < 3000
@@ -70,14 +91,23 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
 
       if(teamA.team === 'CT') {
         this.setState({ aTeamWin: true })
-        this.aWinTimeout = setTimeout(this._removeTeamANotify, ROUND_END_TIME)
+        this.aWinTimeout = setTimeout(
+          this._removeTeamANotify,
+          ROUND_END_TIME
+        )
       } else {
         this.setState({ bTeamWin: true })
-        this.bWinTimeout = setTimeout(this._removeTeamBNotify, ROUND_END_TIME)
+        this.bWinTimeout = setTimeout(
+          this._removeTeamBNotify,
+          ROUND_END_TIME
+        )
       }
     }
 
-    if(phase === 'over' && prevProp.mapData.team_t.score !== null && prevProp.mapData.team_t.score + 1 === team_t.score) {
+    if(phase === 'over' &&
+      prevProp.mapData.team_t.score !== null &&
+      prevProp.mapData.team_t.score + 1 === team_t.score
+    ) {
       const ROUND_END_TIME = phase_ends_in * 1000 >= 10000
         ? 10000
         : phase_ends_in * 1000 < 3000
@@ -86,10 +116,16 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
 
       if(teamA.team === 'T') {
         this.setState({ aTeamWin: true })
-        this.aWinTimeout = setTimeout(this._removeTeamANotify, ROUND_END_TIME)
+        this.aWinTimeout = setTimeout(
+          this._removeTeamANotify,
+          ROUND_END_TIME
+        )
       } else {
         this.setState({ bTeamWin: true })
-        this.bWinTimeout = setTimeout(this._removeTeamBNotify, ROUND_END_TIME)
+        this.bWinTimeout = setTimeout(
+          this._removeTeamBNotify,
+          ROUND_END_TIME
+        )
       }
     }
   }
@@ -104,6 +140,7 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
   _removeBombNotify = () => this.setState({ plantedBomb: false })
   _removeTeamANotify = () => this.setState({ aTeamWin: false })
   _removeTeamBNotify = () => this.setState({ bTeamWin: false })
+  _removeDefuseNotify = () => this.setState({ defusing: false })
 
   sectostr (time) {
     return ~~(time / 60) + ':' + (time % 60 < 10 ? '0' : '') + time % 60
@@ -118,18 +155,23 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
       allPlayers
     } = this.props
 
-    const { bombTimerLeft, plantedBomb, aTeamWin, bTeamWin } = this.state
+    const {
+      bombTimerLeft,
+      plantedBomb,
+      aTeamWin,
+      bTeamWin,
+      defuseTime,
+      defusing
+    } = this.state
 
     const showBomb = phase === 'bomb' || phase === 'defuse'
     const displayBomb = state === 'planted' || state === 'defusing'
     const defusingBomb = state === 'defusing'
-    const eventText = (aTeamWin || bTeamWin) ? 'WINS THE ROUND' : plantedBomb ? 'PLANTED THE BOMB' : ''
-    const defuserHasKit = (player !== undefined
-      && allPlayers[player] !== undefined
-      && allPlayers[player].state !== undefined
-      && allPlayers[player].state.defusekit !== undefined)
-      ? allPlayers[player].state.defusekit
-      : false
+    const eventText = (aTeamWin || bTeamWin)
+      ? 'WINS THE ROUND'
+      : plantedBomb
+      ? 'PLANTED THE BOMB'
+      : ''
 
     return (
       <div className='score-top'>
@@ -140,9 +182,9 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
               ${defusingBomb ? 'show-defuse' : ''}
               ${aTeamWin ? ' show-win' : ''}`}>
               <div className={`team-event ${defusingBomb ? 'defuse-container' : ''}`}>
-                {defusingBomb ? (
+                {defusing ? (
                   <div className='defuse-progress'>
-                    <div className={`progress ${defuserHasKit ? 'kit' : 'nokit'}`} />
+                    <div className='progress' style={{ animationDuration: `${defuseTime - 0.25}s` }} />
                     <span>DEFUSING</span>
                   </div>
                 ) : (
@@ -205,9 +247,9 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
               ${defusingBomb ? 'show-defuse' : ''}
               ${bTeamWin ? ' show-win' : ''}`}>
               <div className={`team-event ${defusingBomb ? 'defuse-container' : ''}`}>
-                {defusingBomb ? (
+                {defusing ? (
                   <div className='defuse-progress'>
-                    <div className={`progress ${defuserHasKit ? 'kit' : 'nokit'}`} />
+                    <div className='progress' style={{ animationDuration: `${defuseTime - 0.25}s` }} />
                     <span>DEFUSING</span>
                   </div>
                 ) : (
