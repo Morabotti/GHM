@@ -5,7 +5,7 @@
   "author": "Jesse Båtman (http://jessebatman.fi)",
   "private": true,
   "main": "src/index.js",
-  "license": "Creative Commons 4.0",
+  "license": "private",
   "repository": {
     "type": "git",
     "url": "https://github.com/Morabotti/GHM.git"

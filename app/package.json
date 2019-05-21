@@ -14,7 +14,7 @@
     "build": "electron-builder --dir",
     "dist": "electron-builder --x64"
   },
-  "license": "Creative Commons 4.0",
+  "license": "private",
   "devDependencies": {
     "electron": "^5.0.0",
     "electron-builder": "^20.39.0"
