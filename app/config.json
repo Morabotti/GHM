@@ -1,8 +1,0 @@
-{
-  "url": "http://localhost:8080/overlay",
-  "controls": {
-    "refresh": "Alt+R",
-    "hide": "Alt+C",
-    "quit": "Alt+P"
-  }
-}

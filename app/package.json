@@ -20,6 +20,19 @@
     "electron-builder": "^20.39.0"
   },
   "dependencies": {
+    "electron-json-config": "^1.5.3",
     "electron-reload": "^1.4.0"
+  },
+  "build": {
+    "productName": "GHM-Observator-App",
+    "appId": "ghm.Observator",
+    "win": {
+      "target": [
+        "portable"
+      ]
+    },
+    "portable": {
+      "artifactName": "ghm_observator.exe"
+    }
   }
 }
