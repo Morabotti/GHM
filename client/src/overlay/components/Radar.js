@@ -37,7 +37,7 @@ class Radar extends PureComponent<Props, ComponentState> {
   componentWillMount () {
     const { map } = this.props
 
-    if(map.name !== undefined) {
+    if (map.name !== undefined) {
       this.setState({
         prefixX: getMapPrefix(map.name)[0],
         prefixY: getMapPrefix(map.name)[1],
@@ -51,24 +51,22 @@ class Radar extends PureComponent<Props, ComponentState> {
   _calculateXPosition = (x: number) => {
     if (isNaN(x)) return
 
-    return (Math.abs((x - (this.state.prefixX)) / this.state.scale) - BOMB_SIZE/2)
+    return (Math.abs((x - (this.state.prefixX)) / this.state.scale) - BOMB_SIZE / 2)
   }
 
   _calculateYPosition = (y: number) => {
     if (isNaN(y)) return
 
-    return (Math.abs((y - (this.state.prefixY)) / this.state.scale) - BOMB_SIZE/2)
+    return (Math.abs((y - (this.state.prefixY)) / this.state.scale) - BOMB_SIZE / 2)
   }
 
   render () {
     const { allPlayers, map, bomb } = this.props
-    if (!RADAR_ENABLE)
-      return <div />
 
-    if (map.name === '')
-      return <div />
-    
-    const showBomb = /*(bomb.state !== 'carried' && bomb.state !== 'planting')*/ false
+    if (!RADAR_ENABLE) return <div />
+    if (map.name === '') return <div />
+
+    const showBomb = /* (bomb.state !== 'carried' && bomb.state !== 'planting') */ false
 
     return (
       <div className='radar'>
@@ -91,17 +89,14 @@ class Radar extends PureComponent<Props, ComponentState> {
               />
             )
           })}
-          
-          {showBomb ? 
-            <foreignObject
+          {showBomb
+            ? <foreignObject
               x={this._calculateXPosition(bomb.position[0])}
               y={this._calculateYPosition(bomb.position[1])}
               width={BOMB_SIZE}
               height={BOMB_SIZE}
               className='bomb-area'
-            >
-              
-            </foreignObject> : null
+            /> : null
           }
         </svg>
       </div>

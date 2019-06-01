@@ -1,4 +1,5 @@
-export function deepEqual (x, y) {
+// @flow
+export function deepEqual (x: any, y: any) {
   const ok = Object.keys
   const tx = typeof x
   const ty = typeof y

@@ -34,8 +34,9 @@ class SideBar extends Component<Props> {
   _getStatus = () => getStatus()
     .then(setStatus)
     .then(i => {
-      if (!deepEqual(i.status, this.props.status))
+      if (!deepEqual(i.status, this.props.status)) {
         this.props.dispatch(i)
+      }
     })
 
   render () {

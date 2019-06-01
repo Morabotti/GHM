@@ -45,17 +45,17 @@ class ConfigPage extends Component<Props, PageState> {
               <Grid.Row>
                 <Grid.Column>
                   <div className='f-container-wrap'>
-                  <Accordion fluid styled>
-                    <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
-                      <Icon name='dropdown' />
-                      General
-                    </Accordion.Title>
-                    <Accordion.Content active={activeIndex === 0}>
-                      <div className='settings-group'>
-                        <Checkbox toggle label='Use custom radar' />
-                      </div>
-                    </Accordion.Content>
-                  </Accordion>
+                    <Accordion fluid styled>
+                      <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
+                        <Icon name='dropdown' />
+                        General
+                      </Accordion.Title>
+                      <Accordion.Content active={activeIndex === 0}>
+                        <div className='settings-group'>
+                          <Checkbox toggle label='Use custom radar' />
+                        </div>
+                      </Accordion.Content>
+                    </Accordion>
                   </div>
                 </Grid.Column>
               </Grid.Row>

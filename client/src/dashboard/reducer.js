@@ -5,7 +5,6 @@ import type {
   Country,
   Players,
   Teams,
-  Team,
   ListElement,
   Match
 } from './types'
@@ -48,7 +47,7 @@ const modals: Modals = {
   viewModalOpen: false,
   editModalOpen: false,
   teamSelectionModalOpen: false,
-  confirmLiveModalOpen: false,
+  confirmLiveModalOpen: false
 }
 
 const gameSettings: GameSettings = {
@@ -197,7 +196,7 @@ export default function reducer (
       return {
         ...state,
         players: state.players
-          .filter((player) => 
+          .filter((player) =>
             player.team !== state.teams[state.selectedItem === null ? 0 : state.selectedItem].teamNameShort)
       }
     case 'delete-team':

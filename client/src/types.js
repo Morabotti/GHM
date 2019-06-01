@@ -1,9 +1,11 @@
 import type { State as DashboardState } from './dashboard/reducer'
 import type { State as OverlayState } from './overlay/reducer'
+import type { State as CommonState } from './common/reducer'
 
 export type State = {
   dashboard: DashboardState,
-  overlay: OverlayState
+  overlay: OverlayState,
+  common: CommonState
 }
 
 export type SocketEndPoint = {

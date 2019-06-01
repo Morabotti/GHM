@@ -1,4 +1,5 @@
 // @flow
+/* eslint camelcase: [0] */
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
@@ -51,14 +52,9 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
       phaseData: { phase },
       mapData: { team_ct, team_t },
       phaseData: { phase_ends_in },
-      teamConfiguration: { teamA, teamB },
-      gameStateBomb,
-      allPlayers
+      teamConfiguration: { teamA },
+      gameStateBomb
     } = this.props
-
-    const {
-      plantedBomb
-    } = this.state
 
     if (prevProp.gameStateBomb.state === 'planting' && gameStateBomb.state === 'planted') {
       this.setState({ plantedBomb: true })
@@ -86,10 +82,10 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
       const ROUND_END_TIME = phase_ends_in * 1000 > 10000
         ? 10000
         : phase_ends_in * 1000 < 3000
-        ? 3000
-        : phase_ends_in * 1000
+          ? 3000
+          : phase_ends_in * 1000
 
-      if(teamA.team === 'CT') {
+      if (teamA.team === 'CT') {
         this.setState({ aTeamWin: true })
         this.aWinTimeout = setTimeout(
           this._removeTeamANotify,
@@ -104,17 +100,17 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
       }
     }
 
-    if(phase === 'over' &&
+    if (phase === 'over' &&
       prevProp.mapData.team_t.score !== null &&
       prevProp.mapData.team_t.score + 1 === team_t.score
     ) {
       const ROUND_END_TIME = phase_ends_in * 1000 >= 10000
         ? 10000
         : phase_ends_in * 1000 < 3000
-        ? 3000
-        : phase_ends_in * 1000
+          ? 3000
+          : phase_ends_in * 1000
 
-      if(teamA.team === 'T') {
+      if (teamA.team === 'T') {
         this.setState({ aTeamWin: true })
         this.aWinTimeout = setTimeout(
           this._removeTeamANotify,
@@ -130,7 +126,7 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     clearTimeout(this.bombTimeout)
     clearTimeout(this.defuseTimeout)
     clearTimeout(this.aWinTimeout)
@@ -151,8 +147,7 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
       phaseData: { phase_ends_in, phase },
       mapData: { round, team_ct, team_t },
       teamConfiguration: { teamA, teamB },
-      gameStateBomb: { state, player },
-      allPlayers
+      gameStateBomb: { state }
     } = this.props
 
     const {
@@ -170,8 +165,8 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
     const eventText = (aTeamWin || bTeamWin)
       ? 'WINS THE ROUND'
       : plantedBomb
-      ? 'PLANTED THE BOMB'
-      : ''
+        ? 'PLANTED THE BOMB'
+        : ''
 
     return (
       <div className='score-top'>
@@ -197,16 +192,16 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
                 {teamA.customLogo !== null
                   ? <img src={`/${teamA.customLogo}`} />
                   : teamA.team === 'CT'
-                  ? <img src='/static/teams/team_ct.png' />
-                  : <img src='/static/teams/team_t.png' />
+                    ? <img src='/static/teams/team_ct.png' />
+                    : <img src='/static/teams/team_t.png' />
                 }
               </div>
               <div className={`team-name smaller`}>
                 {teamA.customName !== null
                   ? teamA.customName
                   : teamA.team === 'CT'
-                  ? team_ct.name !== undefined ? team_ct.name : 'COUNTER-TERRORISTS'
-                  : team_t.name !== undefined ? team_t.name : 'TERRORISTS'
+                    ? team_ct.name !== undefined ? team_ct.name : 'COUNTER-TERRORISTS'
+                    : team_t.name !== undefined ? team_t.name : 'TERRORISTS'
                 }
               </div>
               <div className='team-score'>
@@ -262,16 +257,16 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
                 {teamB.customLogo !== null
                   ? <img src={`/${teamB.customLogo}`} />
                   : teamB.team === 'T'
-                  ? <img src='/static/teams/team_t.png' />
-                  : <img src='/static/teams/team_ct.png' />
+                    ? <img src='/static/teams/team_t.png' />
+                    : <img src='/static/teams/team_ct.png' />
                 }
               </div>
               <div className={`team-name smaller`}>
                 {teamB.customName !== null
                   ? teamB.customName
                   : teamB.team === 'T'
-                  ? team_t.name !== undefined ? team_t.name : 'TERRORISTS'
-                  : team_ct.name !== undefined ? team_ct.name : 'COUNTER-TERRORISTS'
+                    ? team_t.name !== undefined ? team_t.name : 'TERRORISTS'
+                    : team_ct.name !== undefined ? team_ct.name : 'COUNTER-TERRORISTS'
                 }
               </div>
               <div className='team-score'>

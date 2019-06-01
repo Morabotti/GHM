@@ -17,18 +17,18 @@ class GameLoader extends PureComponent<Props> {
     const message = !clientOnline
       ? 'Client not connected'
       : !gameOnline
-      ? 'Game not online'
-      : !clientSpectating
-      ? 'Client is not spectating'
-      : 'Error'
+        ? 'Game not online'
+        : !clientSpectating
+          ? 'Client is not spectating'
+          : 'Error'
 
     const color = !clientOnline
       ? 'error'
       : !gameOnline
-      ? 'warning'
-      : !clientSpectating
-      ? 'info'
-      : ''
+        ? 'warning'
+        : !clientSpectating
+          ? 'info'
+          : ''
 
     return (
       <div className='loader-message-container'>

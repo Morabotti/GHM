@@ -21,17 +21,16 @@ import {
 
 import {
   Grid, Icon, Breadcrumb, Header, Form,
-  Table, Image, Flag, Button, Popup,Checkbox
+  Table, Image, Flag, Button, Popup, Checkbox
 } from 'semantic-ui-react'
 
 import type {
   Dispatch,
   Country,
   Players,
-  Teams,
   ListElement,
   Team,
-  newPlayer
+  NewPlayer
 } from '../types'
 
 import {
@@ -83,7 +82,7 @@ class PlayersPage extends Component<Props, ComponentState> {
     stateError: false
   }
 
-  constructor(){
+  constructor () {
     super()
     this.fileInputRef = React.createRef()
   }
@@ -92,7 +91,7 @@ class PlayersPage extends Component<Props, ComponentState> {
   _onCheckboxChange = (e, { name, checked }) => this.setState({ [name]: checked })
   _onFileInputChange = (e) => this.setState({ playerImg: e.target.files[0] })
   _handleInputReset = () => {
-    this.fileInputRef.current.value = '';
+    this.fileInputRef.current.value = ''
     this.setState({ playerImg: null })
   }
 
@@ -106,7 +105,7 @@ class PlayersPage extends Component<Props, ComponentState> {
       playerTeam,
       playerSteam64ID,
       playerHasImg,
-      playerImg,
+      playerImg
     } = this.state
 
     const data = PlayerSubmit({
@@ -117,14 +116,14 @@ class PlayersPage extends Component<Props, ComponentState> {
       playerTeam,
       playerSteam64ID,
       playerHasImg,
-      playerImg,
+      playerImg
     })
 
     this.setState({
       stateLoading: true,
       stateError: false
     })
-    
+
     addPlayer(data)
       .then(player => dispatch(setPlayers([...players, player])))
       .catch(e => {
@@ -146,8 +145,9 @@ class PlayersPage extends Component<Props, ComponentState> {
           stateLoading: false,
           stateError: false
         })
-        this.fileInputRef.current.value = '';
-        resolve()}))
+        this.fileInputRef.current.value = ''
+        resolve()
+      }))
       .catch(e => {
         this.setState({
           stateLoading: false,
@@ -203,7 +203,7 @@ class PlayersPage extends Component<Props, ComponentState> {
     }
   }
 
-  _submitEdit = (newPlayer: newPlayer) => () => {
+  _submitEdit = (newPlayer: NewPlayer) => () => {
     const { players, selectedItem, dispatch } = this.props
 
     const playerFirstName = newPlayer.firstName
@@ -214,12 +214,18 @@ class PlayersPage extends Component<Props, ComponentState> {
     const playerSteam64ID = newPlayer.steam64Id
     const playerHasImg = newPlayer.hasImage
     const playerImg = newPlayer.newImage
-    const playerOldImg = newPlayer.imagePath
+    // const playerOldImg = newPlayer.imagePath
 
     if (newPlayer.hasNewImage) {
       const data = PlayerSubmit({
-        playerFirstName, playerLastName, playerName, playerCountry,
-        playerTeam, playerSteam64ID, playerHasImg, playerImg
+        playerFirstName,
+        playerLastName,
+        playerName,
+        playerCountry,
+        playerTeam,
+        playerSteam64ID,
+        playerHasImg,
+        playerImg
       })
       updatePlayerWithImage(data, players[selectedItem]._id)
         .then(players => dispatch(updatedPlayer([players])))
@@ -241,7 +247,6 @@ class PlayersPage extends Component<Props, ComponentState> {
         .then(this._toggleEditModal)
         .catch(e => console.log(e))
     }
-    
   }
 
   render () {
@@ -254,7 +259,7 @@ class PlayersPage extends Component<Props, ComponentState> {
     const {
       playerFirstName, playerLastName, playerName, playerCountry,
       playerTeam, playerSteam64ID, playerHasImg, playerImg,
-      stateLoading,stateError
+      stateLoading, stateError
     } = this.state
 
     const teamTarget = selectedItem !== null
@@ -378,9 +383,9 @@ class PlayersPage extends Component<Props, ComponentState> {
                                 onChange={this._onFileInputChange}
                                 className='inputfile'
                                 type='file'
-                                name="file"
+                                name='file'
                                 ref={this.fileInputRef}
-                                accept="image/jpeg, image/png"
+                                accept='image/jpeg, image/png'
                               />
                               <Button
                                 inverted
@@ -423,7 +428,7 @@ class PlayersPage extends Component<Props, ComponentState> {
                               <Table.Cell>
                                 <Header as='h4' image>
                                   <Image
-                                    src={`/${player.imagePath === null ? 'static/default/default-player.png' : player.imagePath }`}
+                                    src={`/${player.imagePath === null ? 'static/default/default-player.png' : player.imagePath}`}
                                     rounded
                                     size='mini'
                                   />
@@ -436,8 +441,8 @@ class PlayersPage extends Component<Props, ComponentState> {
                               <Table.Cell>
                                 {team
                                   ? <Image
-                                      src={`/${team.logoPath === null ? 'static/default/default-team.png' : team.logoPath}`}
-                                      avatar />
+                                    src={`/${team.logoPath === null ? 'static/default/default-team.png' : team.logoPath}`}
+                                    avatar />
                                   : null
                                 }
                                 <span>{player.team}</span>
@@ -487,8 +492,8 @@ class PlayersPage extends Component<Props, ComponentState> {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            {viewModalOpen ? 
-              <ViewPlayerModal
+            {viewModalOpen
+              ? <ViewPlayerModal
                 isOpen={viewModalOpen}
                 toggleModal={this._toggleViewModal}
                 currentView={players[selectedItem]}
@@ -496,8 +501,8 @@ class PlayersPage extends Component<Props, ComponentState> {
                 currentTeam={teamTarget}
               /> : null
             }
-            {editModalOpen ?
-              <EditPlayerModal
+            {editModalOpen
+              ? <EditPlayerModal
                 isOpen={editModalOpen}
                 toggleModal={this._toggleEditModal}
                 currentPlayer={players[selectedItem]}
@@ -507,8 +512,8 @@ class PlayersPage extends Component<Props, ComponentState> {
                 countries={countries}
               /> : null
             }
-            {confirmModalOpen ?
-              <ConfirmModal
+            {confirmModalOpen
+              ? <ConfirmModal
                 modalHeader='Delete player'
                 modalBody='Are you sure you want to delete this player'
                 isOpen={confirmModalOpen}

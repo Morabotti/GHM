@@ -52,7 +52,7 @@ class Radar extends PureComponent<Props, ComponentState> {
 
     if (isNaN(playerPosition[0])) return
 
-    return (Math.abs((playerPosition[0] - (prefixX)) / scale) - PLAYER_SIZE/2)
+    return (Math.abs((playerPosition[0] - (prefixX)) / scale) - PLAYER_SIZE / 2)
   }
 
   _calculateYPosition = () => {
@@ -61,7 +61,7 @@ class Radar extends PureComponent<Props, ComponentState> {
 
     if (isNaN(playerPosition[1])) return
 
-    return (Math.abs((playerPosition[1] - (prefixY)) / scale) - PLAYER_SIZE/2)
+    return (Math.abs((playerPosition[1] - (prefixY)) / scale) - PLAYER_SIZE / 2)
   }
 
   componentWillUpdate (nextProp: Props) {
@@ -80,7 +80,7 @@ class Radar extends PureComponent<Props, ComponentState> {
     const { playerNumber, playerTeam, playerDead, playerForward, isSpectating } = this.props
 
     const deg = this._calcDegree(playerForward[1], playerForward[0])
-    
+
     return (
       <foreignObject
         x={playerDead ? this.state.deathPosX : this._calculateXPosition()}
@@ -89,8 +89,8 @@ class Radar extends PureComponent<Props, ComponentState> {
         height={PLAYER_SIZE}
         key={this.props.key}
       >
-        {!playerDead ?
-          <Fragment>
+        {!playerDead
+          ? <Fragment>
             <div
               className={`radar-player ${playerTeam} ${isSpectating ? 'spectating' : ''}`}
             >
@@ -100,9 +100,9 @@ class Radar extends PureComponent<Props, ComponentState> {
               className={`radar-player-triangle ${playerDead ? 'dead' : ''}`}
               style={{
                 transform: `rotate(${deg}deg)`,
-                borderLeft: `${PLAYER_SIZE/2}px solid transparent`,
-                borderRight: `${PLAYER_SIZE/2}px solid transparent`,
-                bottom: `${PLAYER_SIZE/2}px`,
+                borderLeft: `${PLAYER_SIZE / 2}px solid transparent`,
+                borderRight: `${PLAYER_SIZE / 2}px solid transparent`,
+                bottom: `${PLAYER_SIZE / 2}px`,
                 borderBottom: `${PLAYER_SIZE - 10}px solid white`
               }}
             >
@@ -110,7 +110,7 @@ class Radar extends PureComponent<Props, ComponentState> {
                 src='/static/utils/radar-cone.svg'
                 className={`cone ${isSpectating ? 'spectating' : ''}`}
               />
-            </div> 
+            </div>
           </Fragment>
           : <div className={`radar-player-dead ${playerTeam}`}>X</div>
         }

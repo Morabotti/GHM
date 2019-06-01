@@ -1,7 +1,7 @@
 const electron = require('electron')
 const fs = require('fs')
 const { app, BrowserWindow, globalShortcut } = require('electron')
-const config = require('electron-json-config');
+const config = require('electron-json-config')
 require('electron-reload')(__dirname)
 
 const defConfig = {
@@ -14,10 +14,17 @@ const defConfig = {
 app.on('ready', async () => {
   console.log('Settings: ' + config.file())
 
-  if (!config.has('overlayUrl')) config.set('overlayUrl', defConfig.overlayUrl)
-  if (!config.has('controlRefresh')) config.set('controlRefresh', defConfig.controlRefresh)
-  if (!config.has('controlHide')) config.set('controlHide', defConfig.controlHide)
-  if (!config.has('controlQuit')) config.set('controlQuit', defConfig.controlQuit)
+  if (!config.has('overlayUrl'))
+    config.set('overlayUrl', defConfig.overlayUrl)
+
+  if (!config.has('controlRefresh'))
+    config.set('controlRefresh', defConfig.controlRefresh)
+
+  if (!config.has('controlHide'))
+    config.set('controlHide', defConfig.controlHide)
+
+  if (!config.has('controlQuit'))
+    config.set('controlQuit', defConfig.controlQuit)
 
   const displays = electron.screen.getAllDisplays()
   const externalDisplay = displays.find((display) => {

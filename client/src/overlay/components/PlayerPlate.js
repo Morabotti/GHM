@@ -29,10 +29,10 @@ class PlayerPlate extends PureComponent<Props> {
 
     const teamLogoPath = hasExtraInfo
       ? extraInfoPlayer.teamName === teamA.customName
-      ? teamA.customLogo !== null ? teamA.customLogo : null
-      : extraInfoPlayer.teamName === teamB.customName
-      ? teamB.customLogo !== null ? teamB.customLogo : null
-      : null
+        ? teamA.customLogo !== null ? teamA.customLogo : null
+        : extraInfoPlayer.teamName === teamB.customName
+          ? teamB.customLogo !== null ? teamB.customLogo : null
+          : null
       : null
 
     if (allPlayers[steamid] === 0 || allPlayers[steamid] === undefined) return null
@@ -42,7 +42,7 @@ class PlayerPlate extends PureComponent<Props> {
 
     if (currentWeaponID === undefined) return null
 
-    const {assists, deaths, kills} = allPlayers[steamid].match_stats
+    const { assists, deaths, kills } = allPlayers[steamid].match_stats
     const currentWeapon = weapons[currentWeaponID]
     const hasBOMB = (team === 'T'
       ? (Object.keys(weapons)
@@ -55,8 +55,8 @@ class PlayerPlate extends PureComponent<Props> {
           <div className='grid'>
             <div className='grid-upper'>
               <div className='upper-team'>
-                {teamLogoPath !== null ?
-                  <img src={`/${teamLogoPath}`} /> : null
+                {teamLogoPath !== null
+                  ? <img src={`/${teamLogoPath}`} /> : null
                 }
               </div>
               <div className='upper-name'>
@@ -67,10 +67,10 @@ class PlayerPlate extends PureComponent<Props> {
             <div className='grid-lower'>
               <div className='grid-health-container'>
                 <div className='grid-player-image'>
-                  <img src={`/${hasExtraInfo 
+                  <img src={`/${hasExtraInfo
                     ? extraInfoPlayer.imagePath !== null && extraInfoPlayer.hasImage
-                    ? extraInfoPlayer.imagePath
-                    : 'static/default/default-player.png'
+                      ? extraInfoPlayer.imagePath
+                      : 'static/default/default-player.png'
                     : 'static/default/default-player.png'}`}
                   />
                 </div>

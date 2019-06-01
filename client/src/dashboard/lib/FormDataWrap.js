@@ -33,11 +33,10 @@ export const TeamSubmit = (team: TeamData) => {
   const data = new FormData()
   data.append('teamNameShort', teamShortName)
   data.append('teamNameLong', teamLongName)
-  data.append('country', teamCountry === '' ? 'eu': teamCountry)
+  data.append('country', teamCountry === '' ? 'eu' : teamCountry)
   data.append('hasLogo', hasLogo.toString())
 
-  if(hasLogo)
-    data.append('logo', teamLogo)
+  if (hasLogo) data.append('logo', teamLogo)
 
   return data
 }
@@ -65,8 +64,7 @@ export const PlayerSubmit = (player: PlayerData) => {
   data.append('team', playerTeam)
   data.append('hasImage', hasImage.toString())
 
-  if(hasImage) 
-    data.append('image', playerImg)
+  if (hasImage) data.append('image', playerImg)
 
   return data
 }

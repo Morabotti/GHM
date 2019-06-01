@@ -72,5 +72,5 @@ export const setActiveMatch = (teamConfiguration: StateTeamConfig) => ({
 })
 
 export const setActiveToNull = () => ({
-  type: 'set-team-configuration-reset',
+  type: 'set-team-configuration-reset'
 })

@@ -21,9 +21,9 @@ export const ServerConnectButton = (props: BigConnectionButtonType) => (
 const StatusBtn = (props: any) => (
   <span className={`status-tag ${
     props.disconnected
-    ? 'connected'
-    : 'disconnected'}`}
-    >{props.disconnected ? 'Online' : 'Offline'}</span>
+      ? 'connected'
+      : 'disconnected'}`}
+  >{props.disconnected ? 'Online' : 'Offline'}</span>
 )
 
 export const ConnectionButton = (props: ConnectionButtonType) => {
@@ -34,11 +34,11 @@ export const ConnectionButton = (props: ConnectionButtonType) => {
     clientSpectating
   } = props
 
-  const cornerIcon = !clientConnection 
+  const cornerIcon = !clientConnection
     ? <Icon corner name='close' color='orange' />
     : !serverConnection
-    ? <Icon corner name='check circle' color='yellow' />
-    : <Icon corner name='check circle' color='green' />
+      ? <Icon corner name='check circle' color='yellow' />
+      : <Icon corner name='check circle' color='green' />
 
   const BtnIcon = (
     <Icon.Group size='big'>

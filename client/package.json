@@ -26,6 +26,9 @@
     "parser": "babel-eslint",
     "plugins": [
       "flowtype"
+    ],
+    "globals": [
+      "FormData"
     ]
   },
   "devDependencies": {

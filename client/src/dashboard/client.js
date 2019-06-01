@@ -76,10 +76,10 @@ export const addTeam = (data: any) => {
   const options = {
     method: 'POST',
     body: data,
-    headers: { 'content-type': 'multipart/form-data'}
+    headers: { 'content-type': 'multipart/form-data' }
   }
 
-  delete options.headers['content-type'];
+  delete options.headers['content-type']
 
   return window.fetch('/api/teams', options)
     .then(checkResponse)
@@ -93,7 +93,7 @@ export const updateTeamWithLogo = (data: any, id: string) => {
     headers: { 'content-type': 'multipart/form-data' }
   }
 
-  delete options.headers['content-type'];
+  delete options.headers['content-type']
 
   return window.fetch(`/api/teams/newlogo/${id}`, options)
     .then(checkResponse)
@@ -107,7 +107,7 @@ export const updateTeam = (
   `/api/teams/${id}`,
   {
     method: 'PUT',
-    body: JSON.stringify({data}),
+    body: JSON.stringify({ data }),
     headers: { 'Content-Type': 'application/json' }
   }
 )
@@ -139,10 +139,10 @@ export const addPlayer = (data: any) => {
   const options = {
     method: 'POST',
     body: data,
-    headers: { 'content-type': 'multipart/form-data'}
+    headers: { 'content-type': 'multipart/form-data' }
   }
 
-  delete options.headers['content-type'];
+  delete options.headers['content-type']
 
   return window.fetch('/api/players', options)
     .then(checkResponse)
@@ -169,7 +169,7 @@ export const updatePlayerWithImage = (data: any, id: string) => {
     headers: { 'content-type': 'multipart/form-data' }
   }
 
-  delete options.headers['content-type'];
+  delete options.headers['content-type']
 
   return window.fetch(`/api/players/newimg/${id}`, options)
     .then(checkResponse)
@@ -183,13 +183,13 @@ export const updatePlayer = (
   `/api/players/${id}`,
   {
     method: 'PUT',
-    body: JSON.stringify({data}),
+    body: JSON.stringify({ data }),
     headers: { 'Content-Type': 'application/json' }
   }
 )
   .then(checkResponse)
   .then((res) => res.json())
-  
+
 // ! MATCHES METHODS
 export const getMatches = () => window.fetch(
   '/api/matches',
@@ -214,7 +214,7 @@ export const setMatch = (data: any) => window.fetch(
   '/api/matches',
   {
     method: 'POST',
-    body:  JSON.stringify({ match: data }),
+    body: JSON.stringify({ match: data }),
     headers: { 'Content-Type': 'application/json' }
   }
 )

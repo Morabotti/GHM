@@ -1,5 +1,6 @@
 // @flow
 import type { Action as _Action } from './actions'
+import type { Action as CommonAction } from '../common/actions'
 
 export type Status = {
   clientOnline: boolean,
@@ -10,7 +11,7 @@ export type Status = {
 
 export type Action = _Action
 
-export type Dispatch = (Action) => void
+export type Dispatch = (Action | CommonAction) => void
 
 export type BigConnectionButtonType = {
   connected: boolean
@@ -63,7 +64,7 @@ export type NewTeam = {
   newLogo: any
 }
 
-export type newPlayer = {
+export type NewPlayer = {
   firstName: string,
   lastName: string,
   gameName: string,

@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useCallback, useEffect, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 
 import type {
   Player,
@@ -10,13 +10,11 @@ import type {
 } from '../types'
 
 import {
-  Icon,
   Modal,
   Button,
   Image,
   Header,
   Flag,
-  Grid,
   Form,
   Checkbox
 } from 'semantic-ui-react'
@@ -34,7 +32,7 @@ export const TeamSelectionModal = (props: TeamSelectionProps) => {
     <Modal open={isOpen} onClose={toggleModal} centered={false} basic size='large'>
       <Header className='selection-header' icon='users' content='Select Team' />
       <div className='team-selection-modal'>
-        {teams.map((team, ind) =>(
+        {teams.map((team, ind) => (
           <div key={team._id} className='selection-box' onClick={onSelected(team._id)}>
             <Image
               src={`/${team.logoPath === null ? 'static/default/default-team.png' : team.logoPath}`}
@@ -108,10 +106,10 @@ type ViewModalProps = {
 
 export const ViewPlayerModal = (props: ViewModalProps) => {
   const { isOpen, toggleModal, currentView, currentTeam, players } = props
-  if(currentView === undefined ||
+  if (currentView === undefined ||
     currentTeam === null ||
     currentTeam === undefined
-  ) return <Modal open={isOpen} onClose={toggleModal}></Modal>
+  ) return <Modal open={isOpen} onClose={toggleModal} />
 
   return (
     <Modal open={isOpen} onClose={toggleModal}>
@@ -145,8 +143,8 @@ export const ViewPlayerModal = (props: ViewModalProps) => {
                 <Flag name={player.country} />
                 {player.firstName} <b>'{player.gameName}'</b> {player.lastName}
               </li>
-            )
-          )}
+            ))
+          }
         </Modal.Description>
       </Modal.Content>
     </Modal>
@@ -163,8 +161,9 @@ type ViewTeamModalProps = {
 export const ViewTeamModal = (props: ViewTeamModalProps) => {
   const { isOpen, toggleModal, currentTeam, currentPlayers } = props
 
-  if(currentTeam === undefined || currentTeam === null)
-    return <Modal open={isOpen} onClose={toggleModal}></Modal>
+  if (currentTeam === undefined || currentTeam === null) {
+    return <Modal open={isOpen} onClose={toggleModal} />
+  }
 
   return (
     <Modal open={isOpen} onClose={toggleModal}>
@@ -210,13 +209,13 @@ export const EditTeamModal = (props: EditTeamModalProps) => {
     isOpen,
     toggleModal,
     currentTeam,
-    currentPlayers,
     countries,
     onEditDone
   } = props
 
-  if(currentTeam === undefined || currentTeam === null)
-    return <Modal open={isOpen} onClose={toggleModal}></Modal>
+  if (currentTeam === undefined || currentTeam === null) {
+    return <Modal open={isOpen} onClose={toggleModal} />
+  }
 
   const [nameShort, pNameShort] = useState(currentTeam.teamNameShort)
   const [nameLong, pNameLong] = useState(currentTeam.teamNameLong)
@@ -226,7 +225,7 @@ export const EditTeamModal = (props: EditTeamModalProps) => {
   const [hasChangedLogo, pHasChangedLogo] = useState(false)
   const [newLogo, pNewLogoObj] = useState({})
 
-  const fileInputRef: { current: any } = useRef(null);
+  const fileInputRef: { current: any } = useRef(null)
 
   const resetValues = React.useCallback(() => {
     pNameShort(currentTeam.teamNameShort)
@@ -248,25 +247,25 @@ export const EditTeamModal = (props: EditTeamModalProps) => {
     pHasChangedLogo(true)
   }
 
-  if(!hasLogo && hasChangedLogo) {
+  if (!hasLogo && hasChangedLogo) {
     pHasChangedLogo(false)
     pNewLogoObj({})
     fileInputRef.current.value = ''
   }
-  
+
   return (
     <Modal open={isOpen} onClose={toggleModal}>
       <Modal.Header>Edit team</Modal.Header>
       <Modal.Content image={hasLogo}>
-        {hasLogo ?
-          <Image
+        {hasLogo
+          ? <Image
             wrapped
             size='medium'
-            src={`/${hasChangedLogo 
+            src={`/${hasChangedLogo
               ? window.URL.createObjectURL(newLogo)
               : currentTeam.logoPath === null
-              ? 'static/default/default-team.png'
-              : currentTeam.logoPath}`}
+                ? 'static/default/default-team.png'
+                : currentTeam.logoPath}`}
           /> : null
         }
         <Modal.Description className='modal-container-desc'>
@@ -315,8 +314,8 @@ export const EditTeamModal = (props: EditTeamModalProps) => {
             className='inputfile-modal'
             ref={fileInputRef}
             type='file'
-            name="file"
-            accept="image/svg+xml, image/jpeg, image/png"
+            name='file'
+            accept='image/svg+xml, image/jpeg, image/png'
           />
         </div>
         <Button
@@ -330,10 +329,14 @@ export const EditTeamModal = (props: EditTeamModalProps) => {
           icon='check'
           content='Save'
           onClick={onEditDone({
-            nameShort, nameLong, country, hasLogo,
-            logoPath, hasChangedLogo, newLogo
-            })
-          }
+            nameShort,
+            nameLong,
+            country,
+            hasLogo,
+            logoPath,
+            hasChangedLogo,
+            newLogo
+          })}
         />
         <Button
           color='red'
@@ -367,9 +370,12 @@ export const EditPlayerModal = (props: EditPlayerModalProps) => {
     teams
   } = props
 
-  if(currentPlayer === undefined || currentPlayer === null
-    || currentTeam === undefined || currentTeam === null)
-    return <Modal open={isOpen} onClose={toggleModal}></Modal>
+  if (currentPlayer === undefined ||
+    currentPlayer === null ||
+    currentTeam === undefined ||
+    currentTeam === null) {
+    return <Modal open={isOpen} onClose={toggleModal} />
+  }
 
   const [firstName, pFirstName] = useState(currentPlayer.firstName)
   const [lastName, pLastName] = useState(currentPlayer.lastName)
@@ -382,7 +388,7 @@ export const EditPlayerModal = (props: EditPlayerModalProps) => {
   const [hasNewImage, pHasNewImage] = useState(false)
   const [newImage, pNewImage] = useState({})
 
-  const fileInputRef: { current: any } = useRef(null);
+  const fileInputRef: { current: any } = useRef(null)
 
   const resetValues = React.useCallback(() => {
     pFirstName(currentPlayer.firstName)
@@ -405,31 +411,31 @@ export const EditPlayerModal = (props: EditPlayerModalProps) => {
 
   const setCountry = (e, { value }) => pCountry(value)
   const setTeam = (e, { value }) => pTeam(value)
-  const setHasImage= () => pHasImage(!hasImage)
+  const setHasImage = () => pHasImage(!hasImage)
   const setFileInputChange = (e) => {
     pNewImage(e.target.files[0])
     pHasNewImage(true)
   }
 
-  if(!hasImage && hasNewImage) {
+  if (!hasImage && hasNewImage) {
     pHasNewImage(false)
     pNewImage({})
     fileInputRef.current.value = ''
   }
-  
+
   return (
     <Modal open={isOpen} onClose={toggleModal}>
       <Modal.Header>Edit player</Modal.Header>
       <Modal.Content image={hasImage}>
-        {hasImage ?
-          <Image
+        {hasImage
+          ? <Image
             wrapped
             size='medium'
-            src={`/${hasNewImage 
+            src={`/${hasNewImage
               ? window.URL.createObjectURL(newImage)
               : currentPlayer.imagePath === null
-              ? 'static/default/default-player.png'
-              : currentPlayer.imagePath}`}
+                ? 'static/default/default-player.png'
+                : currentPlayer.imagePath}`}
           /> : null
         }
         <Modal.Description className='modal-container-desc'>
@@ -499,8 +505,8 @@ export const EditPlayerModal = (props: EditPlayerModalProps) => {
             className='inputfile-modal'
             ref={fileInputRef}
             type='file'
-            name="file"
-            accept="image/svg+xml, image/jpeg, image/png"
+            name='file'
+            accept='image/svg+xml, image/jpeg, image/png'
           />
         </div>
         <Button
@@ -514,11 +520,17 @@ export const EditPlayerModal = (props: EditPlayerModalProps) => {
           icon='check'
           content='Save'
           onClick={onEditDone({
-            firstName, lastName, gameName, team, country,
-            steam64Id, hasImage, imagePath, hasNewImage,
+            firstName,
+            lastName,
+            gameName,
+            team,
+            country,
+            steam64Id,
+            hasImage,
+            imagePath,
+            hasNewImage,
             newImage
-            })
-          }
+          })}
         />
         <Button
           color='red'

@@ -1,6 +1,5 @@
 // @flow
 import React, { PureComponent } from 'react'
-import { hot } from 'react-hot-loader'
 import { connect } from 'react-redux'
 
 import { setStatus, setActiveMatch } from '../actions'
@@ -42,8 +41,9 @@ class Main extends PureComponent<Props> {
   _getStatus = () => getStatus()
     .then(setStatus)
     .then(i => {
-      if (!deepEqual(i.status, this.props.status))
+      if (!deepEqual(i.status, this.props.status)) {
         this.props.dispatch(i)
+      }
     })
 
   render () {
@@ -52,8 +52,9 @@ class Main extends PureComponent<Props> {
       status
     } = this.props
 
-    if (!status.clientSpectating)
+    if (!status.clientSpectating) {
       return <GameLoader showMessage status={status} />
+    }
 
     return (
       <div className='overlay'>

@@ -1,9 +1,10 @@
 // @flow
 import type { Action as _Action } from './actions'
+import type { Action as CommonAction } from '../common/actions'
 
 export type Action = _Action
 
-export type Dispatch = (Action) => void
+export type Dispatch = (Action | CommonAction) => void
 
 export type Teams = ('CT' | 'T')
 
@@ -116,6 +117,26 @@ export type PlayerKey = {
   watching: boolean
 }
 
+export type PlayerConfig = {
+  teamName: string,
+  firstName: string | null,
+  lastName: string | null,
+  gameName: string | null,
+  country: string | null,
+  hasImage: boolean,
+  imagePath: string | null
+}
+
+export type TeamConfig = {
+  team: Teams,
+  customName: null | string,
+  customLogo: null | string,
+  country: null | string,
+  players: {
+    [string]: PlayerConfig
+  }
+}
+
 export type StateTeamConfig ={
   teamA: TeamConfig,
   teamB: TeamConfig,
@@ -135,26 +156,6 @@ export type MultipleLevels = {
 }
 
 export type HasMultipleLevels = null | MultipleLevels
-
-export type TeamConfig = {
-  team: Teams,
-  customName: null | string,
-  customLogo: null | string,
-  country: null | string,
-  players: {
-    [string]: PlayerConfig
-  }
-}
-
-export type PlayerConfig = {
-  teamName: string,
-  firstName: string | null,
-  lastName: string | null,
-  gameName: string | null,
-  country: string | null,
-  hasImage: boolean,
-  imagePath: string | null
-}
 
 export type CurrentPlayer = {
   steamid: string,

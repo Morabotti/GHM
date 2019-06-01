@@ -2,7 +2,6 @@
 import React, { PureComponent, Fragment } from 'react'
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { hot } from 'react-hot-loader'
 
 import type { Dispatch } from '../types'
 import type { State } from '../../types'
@@ -47,7 +46,7 @@ type Props = {
 }
 
 class Main extends PureComponent<Props> {
-  componentDidMount() {
+  componentDidMount () {
     this._getCountries()
     this._getTeams()
     this._getPlayers()
@@ -69,7 +68,7 @@ class Main extends PureComponent<Props> {
   _getMatches = () => getMatches()
     .then(matches => setMatches(matches))
     .then(this.props.dispatch)
-  
+
   _getMaps = () => getMaps()
     .then(data => setMaps(data.maps))
     .then(this.props.dispatch)

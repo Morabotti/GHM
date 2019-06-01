@@ -26,7 +26,8 @@ import {
   getTeamsDropdown,
   updateTeamWithLogo,
   updateTeam,
-  getPlayers
+  getPlayers,
+  addTeam
 } from '../client'
 
 import {
@@ -46,14 +47,11 @@ import {
 import type {
   Dispatch,
   Country,
-  Players,
   Teams,
   NewTeam,
   ListElement,
   Player
 } from '../types'
-
-import { addTeam } from '../client'
 
 import type { State } from '../../types'
 
@@ -92,16 +90,16 @@ class TeamsPage extends Component<Props, ComponentState> {
     stateError: false
   }
 
-  constructor() {
+  constructor () {
     super()
-    this.fileInputRef = React.createRef();
+    this.fileInputRef = React.createRef()
   }
 
   _onchange = (e, { name, value }) => this.setState({ [name]: value })
   _onCheckboxChange = (e, { name, checked }) => this.setState({ [name]: checked })
   _onFileInputChange = (e) => this.setState({ teamLogo: e.target.files[0] })
   _handleInputReset = () => {
-    this.fileInputRef.current.value = '';
+    this.fileInputRef.current.value = ''
     this.setState({ teamLogo: null })
   }
 
@@ -143,8 +141,9 @@ class TeamsPage extends Component<Props, ComponentState> {
           stateLoading: false,
           stateError: false
         })
-        this.fileInputRef.current.value = '';
-        resolve()}))
+        this.fileInputRef.current.value = ''
+        resolve()
+      }))
       .then(this._getTeamsDropdown)
       .catch(e => {
         this.setState({
@@ -152,7 +151,6 @@ class TeamsPage extends Component<Props, ComponentState> {
           stateError: true
         })
       })
-
   }
 
   _toggleConfirmModal = () => {
@@ -169,7 +167,7 @@ class TeamsPage extends Component<Props, ComponentState> {
   _getTeamsDropdown = () => getTeamsDropdown()
     .then(teams => setTeamsDropdown(teams))
     .then(this.props.dispatch)
-  
+
   _getPlayers = () => getPlayers()
     .then(players => setPlayers(players))
     .then(this.props.dispatch)
@@ -257,7 +255,6 @@ class TeamsPage extends Component<Props, ComponentState> {
   render () {
     const {
       countries,
-      teamsDropdown,
       teams,
       selectedItem,
       confirmModalOpen,
@@ -269,7 +266,7 @@ class TeamsPage extends Component<Props, ComponentState> {
     const {
       teamShortName,
       teamLongName,
-      teamCountry, 
+      teamCountry,
       teamHasLogo,
       teamLogo,
       stateLoading,
@@ -366,9 +363,9 @@ class TeamsPage extends Component<Props, ComponentState> {
                                 onChange={this._onFileInputChange}
                                 className='inputfile'
                                 type='file'
-                                name="file"
+                                name='file'
                                 ref={this.fileInputRef}
-                                accept="image/svg+xml, image/jpeg, image/png"
+                                accept='image/svg+xml, image/jpeg, image/png'
                               />
                               <Button
                                 inverted
@@ -402,74 +399,74 @@ class TeamsPage extends Component<Props, ComponentState> {
                         </Table.Row>
                       </Table.Header>
                       <Table.Body>
-                      {teams.map((team, index) => {
-                        return (
-                          <Table.Row key={team._id}>
-                            <Table.Cell>
-                              <Header as='h4' image>
-                                <Image
-                                  src={`/${team.logoPath === null ? 'static/default/default-team.png' : team.logoPath}`}
-                                  rounded
-                                  size='mini'
+                        {teams.map((team, index) => {
+                          return (
+                            <Table.Row key={team._id}>
+                              <Table.Cell>
+                                <Header as='h4' image>
+                                  <Image
+                                    src={`/${team.logoPath === null ? 'static/default/default-team.png' : team.logoPath}`}
+                                    rounded
+                                    size='mini'
+                                  />
+                                  <Header.Content>
+                                    {team.teamNameShort}
+                                    <Header.Subheader>{team.teamNameLong}</Header.Subheader>
+                                  </Header.Content>
+                                </Header>
+                              </Table.Cell>
+                              <Table.Cell>
+                                <Flag name={team.country} />
+                                <span>{team.country.toUpperCase()}</span>
+                              </Table.Cell>
+                              <Table.Cell>
+                                <Popup
+                                  inverted
+                                  trigger={<Button
+                                    primary
+                                    icon='eye'
+                                    onClick={this._openViewModal(index)}
+                                  />}
+                                  content='Show Team'
                                 />
-                                <Header.Content>
-                                  {team.teamNameShort}
-                                  <Header.Subheader>{team.teamNameLong}</Header.Subheader>
-                                </Header.Content>
-                              </Header>
-                            </Table.Cell>
-                            <Table.Cell>
-                              <Flag name={team.country} />
-                              <span>{team.country.toUpperCase()}</span>
-                            </Table.Cell>
-                            <Table.Cell>
-                              <Popup
-                                inverted
-                                trigger={<Button
-                                  primary
-                                  icon='eye'
-                                  onClick={this._openViewModal(index)}
-                                />}
-                                content='Show Team'
-                              />
-                              <Popup
-                                inverted
-                                trigger={<Button
-                                  positive
-                                  icon='edit'
-                                  onClick={this._openEditModal(index)}
-                                />}
-                                content='Edit Team'
-                              />
-                              <Popup
-                                inverted
-                                trigger={<Button
-                                  negative
-                                  icon='delete'
-                                  onClick={this._openConfirmModal(index)}
-                                />}
-                                content='Delete Team'
-                              />
-                            </Table.Cell>
-                          </Table.Row>
-                        )
-                      })}
+                                <Popup
+                                  inverted
+                                  trigger={<Button
+                                    positive
+                                    icon='edit'
+                                    onClick={this._openEditModal(index)}
+                                  />}
+                                  content='Edit Team'
+                                />
+                                <Popup
+                                  inverted
+                                  trigger={<Button
+                                    negative
+                                    icon='delete'
+                                    onClick={this._openConfirmModal(index)}
+                                  />}
+                                  content='Delete Team'
+                                />
+                              </Table.Cell>
+                            </Table.Row>
+                          )
+                        })}
                       </Table.Body>
                     </Table>
                   </div>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            {viewModalOpen ? 
-              <ViewTeamModal
+            {viewModalOpen
+              ? <ViewTeamModal
                 isOpen={viewModalOpen}
                 toggleModal={this._toggleViewModal}
                 currentTeam={teams[selectedItem]}
                 currentPlayers={affected}
               /> : null
             }
-            {editModalOpen ?
-              <EditTeamModal
+            {editModalOpen
+              ? <EditTeamModal
                 isOpen={editModalOpen}
                 toggleModal={this._toggleEditModal}
                 currentTeam={teams[selectedItem]}
@@ -478,8 +475,8 @@ class TeamsPage extends Component<Props, ComponentState> {
                 countries={countries}
               /> : null
             }
-            {confirmModalOpen ?
-              <ConfirmModal
+            {confirmModalOpen
+              ? <ConfirmModal
                 modalHeader='Delete team'
                 modalBody='Are you sure you want to delete this team'
                 affectedTargets={affected}
@@ -503,7 +500,7 @@ const mapStateToProps = (state: State) => ({
   viewModalOpen: state.dashboard.modals.viewModalOpen,
   editModalOpen: state.dashboard.modals.editModalOpen,
   confirmModalOpen: state.dashboard.modals.confirmModalOpen,
-  selectedItem: state.dashboard.selectedItem,
+  selectedItem: state.dashboard.selectedItem
 })
 
 export default connect(mapStateToProps)(TeamsPage)
