@@ -157,6 +157,7 @@ export interface CurrentMap {
 }
 
 export interface Team {
+  name?: string,
   score: number
   consecutive_round_losses: number
   timeouts_remaining: number
@@ -164,6 +165,7 @@ export interface Team {
 }
 
 export interface Player {
+  clan?: string
   steamid?: string
   name?: string
   observer_slot?: number
@@ -195,6 +197,7 @@ export interface Allplayers {
 }
 
 export interface PlayerList {
+  clan?: string
   name?: string
   observer_slot?: number
   team?: string

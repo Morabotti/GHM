@@ -25,8 +25,7 @@ type ComponentState = {
   plantedBomb: boolean,
   aTeamWin: boolean,
   bTeamWin: boolean,
-  defuseTime: number,
-  defusing: boolean
+  defuserHasKit: boolean
 }
 
 const BOMB_TIMER = 40
@@ -43,8 +42,7 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
     bombTimerLeft: 10,
     aTeamWin: false,
     bTeamWin: false,
-    defuseTime: 10,
-    defusing: false
+    defuserHasKit: false,
   }
 
   componentDidUpdate (prevProp: Props) {
@@ -66,16 +64,11 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
 
     if (prevProp.gameStateBomb.state === 'planted' && gameStateBomb.state === 'defusing') {
       this.setState({
-        defuseTime: Number(gameStateBomb.countdown),
-        defusing: true
+        defuserHasKit: Number(gameStateBomb.countdown) < 6
       })
-      this.defuseTimeout = setTimeout(
-        this._removeDefuseNotify,
-        Number(gameStateBomb.countdown) * 1000 - 100
-      )
     }
 
-    if (phase === 'over' &&
+    if ((phase === 'over' || phase === 'bomb') &&
       prevProp.mapData.team_ct.score !== null &&
       prevProp.mapData.team_ct.score + 1 === team_ct.score
     ) {
@@ -86,13 +79,13 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
           : phase_ends_in * 1000
 
       if (teamA.team === 'CT') {
-        this.setState({ aTeamWin: true })
+        this.setState({ aTeamWin: true, defuserHasKit: false })
         this.aWinTimeout = setTimeout(
           this._removeTeamANotify,
           ROUND_END_TIME
         )
       } else {
-        this.setState({ bTeamWin: true })
+        this.setState({ bTeamWin: true, defuserHasKit: false })
         this.bWinTimeout = setTimeout(
           this._removeTeamBNotify,
           ROUND_END_TIME
@@ -100,7 +93,7 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
       }
     }
 
-    if (phase === 'over' &&
+    if ((phase === 'over' || phase === 'bomb') &&
       prevProp.mapData.team_t.score !== null &&
       prevProp.mapData.team_t.score + 1 === team_t.score
     ) {
@@ -111,13 +104,13 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
           : phase_ends_in * 1000
 
       if (teamA.team === 'T') {
-        this.setState({ aTeamWin: true })
+        this.setState({ aTeamWin: true, defuserHasKit: false })
         this.aWinTimeout = setTimeout(
           this._removeTeamANotify,
           ROUND_END_TIME
         )
       } else {
-        this.setState({ bTeamWin: true })
+        this.setState({ bTeamWin: true, defuserHasKit: false })
         this.bWinTimeout = setTimeout(
           this._removeTeamBNotify,
           ROUND_END_TIME
@@ -136,7 +129,6 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
   _removeBombNotify = () => this.setState({ plantedBomb: false })
   _removeTeamANotify = () => this.setState({ aTeamWin: false })
   _removeTeamBNotify = () => this.setState({ bTeamWin: false })
-  _removeDefuseNotify = () => this.setState({ defusing: false })
 
   sectostr (time) {
     return ~~(time / 60) + ':' + (time % 60 < 10 ? '0' : '') + time % 60
@@ -147,16 +139,15 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
       phaseData: { phase_ends_in, phase },
       mapData: { round, team_ct, team_t },
       teamConfiguration: { teamA, teamB },
-      gameStateBomb: { state }
+      gameStateBomb: { state, countdown }
     } = this.props
 
     const {
       bombTimerLeft,
       plantedBomb,
       aTeamWin,
+      defuserHasKit,
       bTeamWin,
-      defuseTime,
-      defusing
     } = this.state
 
     const showBomb = state === 'planted' || state === 'defusing' || state === 'exploded' || state === 'defused'
@@ -179,9 +170,14 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
               ${aTeamWin ? ' show-win' : ''}`}
             >
               <div className={`team-event ${defusingBomb ? 'defuse-container' : ''}`}>
-                {defusing ? (
+                {defusingBomb ? (
                   <div className='defuse-progress'>
-                    <div className='progress' style={{ animationDuration: `${defuseTime - 0.25}s` }} />
+                    <div
+                      className='progress'
+                      style={{
+                        width: `${((defuserHasKit ? 5 : 10) - Number(countdown) + 0.05) / (defuserHasKit ? 5 : 10) * 105}%`
+                      }}
+                    />
                     <span>DEFUSING</span>
                   </div>
                 ) : (
@@ -253,9 +249,14 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
               ${bTeamWin ? ' show-win' : ''}`}
             >
               <div className={`team-event ${defusingBomb ? 'defuse-container' : ''}`}>
-                {defusing ? (
+                {defusingBomb ? (
                   <div className='defuse-progress'>
-                    <div className='progress' style={{ animationDuration: `${defuseTime - 0.25}s` }} />
+                    <div
+                      className='progress'
+                      style={{
+                        width: `${((defuserHasKit ? 5 : 10) - Number(countdown) + 0.1) / (defuserHasKit ? 5 : 10) * 100}%`
+                      }}
+                    />
                     <span>DEFUSING</span>
                   </div>
                 ) : (

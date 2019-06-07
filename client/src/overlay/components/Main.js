@@ -37,6 +37,7 @@ class Main extends PureComponent<Props> {
   _getActiveMatch = () => getActiveMatch()
     .then(match => setActiveMatch(match))
     .then(this.props.dispatch)
+    .catch(e => console.log("No active match set"))
 
   _getStatus = () => getStatus()
     .then(setStatus)
@@ -52,7 +53,7 @@ class Main extends PureComponent<Props> {
       status
     } = this.props
 
-    if (!status.clientSpectating) {
+    if (!status.clientSpectating || !status.gameOnline) {
       return <GameLoader showMessage status={status} />
     }
 

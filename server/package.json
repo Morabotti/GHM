@@ -14,6 +14,7 @@
     "dev": "nodemon",
     "build": "tsc",
     "build:start": "tsc && node dist/server.js",
+    "production": "cd ../client & npm run build && cd ../server & npm run build:start",
     "server": "node dist/server.js"
   },
   "nodemonConfig": {

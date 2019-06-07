@@ -37,7 +37,7 @@ export type BombState = {
   state: ('planted' | 'exploded' | 'planting' | 'defusing' | 'defused' | 'carried' | 'dropped'),
   position: Array<number>,
   player?: string,
-  countdown?: string
+  countdown: string
 }
 
 export type EventType = {

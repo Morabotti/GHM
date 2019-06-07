@@ -70,7 +70,7 @@ class GameEvents {
         analyzeEvents(state)
         matchCore.testTeamSides(state.allplayers)
 
-        if (state.player !== undefined && state.player.spectarget !== undefined) {
+        if (state.player !== undefined && state.player.spectarget !== undefined && state.player.spectarget !== 'free') {
           state.allplayers[state.player.spectarget].watching = true
         }
         
@@ -130,6 +130,7 @@ class GameEvents {
     } else {
       if (this.isGameOnline) {
         this.isGameOnline = false
+        this._setMapDefault()
         this.dispatchStatus()
       }
     }
@@ -156,7 +157,13 @@ class GameEvents {
       this.isClientOnline = false
       this.isGameOnline = false
       this.isClientSpectating = false
+
+      this._setMapDefault()
     }
+  }
+
+  _setMapDefault() {
+    if(this.gameState) this.gameState.map = undefined
   }
 
   setVectors(state: GameState): GameState {
