@@ -157,7 +157,7 @@
       background-color: @ui-background-main;
 
       .bomb-timer{
-        background-color: red;
+        background: @ui-bomb-default;
         bottom: 0;
         height: 0%;
         animation-name: bombTimer;
@@ -168,6 +168,15 @@
         animation-fill-mode: forwards;
         position: absolute;
         width: 100%;
+
+        &.exploded{
+          animation-play-state: paused;
+        }
+
+        &.defused{
+          background: @ui-bomb-defused;
+          animation-play-state: paused;
+        }
       }
 
       .bomb-wrapper{
@@ -180,6 +189,11 @@
         animation-direction: alternate;
         animation-name: bombeffect;
         height: 100%;
+
+        &.defused,
+        &.exploded{
+          animation-play-state: paused;
+        }
 
         .bomb-icon{
           -webkit-filter: invert(100%) grayscale(100%) brightness(70%) contrast(4);

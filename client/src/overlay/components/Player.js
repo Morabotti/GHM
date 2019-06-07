@@ -57,7 +57,6 @@ class Player extends PureComponent<Props, ComponentState> {
     const hasSecondaryWeapon = Object.keys(weapons)
       .find(weapon => weapons[weapon].type === 'Pistol')
 
-    // Prolly should be done with weapon type instead
     const mainWeaponBig = (hasMainWeapon !== undefined &&
       (weapons[hasMainWeapon].name === 'weapon_m4a1_silencer' ||
       weapons[hasMainWeapon].name === 'weapon_nova' ||
@@ -75,7 +74,12 @@ class Player extends PureComponent<Props, ComponentState> {
     const moneyLost = this.state.money - this.props.state.money
 
     return (
-      <div className={`team-player ${first ? 'first' : ''}${last ? 'last' : ''} ${watching ? 'watching' : ''} ${isDead ? 'dead' : ''}`}>
+      <div className={`team-player
+        ${first ? 'first' : ''}
+        ${last ? 'last' : ''}
+        ${watching ? ' watching' : ''}
+        ${isDead ? ' dead' : ''}`}
+      >
         <div className='dead-player-parent'>
           <div className={`dead-stats ${isDead ? 'visible' : ''}`}>
             <div className='dead-icon'>
