@@ -1,12 +1,14 @@
 import * as SocketIO from 'socket.io'
-import * as fs from 'fs'
 
-import { Sockets } from '../types';
+import { SOCKET } from '../types';
 
 import config from '../config'
 
 const io = SocketIO().listen(config.socketIoPort)
 
+export const socketPath = '/socket'
+
+/*
 export const openSockets: Sockets = {
   allPlayers: "/socket-overlay/allplayers",
   player: "/socket-overlay/player",
@@ -19,17 +21,15 @@ export const openSockets: Sockets = {
   bomb: "/socket-overlay/bomb",
   teamconfig: "/socket-overlay/teamconfig"
 }
+*/
 
 io.on('connection', (socket) => {
-  Object.keys(openSockets).forEach(key => {
-    io.of(openSockets[key]).emit('connected')
-  })
+  io.of(socketPath).emit('connected')
 })
 
 export const dispatchSocket = (
-  url: string,
-  method: string,
+  method: SOCKET,
   data: any
 ) => {
-  io.of(url).emit(method, data)
+  io.of(socketPath).emit(method, data)
 }

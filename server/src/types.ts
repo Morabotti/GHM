@@ -38,6 +38,20 @@ export enum BOMB {
   DROPPED = 'dropped'
 }
 
+export enum SOCKET {
+  ALLPLAYERS = 'UPDATE_ALLPLAYERS',
+  PLAYER = 'UPDATE_PLAYER',
+  MAP = 'UPDATE_MAP',
+  PHASE = 'UPDATE_PHASE',
+  STATUS = 'UPDATE_STATUS',
+  EVENTS = 'UPDATE_EVENTS',
+  STATS = 'UPDATE_STATS',
+  GAME_CONFIG = 'UPDATE_GAME_CONFIG',
+  GAME_CONFIG_RESET = 'RESET_GAME_CONFIG',
+  BOMB = 'UPDATE_BOMB',
+  TEAM_CONFIG = 'UPDATE_TEAM_CONFIG'
+}
+
 export interface StatsCalculation {
   CT: TeamStats
   T: TeamStats
@@ -100,19 +114,6 @@ export interface MatchSchema {
   teamA: string
   teamB: string
   isLive: boolean
-}
-
-export interface Sockets {
-  allPlayers: string
-  player: string
-  map: string
-  phase: string
-  updates: string
-  events: string
-  stats: string
-  gameconfig: string
-  bomb: string,
-  teamconfig: string
 }
 
 // ! FIX any properties ! //

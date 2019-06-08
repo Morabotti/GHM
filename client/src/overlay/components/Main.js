@@ -2,7 +2,8 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
-import { setStatus, setActiveMatch } from '../actions'
+import { setActiveMatch } from '../actions'
+import { setStatus } from '../../common/actions'
 import { getStatus, getActiveMatch, subscribeToSocket } from '../client'
 import { deepEqual } from '../../dashboard/lib/helpers'
 import { PlayerPlate, Radar, ScorePlate, Team, GameLoader } from './'
@@ -79,7 +80,7 @@ class Main extends PureComponent<Props> {
 }
 
 const mapStateToProps = (state: State) => ({
-  status: state.overlay.status,
+  status: state.common.status,
   teamConfiguration: state.overlay.teamConfiguration
 })
 

@@ -1,5 +1,6 @@
-import { dispatchSocket, openSockets } from '../handler/SocketIo'
+import { dispatchSocket } from '../handler/SocketIo'
 import { deepEqual } from '../utils/helpers'
+import { SOCKET } from '../types'
 
 import {
   TeamStats,
@@ -41,11 +42,7 @@ class GameStats {
       this.teamCounterTerrorist = stats.CT
       this.teamTerrorist = stats.T
 
-      dispatchSocket(
-        openSockets.stats,
-        'state',
-        stats
-      )
+      dispatchSocket(SOCKET.STATS, stats)
     }
   }
 
@@ -152,11 +149,7 @@ class GameStats {
       CT: this.getTeamStats('CT')
     }
 
-    dispatchSocket(
-      openSockets.stats,
-      'state',
-      stats
-    )
+    dispatchSocket(SOCKET.STATS, stats)
   }
 }
 

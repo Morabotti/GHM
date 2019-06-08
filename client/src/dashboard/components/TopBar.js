@@ -48,7 +48,7 @@ class TopBar extends Component<Props> {
 }
 
 const mapStateToProps = (state: State) => ({
-  status: state.dashboard.status
+  status: state.common.status
 })
 
 export default connect(mapStateToProps)(TopBar)

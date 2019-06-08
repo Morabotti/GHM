@@ -8,16 +8,6 @@ export type State = {
   common: CommonState
 }
 
-export type SocketEndPoint = {
-  allPlayers: string,
-  player: string,
-  map: string,
-  phase: string,
-  events: string,
-  stats: string,
-  gameConfig: string
-}
-
 export type GradeType = {
   range: number,
   text: string,
@@ -29,7 +19,6 @@ export type Grades = {
 }
 
 export type Config = {
-  sockets: SocketEndPoint,
   teamNadeGrades: Grades,
   teamEconomyGrades: Grades
 }

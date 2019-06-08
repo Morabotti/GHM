@@ -1,8 +1,8 @@
 import * as moment from 'moment'
 
-import { GameState } from '../types'
+import { GameState, SOCKET } from '../types'
 import { analyzeEvents } from './GameEvents'
-import { dispatchSocket, openSockets } from '../handler/SocketIo'
+import { dispatchSocket } from '../handler/SocketIo'
 import gameStats from './GameStats'
 import matchCore from './MatchCore'
 
@@ -213,15 +213,13 @@ class GameEvents {
       if (this.gameState)
         if (this.gameState.allplayers !== undefined)
           dispatchSocket(
-            openSockets.allPlayers,
-            'state',
+            SOCKET.ALLPLAYERS,
             this.gameState.allplayers
           )
     } else {
       if (data !== undefined) {
         dispatchSocket(
-          openSockets.allPlayers,
-          'state',
+          SOCKET.ALLPLAYERS,
           data
         )
       }
@@ -233,15 +231,13 @@ class GameEvents {
       if (this.gameState)
         if (this.gameState.player !== undefined)
           dispatchSocket(
-            openSockets.player,
-            'state',
+            SOCKET.PLAYER,
             this.gameState.player
           )
     } else {
       if (data !== undefined) {
         dispatchSocket(
-          openSockets.player,
-          'state',
+          SOCKET.PLAYER,
           data
         )
       }
@@ -253,15 +249,13 @@ class GameEvents {
       if (this.gameState)
         if (this.gameState.map !== undefined)
           dispatchSocket(
-            openSockets.map,
-            'state',
+            SOCKET.MAP,
             this.gameState.map
           )
     } else {
       if (data !== undefined) {
         dispatchSocket(
-          openSockets.map,
-          'state',
+          SOCKET.MAP,
           data
         )
       }
@@ -273,15 +267,13 @@ class GameEvents {
       if (this.gameState)
         if (this.gameState.bomb !== undefined)
           dispatchSocket(
-            openSockets.bomb,
-            'state',
+            SOCKET.BOMB,
             this.gameState.bomb
           )
     } else {
       if (data !== undefined) {
         dispatchSocket(
-          openSockets.bomb,
-          'state',
+          SOCKET.BOMB,
           data
         )
       }
@@ -293,15 +285,13 @@ class GameEvents {
       if (this.gameState)
         if (this.gameState.phase_countdowns !== undefined)
           dispatchSocket(
-            openSockets.phase,
-            'state',
+            SOCKET.PHASE,
             this.gameState.phase_countdowns
           )
     } else {
       if (data !== undefined) {
         dispatchSocket(
-          openSockets.phase,
-          'state',
+          SOCKET.PHASE,
           data
         )
       }
@@ -311,15 +301,13 @@ class GameEvents {
   dispatchStatus(data = null) {
     if (data === null) {
       dispatchSocket(
-        openSockets.updates,
-        'state',
+        SOCKET.STATUS,
         this.getCurrentStatus()
       )
     } else {
       if (data !== undefined) {
         dispatchSocket(
-          openSockets.updates,
-          'state',
+          SOCKET.STATUS,
           data
         )
       }

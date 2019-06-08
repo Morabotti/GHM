@@ -1,10 +1,9 @@
-import { GameState, EVENT, PHASE } from '../types'
-import { dispatchSocket, openSockets } from '../handler/SocketIo'
+import { GameState, EVENT, PHASE, SOCKET } from '../types'
+import { dispatchSocket } from '../handler/SocketIo'
 
 const dispatchEvent = (event: EVENT, ...payload: any) => {
   dispatchSocket(
-    openSockets.events,
-    'state',
+    SOCKET.EVENTS,
     {event, payload}
   )
 }

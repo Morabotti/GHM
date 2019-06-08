@@ -10,8 +10,7 @@ import type {
   Match
 } from './types'
 
-export type Action = { type: 'set-status', status: Status }
-  | { type: 'toggle-navbar', showNavbar: boolean }
+export type Action = { type: 'toggle-navbar', showNavbar: boolean }
   | { type: 'set-maps', maps: Array<string> }
   | { type: 'set-countries', countries: Countries }
   | { type: 'set-players', players: Players }
@@ -31,11 +30,6 @@ export type Action = { type: 'set-status', status: Status }
   | { type: 'toggle-edit-modal', editModalOpen: boolean }
   | { type: 'toggle-view-modal-player', viewModalOpen: boolean }
   | { type: 'set-selected-item', selectedItem: number }
-
-export const setStatus = (status: Status) => ({
-  type: 'set-status',
-  status
-})
 
 export const setSelectedId = (selectedId: string | null) => ({
   type: 'set-selected-id',

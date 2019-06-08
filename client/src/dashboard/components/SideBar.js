@@ -8,7 +8,7 @@ import { ClientConnectButton, ServerConnectButton } from './'
 import { deepEqual } from '../lib/helpers'
 
 import { getStatus } from '../client'
-import { setStatus } from '../actions'
+import { setStatus } from '../../common/actions'
 
 import type { Status, Dispatch } from '../types'
 import type { State } from '../../types'
@@ -108,7 +108,7 @@ class SideBar extends Component<Props> {
 }
 
 const mapStateToProps = (state: State) => ({
-  status: state.dashboard.status
+  status: state.common.status
 })
 
 export default withRouter(connect(mapStateToProps)(SideBar))

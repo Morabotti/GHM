@@ -6,7 +6,6 @@ interface ConfigType {
   port: number,
   socketIoPort: number,
   gameStateToken: string,
-  socketsPath: string,
   gameStateTimeout: number,
   steamApiKey: string,
   dbConnection: string | null,
@@ -20,7 +19,6 @@ const config: ConfigType = {
   'gameStateTimeout': Number(process.env.TIMEOUT_TIME) || 5,
   'steamApiKey': process.env.STEAM_API_KEY || '',
   'dbConnection': process.env.DB_CONNECTION || null,
-  'socketsPath': process.env.SOCKETS_PATH || './static/config/sockets.json',
   'countriesPath': process.env.COUNTRIES_PATH || './static/config/countries.json'
 }
 

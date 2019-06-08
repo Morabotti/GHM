@@ -16,7 +16,6 @@ export type Action = { type: 'set-game-all-player-state', gameStateAllPlayer: Al
   | { type: 'set-game-map-state', gameStateMap: MapState}
   | { type: 'set-game-phase-state', gameStatePhase: PhaseCooldowns}
   | { type: 'set-game-bomb', gameStateBomb: BombState}
-  | { type: 'set-status-overlay', status: Status }
   | { type: 'set-team-stats', stats: TeamStats }
   | { type: 'set-team-configuration', teamConfiguration: StateTeamConfig }
   | { type: 'start-money-count' }
@@ -41,11 +40,6 @@ export const setGameMapState = (gameStateMap: MapState) => ({
 export const setGamePhaseState = (gameStatePhase: PhaseCooldowns) => ({
   type: 'set-game-phase-state',
   gameStatePhase
-})
-
-export const setStatus = (status: Status) => ({
-  type: 'set-status-overlay',
-  status
 })
 
 export const startMoneyCount = () => ({

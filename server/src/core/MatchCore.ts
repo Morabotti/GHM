@@ -3,8 +3,7 @@ import Match from '../models/Match'
 import Team from '../models/Team'
 
 import {
-  dispatchSocket,
-  openSockets
+  dispatchSocket
 } from '../handler/SocketIo'
 
 import { Error } from 'mongoose'
@@ -12,7 +11,8 @@ import {
   RefactoredMatch,
   Allplayers,
   RawMatch,
-  RPlayer
+  RPlayer,
+  SOCKET
 } from '../types'
 
 const TIMEOUT_TEAMCHANGE = 5000
@@ -179,8 +179,7 @@ class MatchCore {
       const refactored = matchCore.filterActiveMatchData(activeData)
 
       dispatchSocket(
-        openSockets.teamconfig,
-        'state',
+        SOCKET.TEAM_CONFIG,
         refactored
       )
     } catch(e) {
@@ -190,8 +189,7 @@ class MatchCore {
 
   dispatchActiveDelete = () => {
     dispatchSocket(
-      openSockets.teamconfig,
-      'reset',
+      SOCKET.GAME_CONFIG_RESET,
       null
     )
   }

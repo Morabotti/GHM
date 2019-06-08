@@ -16,15 +16,12 @@ import type {
   BombState
 } from './types'
 
-import type { Status } from '../dashboard/types'
-
 export type State = {
   gameStateAllPlayer: AllPlayers,
   gameStatePlayer: CurrentPlayer,
   gameStateMap: MapState,
   gameStatePhase: PhaseCooldowns,
   gameStateBomb: BombState,
-  status: Status,
   events: EventsReducer,
   teamStats: TeamStats,
   teamConfiguration: {
@@ -64,13 +61,6 @@ const defaultStatsState: MatchStats = {
   deaths: 0,
   mvps: 0,
   score: 0
-}
-
-const statusState: Status = {
-  clientOnline: false,
-  clientSpectating: false,
-  gameOnline: false,
-  gameLive: false
 }
 
 const teamStats: TeamStat = {
@@ -135,7 +125,6 @@ const getDefaultState = (): State => ({
     position: [],
     countdown: '0'
   },
-  status: statusState,
   events: {
     moneyCount: false
   },
@@ -191,11 +180,6 @@ export default function reducer (
       return {
         ...state,
         gameStateBomb: action.gameStateBomb
-      }
-    case 'set-status-overlay':
-      return {
-        ...state,
-        status: action.status
       }
     case 'start-money-count':
       return {

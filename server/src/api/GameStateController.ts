@@ -46,7 +46,7 @@ router.get('/overlay/init', (req: Request, res: Response) => {
         .send({message: 'Data was found'})
   } else {
     return res
-        .status(400)
+        .status(404)
         .send({message: 'Data was not found'})
   }
 })

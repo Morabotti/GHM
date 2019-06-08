@@ -1,7 +1,6 @@
 // @flow
 import type { Action } from './actions'
 import type {
-  Status,
   Country,
   Players,
   Teams,
@@ -22,7 +21,6 @@ export type GameSettings = {
 }
 
 export type State = {
-  status: Status,
   showNavbar: boolean,
   countries: Array<Country>,
   teamsDropdown: Array<ListElement>,
@@ -33,13 +31,6 @@ export type State = {
   selectedItem: number | null,
   selectedId: string | null,
   modals: Modals
-}
-
-const statusState: Status = {
-  clientOnline: false,
-  clientSpectating: false,
-  gameOnline: false,
-  gameLive: false
 }
 
 const modals: Modals = {
@@ -55,7 +46,6 @@ const gameSettings: GameSettings = {
 }
 
 const getDefaultState = (): State => ({
-  status: statusState,
   gameSettings: gameSettings,
   countries: [],
   teams: [],
@@ -74,11 +64,6 @@ export default function reducer (
   action: Action
 ): State {
   switch (action.type) {
-    case 'set-status':
-      return {
-        ...state,
-        status: action.status
-      }
     case 'set-maps':
       return {
         ...state,

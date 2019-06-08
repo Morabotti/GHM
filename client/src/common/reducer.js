@@ -1,15 +1,24 @@
 // @flow
 import type { Action } from './actions'
-import type { ConfigState } from './types'
+import type { ConfigState, Status } from './types'
 
 export type State = {
-  config: ConfigState
+  config: ConfigState,
+  status: Status
+}
+
+const statusState: Status = {
+  clientOnline: false,
+  clientSpectating: false,
+  gameOnline: false,
+  gameLive: false
 }
 
 const getDefaultState = (): State => ({
   config: {
     useRadar: false
-  }
+  },
+  status: statusState,
 })
 
 export default function reducer (
@@ -21,6 +30,11 @@ export default function reducer (
       return {
         ...state,
         config: action.config
+      }
+    case 'set-status':
+      return {
+        ...state,
+        status: action.status
       }
     default:
       return state
