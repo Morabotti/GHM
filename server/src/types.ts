@@ -1,3 +1,6 @@
+import { Merge } from "ts-essentials";
+import { GameStateSpectating, Bomb, PlayerList } from 'csgo-gsi-types'
+
 export enum EVENT {
   BOMB_PLANT = 'BOMB_PLANT',
   BOMB_DEFUSE = 'BOMB_DEFUSE',
@@ -121,151 +124,25 @@ export interface MatchSchema {
   isLive: boolean
 }
 
-// ! FIX any properties ! //
-export interface GameState {
-  provider: Provider
-  map: CurrentMap | any
-  player: Player | any
-  allplayers: Allplayers | any
-  phase_countdowns: Phase_countdowns | any
-  grenades: Grenades
-  previously: Previously
-  bomb: BombState | any
-  auth: Auth
-}
-
-export interface BombState {
-  state: BOMB
-  position: string
-  player?: number
-  countdown?: string
-}
-
-export interface Provider {
-  name: string
-  appid: number
-  version: number
-  steamid: string
-  timestamp: number
-}
-
-export interface CurrentMap {
-  mode: string
-  name: string
-  phase: PHASE
-  round: number
-  team_ct: Team
-  team_t: Team
-  num_matches_to_win_series: number
-  current_spectators: number
-  souvenirs_total: number
-  round_wins: { [key: string]: string}
-}
-
-export interface Team {
-  name?: string,
-  score: number
-  consecutive_round_losses: number
-  timeouts_remaining: number
-  matches_won_this_series: number
-}
-
-export interface Player {
-  clan?: string
-  steamid?: string
-  name?: string
-  observer_slot?: number
-  team?: string
-  activity?: string
-  state?: State
-  spectarget?: string
+interface __NewPlayerList {
   position: string | string[]
   forward: string | string[]
+  watching: boolean
 }
 
-export interface State {
-  health: number
-  armor: number
-  helmet: boolean
-  flashed: number
-  smoked?: number
-  burning: number
-  money: number
-  round_kills: number
-  round_killhs: number
-  round_totaldmg: number
-  equip_value: number
-  defusekit?: boolean
+export type CustomPlayerList = Merge<PlayerList, __NewPlayerList>
+export type CustomBomb = Merge<Bomb, {position: string | string[]}>
+
+export interface CustomAllPlayer {
+  [steamid: string]: CustomPlayerList
 }
 
-export interface Allplayers {
-  [key: number]: PlayerList
+interface __CustomGameState {
+  bomb: CustomBomb,
+  allplayers: CustomAllPlayer
 }
 
-export interface PlayerList {
-  clan?: string
-  name?: string
-  observer_slot?: number
-  team?: string
-  state?: State
-  match_stats?: Match_stats
-  weapons: Weapons
-  position: string | string[]
-  forward: string | string[]
-}
-
-export interface Match_stats {
-  kills: number
-  assists: number
-  deaths: number
-  mvps: number
-  score: number
-}
-
-export interface Weapons {
-  [key: string]: Weapon
-}
-
-export interface Weapon {
-  name: string
-  paintkit?: string
-  type: string
-  state: string
-  ammo_clip?: number
-  ammo_clip_max?: number
-  ammo_reserve?: number
-}
-
-interface Phase_countdowns {
-  phase: PHASE
-  phase_ends_in: string
-}
-
-export interface Grenades {
-  [key: string]: Grenade
-}
-
-export interface Grenade {
-  owner?: number
-  position: string
-  velocity: string
-  lifetime: string
-  type?: string
-  effecttime?: string
-}
-
-export interface Previously {
-  player?: Player
-  allplayers?: Allplayers
-  phase_countdowns?: Phase_countdowns
-  grenades?: Grenades
-  map?: CurrentMap
-  bomb?: BombState
-}
-
-export interface Auth {
-  token: string
-}
+export type GameState = Merge<GameStateSpectating, __CustomGameState>
 
 export interface RefactoredMatch {
   teamA: TeamConfig

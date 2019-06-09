@@ -1,6 +1,11 @@
 import * as moment from 'moment'
+import {
+  PhaseCountDown,
+  Player,
+  Map,
+} from 'csgo-gsi-types'
 
-import { GameState, SOCKET } from '../types'
+import { SOCKET, GameState, CustomAllPlayer, CustomBomb } from '../types'
 import { analyzeEvents } from './GameEvents'
 import { dispatchSocket } from '../handler/SocketIo'
 import gameStats from './GameStats'
@@ -63,7 +68,6 @@ class GameEvents {
       return
     }
 
-    // * UPDATE SECTION => ONLY UPDATES WHEN THERE IS CHANGE => ALWAYS USEFUL * //
     if (state.previously !== undefined) {
       if (state.previously.allplayers !== undefined) {
         this.setVectors(state)
@@ -130,7 +134,6 @@ class GameEvents {
     } else {
       if (this.isGameOnline) {
         this.isGameOnline = false
-        this._setMapDefault()
         this.dispatchStatus()
       }
     }
@@ -157,16 +160,10 @@ class GameEvents {
       this.isClientOnline = false
       this.isGameOnline = false
       this.isClientSpectating = false
-
-      this._setMapDefault()
     }
   }
 
-  _setMapDefault() {
-    if(this.gameState) this.gameState.map = undefined
-  }
-
-  setVectors(state: GameState): GameState {
+  setVectors(state: GameState | any): GameState {
     if(state.allplayers !== undefined) {
       Object.keys(state.allplayers).map(key => {
         const { position, forward } = state.allplayers[key]
@@ -181,7 +178,7 @@ class GameEvents {
     return state
   }
 
-  setBombVectors(state: GameState): GameState {
+  setBombVectors(state: GameState | any): GameState {
     if (state.bomb !== undefined) {
       state.bomb.position = state.bomb.position.split(', ')
     }
@@ -208,7 +205,7 @@ class GameEvents {
     this.dispatchBomb()
   }
 
-  dispatchAllPlayers(data = null) {
+  dispatchAllPlayers(data: (null | CustomAllPlayer) = null) {
     if (data === null) {
       if (this.gameState)
         if (this.gameState.allplayers !== undefined)
@@ -226,7 +223,7 @@ class GameEvents {
     }
   }
 
-  dispatchPlayer(data = null) {
+  dispatchPlayer(data: (null | Player) = null) {
     if (data === null) {
       if (this.gameState)
         if (this.gameState.player !== undefined)
@@ -244,7 +241,7 @@ class GameEvents {
     }
   }
 
-  dispatchMap(data = null) {
+  dispatchMap(data: (null | Map) = null) {
     if (data === null) {
       if (this.gameState)
         if (this.gameState.map !== undefined)
@@ -262,7 +259,7 @@ class GameEvents {
     }
   }
 
-  dispatchBomb(data = null) {
+  dispatchBomb(data: null|CustomBomb = null) {
     if (data === null) {
       if (this.gameState)
         if (this.gameState.bomb !== undefined)
@@ -280,7 +277,7 @@ class GameEvents {
     }
   }
   
-  dispatchPhase(data = null) {
+  dispatchPhase(data: (null | PhaseCountDown) = null) {
     if (data === null) {
       if (this.gameState)
         if (this.gameState.phase_countdowns !== undefined)

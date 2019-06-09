@@ -2,6 +2,8 @@ import Player from '../models/Player'
 import Match from '../models/Match'
 import Team from '../models/Team'
 
+import { AllPlayers } from 'csgo-gsi-types'
+
 import {
   dispatchSocket
 } from '../handler/SocketIo'
@@ -9,10 +11,10 @@ import {
 import { Error } from 'mongoose'
 import {
   RefactoredMatch,
-  Allplayers,
   RawMatch,
   RPlayer,
-  SOCKET
+  SOCKET,
+  CustomAllPlayer
 } from '../types'
 
 const TIMEOUT_TEAMCHANGE = 5000
@@ -28,7 +30,7 @@ class MatchCore {
     this.latelyChanged = false
   }
 
-  testTeamSides = (allplayers: Allplayers) => {
+  testTeamSides = (allplayers: CustomAllPlayer) => {
     if (this.refactored !== null) {
       const needSwitch = this.calculateTeams(allplayers)
 
@@ -45,7 +47,7 @@ class MatchCore {
     }
   }
 
-  calculateTeams = (allplayers: Allplayers): boolean => {
+  calculateTeams = (allplayers: CustomAllPlayer): boolean => {
     let aOnSame = 0
     let aOnDifferent = 0
     let bOnSame = 0
