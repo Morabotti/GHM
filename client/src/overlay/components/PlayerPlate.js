@@ -131,38 +131,17 @@ class PlayerPlate extends PureComponent<Props> {
                 <div className='item grenades'>
                   {Object.keys(weapons)
                     .filter(weapon => weapons[weapon].type === 'Grenade')
-                    .map((grenade, index) => {
-                      if (weapons[grenade].ammo_reserve === 2) {
-                        return (
-                          <div className='multiple-grenades' key={index}>
-                            <div className='player-grenade'>
-                              <img
-                                src={`/static/weapons/${weapons[grenade].name}.svg`}
-                                className={`weapon-wrap ${weapons[grenade].state === 'holstered' ? 'holstered' : ''}`}
-                                height='24px'
-                              />
-                            </div>
-                            <div className='player-grenade'>
-                              <img
-                                src={`/static/weapons/${weapons[grenade].name}.svg`}
-                                className={`weapon-wrap ${weapons[grenade].state === 'holstered' ? 'holstered' : ''}`}
-                                height='24px'
-                              />
-                            </div>
-                          </div>
-                        )
-                      } else {
-                        return (
-                          <div className='player-grenade' key={index}>
-                            <img
-                              src={`/static/weapons/${weapons[grenade].name}.svg`}
-                              className={`weapon-wrap ${weapons[grenade].state === 'holstered' ? 'holstered' : ''}`}
-                              height='24px'
-                            />
-                          </div>
-                        )
-                      }
-                    })
+                    .map((grenade, index) =>
+                      [...Array(weapons[grenade].ammo_reserve)].map((e, i) => (
+                        <div className='player-grenade' key={`${index}-${i}`}>
+                          <img
+                            src={`/static/weapons/${weapons[grenade].name}.svg`}
+                            className={`weapon-wrap ${weapons[grenade].state === 'holstered' ? 'holstered' : ''}`}
+                            height='24px'
+                          />
+                        </div>
+                      ))
+                    )
                   }
                 </div>
                 <div className='item'>

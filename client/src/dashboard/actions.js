@@ -1,6 +1,5 @@
 // @flow
 import type {
-  Status,
   Countries,
   Teams,
   Players,

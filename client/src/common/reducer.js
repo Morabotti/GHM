@@ -14,11 +14,13 @@ const statusState: Status = {
   gameLive: false
 }
 
+const configState: ConfigState = {
+  useRadar: false
+}
+
 const getDefaultState = (): State => ({
-  config: {
-    useRadar: false
-  },
-  status: statusState,
+  config: configState,
+  status: statusState
 })
 
 export default function reducer (

@@ -93,11 +93,7 @@ class Player extends PureComponent<Props, ComponentState> {
         <div className='player-extra-stats-parent'>
           <div className={`player-extra-stats ${showStats ? 'show' : ''}`}>
             <div className='extra-money-lost'>
-              {moneyLost === 0 ? (
-                <span className='plus'>{moneyLost}$</span>
-              ) : (
-                <span className='minus'>-{Math.abs(moneyLost)}$</span>
-              )}
+              <span className='minus'>-{Math.abs(moneyLost)}$</span>
             </div>
             <div className='extra-stats'>
               <div className='stats'>
@@ -153,38 +149,17 @@ class Player extends PureComponent<Props, ComponentState> {
             <div className='weapon-grenades'>
               {Object.keys(weapons)
                 .filter(weapon => weapons[weapon].type === 'Grenade')
-                .map((grenade, index) => {
-                  if (weapons[grenade].ammo_reserve === 2) {
-                    return (
-                      <div className='multiple-grenades' key={index}>
-                        <div className='player-grenade'>
-                          <img
-                            src={`/static/weapons/${weapons[grenade].name}.svg`}
-                            className={`weapon-wrap shadowed ${weapons[grenade].state === 'holstered' ? 'holstered' : ''}`}
-                            height='20px'
-                          />
-                        </div>
-                        <div className='player-grenade'>
-                          <img
-                            src={`/static/weapons/${weapons[grenade].name}.svg`}
-                            className={`weapon-wrap shadowed ${weapons[grenade].state === 'holstered' ? 'holstered' : ''}`}
-                            height='20px'
-                          />
-                        </div>
-                      </div>
-                    )
-                  } else {
-                    return (
-                      <div className='player-grenade' key={index}>
-                        <img
-                          src={`/static/weapons/${weapons[grenade].name}.svg`}
-                          className={`weapon-wrap shadowed ${weapons[grenade].state === 'holstered' ? 'holstered' : ''}`}
-                          height='20px'
-                        />
-                      </div>
-                    )
-                  }
-                })
+                .map((grenade, index) =>
+                  [...Array(weapons[grenade].ammo_reserve)].map((e, i) => (
+                    <div className='player-grenade' key={`${index}-${i}`}>
+                      <img
+                        src={`/static/weapons/${weapons[grenade].name}.svg`}
+                        className={`weapon-wrap shadowed ${weapons[grenade].state === 'holstered' ? 'holstered' : ''}`}
+                        height='20px'
+                      />
+                    </div>
+                  ))
+                )
               }
             </div>
           </div>

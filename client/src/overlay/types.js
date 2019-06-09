@@ -66,7 +66,8 @@ export type MapState = {
   team_t: Team,
   num_matches_to_win_series: number,
   current_spectators: number,
-  souvenirs_total: number
+  souvenirs_total: number,
+  round_wins: Array<{[key: string]: string}>
 }
 
 export type WeaponDefault = {
@@ -166,7 +167,8 @@ export type CurrentPlayer = {
   state: PlayerState,
   spectarget?: string,
   position: Vector,
-  forward: Vector
+  forward: Vector,
+  round_wins?: Array<{[key: string]: string}>
 }
 
 export type AllPlayers = {

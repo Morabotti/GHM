@@ -114,7 +114,8 @@ const getDefaultState = (): State => ({
     team_t: defaultTeamState,
     num_matches_to_win_series: 0,
     current_spectators: 0,
-    souvenirs_total: 0
+    souvenirs_total: 0,
+    round_wins: []
   },
   gameStatePhase: {
     phase: '',

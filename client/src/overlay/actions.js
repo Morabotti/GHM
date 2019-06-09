@@ -9,8 +9,6 @@ import type {
   BombState
 } from './types'
 
-import type { Status } from '../dashboard/types'
-
 export type Action = { type: 'set-game-all-player-state', gameStateAllPlayer: AllPlayers}
   | { type: 'set-game-player-state', gameStatePlayer: CurrentPlayer}
   | { type: 'set-game-map-state', gameStateMap: MapState}
