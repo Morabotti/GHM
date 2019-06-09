@@ -28,7 +28,9 @@
       "flowtype"
     ],
     "globals": [
-      "FormData"
+      "FormData",
+      "SyntheticEvent",
+      "HTMLInputElement"
     ]
   },
   "devDependencies": {
@@ -64,7 +66,7 @@
     "react-router-dom": "^4.3.1",
     "redux": "4.0.1",
     "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.84.0",
+    "semantic-ui-react": "^0.87.1",
     "socket.io-client": "^2.2.0",
     "style-loader": "0.23.1",
     "webpack": "4.28.4",

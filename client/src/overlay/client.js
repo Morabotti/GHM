@@ -49,16 +49,6 @@ export const getLatestData = () => window.fetch(
   .then(checkResponse)
   .catch(e => console.log('No match data initialized.'))
 
-export const getStatus = () => window.fetch(
-  '/api/game/online',
-  {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  }
-)
-  .then(checkResponse)
-  .then((res) => res.json())
-
 export const getActiveMatch = () => window.fetch(
   '/api/matches/overlay',
   {

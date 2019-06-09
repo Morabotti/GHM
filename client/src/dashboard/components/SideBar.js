@@ -7,7 +7,7 @@ import { NavLink, withRouter } from 'react-router-dom'
 import { ClientConnectButton, ServerConnectButton } from './'
 import { deepEqual } from '../lib/helpers'
 
-import { getStatus } from '../client'
+import { getStatus } from '../../common/client'
 import { setStatus } from '../../common/actions'
 
 import type { Status, Dispatch } from '../types'

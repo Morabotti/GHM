@@ -8,16 +8,6 @@ const checkResponse = (res: window.Response): window.Response => {
   return res
 }
 
-export const getStatus = () => window.fetch(
-  '/api/game/online',
-  {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  }
-)
-  .then(checkResponse)
-  .then((res) => res.json())
-
 export const getMaps = () => window.fetch(
   '/api/general/maps',
   {
@@ -38,10 +28,11 @@ export const getCountries = () => window.fetch(
   .then(checkResponse)
   .then((res) => res.json())
 
-export const updateCountries = () => window.fetch(
+export const updateCountries = (countries: any) => window.fetch(
   '/api/general/countries',
   {
     method: 'POST',
+    body: JSON.stringify({ countries: countries }),
     headers: { 'Content-Type': 'application/json' }
   }
 )

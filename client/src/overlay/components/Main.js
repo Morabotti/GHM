@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 
 import { setActiveMatch } from '../actions'
 import { setStatus } from '../../common/actions'
-import { getStatus, getActiveMatch, subscribeToSocket } from '../client'
+import { getStatus } from '../../common/client'
+import { getActiveMatch, subscribeToSocket } from '../client'
 import { deepEqual } from '../../dashboard/lib/helpers'
 import { PlayerPlate, Radar, ScorePlate, Team, GameLoader } from './'
 

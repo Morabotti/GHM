@@ -6,6 +6,7 @@ import ScorePlate from './ScorePlate'
 import PlayerPlate from './PlayerPlate'
 import GameLoader from './GameLoader'
 import ScoreAnnouncement from './ScoreAnnouncement'
+import RadarBomb from './RadarBomb'
 
 export {
   Team,
@@ -15,5 +16,6 @@ export {
   ScorePlate,
   PlayerPlate,
   GameLoader,
-  ScoreAnnouncement
+  ScoreAnnouncement,
+  RadarBomb
 }

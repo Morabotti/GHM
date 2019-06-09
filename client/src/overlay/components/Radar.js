@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { RadarPlayer } from './'
+import { RadarPlayer, RadarBomb } from './'
 
 import type { State } from '../../types'
 import { getMapPrefix, getMapScale } from '../lib/MapPrefix'
@@ -12,32 +12,33 @@ import type {
   BombState
 } from '../types'
 
+import type {
+  ConfigState
+} from '../../common/types'
+
 type Props = {
   allPlayers: AllPlayers,
   map: MapState,
-  bomb: BombState
+  bomb: BombState,
+  config: ConfigState
 }
 
 type ComponentState = {
-  prefixX: number,
-  prefixY: number,
-  scale: number
+  prefixX: null|number,
+  prefixY: null|number,
+  scale: null|number
 }
-
-const RADAR_ENABLE = false
-const BOMB_SIZE = 40
 
 class Radar extends PureComponent<Props, ComponentState> {
   state = {
-    prefixX: 0,
-    prefixY: 0,
-    scale: 0
+    prefixX: null,
+    prefixY: null,
+    scale: null
   }
 
-  componentWillMount () {
+  componentDidUpdate (prevProp: Props) {
     const { map } = this.props
-
-    if (map.name !== undefined) {
+    if (prevProp.map.name !== map.name) {
       this.setState({
         prefixX: getMapPrefix(map.name)[0],
         prefixY: getMapPrefix(map.name)[1],
@@ -46,27 +47,15 @@ class Radar extends PureComponent<Props, ComponentState> {
     }
   }
 
-  // ! CHANGE WHOLE CALCULATIONS TO HERE?
-  // * OR MAYBE JUST CHANGE BOMB TO DIFFERENT ELEMENT +1
-  _calculateXPosition = (x: number) => {
-    if (isNaN(x)) return
-
-    return (Math.abs((x - (this.state.prefixX)) / this.state.scale) - BOMB_SIZE / 2)
-  }
-
-  _calculateYPosition = (y: number) => {
-    if (isNaN(y)) return
-
-    return (Math.abs((y - (this.state.prefixY)) / this.state.scale) - BOMB_SIZE / 2)
-  }
-
   render () {
-    const { allPlayers, map, bomb } = this.props
+    const { allPlayers, map, bomb, config } = this.props
+    const { prefixX, prefixY, scale } = this.state
 
-    if (!RADAR_ENABLE) return <div />
+    if (!config.useRadar) return <div />
     if (map.name === '') return <div />
+    if (scale === null || prefixX === null || prefixY === null) return <div />
 
-    const showBomb = /* (bomb.state !== 'carried' && bomb.state !== 'planting') */ false
+    const showBomb = (bomb.state !== 'carried' && bomb.state !== 'planting')
 
     return (
       <div className='radar'>
@@ -86,16 +75,18 @@ class Radar extends PureComponent<Props, ComponentState> {
                 playerForward={player.forward}
                 playerDead={player.state.health === 0}
                 isSpectating={player.watching}
+                prefixX={prefixX}
+                prefixY={prefixY}
+                scale={scale}
               />
             )
           })}
           {showBomb
-            ? <foreignObject
-              x={this._calculateXPosition(bomb.position[0])}
-              y={this._calculateYPosition(bomb.position[1])}
-              width={BOMB_SIZE}
-              height={BOMB_SIZE}
-              className='bomb-area'
+            ? <RadarBomb
+              position={bomb.position}
+              prefixX={prefixX}
+              prefixY={prefixY}
+              scale={scale}
             /> : null
           }
         </svg>
@@ -107,6 +98,7 @@ class Radar extends PureComponent<Props, ComponentState> {
 const mapStateToProps = (state: State) => ({
   map: state.overlay.gameStateMap,
   allPlayers: state.overlay.gameStateAllPlayer,
+  config: state.common.config,
   bomb: state.overlay.gameStateBomb
 })
 

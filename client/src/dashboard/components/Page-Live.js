@@ -364,6 +364,7 @@ class LivePage extends Component<Props, ComponentState> {
                                     trigger={<Button
                                       primary
                                       icon='eye'
+                                      disabled
                                       onClick={() => null}
                                     />}
                                     content='Show match'
@@ -373,6 +374,7 @@ class LivePage extends Component<Props, ComponentState> {
                                     trigger={<Button
                                       positive
                                       icon='edit'
+                                      disabled
                                       onClick={() => null}
                                     />}
                                     content='Edit match'

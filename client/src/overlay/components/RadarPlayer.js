@@ -1,11 +1,7 @@
 // @flow
 import React, { PureComponent, Fragment } from 'react'
-import { connect } from 'react-redux'
 
-import { getMapPrefix, getMapScale } from '../lib/MapPrefix'
-
-import type { State } from '../../types'
-import type { Teams, MapState } from '../types'
+import type { Teams } from '../types'
 
 type Props = {
   playerNumber: number,
@@ -14,16 +10,15 @@ type Props = {
   playerForward: Array<number>,
   playerDead: boolean,
   key: number,
-  map: MapState,
   isSpectating: boolean,
+  prefixX: number,
+  prefixY: number,
+  scale: number
 }
 
 type ComponentState = {
   deathPosX: number,
-  deathPosY: number,
-  prefixX: number,
-  prefixY: number,
-  scale: number
+  deathPosY: number
 }
 
 const PLAYER_SIZE = 40
@@ -31,37 +26,21 @@ const PLAYER_SIZE = 40
 class Radar extends PureComponent<Props, ComponentState> {
   state = {
     deathPosX: -30,
-    deathPosY: -30,
-    prefixX: 0,
-    prefixY: 0,
-    scale: 0
-  }
-
-  componentWillMount () {
-    const { map } = this.props
-    this.setState({
-      prefixX: getMapPrefix(map.name)[0],
-      prefixY: getMapPrefix(map.name)[1],
-      scale: getMapScale(map.name)
-    })
+    deathPosY: -30
   }
 
   _calculateXPosition = () => {
-    const { playerPosition } = this.props
-    const { prefixX, scale } = this.state
+    const { playerPosition, prefixX, scale } = this.props
 
     if (isNaN(playerPosition[0])) return
-
-    return (Math.abs((playerPosition[0] - (prefixX)) / scale) - PLAYER_SIZE / 2)
+    return (Math.abs((playerPosition[0] - prefixX) / scale) - PLAYER_SIZE / 2)
   }
 
   _calculateYPosition = () => {
-    const { playerPosition } = this.props
-    const { prefixY, scale } = this.state
+    const { playerPosition, prefixY, scale } = this.props
 
     if (isNaN(playerPosition[1])) return
-
-    return (Math.abs((playerPosition[1] - (prefixY)) / scale) - PLAYER_SIZE / 2)
+    return (Math.abs((playerPosition[1] - prefixY) / scale) - PLAYER_SIZE / 2)
   }
 
   componentWillUpdate (nextProp: Props) {
@@ -77,7 +56,13 @@ class Radar extends PureComponent<Props, ComponentState> {
   _calcDegree = (x: number, y: number) => Math.atan2(y, x) * (180 / Math.PI)
 
   render () {
-    const { playerNumber, playerTeam, playerDead, playerForward, isSpectating } = this.props
+    const {
+      playerNumber,
+      playerTeam,
+      playerDead,
+      playerForward,
+      isSpectating
+    } = this.props
 
     const deg = this._calcDegree(playerForward[1], playerForward[0])
 
@@ -87,7 +72,7 @@ class Radar extends PureComponent<Props, ComponentState> {
         y={playerDead ? this.state.deathPosY : this._calculateYPosition()}
         width={PLAYER_SIZE}
         height={PLAYER_SIZE}
-        key={this.props.key}
+        className={`${playerDead ? 'dead' : ''}`}
       >
         {!playerDead
           ? <Fragment>
@@ -119,8 +104,4 @@ class Radar extends PureComponent<Props, ComponentState> {
   }
 }
 
-const mapStateToProps = (state: State) => ({
-  map: state.overlay.gameStateMap
-})
-
-export default connect(mapStateToProps)(Radar)
+export default Radar

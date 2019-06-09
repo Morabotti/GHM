@@ -67,6 +67,10 @@ export interface TeamStats {
   teamEconomy: number
 }
 
+export interface Configs {
+  useRadar: boolean
+}
+
 export type TeamType = 'T' | 'CT'
 
 export interface Country {

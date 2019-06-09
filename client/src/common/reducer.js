@@ -14,8 +14,10 @@ const statusState: Status = {
   gameLive: false
 }
 
-const configState: ConfigState = {
-  useRadar: false
+export const configState: ConfigState = {
+  useRadar: true,
+  playerSize: 40,
+  bombSize: 40
 }
 
 const getDefaultState = (): State => ({

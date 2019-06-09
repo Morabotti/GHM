@@ -1,7 +1,9 @@
 // @flow
 
 export type ConfigState = {
-  useRadar: boolean
+  useRadar: boolean,
+  playerSize: number,
+  bombSize: number
 }
 
 export type Status = {

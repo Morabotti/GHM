@@ -47,7 +47,7 @@ router.get('/overlay', async (req: Request, res: Response) => {
     const refactored = matchCore.filterActiveMatchData(activeData)
     return res.status(200).send(refactored)
   } catch(e) {
-    return res.status(400).send(e)
+    return res.status(404).send(e)
   }
 })
 
