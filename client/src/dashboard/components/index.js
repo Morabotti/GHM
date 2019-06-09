@@ -9,6 +9,7 @@ import LivePage from './Page-Live'
 import SettingsPage from './Page-Settings'
 import { ClientConnectButton, ConnectionButton, ServerConnectButton } from './Buttons'
 import { SubHeaderWithIcon } from './Headers'
+import ConfirmSnackBar from './ConfirmSnackBar'
 
 import {
   ConfirmModal,
@@ -37,5 +38,6 @@ export {
   TeamSelectionModal,
   LivePage,
   ConfigPage,
-  SettingsPage
+  SettingsPage,
+  ConfirmSnackBar
 }

@@ -13,15 +13,15 @@ type Props = {
   isSpectating: boolean,
   prefixX: number,
   prefixY: number,
-  scale: number
+  scale: number,
+  size: number,
+  fontSize: number
 }
 
 type ComponentState = {
   deathPosX: number,
   deathPosY: number
 }
-
-const PLAYER_SIZE = 40
 
 class Radar extends PureComponent<Props, ComponentState> {
   state = {
@@ -30,17 +30,17 @@ class Radar extends PureComponent<Props, ComponentState> {
   }
 
   _calculateXPosition = () => {
-    const { playerPosition, prefixX, scale } = this.props
+    const { playerPosition, prefixX, scale, size } = this.props
 
     if (isNaN(playerPosition[0])) return
-    return (Math.abs((playerPosition[0] - prefixX) / scale) - PLAYER_SIZE / 2)
+    return (Math.abs((playerPosition[0] - prefixX) / scale) - size / 2)
   }
 
   _calculateYPosition = () => {
-    const { playerPosition, prefixY, scale } = this.props
+    const { playerPosition, prefixY, scale, size } = this.props
 
     if (isNaN(playerPosition[1])) return
-    return (Math.abs((playerPosition[1] - prefixY) / scale) - PLAYER_SIZE / 2)
+    return (Math.abs((playerPosition[1] - prefixY) / scale) - size / 2)
   }
 
   componentWillUpdate (nextProp: Props) {
@@ -61,7 +61,9 @@ class Radar extends PureComponent<Props, ComponentState> {
       playerTeam,
       playerDead,
       playerForward,
-      isSpectating
+      isSpectating,
+      size,
+      fontSize
     } = this.props
 
     const deg = this._calcDegree(playerForward[1], playerForward[0])
@@ -70,8 +72,8 @@ class Radar extends PureComponent<Props, ComponentState> {
       <foreignObject
         x={playerDead ? this.state.deathPosX : this._calculateXPosition()}
         y={playerDead ? this.state.deathPosY : this._calculateYPosition()}
-        width={PLAYER_SIZE}
-        height={PLAYER_SIZE}
+        width={size}
+        height={size}
         className={`${playerDead ? 'dead' : ''}`}
       >
         {!playerDead
@@ -79,16 +81,16 @@ class Radar extends PureComponent<Props, ComponentState> {
             <div
               className={`radar-player ${playerTeam} ${isSpectating ? 'spectating' : ''}`}
             >
-              <span>{playerNumber}</span>
+              <span style={{ fontSize: fontSize }}>{playerNumber}</span>
             </div>
             <div
               className={`radar-player-triangle ${playerDead ? 'dead' : ''}`}
               style={{
                 transform: `rotate(${deg}deg)`,
-                borderLeft: `${PLAYER_SIZE / 2}px solid transparent`,
-                borderRight: `${PLAYER_SIZE / 2}px solid transparent`,
-                bottom: `${PLAYER_SIZE / 2}px`,
-                borderBottom: `${PLAYER_SIZE - 10}px solid white`
+                borderLeft: `${size / 2}px solid transparent`,
+                borderRight: `${size / 2}px solid transparent`,
+                bottom: `${size / 2}px`,
+                borderBottom: `${size - 10}px solid white`
               }}
             >
               <img

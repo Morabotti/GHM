@@ -2,3 +2,28 @@
   display: block;
   margin: 15px 0;
 }
+
+.config-snack-bar-confirm{
+  position: fixed;
+  bottom: -100px;
+  right: 0;
+  background-color: rgb(50, 50, 50);
+  color: white;
+  z-index: 60;
+  width: auto;
+  height: auto;
+  padding: 1em;
+  opacity: 0;
+  margin: 2em;
+  border-radius: 1em;
+  box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2),
+    0px 6px 10px 0px rgba(0,0,0,0.14),
+    0px 1px 18px 0px rgba(0,0,0,0.12);
+
+  transition: all 200ms;
+
+  &.show{
+    bottom: 0;
+    opacity: 1;
+  }
+}

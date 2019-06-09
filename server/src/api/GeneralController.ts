@@ -2,9 +2,10 @@ import * as express from 'express'
 import * as bodyParser from 'body-parser'
 
 import { Request, Response } from 'express'
-import { Countries, Maps, Configs } from '../types'
+import { Countries, Maps, Configs, SOCKET } from '../types'
 
 import { setConfig, getConfig } from '../core/ConfigCore'
+import { dispatchSocket } from '../handler/SocketIo'
 
 const router = express.Router()
 
@@ -42,10 +43,11 @@ router.get('/maps', (req: Request, res: Response) => {
 })
 
 router.post('/configs', (req: Request, res: Response) => {
-  const configs: Configs = req.body
+  const configs: Configs = req.body.configs
   setConfig(fileConfigs, configs)
+    .then(x => Promise.resolve(dispatchSocket(SOCKET.UPDATE_OVERLAY_CONFIG, configs)))
     .then(c => res.sendStatus(200))
-    .catch(e => res.status(400).send(e))
+    .catch(e => res.status(404).send(e))
 })
 
 router.get('/configs', (req: Request, res: Response) => {

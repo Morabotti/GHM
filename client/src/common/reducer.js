@@ -17,7 +17,12 @@ const statusState: Status = {
 export const configState: ConfigState = {
   useRadar: true,
   playerSize: 40,
-  bombSize: 40
+  bombSize: 40,
+  radarNumberSize: 20,
+  safeZoneLeft: 35,
+  safeZoneRight: 35,
+  safeZoneTop: 20,
+  safeZoneBottom: 35
 }
 
 const getDefaultState = (): State => ({

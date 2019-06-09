@@ -10,7 +10,8 @@ import {
   Accordion,
   Checkbox,
   Form,
-  Input
+  Input,
+  Header
 } from 'semantic-ui-react'
 
 import type {
@@ -21,11 +22,11 @@ import {
   configState
 } from '../../common/reducer'
 
-import type {
-  Dispatch
-} from '../types'
+import type { Dispatch } from '../types'
 
-import { getConfigs } from '../../common/client'
+import { ConfirmSnackBar } from './'
+
+import { getConfigs, updateConfigs } from '../../common/client'
 import { setConfig } from '../../common/actions'
 
 type Props = {
@@ -73,6 +74,13 @@ class ConfigPage extends Component<Props, PageState> {
     }
   })
 
+  _onCheckboxChange = (e, { name, checked }) => this.setState({
+    configs: {
+      ...this.state.configs,
+      [name]: checked
+    }
+  })
+
   _onChange = (e: SyntheticEvent<HTMLInputElement>, { name, value }) => this.setState({
     configs: {
       ...this.state.configs,
@@ -80,14 +88,25 @@ class ConfigPage extends Component<Props, PageState> {
     }
   })
 
+  _saveSettings = () => updateConfigs(this.state.configs)
+    .then(c => setConfig(this.state.configs))
+    .then(this.props.dispatch)
+    .then(x => this.setState({ configs: x.config }))
+
+  _resetSettings = () => this.setState({ configs: this.props.config })
+
   _fetchSettings = () => getConfigs()
     .then(setConfig)
     .then(this.props.dispatch)
     .then(x => this.setState({ configs: x.config }))
 
   render () {
-    const { activeIndex } = this.state
-    const { playerSize, bombSize } = this.state.configs
+    const { activeIndex, hasChanges } = this.state
+    const {
+      playerSize, bombSize, safeZoneLeft,
+      safeZoneBottom, safeZoneRight, safeZoneTop,
+      useRadar, radarNumberSize
+    } = this.state.configs
 
     return (
       <React.Fragment>
@@ -112,6 +131,53 @@ class ConfigPage extends Component<Props, PageState> {
                         General
                       </Accordion.Title>
                       <Accordion.Content active={activeIndex === 0}>
+                        <Form>
+                          <Header as='h3'>HUD Safezones</Header>
+                          <Form.Field inline>
+                            <label>Left (default 35px):</label>
+                            <Input
+                              name='safeZoneLeft'
+                              value={safeZoneLeft}
+                              label='px'
+                              labelPosition='right'
+                              onChange={this._onNumberChange}
+                              placeholder='Left'
+                            />
+                          </Form.Field>
+                          <Form.Field inline>
+                            <label>Top (default 20px):</label>
+                            <Input
+                              name='safeZoneTop'
+                              value={safeZoneTop}
+                              label='px'
+                              labelPosition='right'
+                              onChange={this._onNumberChange}
+                              placeholder='Top'
+                            />
+                          </Form.Field>
+                          <Form.Field inline>
+                            <label>Right (default 35px):</label>
+                            <Input
+                              name='safeZoneRight'
+                              label='px'
+                              labelPosition='right'
+                              value={safeZoneRight}
+                              onChange={this._onNumberChange}
+                              placeholder='Right'
+                            />
+                          </Form.Field>
+                          <Form.Field inline>
+                            <label>Bottom (default 35px):</label>
+                            <Input
+                              name='safeZoneBottom'
+                              value={safeZoneBottom}
+                              label='px'
+                              labelPosition='right'
+                              onChange={this._onNumberChange}
+                              placeholder='Bottom'
+                            />
+                          </Form.Field>
+                        </Form>
                       </Accordion.Content>
                       <Accordion.Title active={activeIndex === 1} index={1} onClick={this._handleSelection}>
                         <Icon name='dropdown' />
@@ -121,7 +187,13 @@ class ConfigPage extends Component<Props, PageState> {
                         <div className='settings-group'>
                           <Form>
                             <div className='settings-group'>
-                              <Checkbox toggle label='Use custom radar' />
+                              <Checkbox
+                                toggle
+                                label='Use custom radar'
+                                name='useRadar'
+                                checked={useRadar}
+                                onChange={this._onCheckboxChange}
+                              />
                             </div>
                             <Form.Field inline>
                               <label>Player size</label>
@@ -129,6 +201,8 @@ class ConfigPage extends Component<Props, PageState> {
                                 name='playerSize'
                                 value={playerSize}
                                 onChange={this._onNumberChange}
+                                label='px'
+                                labelPosition='right'
                                 placeholder='Player size'
                               />
                             </Form.Field>
@@ -138,11 +212,31 @@ class ConfigPage extends Component<Props, PageState> {
                                 name='bombSize'
                                 value={bombSize}
                                 onChange={this._onNumberChange}
+                                label='px'
+                                labelPosition='right'
                                 placeholder='Bomb size'
+                              />
+                            </Form.Field>
+                            <Form.Field inline>
+                              <label>Radar number size</label>
+                              <Input
+                                name='radarNumberSize'
+                                value={radarNumberSize}
+                                onChange={this._onNumberChange}
+                                label='px'
+                                labelPosition='right'
+                                placeholder='Player size'
                               />
                             </Form.Field>
                           </Form>
                         </div>
+                      </Accordion.Content>
+                      <Accordion.Title active={activeIndex === 2} index={2} onClick={this._handleSelection}>
+                        <Icon name='dropdown' />
+                        Player
+                      </Accordion.Title>
+                      <Accordion.Content active={activeIndex === 2}>
+
                       </Accordion.Content>
                     </Accordion>
                   </div>
@@ -151,6 +245,11 @@ class ConfigPage extends Component<Props, PageState> {
             </Grid>
           </div>
         </div>
+        <ConfirmSnackBar
+          open={hasChanges}
+          onReset={this._resetSettings}
+          onSave={this._saveSettings}
+        />
       </React.Fragment>
     )
   }

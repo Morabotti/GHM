@@ -38,4 +38,3 @@ export const updateConfigs = (configs: ConfigState) => window.fetch(
   }
 )
   .then(checkResponse)
-  .then((res) => res.json())

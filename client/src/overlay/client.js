@@ -17,7 +17,8 @@ import {
 } from './actions'
 
 import {
-  setStatus
+  setStatus,
+  setConfig
 } from '../common/actions'
 
 export const subscribeToSocket = (dispatch: Dispatch) => {
@@ -32,6 +33,7 @@ export const subscribeToSocket = (dispatch: Dispatch) => {
   socket.on('UPDATE_BOMB', data => dispatch(setBomb(data)))
   socket.on('UPDATE_GAME_CONFIG', data => dispatch(setActiveMatch(data)))
   socket.on('RESET_GAME_CONFIG', () => dispatch(setActiveToNull()))
+  socket.on('UPDATE_OVERLAY_CONFIG', data => dispatch(setConfig(data)))
 
   setTimeout(getLatestData, 50)
 }
