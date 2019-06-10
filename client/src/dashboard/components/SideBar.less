@@ -1,127 +1,156 @@
-.side-bar{
+.drawer{
   min-height: 100%;
-  width: 300px;
   z-index: 1;
+  outline: none;
+  overflow-y: auto;
+  flex-direction: column;
+  flex: 1 0 auto;
+  display: flex;
   position: fixed;
-  overflow-y: scroll;
-  padding-top: 45px;
-  background-color: #303D74;
-  color: white;
-  left: 0px;
-  top: 0;
-  bottom: 0;
-  transition: left 200ms;
-  scrollbar-width: none;
+  left: 0;
+  transition: left 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.43;
+  letter-spacing: 0.01071em;
+
+  background-color: #283593;
+  color: #fff;
 
   &::-webkit-scrollbar{
     display: none;
   }
 
   &.hidden{
-    left: -300px;
+    left: -250px;
   }
 
-  .navigation-side{
-    padding-left: 0;
-    margin: 0;
+  .drawer-container{
+    width: 250px;
 
-    li{
-      border-bottom: #162356 solid 1px;
+    .current-status{
+      padding: 1em;
       position: relative;
+      list-style: none;
       display: block;
+      font-size: 1rem;
+      text-align: center;
+      font-weight: bolder;
+    }
+
+    .drawer-divider{
+      border: none;
+      height: 1px;
+      margin: 0;
+      flex-shrink: 0;
+      background-color: #5c6bc0;
+    }
+
+    .current-status{
+      margin-top: 50px
+    }
+
+
+    .drawer-list{
+      padding-top: 8px;
+      padding-bottom: 8px;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      list-style: none;
+      display: block;
+
+      .drawer-link{
+        color: inherit;
+
+        &.chosen .drawer-list-item{
+          background-color: #1a237e !important;
+          border-left: 4px solid #db2828;
+          color: #db2828;
+          font-weight: bold;
+
+          .item-icon i{
+            color: #db2828;
+          }
+        }
+
+
+        .drawer-list-item{
+          outline: none;
+          vertical-align: middle;
+          cursor: pointer;
+
+          transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+          padding-left: 16px;
+          padding-right: 16px;
+          width: 100%;
+          display: flex;
+          position: relative;
+          box-sizing: border-box;
+          text-align: left;
+          align-items: center;
+          padding-top: 8px;
+          padding-bottom: 8px;
+          justify-content: flex-start;
+          text-decoration: none;
+
+          &:hover{
+            background-color: #303f9f;
+          }
+
+          .item-icon{
+            color: rgba(0, 0, 0, 0.54);
+            display: inline-flex;
+            min-width: 56px;
+            flex-shrink: 0;
+
+            i{
+              color: #21ba45;
+              width: 1.5em;
+              height: 1.5em;
+              display: inline-block;
+              font-size: 1.5em;
+              transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+              user-select: none;
+              
+            }
+          }
+
+          .item-text{
+            flex: 1 1 auto;
+            min-width: 0;
+            margin-top: 4px;
+            margin-bottom: 4px;
+
+            span{
+              font-size: 1rem;
+              font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+              font-weight: 400;
+              line-height: 1.5;
+              letter-spacing: 0.00938em; 
+            }
+          }
+        }
+      }
     }
   }
-}
-
-.connection-info{
-  text-align: center;
-  padding: 20px;
-  font-size: 1.5rem
-}
-
-.connection-info p{
-  margin-bottom: 10px;
-}
-
-.link-header{
-  font-size: 1.5rem;
-}
-
-.list-cont{
-  font-size: 1.5rem;
-
-  a{
-    color: #f2f2f2;
-
-    &:hover{
-      color: white;
-    }
-  }
-}
-
-.link-normal{
-  padding: 20px 30px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  display: block
-}
-
-.item-name-header{
-  padding: 15px 25px;
-  cursor: pointer;
-  display: block
-}
-
-.item-link span{
-  transition: 150ms background-color;
-}
-
-.chosen.item-link span{
-  background-color: #12215D;
-  color: #db2828;
-  border-left: 4px solid #db2828;
-
-  i{
-    color: #db2828!important;
-  }
-}
-
-.chosen.item-link:hover span{
-  background-color: #12215D;
-}
-
-.item-link:hover span{
-  background-color: #182c7a;
-}
-
-.item-name{
-  padding-left: 28px;
-}
-
-.owner-panel{
-  margin-top: 10px;
-  margin-bottom: 60px;
 }
 
 @media only screen and (max-width: 768px) {
-  .side-bar{
+  .drawer{
     display: block;
     position: relative;
     width: 100%;
     transition: top 200ms;
     overflow-y: auto;
 
+    .drawer-container{
+      width: 100%;
+    }
+
     &.hidden{
       left: 0;
       display: none;
     }
-  }
-
-  .owner-panel{
-    margin-bottom: 0;
-  }
-
-  .link-normal{
-    padding-left: 0px;
   }
 }

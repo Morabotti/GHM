@@ -1,10 +1,10 @@
 // @flow
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Icon } from 'semantic-ui-react'
-import { NavLink, withRouter } from 'react-router-dom'
 
-import { ClientConnectButton, ServerConnectButton } from './'
+import { withRouter } from 'react-router-dom'
+
+import { ClientConnectButton, ServerConnectButton, SideBarItem } from './'
 import { deepEqual } from '../lib/helpers'
 
 import { getStatus } from '../../common/client'
@@ -40,67 +40,35 @@ class SideBar extends Component<Props> {
     })
 
   render () {
-    const url = '/dashboard'
     const { status, show } = this.props
 
     return (
-      <div className={`side-bar ${show ? '' : 'hidden'}`}>
-        <div className='collapse'>
-          <ul className='navigation-side'>
-            <li className='connection-info'>
-              <p>Connection status</p>
-              <ClientConnectButton connected={status.clientOnline} />
-              <ServerConnectButton connected={status.gameOnline} />
-            </li>
-            <li className='list-cont'>
-              <NavLink className='item-link' activeClassName='chosen' exact to={url + '/'}>
-                <span className='item-name-header'> <Icon color='green' name='home' /> Home</span>
-              </NavLink>
-            </li>
-            <li className='connection-info'>
-              <p>Game</p>
-            </li>
-            <li className='list-cont'>
-              <NavLink className='item-link' activeClassName='chosen' exact to={url + '/live'}>
-                <span className='item-name-header'> <Icon color='green' name='fire' /> Live</span>
-              </NavLink>
-            </li>
-            <li className='list-cont'>
-              <NavLink className='item-link' activeClassName='chosen' to={url + '/overlay'}>
-                <span className='item-name-header'> <Icon color='green' name='globe' /> Overlay</span>
-              </NavLink>
-            </li>
-            <li className='list-cont'>
-              <NavLink className='item-link' activeClassName='chosen' to={url + '/config'}>
-                <span className='item-name-header'> <Icon color='green' name='configure' /> Config</span>
-              </NavLink>
-            </li>
-            <li className='connection-info'>
-              <p>Team Management</p>
-            </li>
-            <li className='list-cont'>
-              <NavLink className='item-link' activeClassName='chosen' to={url + '/teams'}>
-                <span className='item-name-header'> <Icon color='green' name='users' /> Teams</span>
-              </NavLink>
-            </li>
-            <li className='list-cont'>
-              <NavLink className='item-link' activeClassName='chosen' to={url + '/players'}>
-                <span className='item-name-header'> <Icon color='green' name='user' /> Players</span>
-              </NavLink>
-            </li>
-          </ul>
-          <div className='owner-panel'>
-            <ul className='navigation-side'>
-              <li className='connection-info'>
-                <p>Dashboard</p>
-              </li>
-              <li className='list-cont'>
-                <NavLink className='item-link' activeClassName='chosen' to={url + '/settings'}>
-                  <span className='item-name-header'> <Icon color='green' name='cog' /> Settings</span>
-                </NavLink>
-              </li>
-            </ul>
+      <div className={`drawer ${show ? '' : 'hidden'}`}>
+        <div className='drawer-container'>
+          <div className='current-status'>
+            <p>Connection status</p>
+            <ClientConnectButton connected={status.clientOnline} />
+            <ServerConnectButton connected={status.gameOnline} />
           </div>
+          <hr className='drawer-divider' />
+          <ul className='drawer-list'>
+            <SideBarItem to='/' icon='home' text='Home' />
+          </ul>
+          <hr className='drawer-divider' />
+          <ul className='drawer-list'>
+            <SideBarItem to='/live' icon='fire' text='Live' />
+            <SideBarItem to='/overlay' icon='globe' text='Overlay' />
+            <SideBarItem to='/config' icon='configure' text='Config' />
+          </ul>
+          <hr className='drawer-divider' />
+          <ul className='drawer-list'>
+            <SideBarItem to='/teams' icon='users' text='Teams' />
+            <SideBarItem to='/players' icon='user' text='Players' />
+          </ul>
+          <hr className='drawer-divider' />
+          <ul className='drawer-list'>
+            <SideBarItem to='/settings' icon='cog' text='Settings' />
+          </ul>
         </div>
       </div>
     )
