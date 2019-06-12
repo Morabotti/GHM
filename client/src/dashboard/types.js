@@ -14,7 +14,8 @@ export type Action = _Action
 export type Dispatch = (Action | CommonAction) => void
 
 export type BigConnectionButtonType = {
-  connected: boolean
+  connected: boolean,
+  isFullWidth: boolean
 }
 
 export type Match = {

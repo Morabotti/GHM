@@ -19,9 +19,9 @@ class TopBar extends Component<Props> {
     const { status, show, toggleShow } = this.props
     return (
       <div className='top-bar'>
-        <div className='logo'>
+        <div className={`logo ${show ? '' : 'hidden'}`}>
           <div className='logo-cont'>
-            <h2>GHM</h2>
+            <h2>{show ? 'GHM' : 'G'}</h2>
           </div>
         </div>
         <div className='dummy' />

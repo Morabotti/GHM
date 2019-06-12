@@ -10,7 +10,7 @@ class SettingsPage extends Component<Props> {
       <React.Fragment>
         <div className='f-container-wrap'>
           <Breadcrumb size='massive' >
-            <Breadcrumb.Section>Dashboard</Breadcrumb.Section>
+            <Breadcrumb.Section>General</Breadcrumb.Section>
             <Breadcrumb.Divider icon='right angle' />
             <Breadcrumb.Section active>
               <Icon name='cog' />Settings

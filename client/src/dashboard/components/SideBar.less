@@ -13,8 +13,9 @@
   font-weight: 400;
   line-height: 1.43;
   letter-spacing: 0.01071em;
+  transition: 200ms width, 200ms max-width;
 
-  background-color: #283593;
+  background-color: #303D74;
   color: #fff;
 
   &::-webkit-scrollbar{
@@ -22,11 +23,32 @@
   }
 
   &.hidden{
-    left: -250px;
+    width: 65px;
+    transition: 200ms width, 200ms max-width;
+    max-width: 65px;
+
+    .drawer-container{
+      width: 65px;
+      transition: 200ms width;
+
+      .current-status {
+        margin-top: 65px;
+        p{ display: none }
+      }
+
+      .drawer-list .drawer-link .item-text{
+        display: none;
+      }
+
+      .item-icon{
+        min-width: 100%;
+      }
+    }
   }
 
   .drawer-container{
     width: 250px;
+    transition: 250ms width;
 
     .current-status{
       padding: 1em;
@@ -36,6 +58,7 @@
       font-size: 1rem;
       text-align: center;
       font-weight: bolder;
+      margin-top: 50px;
     }
 
     .drawer-divider{
@@ -43,13 +66,8 @@
       height: 1px;
       margin: 0;
       flex-shrink: 0;
-      background-color: #5c6bc0;
+      background-color: #162356;
     }
-
-    .current-status{
-      margin-top: 50px
-    }
-
 
     .drawer-list{
       padding-top: 8px;
@@ -64,7 +82,7 @@
         color: inherit;
 
         &.chosen .drawer-list-item{
-          background-color: #1a237e !important;
+          background-color: #12215D !important;
           border-left: 4px solid #db2828;
           color: #db2828;
           font-weight: bold;
@@ -95,7 +113,7 @@
           text-decoration: none;
 
           &:hover{
-            background-color: #303f9f;
+            background-color: #202a6b;
           }
 
           .item-icon{

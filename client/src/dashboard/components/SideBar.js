@@ -47,12 +47,19 @@ class SideBar extends Component<Props> {
         <div className='drawer-container'>
           <div className='current-status'>
             <p>Connection status</p>
-            <ClientConnectButton connected={status.clientOnline} />
-            <ServerConnectButton connected={status.gameOnline} />
+            <ClientConnectButton
+              connected={status.clientOnline}
+              isFullWidth={show}
+            />
+            <ServerConnectButton
+              connected={status.gameOnline}
+              isFullWidth={show}
+            />
           </div>
           <hr className='drawer-divider' />
           <ul className='drawer-list'>
             <SideBarItem to='/' icon='home' text='Home' />
+            <SideBarItem to='/settings' icon='cog' text='Settings' />
           </ul>
           <hr className='drawer-divider' />
           <ul className='drawer-list'>
@@ -64,10 +71,6 @@ class SideBar extends Component<Props> {
           <ul className='drawer-list'>
             <SideBarItem to='/teams' icon='users' text='Teams' />
             <SideBarItem to='/players' icon='user' text='Players' />
-          </ul>
-          <hr className='drawer-divider' />
-          <ul className='drawer-list'>
-            <SideBarItem to='/settings' icon='cog' text='Settings' />
           </ul>
         </div>
       </div>

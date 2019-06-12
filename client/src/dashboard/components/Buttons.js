@@ -8,13 +8,13 @@ import type {
 
 export const ClientConnectButton = (props: BigConnectionButtonType) => (
   <span className={`status ${props.connected ? 'connected' : 'disconnected'}`}>
-    {props.connected ? 'Connected' : 'Not Connected'}
+    {props.isFullWidth ? (props.connected ? 'Connected' : 'Not Connected') : (props.connected ? 'C' : 'N')}
   </span>
 )
 
 export const ServerConnectButton = (props: BigConnectionButtonType) => (
   <span className={`status ${props.connected ? 'connected' : 'warning'}`}>
-    {props.connected ? 'Server connected' : 'Server not connected'}
+    {props.isFullWidth ? (props.connected ? 'Server Connected' : 'Server Not Connected') : (props.connected ? 'C' : 'N')}
   </span>
 )
 
