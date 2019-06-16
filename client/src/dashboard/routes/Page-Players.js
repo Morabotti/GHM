@@ -1,65 +1,51 @@
 // @flow
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { TeamSubmit } from '../lib/FormDataWrap'
+import { PlayerSubmit } from '../lib/FormDataWrap'
 import {
-  ConfirmModal,
-  ViewTeamModal,
-  EditTeamModal
-} from './'
-
-import {
-  toggleConfirmModal,
-  setSelectedItem,
-  deleteTeam,
-  setTeams,
-  setTeamsDropdown,
-  toggleViewModal,
-  deletePlayersFromTeam,
-  toggleEditModal,
-  updatedTeam,
-  setPlayers
-} from '../actions'
-
-import {
-  removeTeam,
-  getTeamsDropdown,
-  updateTeamWithLogo,
-  updateTeam,
-  getPlayers,
-  addTeam
+  addPlayer,
+  removePlayer,
+  updatePlayerWithImage,
+  updatePlayer
 } from '../client'
 
 import {
-  Grid,
-  Icon,
-  Breadcrumb,
-  Header,
-  Form,
-  Checkbox,
-  Image,
-  Button,
-  Table,
-  Flag,
-  Popup
+  toggleConfirmModal,
+  deletePlayer,
+  setSelectedItem,
+  setPlayers,
+  toggleViewModal,
+  toggleEditModal,
+  updatedPlayer
+} from '../actions'
+
+import {
+  Grid, Icon, Breadcrumb, Header, Form,
+  Table, Image, Flag, Button, Popup, Checkbox
 } from 'semantic-ui-react'
 
 import type {
   Dispatch,
   Country,
-  Teams,
-  NewTeam,
+  Players,
   ListElement,
-  Player
+  Team,
+  NewPlayer
 } from '../types'
+
+import {
+  ConfirmModal,
+  ViewPlayerModal,
+  EditPlayerModal
+} from '../components'
 
 import type { State } from '../../types'
 
 type Props = {
   dispatch: Dispatch,
   countries: Array<Country>,
-  teams: Teams,
-  players: Array<Player>,
+  players: Players,
+  teams: Array<Team>,
   teamsDropdown: Array<ListElement>,
   confirmModalOpen: boolean,
   selectedItem: number,
@@ -68,24 +54,30 @@ type Props = {
 }
 
 type ComponentState = {
-  teamShortName: string,
-  teamLongName: string,
-  teamCountry: string,
-  teamHasLogo: boolean,
-  teamLogo: any,
+  playerFirstName: string,
+  playerLastName: string,
+  playerName: string,
+  playerCountry: string,
+  playerTeam: string,
+  playerSteam64ID: string,
+  playerHasImg: boolean,
+  playerImg: any,
   stateLoading: boolean,
   stateError: boolean
 }
 
-class TeamsPage extends Component<Props, ComponentState> {
+class PlayersPage extends Component<Props, ComponentState> {
   fileInputRef: any
 
   state = {
-    teamShortName: '',
-    teamLongName: '',
-    teamCountry: '',
-    teamHasLogo: false,
-    teamLogo: null,
+    playerFirstName: '',
+    playerLastName: '',
+    playerName: '',
+    playerCountry: '',
+    playerTeam: '',
+    playerSteam64ID: '',
+    playerHasImg: false,
+    playerImg: null,
     stateLoading: false,
     stateError: false
   }
@@ -97,34 +89,43 @@ class TeamsPage extends Component<Props, ComponentState> {
 
   _onchange = (e, { name, value }) => this.setState({ [name]: value })
   _onCheckboxChange = (e, { name, checked }) => this.setState({ [name]: checked })
-  _onFileInputChange = (e) => this.setState({ teamLogo: e.target.files[0] })
+  _onFileInputChange = (e) => this.setState({ playerImg: e.target.files[0] })
   _handleInputReset = () => {
     this.fileInputRef.current.value = ''
-    this.setState({ teamLogo: null })
+    this.setState({ playerImg: null })
   }
 
   _handleSubmit = () => {
-    const { dispatch, teams } = this.props
+    const { dispatch, players } = this.props
     const {
-      teamShortName,
-      teamLongName,
-      teamCountry,
-      teamHasLogo,
-      teamLogo
+      playerFirstName,
+      playerLastName,
+      playerName,
+      playerCountry,
+      playerTeam,
+      playerSteam64ID,
+      playerHasImg,
+      playerImg
     } = this.state
 
-    const data = TeamSubmit({
-      teamShortName,
-      teamLongName,
-      teamCountry,
-      teamHasLogo,
-      teamLogo
+    const data = PlayerSubmit({
+      playerFirstName,
+      playerLastName,
+      playerName,
+      playerCountry,
+      playerTeam,
+      playerSteam64ID,
+      playerHasImg,
+      playerImg
     })
 
-    this.setState({ stateLoading: true, stateError: false })
+    this.setState({
+      stateLoading: true,
+      stateError: false
+    })
 
-    addTeam(data)
-      .then(team => dispatch(setTeams([...teams, team])))
+    addPlayer(data)
+      .then(player => dispatch(setPlayers([...players, player])))
       .catch(e => {
         this.setState({
           stateLoading: false,
@@ -133,18 +134,20 @@ class TeamsPage extends Component<Props, ComponentState> {
       })
       .then(new Promise(resolve => {
         this.setState({
-          teamShortName: '',
-          teamLongName: '',
-          teamCountry: '',
-          teamHasLogo: false,
-          teamLogo: null,
+          playerFirstName: '',
+          playerLastName: '',
+          playerName: '',
+          playerCountry: '',
+          playerTeam: '',
+          playerSteam64ID: '',
+          playerHasImg: false,
+          playerImg: null,
           stateLoading: false,
           stateError: false
         })
         this.fileInputRef.current.value = ''
         resolve()
       }))
-      .then(this._getTeamsDropdown)
       .catch(e => {
         this.setState({
           stateLoading: false,
@@ -162,30 +165,6 @@ class TeamsPage extends Component<Props, ComponentState> {
   _openConfirmModal = (index: number) => () => {
     this.props.dispatch(setSelectedItem(index))
     this._toggleConfirmModal()
-  }
-
-  _getTeamsDropdown = () => getTeamsDropdown()
-    .then(teams => setTeamsDropdown(teams))
-    .then(this.props.dispatch)
-
-  _getPlayers = () => getPlayers()
-    .then(players => setPlayers(players))
-    .then(this.props.dispatch)
-
-  _deleteTeam = () => {
-    const { dispatch, selectedItem, teams } = this.props
-    if (
-      selectedItem !== null &&
-      selectedItem !== undefined &&
-      teams[selectedItem]._id !== undefined
-    ) {
-      removeTeam(teams[selectedItem]._id)
-        .then(dispatch(deletePlayersFromTeam()))
-        .then(dispatch(deleteTeam()))
-        .then(this._toggleConfirmModal)
-        .then(this._getTeamsDropdown)
-        .catch(e => console.log(e))
-    }
   }
 
   _toggleViewModal = () => {
@@ -210,43 +189,61 @@ class TeamsPage extends Component<Props, ComponentState> {
     this._toggleEditModal()
   }
 
-  _submitEdit = (newTeam: NewTeam) => () => {
-    const { teams, selectedItem, dispatch } = this.props
+  _deletePlayer = () => {
+    const { dispatch, selectedItem, players } = this.props
+    if (
+      selectedItem !== null &&
+      selectedItem !== undefined &&
+      players[selectedItem]._id !== undefined
+    ) {
+      removePlayer(players[selectedItem]._id)
+        .then(dispatch(deletePlayer()))
+        .then(this._toggleConfirmModal)
+        .catch(e => console.log(e))
+    }
+  }
 
-    const teamShortName = newTeam.nameShort
-    const teamLongName = newTeam.nameLong
-    const teamCountry = newTeam.country
-    const teamHasLogo = newTeam.hasLogo
-    const oldLogo = newTeam.logoPath
-    const teamLogo = newTeam.newLogo
+  _submitEdit = (newPlayer: NewPlayer) => () => {
+    const { players, selectedItem, dispatch } = this.props
 
-    if (newTeam.hasChangedLogo) {
-      const data = TeamSubmit({
-        teamShortName,
-        teamLongName,
-        teamCountry,
-        teamHasLogo,
-        teamLogo
+    const playerFirstName = newPlayer.firstName
+    const playerLastName = newPlayer.lastName
+    const playerName = newPlayer.gameName
+    const playerCountry = newPlayer.country
+    const playerTeam = newPlayer.team
+    const playerSteam64ID = newPlayer.steam64Id
+    const playerHasImg = newPlayer.hasImage
+    const playerImg = newPlayer.newImage
+    // const playerOldImg = newPlayer.imagePath
+
+    if (newPlayer.hasNewImage) {
+      const data = PlayerSubmit({
+        playerFirstName,
+        playerLastName,
+        playerName,
+        playerCountry,
+        playerTeam,
+        playerSteam64ID,
+        playerHasImg,
+        playerImg
       })
-      updateTeamWithLogo(data, teams[selectedItem]._id)
-        .then(teams => dispatch(updatedTeam([teams])))
-        .then(this._getTeamsDropdown)
-        .then(this._getPlayers)
+      updatePlayerWithImage(data, players[selectedItem]._id)
+        .then(players => dispatch(updatedPlayer([players])))
         .then(this._toggleEditModal)
         .catch(e => console.log(e))
     } else {
       const data = {
-        teamNameShort: teamShortName,
-        teamNameLong: teamLongName,
-        country: teamCountry,
-        hasLogo: teamHasLogo,
-        logoPath: oldLogo
+        steam64id: playerSteam64ID,
+        firstName: playerFirstName,
+        lastName: playerLastName,
+        gameName: playerName,
+        country: playerCountry,
+        team: playerTeam,
+        hasImage: playerHasImg
       }
 
-      updateTeam(data, teams[selectedItem]._id)
-        .then(teams => dispatch(updatedTeam([teams])))
-        .then(this._getTeamsDropdown)
-        .then(this._getPlayers)
+      updatePlayer(data, players[selectedItem]._id)
+        .then(players => dispatch(updatedPlayer([players])))
         .then(this._toggleEditModal)
         .catch(e => console.log(e))
     }
@@ -254,28 +251,20 @@ class TeamsPage extends Component<Props, ComponentState> {
 
   render () {
     const {
-      countries,
-      teams,
-      selectedItem,
-      confirmModalOpen,
-      players,
-      viewModalOpen,
+      countries, teamsDropdown, players, teams,
+      confirmModalOpen, viewModalOpen, selectedItem,
       editModalOpen
     } = this.props
 
     const {
-      teamShortName,
-      teamLongName,
-      teamCountry,
-      teamHasLogo,
-      teamLogo,
-      stateLoading,
-      stateError
+      playerFirstName, playerLastName, playerName, playerCountry,
+      playerTeam, playerSteam64ID, playerHasImg, playerImg,
+      stateLoading, stateError
     } = this.state
 
-    const affected = selectedItem !== null
-      ? players.filter(player => player.team === teams[selectedItem].teamNameShort)
-      : []
+    const teamTarget = selectedItem !== null
+      ? teams.find(team => team.teamNameShort === players[selectedItem].team)
+      : null
 
     return (
       <React.Fragment>
@@ -284,7 +273,7 @@ class TeamsPage extends Component<Props, ComponentState> {
             <Breadcrumb.Section>Team Management</Breadcrumb.Section>
             <Breadcrumb.Divider icon='right angle' />
             <Breadcrumb.Section active>
-              <Icon name='users' />Teams
+              <Icon name='user' />Players
             </Breadcrumb.Section>
           </Breadcrumb>
         </div>
@@ -295,57 +284,88 @@ class TeamsPage extends Component<Props, ComponentState> {
                 <Grid.Column>
                   <div className='f-container-wrap'>
                     <Header as='h2'>
-                      <Icon name='add user' />
-                      <Header.Content>Add team</Header.Content>
+                      <Icon name='user plus' />
+                      <Header.Content>Add player</Header.Content>
                     </Header>
-                    <Form onSubmit={this._handleSubmit} loading={stateLoading} error={stateError}>
+                    <Form loading={stateLoading} error={stateError} onSubmit={this._handleSubmit}>
                       <Grid stackable>
                         <Grid.Row>
-                          <Grid.Column width={teamHasLogo ? 11 : 16}>
+                          <Grid.Column width={playerHasImg ? 11 : 16}>
                             <Form.Group widths='equal'>
                               <Form.Input
-                                name='teamShortName'
-                                value={teamShortName}
-                                error={stateError}
+                                fluid
+                                name='playerFirstName'
+                                value={playerFirstName}
                                 onChange={this._onchange}
-                                fluid label='Team name (Short)'
-                                placeholder='Team name (Short)'
+                                label='First name'
+                                placeholder='First name'
                                 required
                               />
                               <Form.Input
-                                name='teamLongName'
-                                value={teamLongName}
+                                fluid
+                                name='playerLastName'
+                                value={playerLastName}
                                 onChange={this._onchange}
-                                fluid label='Team name (Long)'
-                                placeholder='Team name (Long)'
+                                label='Last name'
+                                placeholder='Last name'
+                                required
+                              />
+                              <Form.Input
+                                fluid
+                                name='playerName'
+                                value={playerName}
+                                onChange={this._onchange}
+                                label='Gamer name'
+                                placeholder='Gamer name'
                                 required
                               />
                             </Form.Group>
                             <Form.Group widths='equal'>
                               <Form.Select
+                                label='Team'
+                                options={teamsDropdown}
+                                name='playerTeam'
+                                value={playerTeam}
+                                onChange={this._onchange}
+                                placeholder='Team'
+                                required
+                              />
+                              <Form.Select
                                 label='Country'
-                                name='teamCountry'
                                 options={countries}
-                                value={teamCountry}
+                                name='playerCountry'
+                                value={playerCountry}
                                 onChange={this._onchange}
                                 placeholder='Country'
                               />
                             </Form.Group>
+                            <Form.Group widths='equal'>
+                              <Form.Input
+                                name='playerSteam64ID'
+                                value={playerSteam64ID}
+                                onChange={this._onchange}
+                                error={stateError}
+                                fluid
+                                label='SteamID64'
+                                placeholder='SteamID64'
+                                required
+                              />
+                            </Form.Group>
                             <Form.Field>
                               <Checkbox
-                                label='Team has Image'
-                                name='teamHasLogo'
-                                checked={teamHasLogo}
+                                label='User has Image'
+                                name='playerHasImg'
+                                checked={playerHasImg}
                                 onChange={this._onCheckboxChange}
                               />
                             </Form.Field>
                           </Grid.Column>
                           <Grid.Column width={5}>
-                            <div className={`image-container ${!teamHasLogo ? 'do-not-show' : ''}`}>
+                            <div className={`image-container ${!playerHasImg ? 'do-not-show' : ''}`}>
                               <Image
-                                src={teamLogo === null
-                                  ? '/static/default/default-team.png'
-                                  : window.URL.createObjectURL(teamLogo)
+                                src={playerImg === null
+                                  ? '/static/default/default-player.png'
+                                  : window.URL.createObjectURL(playerImg)
                                 }
                                 size='small'
                                 centered
@@ -358,14 +378,14 @@ class TeamsPage extends Component<Props, ComponentState> {
                             <Form.Button type='submit' primary>Save</Form.Button>
                           </Grid.Column>
                           <Grid.Column floated='right' width={5}>
-                            <div className={!teamHasLogo ? 'do-not-show' : 'button-layout'}>
+                            <div className={!playerHasImg ? 'do-not-show' : 'button-layout'}>
                               <input
                                 onChange={this._onFileInputChange}
                                 className='inputfile'
                                 type='file'
                                 name='file'
                                 ref={this.fileInputRef}
-                                accept='image/svg+xml, image/jpeg, image/png'
+                                accept='image/jpeg, image/png'
                               />
                               <Button
                                 inverted
@@ -387,37 +407,52 @@ class TeamsPage extends Component<Props, ComponentState> {
                 <Grid.Column>
                   <div className='f-container-wrap'>
                     <Header as='h2'>
-                      <Icon name='users' />
-                      <Header.Content>Handle Teams</Header.Content>
+                      <Icon name='user' />
+                      <Header.Content>Handle players</Header.Content>
                     </Header>
                     <Table basic='very' celled>
                       <Table.Header>
                         <Table.Row>
+                          <Table.HeaderCell>Players</Table.HeaderCell>
                           <Table.HeaderCell>Team</Table.HeaderCell>
                           <Table.HeaderCell>Country</Table.HeaderCell>
+                          <Table.HeaderCell>STEAM64ID</Table.HeaderCell>
                           <Table.HeaderCell>Actions</Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
                       <Table.Body>
-                        {teams.map((team, index) => {
+                        {players.map((player, index) => {
+                          const team: any = teams.find(val => val.teamNameShort === player.team)
                           return (
-                            <Table.Row key={team._id}>
+                            <Table.Row key={player._id}>
                               <Table.Cell>
                                 <Header as='h4' image>
                                   <Image
-                                    src={`/${team.logoPath === null ? 'static/default/default-team.png' : team.logoPath}`}
+                                    src={`/${player.imagePath === null ? 'static/default/default-player.png' : player.imagePath}`}
                                     rounded
                                     size='mini'
                                   />
                                   <Header.Content>
-                                    {team.teamNameShort}
-                                    <Header.Subheader>{team.teamNameLong}</Header.Subheader>
+                                    {player.gameName}
+                                    <Header.Subheader>{player.firstName} {player.lastName}</Header.Subheader>
                                   </Header.Content>
                                 </Header>
                               </Table.Cell>
                               <Table.Cell>
-                                <Flag name={team.country} />
-                                <span>{team.country.toUpperCase()}</span>
+                                {team
+                                  ? <Image
+                                    src={`/${team.logoPath === null ? 'static/default/default-team.png' : team.logoPath}`}
+                                    avatar />
+                                  : null
+                                }
+                                <span>{player.team}</span>
+                              </Table.Cell>
+                              <Table.Cell>
+                                <Flag name={player.country} />
+                                <span>{player.country.toUpperCase()}</span>
+                              </Table.Cell>
+                              <Table.Cell>
+                                {player.steam64id}
                               </Table.Cell>
                               <Table.Cell>
                                 <Popup
@@ -427,7 +462,7 @@ class TeamsPage extends Component<Props, ComponentState> {
                                     icon='eye'
                                     onClick={this._openViewModal(index)}
                                   />}
-                                  content='Show Team'
+                                  content='Show player'
                                 />
                                 <Popup
                                   inverted
@@ -436,7 +471,7 @@ class TeamsPage extends Component<Props, ComponentState> {
                                     icon='edit'
                                     onClick={this._openEditModal(index)}
                                   />}
-                                  content='Edit Team'
+                                  content='Edit player'
                                 />
                                 <Popup
                                   inverted
@@ -445,7 +480,7 @@ class TeamsPage extends Component<Props, ComponentState> {
                                     icon='delete'
                                     onClick={this._openConfirmModal(index)}
                                   />}
-                                  content='Delete Team'
+                                  content='Delete player'
                                 />
                               </Table.Cell>
                             </Table.Row>
@@ -458,31 +493,32 @@ class TeamsPage extends Component<Props, ComponentState> {
               </Grid.Row>
             </Grid>
             {viewModalOpen
-              ? <ViewTeamModal
+              ? <ViewPlayerModal
                 isOpen={viewModalOpen}
                 toggleModal={this._toggleViewModal}
-                currentTeam={teams[selectedItem]}
-                currentPlayers={affected}
+                currentView={players[selectedItem]}
+                players={players}
+                currentTeam={teamTarget}
               /> : null
             }
             {editModalOpen
-              ? <EditTeamModal
+              ? <EditPlayerModal
                 isOpen={editModalOpen}
                 toggleModal={this._toggleEditModal}
-                currentTeam={teams[selectedItem]}
-                currentPlayers={affected}
+                currentPlayer={players[selectedItem]}
+                currentTeam={teamTarget}
+                teams={teamsDropdown}
                 onEditDone={this._submitEdit}
                 countries={countries}
               /> : null
             }
             {confirmModalOpen
               ? <ConfirmModal
-                modalHeader='Delete team'
-                modalBody='Are you sure you want to delete this team'
-                affectedTargets={affected}
+                modalHeader='Delete player'
+                modalBody='Are you sure you want to delete this player'
                 isOpen={confirmModalOpen}
                 toggleModal={this._toggleConfirmModal}
-                onDelete={this._deleteTeam}
+                onDelete={this._deletePlayer}
               /> : null
             }
           </div>
@@ -494,13 +530,13 @@ class TeamsPage extends Component<Props, ComponentState> {
 
 const mapStateToProps = (state: State) => ({
   countries: state.dashboard.countries,
-  teams: state.dashboard.teams,
   players: state.dashboard.players,
-  teamsDropdown: state.dashboard.teamsDropdown,
-  viewModalOpen: state.dashboard.modals.viewModalOpen,
-  editModalOpen: state.dashboard.modals.editModalOpen,
+  teams: state.dashboard.teams,
   confirmModalOpen: state.dashboard.modals.confirmModalOpen,
-  selectedItem: state.dashboard.selectedItem
+  editModalOpen: state.dashboard.modals.editModalOpen,
+  viewModalOpen: state.dashboard.modals.viewModalOpen,
+  selectedItem: state.dashboard.selectedItem,
+  teamsDropdown: state.dashboard.teamsDropdown
 })
 
-export default connect(mapStateToProps)(TeamsPage)
+export default connect(mapStateToProps)(PlayersPage)

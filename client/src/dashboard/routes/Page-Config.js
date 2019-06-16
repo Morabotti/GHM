@@ -24,7 +24,7 @@ import {
 
 import type { Dispatch } from '../types'
 
-import { ConfirmSnackBar } from './'
+import { ConfirmSnackBar } from '../components'
 
 import { getConfigs, updateConfigs } from '../../common/client'
 import { setConfig } from '../../common/actions'
@@ -101,12 +101,7 @@ class ConfigPage extends Component<Props, PageState> {
     .then(x => this.setState({ configs: x.config }))
 
   render () {
-    const { activeIndex, hasChanges } = this.state
-    const {
-      playerSize, bombSize, safeZoneLeft,
-      safeZoneBottom, safeZoneRight, safeZoneTop,
-      useRadar, radarNumberSize
-    } = this.state.configs
+    const { activeIndex, hasChanges, configs } = this.state
 
     return (
       <React.Fragment>
@@ -137,7 +132,7 @@ class ConfigPage extends Component<Props, PageState> {
                             <label>Left (default 35px):</label>
                             <Input
                               name='safeZoneLeft'
-                              value={safeZoneLeft}
+                              value={configs.safeZoneLeft}
                               label='px'
                               labelPosition='right'
                               onChange={this._onNumberChange}
@@ -148,7 +143,7 @@ class ConfigPage extends Component<Props, PageState> {
                             <label>Top (default 20px):</label>
                             <Input
                               name='safeZoneTop'
-                              value={safeZoneTop}
+                              value={configs.safeZoneTop}
                               label='px'
                               labelPosition='right'
                               onChange={this._onNumberChange}
@@ -161,7 +156,7 @@ class ConfigPage extends Component<Props, PageState> {
                               name='safeZoneRight'
                               label='px'
                               labelPosition='right'
-                              value={safeZoneRight}
+                              value={configs.safeZoneRight}
                               onChange={this._onNumberChange}
                               placeholder='Right'
                             />
@@ -170,7 +165,7 @@ class ConfigPage extends Component<Props, PageState> {
                             <label>Bottom (default 35px):</label>
                             <Input
                               name='safeZoneBottom'
-                              value={safeZoneBottom}
+                              value={configs.safeZoneBottom}
                               label='px'
                               labelPosition='right'
                               onChange={this._onNumberChange}
@@ -191,7 +186,7 @@ class ConfigPage extends Component<Props, PageState> {
                                 toggle
                                 label='Use custom radar'
                                 name='useRadar'
-                                checked={useRadar}
+                                checked={configs.useRadar}
                                 onChange={this._onCheckboxChange}
                               />
                             </div>
@@ -199,7 +194,7 @@ class ConfigPage extends Component<Props, PageState> {
                               <label>Player size</label>
                               <Input
                                 name='playerSize'
-                                value={playerSize}
+                                value={configs.playerSize}
                                 onChange={this._onNumberChange}
                                 label='px'
                                 labelPosition='right'
@@ -210,7 +205,7 @@ class ConfigPage extends Component<Props, PageState> {
                               <label>Bomb size</label>
                               <Input
                                 name='bombSize'
-                                value={bombSize}
+                                value={configs.bombSize}
                                 onChange={this._onNumberChange}
                                 label='px'
                                 labelPosition='right'
@@ -221,7 +216,7 @@ class ConfigPage extends Component<Props, PageState> {
                               <label>Radar number size</label>
                               <Input
                                 name='radarNumberSize'
-                                value={radarNumberSize}
+                                value={configs.radarNumberSize}
                                 onChange={this._onNumberChange}
                                 label='px'
                                 labelPosition='right'
@@ -233,10 +228,61 @@ class ConfigPage extends Component<Props, PageState> {
                       </Accordion.Content>
                       <Accordion.Title active={activeIndex === 2} index={2} onClick={this._handleSelection}>
                         <Icon name='dropdown' />
-                        Player
+                        Player plate
                       </Accordion.Title>
                       <Accordion.Content active={activeIndex === 2}>
-
+                        <div className='settings-group'>
+                          <Checkbox
+                            toggle
+                            label='Use pre-set name (if set)'
+                            name='usePreSetName'
+                            checked={configs.usePreSetName}
+                            onChange={this._onCheckboxChange}
+                          />
+                        </div>
+                        <div className='settings-group'>
+                          <Checkbox
+                            toggle
+                            label='Show team logo next to player name'
+                            name='showTeamLogo'
+                            checked={configs.showTeamLogo}
+                            onChange={this._onCheckboxChange}
+                          />
+                        </div>
+                        <div className='settings-group'>
+                          <Checkbox
+                            toggle
+                            label='Show player nationality (not supported)'
+                            name='showPlayerNationality'
+                            disabled
+                            checked={configs.showPlayerNationality}
+                            onChange={this._onCheckboxChange}
+                          />
+                        </div>
+                        <div className='settings-group'>
+                          <Checkbox
+                            toggle
+                            label='Always show player photo container'
+                            name='showPlayerPhotoContainerAllways'
+                            checked={configs.showPlayerPhotoContainerAllways}
+                            onChange={this._onCheckboxChange}
+                          />
+                        </div>
+                        <div className='settings-group'>
+                          <Checkbox
+                            toggle
+                            label='Only show player photo (if set)'
+                            name='showPlayerPhotoIfSet'
+                            checked={configs.showPlayerPhotoIfSet}
+                            onChange={this._onCheckboxChange}
+                          />
+                          {configs.showPlayerPhotoContainerAllways && configs.showPlayerPhotoIfSet
+                            ? <span
+                              style={{ marginLeft: '0.75em', color: 'red' }}
+                            > (This doesn't take effect if 'showPlayerPhotoContainerAllways' is on) </span>
+                            : null
+                          }
+                        </div>
                       </Accordion.Content>
                     </Accordion>
                   </div>

@@ -1,1 +1,1 @@
-{"useRadar":false,"playerSize":50,"bombSize":40,"radarNumberSize":48,"safeZoneLeft":35,"safeZoneRight":35,"safeZoneTop":20,"safeZoneBottom":35}
+{"useRadar":false,"playerSize":50,"bombSize":40,"radarNumberSize":48,"safeZoneLeft":35,"safeZoneRight":35,"safeZoneTop":20,"safeZoneBottom":35,"showTeamLogo":true,"usePreSetName":false,"showPlayerPhotoContainerAllways":true,"showPlayerPhotoIfSet":false,"showPlayerNationality":false}

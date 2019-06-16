@@ -9,25 +9,20 @@ export function deepEqual (x: any, y: any) {
   ) : (x === y)
 }
 
-export const formats = [
-  {
-    key: 'bo1',
-    text: 'Best of 1',
-    value: '1'
-  },
-  {
-    key: 'bo2',
-    text: 'Best of 2',
-    value: '2'
-  },
-  {
-    key: 'bo3',
-    text: 'Best of 3',
-    value: '3'
-  },
-  {
-    key: 'bo5',
-    text: 'Best of 5',
-    value: '5'
-  }
-]
+export const formats = [{
+  key: 'bo1',
+  text: 'Best of 1',
+  value: '1'
+}, {
+  key: 'bo2',
+  text: 'Best of 2',
+  value: '2'
+}, {
+  key: 'bo3',
+  text: 'Best of 3',
+  value: '3'
+}, {
+  key: 'bo5',
+  text: 'Best of 5',
+  value: '5'
+}]

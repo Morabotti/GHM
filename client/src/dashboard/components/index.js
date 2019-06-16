@@ -1,16 +1,18 @@
 // @flow
 import SideBar from './SideBar'
 import TopBar from './TopBar'
-import HomePage from './Page-Home'
-import TeamsPage from './Page-Teams'
-import PlayersPage from './Page-Players'
-import ConfigPage from './Page-Config'
-import LivePage from './Page-Live'
-import SettingsPage from './Page-Settings'
-import { ClientConnectButton, ConnectionButton, ServerConnectButton } from './Buttons'
-import { SubHeaderWithIcon } from './Headers'
 import ConfirmSnackBar from './ConfirmSnackBar'
 import SideBarItem from './SideBarItem'
+
+import {
+  SubHeaderWithIcon
+} from './Headers'
+
+import {
+  ClientConnectButton,
+  ConnectionButton,
+  ServerConnectButton
+} from './Buttons'
 
 import {
   ConfirmModal,
@@ -24,22 +26,16 @@ import {
 export {
   SideBar,
   TopBar,
-  HomePage,
   ClientConnectButton,
   ServerConnectButton,
   ConnectionButton,
   SubHeaderWithIcon,
-  TeamsPage,
-  PlayersPage,
   ConfirmModal,
   ViewPlayerModal,
   ViewTeamModal,
   EditTeamModal,
   EditPlayerModal,
   TeamSelectionModal,
-  LivePage,
-  ConfigPage,
-  SettingsPage,
   ConfirmSnackBar,
   SideBarItem
 }

@@ -24,14 +24,14 @@ class TopBar extends Component<Props> {
             <h2>{show ? 'GHM' : 'G'}</h2>
           </div>
         </div>
+        <div
+          className={`btn_nav ${show ? 'selected' : ''}`}
+          onClick={toggleShow}
+        >
+          <Icon name='list' size='big' />
+        </div>
         <div className='dummy' />
         <div className='settings'>
-          <div
-            className={`btn_nav ${show ? 'selected' : ''}`}
-            onClick={toggleShow}
-          >
-            <Icon name='list' size='big' />
-          </div>
           <ConnectionButton
             clientConnection={status.clientOnline}
             clientSpectating={status.clientSpectating}

@@ -15,7 +15,7 @@ import {
 } from '../actions'
 
 import { getMatches, setMatch, removeMatch, setMatchToLive, forceLoadMatches } from '../client'
-import { TeamSelectionModal, ConfirmModal } from './'
+import { TeamSelectionModal, ConfirmModal } from '../components'
 
 import {
   Breadcrumb,

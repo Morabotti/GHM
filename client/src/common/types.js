@@ -8,7 +8,12 @@ export type ConfigState = {
   safeZoneLeft: number,
   safeZoneRight: number,
   safeZoneTop: number,
-  safeZoneBottom: number
+  safeZoneBottom: number,
+  usePreSetName: boolean,
+  showTeamLogo: boolean,
+  showPlayerNationality: boolean,
+  showPlayerPhotoContainerAllways: boolean,
+  showPlayerPhotoIfSet: boolean
 }
 
 export type Status = {

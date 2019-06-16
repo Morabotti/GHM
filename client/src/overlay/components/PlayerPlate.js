@@ -2,8 +2,19 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
-import type { CurrentPlayer, AllPlayers, StateTeamConfig } from '../types'
-import type { State } from '../../types'
+import type {
+  CurrentPlayer,
+  AllPlayers,
+  StateTeamConfig
+} from '../types'
+
+import type {
+  State
+} from '../../types'
+
+import type {
+  ConfigState
+} from '../../common/types'
 
 import HEAD_ARMOR from '../../assets/util/armor_head.svg'
 import ARMOR from '../../assets/util/armor.svg'
@@ -11,6 +22,7 @@ import ARMOR from '../../assets/util/armor.svg'
 type Props = {
   playerData: CurrentPlayer,
   allPlayers: AllPlayers,
+  config: ConfigState,
   teamConfiguration: StateTeamConfig
 }
 
@@ -19,7 +31,8 @@ class PlayerPlate extends PureComponent<Props> {
     const {
       playerData: { name, team, state, steamid },
       allPlayers,
-      teamConfiguration: { players, teamA, teamB }
+      teamConfiguration: { players, teamA, teamB },
+      config
     } = this.props
 
     const isWatching = (this.props.playerData.spectarget !== undefined)
@@ -55,26 +68,42 @@ class PlayerPlate extends PureComponent<Props> {
           <div className='grid'>
             <div className='grid-upper'>
               <div className='upper-team'>
-                {teamLogoPath !== null
+                {teamLogoPath !== null && config.showTeamLogo
                   ? <img src={`/${teamLogoPath}`} /> : null
                 }
               </div>
               <div className='upper-name'>
-                <p className={name.length >= 10 ? 'long-name' : ''}>{name}</p>
+                <p className={name.length >= 10 ? 'long-name' : ''}>
+                  {!config.usePreSetName
+                    ? name
+                    : hasExtraInfo && extraInfoPlayer.gameName !== null
+                      ? extraInfoPlayer.gameName
+                      : name
+                  }
+                </p>
               </div>
               <div className='upper-flag' />
             </div>
             <div className='grid-lower'>
               <div className='grid-health-container'>
-                <div className='grid-player-image'>
-                  <img src={`/${hasExtraInfo
-                    ? extraInfoPlayer.imagePath !== null && extraInfoPlayer.hasImage
-                      ? extraInfoPlayer.imagePath
-                      : 'static/default/default-player.png'
-                    : 'static/default/default-player.png'}`}
-                  />
-                </div>
-                <div className={`grid-lower-dark grid-hp no-corner`}>
+                {config.showPlayerPhotoContainerAllways ? (
+                  <div className='grid-player-image'>
+                    <img src={`/${hasExtraInfo
+                      ? extraInfoPlayer.imagePath !== null && extraInfoPlayer.hasImage
+                        ? extraInfoPlayer.imagePath
+                        : 'static/default/default-player.png'
+                      : 'static/default/default-player.png'}`}
+                    />
+                  </div>
+                ) : config.showPlayerPhotoIfSet && hasExtraInfo && extraInfoPlayer.hasImage ? (
+                  <div className='grid-player-image'><img src={`/${extraInfoPlayer.imagePath}`} /></div>
+                ) : (
+                  <React.Fragment />
+                )}
+                <div className={`grid-lower-dark grid-hp ${
+                  config.showPlayerPhotoContainerAllways ||
+                  (config.showPlayerPhotoIfSet && hasExtraInfo && extraInfoPlayer.hasImage) ? 'no-corner' : ''}`}
+                >
                   <div className='item'>
                     <b>+</b>{state.health}
                   </div>
@@ -168,6 +197,7 @@ class PlayerPlate extends PureComponent<Props> {
 const mapStateToProps = (state: State) => ({
   playerData: state.overlay.gameStatePlayer,
   allPlayers: state.overlay.gameStateAllPlayer,
+  config: state.common.config,
   teamConfiguration: state.overlay.teamConfiguration
 })
 

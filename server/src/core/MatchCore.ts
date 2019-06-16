@@ -179,9 +179,10 @@ class MatchCore {
     try {
       const activeData = await matchCore._getActiveMatchData()
       const refactored = matchCore.filterActiveMatchData(activeData)
+      console.log("Is Updated")
 
       dispatchSocket(
-        SOCKET.TEAM_CONFIG,
+        SOCKET.GAME_CONFIG,
         refactored
       )
     } catch(e) {

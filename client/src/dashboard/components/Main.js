@@ -27,14 +27,17 @@ import {
 
 import {
   SideBar,
-  TopBar,
+  TopBar
+} from './'
+
+import {
   HomePage,
   TeamsPage,
   PlayersPage,
   LivePage,
   ConfigPage,
   SettingsPage
-} from './'
+} from '../routes'
 
 // $FlowIgnore
 import '../index.less'
@@ -55,34 +58,39 @@ class Main extends PureComponent<Props> {
     this._getMatches()
   }
 
+  /*
   _toggleShow = () => {
     const { dispatch, show } = this.props
     const toggle = toggleNavBar(!show)
     dispatch(toggle)
   }
+  */
+  _toggleShow = () => this.props.dispatch(
+    toggleNavBar(!this.props.show)
+  )
 
   _getCountries = () => getCountries()
-    .then(countries => setCountries(countries))
+    .then(setCountries)
     .then(this.props.dispatch)
 
   _getMatches = () => getMatches()
-    .then(matches => setMatches(matches))
+    .then(setMatches)
     .then(this.props.dispatch)
 
   _getMaps = () => getMaps()
-    .then(data => setMaps(data.maps))
+    .then(setMaps)
     .then(this.props.dispatch)
 
   _getTeams = () => getTeams()
-    .then(teams => setTeams(teams))
+    .then(setTeams)
     .then(this.props.dispatch)
 
   _getTeamsDropdown = () => getTeamsDropdown()
-    .then(teams => setTeamsDropdown(teams))
+    .then(setTeamsDropdown)
     .then(this.props.dispatch)
 
   _getPlayers = () => getPlayers()
-    .then(players => setPlayers(players))
+    .then(setPlayers)
     .then(this.props.dispatch)
 
   render () {
