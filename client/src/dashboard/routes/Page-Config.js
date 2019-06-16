@@ -99,6 +99,10 @@ class ConfigPage extends Component<Props, PageState> {
     .then(setConfig)
     .then(this.props.dispatch)
     .then(x => this.setState({ configs: x.config }))
+    .catch(e => {
+      console.log('Config fetch failed. Creating config.json')
+      updateConfigs(this.props.config)
+    })
 
   render () {
     const { activeIndex, hasChanges, configs } = this.state

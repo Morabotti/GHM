@@ -3,6 +3,7 @@ import {
   PhaseCountDown,
   Player,
   Map,
+  Round,
 } from 'csgo-gsi-types'
 
 import { SOCKET, GameState, CustomAllPlayer, CustomBomb } from '../types'
@@ -57,6 +58,7 @@ class GameEvents {
       
       this.dispatchPhase(state.phase_countdowns)
       this.dispatchPlayer(state.player)
+      this.dispatchRound(state.round)
       this.dispatchMap(state.map)
       
       if(state.bomb !== undefined) {
@@ -93,12 +95,28 @@ class GameEvents {
         }
       }
 
+      if (state.previously.phase_countdowns !== undefined) {
+        this.dispatchPhase(state.phase_countdowns)
+        this.gameState = {
+          ...this.gameState,
+          phase_countdowns: state.phase_countdowns
+        }
+      }
+
       if (state.previously.bomb !== undefined) {
         this.setBombVectors(state)
         this.dispatchBomb(state.bomb)
         this.gameState = {
           ...this.gameState,
           bomb: state.bomb
+        }
+      }
+
+      if (state.previously.round !== undefined) {
+        this.dispatchRound(state.round)
+        this.gameState = {
+          ...this.gameState,
+          round: state.round
         }
       }
 
@@ -110,13 +128,6 @@ class GameEvents {
         }
       }
 
-      if (state.previously.phase_countdowns !== undefined) {
-        this.dispatchPhase(state.phase_countdowns)
-        this.gameState = {
-          ...this.gameState,
-          phase_countdowns: state.phase_countdowns
-        }
-      }
       gameStats.checkIfUpdated(state)
     }
   }
@@ -193,6 +204,7 @@ class GameEvents {
     this.dispatchAllPlayers(state.allplayers)
     this.dispatchPlayer(state.player)
     this.dispatchMap(state.map)
+    this.dispatchRound(state.round)
     this.dispatchPhase(state.phase_countdowns)
     this.dispatchBomb(state.bomb)
   }
@@ -202,6 +214,7 @@ class GameEvents {
     this.dispatchPlayer()
     this.dispatchMap()
     this.dispatchPhase()
+    this.dispatchRound()
     this.dispatchBomb()
   }
 
@@ -217,6 +230,24 @@ class GameEvents {
       if (data !== undefined) {
         dispatchSocket(
           SOCKET.ALLPLAYERS,
+          data
+        )
+      }
+    }
+  }
+
+  dispatchRound(data: (null | Round) = null) {
+    if (data === null) {
+      if (this.gameState)
+        if (this.gameState.round !== undefined)
+          dispatchSocket(
+            SOCKET.ROUND,
+            this.gameState.round
+          )
+    } else {
+      if (data !== undefined) {
+        dispatchSocket(
+          SOCKET.ROUND,
           data
         )
       }

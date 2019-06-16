@@ -13,7 +13,8 @@ import type {
   TeamStats,
   TeamConfig,
   PlayerConfig,
-  BombState
+  BombState,
+  Round
 } from './types'
 
 export type State = {
@@ -22,6 +23,7 @@ export type State = {
   gameStateMap: MapState,
   gameStatePhase: PhaseCooldowns,
   gameStateBomb: BombState,
+  gameStateRound: Round,
   events: EventsReducer,
   teamStats: TeamStats,
   teamConfiguration: {
@@ -105,6 +107,7 @@ const getDefaultState = (): State => ({
     position: [],
     forward: []
   },
+  gameStateRound: { },
   gameStateMap: {
     mode: '',
     name: '',
@@ -176,6 +179,11 @@ export default function reducer (
       return {
         ...state,
         gameStatePhase: action.gameStatePhase
+      }
+    case 'set-game-round':
+      return {
+        ...state,
+        gameStateRound: action.gameStateRound
       }
     case 'set-game-bomb':
       return {

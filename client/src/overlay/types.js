@@ -50,6 +50,12 @@ export type PhaseCooldowns = {
   phase_ends_in: number
 }
 
+export type Round = {
+  phase?: 'live' | 'freezetime' | 'over',
+  bomb?: 'planted' | 'defused' | 'exploded',
+  win_team?: 'CT' | 'T'
+}
+
 export type Team = {
   score: number | null,
   name?: string,

@@ -2,13 +2,6 @@
 import type { Action as _Action } from './actions'
 import type { Action as CommonAction } from '../common/actions'
 
-export type Status = {
-  clientOnline: boolean,
-  clientSpectating: boolean,
-  gameOnline: boolean,
-  gameLive: boolean
-}
-
 export type Action = _Action
 
 export type Dispatch = (Action | CommonAction) => void

@@ -6,14 +6,16 @@ import type {
   CurrentPlayer,
   TeamStats,
   StateTeamConfig,
-  BombState
+  BombState,
+  Round
 } from './types'
 
-export type Action = { type: 'set-game-all-player-state', gameStateAllPlayer: AllPlayers}
-  | { type: 'set-game-player-state', gameStatePlayer: CurrentPlayer}
-  | { type: 'set-game-map-state', gameStateMap: MapState}
-  | { type: 'set-game-phase-state', gameStatePhase: PhaseCooldowns}
-  | { type: 'set-game-bomb', gameStateBomb: BombState}
+export type Action = { type: 'set-game-all-player-state', gameStateAllPlayer: AllPlayers }
+  | { type: 'set-game-player-state', gameStatePlayer: CurrentPlayer }
+  | { type: 'set-game-map-state', gameStateMap: MapState }
+  | { type: 'set-game-phase-state', gameStatePhase: PhaseCooldowns }
+  | { type: 'set-game-bomb', gameStateBomb: BombState }
+  | { type: 'set-game-round', gameStateRound: Round }
   | { type: 'set-team-stats', stats: TeamStats }
   | { type: 'set-team-configuration', teamConfiguration: StateTeamConfig }
   | { type: 'start-money-count' }
@@ -56,6 +58,11 @@ export const setNades = (stats: TeamStats) => ({
 export const setBomb = (gameStateBomb: BombState) => ({
   type: 'set-game-bomb',
   gameStateBomb
+})
+
+export const setRound = (gameStateRound: Round) => ({
+  type: 'set-game-round',
+  gameStateRound
 })
 
 export const setActiveMatch = (teamConfiguration: StateTeamConfig) => ({

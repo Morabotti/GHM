@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react'
 
-import type { Status } from '../../dashboard/types'
+import type { Status } from '../../common/types'
 
 type Props = {
   status: Status,

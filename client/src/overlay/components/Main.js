@@ -2,17 +2,24 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
-import { setActiveMatch } from '../actions'
-import { setStatus, setConfig } from '../../common/actions'
-import { getStatus, getConfigs } from '../../common/client'
-import { getActiveMatch, subscribeToSocket } from '../client'
-import { deepEqual } from '../../dashboard/lib/helpers'
-import { PlayerPlate, Radar, ScorePlate, Team, GameLoader } from './'
+import {
+  PlayerPlate,
+  Radar,
+  ScorePlate,
+  Team,
+  GameLoader
+} from './'
 
+import { setActiveMatch } from '../actions'
 import type { Dispatch, StateTeamConfig } from '../types'
-import type { Status } from '../../dashboard/types'
+import { getActiveMatch, subscribeToSocket } from '../client'
+
+import { deepEqual } from '../../dashboard/lib/helpers'
 import type { State } from '../../types'
-import type { ConfigState } from '../../common/types'
+
+import { setStatus, setConfig } from '../../common/actions'
+import { getStatus, getConfigs, updateConfigs } from '../../common/client'
+import type { ConfigState, Status } from '../../common/types'
 
 // $FlowIgnore
 import '../index.less'
@@ -42,6 +49,10 @@ class Main extends PureComponent<Props> {
   _fetchSettings = () => getConfigs()
     .then(setConfig)
     .then(this.props.dispatch)
+    .catch(e => {
+      console.log('Config fetch failed. Creating config.json')
+      updateConfigs(this.props.config)
+    })
 
   _getActiveMatch = () => getActiveMatch()
     .then(match => setActiveMatch(match))

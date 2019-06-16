@@ -95,11 +95,13 @@ class PlayerPlate extends PureComponent<Props> {
                       : 'static/default/default-player.png'}`}
                     />
                   </div>
-                ) : config.showPlayerPhotoIfSet && hasExtraInfo && extraInfoPlayer.hasImage ? (
-                  <div className='grid-player-image'><img src={`/${extraInfoPlayer.imagePath}`} /></div>
-                ) : (
-                  <React.Fragment />
-                )}
+                ) : config.showPlayerPhotoIfSet &&
+                    hasExtraInfo &&
+                    extraInfoPlayer.hasImage &&
+                    extraInfoPlayer.imagePath !== null
+                  ? <div className='grid-player-image'><img src={`/${extraInfoPlayer.imagePath}`} /></div>
+                  : <React.Fragment />
+                }
                 <div className={`grid-lower-dark grid-hp ${
                   config.showPlayerPhotoContainerAllways ||
                   (config.showPlayerPhotoIfSet && hasExtraInfo && extraInfoPlayer.hasImage) ? 'no-corner' : ''}`}

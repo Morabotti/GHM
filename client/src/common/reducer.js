@@ -21,10 +21,10 @@ export const configState: ConfigState = {
   safeZoneTop: 20,
   safeZoneBottom: 35,
   // Radar
-  useRadar: true,
+  useRadar: false,
   playerSize: 40,
   bombSize: 40,
-  radarNumberSize: 20,
+  radarNumberSize: 32,
   // Player
   usePreSetName: false,
   showTeamLogo: true,

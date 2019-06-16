@@ -3,8 +3,9 @@ import React, { Component } from 'react'
 import { Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 
-import type { Status, Dispatch } from '../types'
+import type { Dispatch } from '../types'
 import type { State } from '../../types'
+import type { Status } from '../../common/types'
 import { ConnectionButton } from './'
 
 type Props = {

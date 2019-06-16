@@ -13,7 +13,8 @@ import {
   setNades,
   setBomb,
   setActiveMatch,
-  setActiveToNull
+  setActiveToNull,
+  setRound
 } from './actions'
 
 import {
@@ -34,6 +35,7 @@ export const subscribeToSocket = (dispatch: Dispatch) => {
   socket.on('UPDATE_GAME_CONFIG', data => dispatch(setActiveMatch(data)))
   socket.on('RESET_GAME_CONFIG', () => dispatch(setActiveToNull()))
   socket.on('UPDATE_OVERLAY_CONFIG', data => dispatch(setConfig(data)))
+  socket.on('UPDATE_ROUND', data => dispatch(setRound(data)))
 
   setTimeout(getLatestData, 50)
 }

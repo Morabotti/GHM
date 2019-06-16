@@ -9,8 +9,9 @@ import { deepEqual } from '../lib/helpers'
 
 import { getStatus } from '../../common/client'
 import { setStatus } from '../../common/actions'
+import type { Status } from '../../common/types'
 
-import type { Status, Dispatch } from '../types'
+import type { Dispatch } from '../types'
 import type { State } from '../../types'
 
 type Props = {

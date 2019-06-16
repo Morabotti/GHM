@@ -58,13 +58,6 @@ class Main extends PureComponent<Props> {
     this._getMatches()
   }
 
-  /*
-  _toggleShow = () => {
-    const { dispatch, show } = this.props
-    const toggle = toggleNavBar(!show)
-    dispatch(toggle)
-  }
-  */
   _toggleShow = () => this.props.dispatch(
     toggleNavBar(!this.props.show)
   )

@@ -4,7 +4,6 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
 import { ScoreAnnouncement } from './'
-import { roundWinningTimeout } from '../lib/OtherCalculations'
 
 import type { State } from '../../types'
 import type {
@@ -12,7 +11,8 @@ import type {
   MapState,
   StateTeamConfig,
   BombState,
-  AllPlayers
+  AllPlayers,
+  Round
 } from '../types'
 
 type Props = {
@@ -20,14 +20,13 @@ type Props = {
   phaseData: PhaseCooldowns,
   teamConfiguration: StateTeamConfig,
   gameStateBomb: BombState,
-  allPlayers: AllPlayers
+  allPlayers: AllPlayers,
+  gameStateRound: Round
 }
 
 type ComponentState = {
   bombTimerLeft: number,
   plantedBomb: boolean,
-  aTeamWin: boolean,
-  bTeamWin: boolean,
   defuserHasKit: boolean
 }
 
@@ -37,25 +36,15 @@ const EVENT_TIMEOUT = 5000
 class ScorePlate extends PureComponent<Props, ComponentState> {
   bombTimeout: window.TimerHandler
   defuseTimeout: window.TimerHandler
-  aWinTimeout: window.TimerHandler
-  bWinTimeout: window.TimerHandler
 
   state = {
     plantedBomb: false,
     bombTimerLeft: 10,
-    aTeamWin: false,
-    bTeamWin: false,
     defuserHasKit: false
   }
 
   componentDidUpdate (prevProp: Props) {
-    const {
-      phaseData: { phase },
-      mapData: { team_ct, team_t },
-      phaseData: { phase_ends_in },
-      teamConfiguration: { teamA },
-      gameStateBomb
-    } = this.props
+    const { gameStateBomb } = this.props
 
     if (prevProp.gameStateBomb.state === 'planting' && gameStateBomb.state === 'planted') {
       this.setState({ plantedBomb: true })
@@ -70,50 +59,14 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
         defuserHasKit: Number(gameStateBomb.countdown) < 6
       })
     }
-
-    if ((phase === 'over' || phase === 'bomb' || phase === 'live') &&
-      prevProp.mapData.team_ct.score + 1 === team_ct.score
-    ) {
-      teamA.team === 'CT'
-        ? this._setTeamAWin(phase_ends_in)
-        : this._setTeamBWin(phase_ends_in)
-    }
-
-    if ((phase === 'over' || phase === 'bomb' || phase === 'live') &&
-      prevProp.mapData.team_t.score + 1 === team_t.score
-    ) {
-      teamA.team === 'T'
-        ? this._setTeamAWin(phase_ends_in)
-        : this._setTeamBWin(phase_ends_in)
-    }
-  }
-
-  _setTeamAWin = (phase: number) => {
-    this.setState({ aTeamWin: true, defuserHasKit: false })
-    this.aWinTimeout = setTimeout(
-      this._removeTeamANotify,
-      roundWinningTimeout(phase)
-    )
-  }
-
-  _setTeamBWin = (phase: number) => {
-    this.setState({ bTeamWin: true, defuserHasKit: false })
-    this.bWinTimeout = setTimeout(
-      this._removeTeamBNotify,
-      roundWinningTimeout(phase)
-    )
   }
 
   componentWillUnmount () {
     clearTimeout(this.bombTimeout)
     clearTimeout(this.defuseTimeout)
-    clearTimeout(this.aWinTimeout)
-    clearTimeout(this.bWinTimeout)
   }
 
   _removeBombNotify = () => this.setState({ plantedBomb: false })
-  _removeTeamANotify = () => this.setState({ aTeamWin: false })
-  _removeTeamBNotify = () => this.setState({ bTeamWin: false })
 
   sectostr (time) {
     return ~~(time / 60) + ':' + (time % 60 < 10 ? '0' : '') + time % 60
@@ -124,16 +77,20 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
       phaseData: { phase_ends_in, phase },
       mapData: { round, team_ct, team_t },
       teamConfiguration: { teamA, teamB },
-      gameStateBomb: { state, countdown }
+      gameStateBomb: { state, countdown },
+      gameStateRound
     } = this.props
 
     const {
       bombTimerLeft,
       plantedBomb,
-      aTeamWin,
-      defuserHasKit,
-      bTeamWin
+      defuserHasKit
     } = this.state
+
+    const isWin = (gameStateRound !== undefined && gameStateRound.win_team !== undefined)
+
+    const aTeamWin = isWin && gameStateRound.win_team === teamA.team
+    const bTeamWin = isWin && gameStateRound.win_team === teamB.team
 
     const showBomb = state === 'planted' || state === 'defusing' || state === 'exploded' || state === 'defused'
     const displayBomb = state === 'planted' || state === 'defusing'
@@ -255,6 +212,7 @@ const mapStateToProps = (state: State) => ({
   mapData: state.overlay.gameStateMap,
   phaseData: state.overlay.gameStatePhase,
   teamConfiguration: state.overlay.teamConfiguration,
+  gameStateRound: state.overlay.gameStateRound,
   allPlayers: state.overlay.gameStateAllPlayer,
   gameStateBomb: state.overlay.gameStateBomb
 })
