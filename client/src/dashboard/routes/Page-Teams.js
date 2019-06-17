@@ -41,7 +41,9 @@ import {
   Button,
   Table,
   Flag,
-  Popup
+  Popup,
+  Dimmer,
+  Loader
 } from 'semantic-ui-react'
 
 import type {
@@ -398,60 +400,66 @@ class TeamsPage extends Component<Props, ComponentState> {
                           <Table.HeaderCell>Actions</Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
-                      <Table.Body>
-                        {teams.map((team, index) => {
-                          return (
-                            <Table.Row key={team._id}>
-                              <Table.Cell>
-                                <Header as='h4' image>
-                                  <Image
-                                    src={`/${team.logoPath === null ? 'static/default/default-team.png' : team.logoPath}`}
-                                    rounded
-                                    size='mini'
+                      {teams.length === 0 ? (
+                        <Dimmer active inverted>
+                          <Loader inverted content='Loading Teams' />
+                        </Dimmer>
+                      ) : (
+                        <Table.Body>
+                          {teams.map((team, index) => {
+                            return (
+                              <Table.Row key={team._id}>
+                                <Table.Cell>
+                                  <Header as='h4' image>
+                                    <Image
+                                      src={`/${team.logoPath === null ? 'static/default/default-team.png' : team.logoPath}`}
+                                      rounded
+                                      size='mini'
+                                    />
+                                    <Header.Content>
+                                      {team.teamNameShort}
+                                      <Header.Subheader>{team.teamNameLong}</Header.Subheader>
+                                    </Header.Content>
+                                  </Header>
+                                </Table.Cell>
+                                <Table.Cell>
+                                  <Flag name={team.country} />
+                                  <span>{team.country.toUpperCase()}</span>
+                                </Table.Cell>
+                                <Table.Cell>
+                                  <Popup
+                                    inverted
+                                    trigger={<Button
+                                      primary
+                                      icon='eye'
+                                      onClick={this._openViewModal(index)}
+                                    />}
+                                    content='Show Team'
                                   />
-                                  <Header.Content>
-                                    {team.teamNameShort}
-                                    <Header.Subheader>{team.teamNameLong}</Header.Subheader>
-                                  </Header.Content>
-                                </Header>
-                              </Table.Cell>
-                              <Table.Cell>
-                                <Flag name={team.country} />
-                                <span>{team.country.toUpperCase()}</span>
-                              </Table.Cell>
-                              <Table.Cell>
-                                <Popup
-                                  inverted
-                                  trigger={<Button
-                                    primary
-                                    icon='eye'
-                                    onClick={this._openViewModal(index)}
-                                  />}
-                                  content='Show Team'
-                                />
-                                <Popup
-                                  inverted
-                                  trigger={<Button
-                                    positive
-                                    icon='edit'
-                                    onClick={this._openEditModal(index)}
-                                  />}
-                                  content='Edit Team'
-                                />
-                                <Popup
-                                  inverted
-                                  trigger={<Button
-                                    negative
-                                    icon='delete'
-                                    onClick={this._openConfirmModal(index)}
-                                  />}
-                                  content='Delete Team'
-                                />
-                              </Table.Cell>
-                            </Table.Row>
-                          )
-                        })}
-                      </Table.Body>
+                                  <Popup
+                                    inverted
+                                    trigger={<Button
+                                      positive
+                                      icon='edit'
+                                      onClick={this._openEditModal(index)}
+                                    />}
+                                    content='Edit Team'
+                                  />
+                                  <Popup
+                                    inverted
+                                    trigger={<Button
+                                      negative
+                                      icon='delete'
+                                      onClick={this._openConfirmModal(index)}
+                                    />}
+                                    content='Delete Team'
+                                  />
+                                </Table.Cell>
+                              </Table.Row>
+                            )
+                          })}
+                        </Table.Body>
+                      )}
                     </Table>
                   </div>
                 </Grid.Column>

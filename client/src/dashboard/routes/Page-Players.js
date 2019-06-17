@@ -21,7 +21,8 @@ import {
 
 import {
   Grid, Icon, Breadcrumb, Header, Form,
-  Table, Image, Flag, Button, Popup, Checkbox
+  Table, Image, Flag, Button, Popup, Checkbox,
+  Dimmer, Loader
 } from 'semantic-ui-react'
 
 import type {
@@ -420,73 +421,79 @@ class PlayersPage extends Component<Props, ComponentState> {
                           <Table.HeaderCell>Actions</Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
-                      <Table.Body>
-                        {players.map((player, index) => {
-                          const team: any = teams.find(val => val.teamNameShort === player.team)
-                          return (
-                            <Table.Row key={player._id}>
-                              <Table.Cell>
-                                <Header as='h4' image>
-                                  <Image
-                                    src={`/${player.imagePath === null ? 'static/default/default-player.png' : player.imagePath}`}
-                                    rounded
-                                    size='mini'
+                      {players.length === 0 ? (
+                        <Dimmer active inverted>
+                          <Loader inverted content='Loading Players' />
+                        </Dimmer>
+                      ) : (
+                        <Table.Body>
+                          {players.map((player, index) => {
+                            const team: any = teams.find(val => val.teamNameShort === player.team)
+                            return (
+                              <Table.Row key={player._id}>
+                                <Table.Cell>
+                                  <Header as='h4' image>
+                                    <Image
+                                      src={`/${player.imagePath === null ? 'static/default/default-player.png' : player.imagePath}`}
+                                      rounded
+                                      size='mini'
+                                    />
+                                    <Header.Content>
+                                      {player.gameName}
+                                      <Header.Subheader>{player.firstName} {player.lastName}</Header.Subheader>
+                                    </Header.Content>
+                                  </Header>
+                                </Table.Cell>
+                                <Table.Cell>
+                                  {team
+                                    ? <Image
+                                      src={`/${team.logoPath === null ? 'static/default/default-team.png' : team.logoPath}`}
+                                      avatar />
+                                    : null
+                                  }
+                                  <span>{player.team}</span>
+                                </Table.Cell>
+                                <Table.Cell>
+                                  <Flag name={player.country} />
+                                  <span>{player.country.toUpperCase()}</span>
+                                </Table.Cell>
+                                <Table.Cell>
+                                  {player.steam64id}
+                                </Table.Cell>
+                                <Table.Cell>
+                                  <Popup
+                                    inverted
+                                    trigger={<Button
+                                      primary
+                                      icon='eye'
+                                      onClick={this._openViewModal(index)}
+                                    />}
+                                    content='Show player'
                                   />
-                                  <Header.Content>
-                                    {player.gameName}
-                                    <Header.Subheader>{player.firstName} {player.lastName}</Header.Subheader>
-                                  </Header.Content>
-                                </Header>
-                              </Table.Cell>
-                              <Table.Cell>
-                                {team
-                                  ? <Image
-                                    src={`/${team.logoPath === null ? 'static/default/default-team.png' : team.logoPath}`}
-                                    avatar />
-                                  : null
-                                }
-                                <span>{player.team}</span>
-                              </Table.Cell>
-                              <Table.Cell>
-                                <Flag name={player.country} />
-                                <span>{player.country.toUpperCase()}</span>
-                              </Table.Cell>
-                              <Table.Cell>
-                                {player.steam64id}
-                              </Table.Cell>
-                              <Table.Cell>
-                                <Popup
-                                  inverted
-                                  trigger={<Button
-                                    primary
-                                    icon='eye'
-                                    onClick={this._openViewModal(index)}
-                                  />}
-                                  content='Show player'
-                                />
-                                <Popup
-                                  inverted
-                                  trigger={<Button
-                                    positive
-                                    icon='edit'
-                                    onClick={this._openEditModal(index)}
-                                  />}
-                                  content='Edit player'
-                                />
-                                <Popup
-                                  inverted
-                                  trigger={<Button
-                                    negative
-                                    icon='delete'
-                                    onClick={this._openConfirmModal(index)}
-                                  />}
-                                  content='Delete player'
-                                />
-                              </Table.Cell>
-                            </Table.Row>
-                          )
-                        })}
-                      </Table.Body>
+                                  <Popup
+                                    inverted
+                                    trigger={<Button
+                                      positive
+                                      icon='edit'
+                                      onClick={this._openEditModal(index)}
+                                    />}
+                                    content='Edit player'
+                                  />
+                                  <Popup
+                                    inverted
+                                    trigger={<Button
+                                      negative
+                                      icon='delete'
+                                      onClick={this._openConfirmModal(index)}
+                                    />}
+                                    content='Delete player'
+                                  />
+                                </Table.Cell>
+                              </Table.Row>
+                            )
+                          })}
+                        </Table.Body>
+                      )}
                     </Table>
                   </div>
                 </Grid.Column>

@@ -22,7 +22,7 @@ class App extends PureComponent<Props> {
     return (
       <Provider store={store}>
         <BrowserRouter>
-          <Suspense fallback={<div className='center'><div className='loader' /></div>}>
+          <Suspense fallback={<div className='center'><div className='custom-loader' /></div>}>
             <Switch>
               <Redirect from='/' to='/dashboard' exact />
               <Route path='/dashboard/' component={props => <DashboardMain />} />
