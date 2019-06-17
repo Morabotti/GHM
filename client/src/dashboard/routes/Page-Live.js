@@ -27,7 +27,9 @@ import {
   Table,
   Popup,
   Message,
-  List
+  List,
+  Dimmer,
+  Loader
 } from 'semantic-ui-react'
 
 type Props = {
@@ -40,7 +42,8 @@ type Props = {
   confirmModalOpen: boolean,
   selectedItem: number,
   confirmLiveModalOpen: boolean,
-  players: Array<Player>
+  players: Array<Player>,
+  loadingMatches: boolean
 }
 
 type ComponentState = {
@@ -164,7 +167,8 @@ class LivePage extends Component<Props, ComponentState> {
       matches,
       confirmModalOpen,
       confirmLiveModalOpen,
-      players
+      players,
+      loadingMatches
     } = this.props
 
     const { a, b } = this.state
@@ -303,9 +307,14 @@ class LivePage extends Component<Props, ComponentState> {
                       <Icon name='time' />
                       <Header.Content>Current matches ready</Header.Content>
                     </Header>
-                    {matches.length <= 0
-                      ? <Message info header='There is no matches' content='Add more matches down below' />
-                      : <Table basic='very' celled>
+                    { loadingMatches ? (
+                      <Dimmer active inverted>
+                        <Loader inverted content='Loading Matches' />
+                      </Dimmer>
+                    ) : matches.length <= 0 ? (
+                      <Message info header='There is no matches' content='Add more matches down below' />
+                    ) : (
+                      <Table basic='very' celled>
                         <Table.Header>
                           <Table.Row>
                             <Table.HeaderCell>Team A</Table.HeaderCell>
@@ -394,7 +403,7 @@ class LivePage extends Component<Props, ComponentState> {
                           })}
                         </Table.Body>
                       </Table>
-                    }
+                    )}
                   </div>
                 </Grid.Column>
               </Grid.Row>
@@ -503,7 +512,8 @@ const mapStateToProps = (state: State) => ({
   selectedId: state.dashboard.selectedId,
   selectedItem: state.dashboard.selectedItem,
   maps: state.dashboard.maps,
-  matches: state.dashboard.matches
+  matches: state.dashboard.matches,
+  loadingMatches: state.dashboard.loadingMatches
 })
 
 export default connect(mapStateToProps)(LivePage)

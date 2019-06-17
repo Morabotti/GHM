@@ -66,7 +66,8 @@ type Props = {
   confirmModalOpen: boolean,
   selectedItem: number,
   viewModalOpen: boolean,
-  editModalOpen: boolean
+  editModalOpen: boolean,
+  loadingTeams: boolean
 }
 
 type ComponentState = {
@@ -262,7 +263,8 @@ class TeamsPage extends Component<Props, ComponentState> {
       confirmModalOpen,
       players,
       viewModalOpen,
-      editModalOpen
+      editModalOpen,
+      loadingTeams
     } = this.props
 
     const {
@@ -400,7 +402,7 @@ class TeamsPage extends Component<Props, ComponentState> {
                           <Table.HeaderCell>Actions</Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
-                      {teams.length === 0 ? (
+                      {loadingTeams ? (
                         <Dimmer active inverted>
                           <Loader inverted content='Loading Teams' />
                         </Dimmer>
@@ -508,7 +510,8 @@ const mapStateToProps = (state: State) => ({
   viewModalOpen: state.dashboard.modals.viewModalOpen,
   editModalOpen: state.dashboard.modals.editModalOpen,
   confirmModalOpen: state.dashboard.modals.confirmModalOpen,
-  selectedItem: state.dashboard.selectedItem
+  selectedItem: state.dashboard.selectedItem,
+  loadingTeams: state.dashboard.loadingTeams
 })
 
 export default connect(mapStateToProps)(TeamsPage)

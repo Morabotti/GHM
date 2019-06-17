@@ -30,7 +30,10 @@ export type State = {
   matches: Array<Match>,
   selectedItem: number | null,
   selectedId: string | null,
-  modals: Modals
+  modals: Modals,
+  loadingTeams: boolean,
+  loadingPlayers: boolean,
+  loadingMatches: boolean
 }
 
 const modals: Modals = {
@@ -55,6 +58,9 @@ const getDefaultState = (): State => ({
   selectedId: null,
   maps: [],
   matches: [],
+  loadingTeams: true,
+  loadingPlayers: true,
+  loadingMatches: true,
   modals: modals,
   showNavbar: true
 })
@@ -87,12 +93,14 @@ export default function reducer (
     case 'set-players':
       return {
         ...state,
-        players: action.players
+        players: action.players,
+        loadingPlayers: false
       }
     case 'set-teams':
       return {
         ...state,
-        teams: action.teams
+        teams: action.teams,
+        loadingTeams: false
       }
     case 'set-updated-team':
       const newTeam = action.teams
@@ -161,7 +169,8 @@ export default function reducer (
     case 'set-matches':
       return {
         ...state,
-        matches: action.matches
+        matches: action.matches,
+        loadingMatches: false
       }
     case 'delete-player':
       return {

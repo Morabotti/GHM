@@ -51,7 +51,8 @@ type Props = {
   confirmModalOpen: boolean,
   selectedItem: number,
   viewModalOpen: boolean,
-  editModalOpen: boolean
+  editModalOpen: boolean,
+  loadingPlayers: boolean
 }
 
 type ComponentState = {
@@ -254,7 +255,7 @@ class PlayersPage extends Component<Props, ComponentState> {
     const {
       countries, teamsDropdown, players, teams,
       confirmModalOpen, viewModalOpen, selectedItem,
-      editModalOpen
+      editModalOpen, loadingPlayers
     } = this.props
 
     const {
@@ -421,7 +422,7 @@ class PlayersPage extends Component<Props, ComponentState> {
                           <Table.HeaderCell>Actions</Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
-                      {players.length === 0 ? (
+                      {loadingPlayers ? (
                         <Dimmer active inverted>
                           <Loader inverted content='Loading Players' />
                         </Dimmer>
@@ -543,7 +544,8 @@ const mapStateToProps = (state: State) => ({
   editModalOpen: state.dashboard.modals.editModalOpen,
   viewModalOpen: state.dashboard.modals.viewModalOpen,
   selectedItem: state.dashboard.selectedItem,
-  teamsDropdown: state.dashboard.teamsDropdown
+  teamsDropdown: state.dashboard.teamsDropdown,
+  loadingPlayers: state.dashboard.loadingPlayers
 })
 
 export default connect(mapStateToProps)(PlayersPage)
