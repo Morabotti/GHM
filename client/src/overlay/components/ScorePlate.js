@@ -3,9 +3,10 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
-import { ScoreAnnouncement } from './'
+import { ScoreAnnouncement, DefuseAnnouncement } from './'
 
 import type { State } from '../../types'
+import type { ConfigState } from '../../common/types'
 import type {
   PhaseCooldowns,
   MapState,
@@ -21,7 +22,8 @@ type Props = {
   teamConfiguration: StateTeamConfig,
   gameStateBomb: BombState,
   allPlayers: AllPlayers,
-  gameStateRound: Round
+  gameStateRound: Round,
+  config: ConfigState
 }
 
 type ComponentState = {
@@ -78,7 +80,8 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
       mapData: { round, team_ct, team_t },
       teamConfiguration: { teamA, teamB },
       gameStateBomb: { state, countdown },
-      gameStateRound
+      gameStateRound,
+      config
     } = this.props
 
     const {
@@ -102,15 +105,17 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
         : ''
 
     return (
-      <div className='score-top'>
+      <div className={`score-top ${config.useRoundedCorners ? 'rounded' : ''}`}>
         <div className='score-top-upper'>
           <div className={`score-area-container ${teamA.team}`}>
             <ScoreAnnouncement
               planted={plantedBomb}
-              defusing={state === 'defusing'}
               win={aTeamWin}
-              hasKit={defuserHasKit}
               eventText={eventText}
+            />
+            <DefuseAnnouncement
+              defusing={state === 'defusing'}
+              hasKit={defuserHasKit}
               countdown={Number(countdown)}
             />
             <div className='score-area area-left'>
@@ -171,10 +176,12 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
           <div className={`score-area-container ${teamB.team}`}>
             <ScoreAnnouncement
               planted={plantedBomb}
-              defusing={state === 'defusing'}
               win={bTeamWin}
-              hasKit={defuserHasKit}
               eventText={eventText}
+            />
+            <DefuseAnnouncement
+              defusing={state === 'defusing'}
+              hasKit={defuserHasKit}
               countdown={Number(countdown)}
             />
             <div className='score-area area-right'>
@@ -214,7 +221,8 @@ const mapStateToProps = (state: State) => ({
   teamConfiguration: state.overlay.teamConfiguration,
   gameStateRound: state.overlay.gameStateRound,
   allPlayers: state.overlay.gameStateAllPlayer,
-  gameStateBomb: state.overlay.gameStateBomb
+  gameStateBomb: state.overlay.gameStateBomb,
+  config: state.common.config
 })
 
 export default connect(mapStateToProps)(ScorePlate)

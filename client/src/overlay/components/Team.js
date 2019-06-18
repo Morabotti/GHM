@@ -9,24 +9,26 @@ import {
 } from '../lib/TeamCalculationGrade'
 
 import type { State } from '../../types'
+import type { ConfigState } from '../../common/types'
 import type { Teams, AllPlayers, PhaseCooldowns, TeamStats } from '../types'
 
 type Props = {
   team: Teams,
   allPlayers: AllPlayers,
   phaseData: PhaseCooldowns,
-  teamStats: TeamStats
+  teamStats: TeamStats,
+  config: ConfigState
 }
 
 class Team extends PureComponent<Props> {
   render () {
-    const { team, allPlayers, teamStats } = this.props
+    const { team, allPlayers, teamStats, config } = this.props
     const isOnStart = this.props.phaseData.phase === 'freezetime'
     const nadeGrade = calculateNadeGrade(teamStats[team].nades)
     const economyGrade = calculateEconomyGrade(teamStats[team].teamEconomy)
 
     return (
-      <div className={`team ${team}`}>
+      <div className={`team ${team} ${config.useRoundedCorners ? 'rounded' : ''}`}>
         <div className={`team-container ${isOnStart ? 'show' : ''}`}>
           <div className='team-info'>
             <div className='desc'>
@@ -79,6 +81,7 @@ class Team extends PureComponent<Props> {
               team={team}
               first={index === 0}
               last={index === 4}
+              flashed={allPlayers[player].state.flashed}
               showStats={isOnStart}
               name={allPlayers[player].name}
               weapons={allPlayers[player].weapons}
@@ -97,7 +100,8 @@ class Team extends PureComponent<Props> {
 const mapStateToProps = (state: State) => ({
   allPlayers: state.overlay.gameStateAllPlayer,
   phaseData: state.overlay.gameStatePhase,
-  teamStats: state.overlay.teamStats
+  teamStats: state.overlay.teamStats,
+  config: state.common.config
 })
 
 export default connect(mapStateToProps)(Team)

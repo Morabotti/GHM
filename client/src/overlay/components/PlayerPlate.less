@@ -30,6 +30,24 @@
     }
   }
 
+  &.rounded .grid{
+    .grid-upper{
+      border-radius: 20px 20px 0px 0px;
+    }
+
+    .grid-lower .grid-health-container .grid-player-image{
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+    }
+
+    .grid-lower .grid-health-container .grid-hp{
+      border-top-left-radius: 20px;
+    }
+
+    .grid-lower .grid-ammo{
+      border-top-right-radius: 20px;
+    }
+  }
 
   .grid{
     width: 720px;
@@ -39,11 +57,11 @@
     .grid-upper{
       margin-left: auto;
       margin-right: auto;
+      overflow: hidden;
       display: grid;
       grid-template-columns: 55px 1fr 55px; 
       width: 350px;
       background-color: @ui-background-main-dark;
-      border-radius: 20px 20px 0px 0px;
 
       .upper-team{
         display: flex;
@@ -85,8 +103,6 @@
           overflow: hidden;
           width: 100%;
           background-color: @ui-image-bg;
-          border-top-left-radius: 20px;
-          border-top-right-radius: 20px;
           z-index: -1;
           img{
             object-fit: contain;
@@ -95,7 +111,6 @@
         }
 
         .grid-hp {
-          border-top-left-radius: 20px;
           font-size: 26px;
           line-height: 48px;
           padding-top: 2px;
@@ -124,7 +139,6 @@
       }
 
       .grid-ammo {
-        border-top-right-radius: 20px;
         font-size: 26px;
         line-height: 48px;
         padding-top: 2px;

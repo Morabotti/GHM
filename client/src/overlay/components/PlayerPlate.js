@@ -64,7 +64,7 @@ class PlayerPlate extends PureComponent<Props> {
 
     if (isWatching) {
       return (
-        <div className={`player-plate ${team}`}>
+        <div className={`player-plate ${team} ${config.useRoundedCorners ? 'rounded' : ''}`}>
           <div className='grid'>
             <div className='grid-upper'>
               <div className='upper-team'>

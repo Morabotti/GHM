@@ -15,7 +15,8 @@ type Props = {
   stats: MatchStats,
   watching: boolean,
   observerSlot: string,
-  showStats: boolean
+  showStats: boolean,
+  flashed: number
 }
 
 type ComponentState = {
@@ -44,7 +45,8 @@ class Player extends PureComponent<Props, ComponentState> {
       team,
       watching,
       stats,
-      showStats
+      showStats,
+      flashed
     } = this.props
 
     const hasMainWeapon = Object.keys(weapons)
@@ -109,6 +111,14 @@ class Player extends PureComponent<Props, ComponentState> {
                 <div>{stats.deaths}</div>
               </div>
             </div>
+          </div>
+        </div>
+        <div className='flashed-container'>
+          <div className='flashed-wrap' style={{ opacity: flashed !== 0 ? (flashed / 255) - 0.1 : 0 }}>
+            <img
+              src='/static/utils/flashed.svg'
+              height='65px'
+            />
           </div>
         </div>
         <div className='player-container'>

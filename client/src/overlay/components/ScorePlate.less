@@ -5,6 +5,15 @@
   margin-left: 30px;
   margin-right: 30px;
 
+  &.rounded .score-top-upper{
+    .score-area-container .team-event-container{
+      border-radius: 0 0 20px 20px;
+    }
+    
+    .score-area.area-right .team-logo{ border-top-right-radius: 15px; }
+    .score-area.area-left .team-logo{ border-top-left-radius: 15px; }
+  }
+
   .score-top-upper{
     display: flex;
     height: 65px;
@@ -42,7 +51,6 @@
         z-index: -1;
         opacity: 0;
         margin-top: 0;
-        border-radius: 0 0 20px 20px;
         transition: opacity 150ms linear, margin 350ms linear;
 
         &.show-win{
@@ -90,15 +98,8 @@
         display: flex;
         width: 100%;
 
-        &.area-right{
-          flex-direction: row-reverse;
-          .team-logo{ border-top-right-radius: 15px; }
-        }
-
-        &.area-left{
-          flex-direction: row;
-          .team-logo{ border-top-left-radius: 15px; }
-        }
+        &.area-right{ flex-direction: row-reverse; }
+        &.area-left{ flex-direction: row; }
 
         .team-logo{
           width: 75px;
@@ -114,6 +115,7 @@
         }
 
         .team-name{
+          overflow: hidden;
           line-height: 65px;
           font-size: 30px;
           text-align: center;

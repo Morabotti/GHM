@@ -131,6 +131,15 @@ class ConfigPage extends Component<Props, PageState> {
                       </Accordion.Title>
                       <Accordion.Content active={activeIndex === 0}>
                         <Form>
+                          <div className='settings-group'>
+                            <Checkbox
+                              toggle
+                              label='Use rounded corners'
+                              name='useRoundedCorners'
+                              checked={configs.useRoundedCorners}
+                              onChange={this._onCheckboxChange}
+                            />
+                          </div>
                           <Header as='h3'>HUD Safezones</Header>
                           <Form.Field inline>
                             <label>Left (default 35px):</label>

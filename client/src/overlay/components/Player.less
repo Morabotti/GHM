@@ -2,7 +2,7 @@
 
 .team-player{
   display: grid;
-  grid-template-rows: 0 0 1fr 1fr;
+  grid-template-rows: 0 0 0 1fr 1fr;
   height: 65px;
   margin-top: 1.5px;
   margin-bottom: 1.5px;
@@ -31,6 +31,21 @@
       padding-left: 3px;
       width: 60px;
     }
+  }
+}
+
+.flashed-container{
+  position: relative;
+  .flashed-wrap{
+    transition: opacity 50ms;
+    opacity: 0;
+    z-index: -1;
+    height: 65px;
+    max-height: 65px;
+    width: 65px;
+    max-width: 65px;
+    position: absolute;
+    right: -75px;
   }
 }
 
@@ -237,15 +252,15 @@ img.holstered{
   filter: invert(20%) grayscale(100%) brightness(70%) contrast(4) drop-shadow(0px 0px 0.8px #000);
 }
 
-.team-player.first .player-container,
-.team-player.first .player-extra-stats-parent .player-extra-stats{
+.team.rounded .team-player.first .player-container,
+.team.rounded .team-player.first .player-extra-stats-parent .player-extra-stats{
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   overflow: hidden;
 }
 
-.team-player.last .player-area-lower,
-.team-player.last .player-extra-stats-parent .player-extra-stats{
+.team.rounded .team-player.last .player-area-lower,
+.team.rounded .team-player.last .player-extra-stats-parent .player-extra-stats{
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -332,6 +347,12 @@ img.holstered{
   background: -webkit-linear-gradient(right, @ui-background-light 0%,@ui-background-light-inv 60%);
 }
 
+// * FLASH EFFECT
+
+.overlay-right>.team>.team-player>.flashed-container>.flashed-wrap{
+  left: -75px;
+}
+
 // * EXTRA INFO
 .overlay-left>.team>.team-player>.player-extra-stats-parent>.player-extra-stats{
   right: 0;
@@ -347,6 +368,7 @@ img.holstered{
     justify-content: flex-end;
   }
 }
+
 .overlay-right>.team>.team-player>.player-extra-stats-parent>.player-extra-stats{
   left: 0;
   opacity: 0;

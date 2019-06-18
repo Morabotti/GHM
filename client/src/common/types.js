@@ -1,6 +1,7 @@
 // @flow
 
 export type ConfigState = {
+  useRoundedCorners: boolean,
   useRadar: boolean,
   playerSize: number,
   bombSize: number,
