@@ -11,7 +11,7 @@ import {
 } from './'
 
 import { setActiveMatch } from '../actions'
-import type { Dispatch, StateTeamConfig } from '../types'
+import type { Dispatch, StateTeamConfig, MapState } from '../types'
 import { getActiveMatch, subscribeToSocket } from '../client'
 
 import { deepEqual } from '../../dashboard/lib/helpers'
@@ -28,7 +28,8 @@ type Props = {
   dispatch: Dispatch,
   status: Status,
   teamConfiguration: StateTeamConfig,
-  config: ConfigState
+  config: ConfigState,
+  mapData: MapState
 }
 
 class Main extends PureComponent<Props> {
@@ -71,12 +72,15 @@ class Main extends PureComponent<Props> {
     const {
       teamConfiguration: { teamA, teamB },
       status,
-      config
+      config,
+      mapData
     } = this.props
 
     if (!status.clientSpectating || !status.gameOnline) {
       return <GameLoader showMessage status={status} />
     }
+
+    if (mapData.phase === 'gameover') return <React.Fragment />
 
     return (
       <div
@@ -125,7 +129,8 @@ class Main extends PureComponent<Props> {
 const mapStateToProps = (state: State) => ({
   status: state.common.status,
   teamConfiguration: state.overlay.teamConfiguration,
-  config: state.common.config
+  config: state.common.config,
+  mapData: state.overlay.gameStateMap
 })
 
 export default connect(mapStateToProps)(Main)

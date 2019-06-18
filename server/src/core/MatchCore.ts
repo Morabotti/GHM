@@ -2,20 +2,17 @@ import Player from '../models/Player'
 import Match from '../models/Match'
 import Team from '../models/Team'
 
-import { AllPlayers } from 'csgo-gsi-types'
-
-import {
-  dispatchSocket
-} from '../handler/SocketIo'
+import { dispatchSocket } from '../handler/SocketIo'
 
 import { Error } from 'mongoose'
 import {
   RefactoredMatch,
   RawMatch,
   RPlayer,
-  SOCKET,
   CustomAllPlayer
 } from '../types'
+
+import { SOCKET } from '../enum'
 
 const TIMEOUT_TEAMCHANGE = 5000
 

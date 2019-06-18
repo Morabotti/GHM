@@ -114,7 +114,7 @@ class Player extends PureComponent<Props, ComponentState> {
           </div>
         </div>
         <div className='flashed-container'>
-          <div className='flashed-wrap' style={{ opacity: flashed !== 0 ? (flashed / 255) - 0.1 : 0 }}>
+          <div className='flashed-wrap' style={{ opacity: flashed !== 0 && !isDead ? (flashed / 255) - 0.1 : 0 }}>
             <img
               src='/static/utils/flashed.svg'
               height='65px'

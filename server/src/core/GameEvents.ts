@@ -1,5 +1,6 @@
 
-import { GameState, EVENT, PHASE, SOCKET } from '../types'
+import { GameState } from '../types'
+import { EVENT, PHASE, SOCKET } from '../enum'
 import { dispatchSocket } from '../handler/SocketIo'
 
 const dispatchEvent = (event: EVENT, ...payload: any) => {

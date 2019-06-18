@@ -6,7 +6,8 @@ import {
   Round,
 } from 'csgo-gsi-types'
 
-import { SOCKET, GameState, CustomAllPlayer, CustomBomb } from '../types'
+import { GameState, CustomAllPlayer, CustomBomb } from '../types'
+import { SOCKET } from '../enum'
 import { analyzeEvents } from './GameEvents'
 import { dispatchSocket } from '../handler/SocketIo'
 import gameStats from './GameStats'

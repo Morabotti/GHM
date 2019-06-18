@@ -2,7 +2,8 @@ import * as express from 'express'
 import * as bodyParser from 'body-parser'
 
 import { Request, Response } from 'express'
-import { Countries, Maps, Configs, SOCKET } from '../types'
+import { Countries, Maps, Configs } from '../types'
+import { SOCKET } from '../enum'
 
 import { setConfig, getConfig } from '../core/ConfigCore'
 import { dispatchSocket } from '../handler/SocketIo'

@@ -1,6 +1,6 @@
 import { dispatchSocket } from '../handler/SocketIo'
 import { deepEqual } from '../utils/helpers'
-import { SOCKET } from '../types'
+import { SOCKET } from '../enum'
 
 import {
   TeamStats,

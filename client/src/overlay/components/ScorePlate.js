@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
-import { ScoreAnnouncement, DefuseAnnouncement } from './'
+import { ScoreAnnouncement, DefuseAnnouncement, ScoreTime } from './'
 
 import type { State } from '../../types'
 import type { ConfigState } from '../../common/types'
@@ -32,7 +32,6 @@ type ComponentState = {
   defuserHasKit: boolean
 }
 
-const BOMB_TIMER = 40
 const EVENT_TIMEOUT = 5000
 
 class ScorePlate extends PureComponent<Props, ComponentState> {
@@ -69,10 +68,6 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
   }
 
   _removeBombNotify = () => this.setState({ plantedBomb: false })
-
-  sectostr (time) {
-    return ~~(time / 60) + ':' + (time % 60 < 10 ? '0' : '') + time % 60
-  }
 
   render () {
     const {
@@ -144,34 +139,16 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
             </div>
           </div>
           <div className='score-time'>
-            {showBomb ? (
-              <React.Fragment>
-                <div className={`bomb-timer ${stopBombEffects ? state : ''}`} />
-                <div
-                  className={`bomb-wrapper ${stopBombEffects ? state : ''}`}
-                  style={{
-                    animationDuration: `${
-                      stopBombEffects
-                        ? 0
-                        : ((displayBomb
-                          ? bombTimerLeft
-                          : phase_ends_in) / BOMB_TIMER) + 0.35}s` }}>
-                  <img src='/static/utils/bomb.svg' className='bomb-icon' />
-                </div>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                <div className={`time ${(phase === 'live' && phase_ends_in <= 10) ? 'text-red' : ''}`}>
-                  {phase === 'live' || phase === 'freezetime'
-                    ? this.sectostr(Math.trunc(phase_ends_in) + 1)
-                    : phase === 'over' ? '0:00' : null
-                  }
-                </div>
-                <div className='round'>
-                  {phase === 'warmup' ? 'WARMUP' : `Round ${round + 1}/30`}
-                </div>
-              </React.Fragment>
-            )}
+            <ScoreTime
+              showBomb={showBomb}
+              useBombEffects={stopBombEffects}
+              bombState={state}
+              bombActive={displayBomb}
+              bombTimeLeft={bombTimerLeft}
+              phase={phase}
+              phaseTimer={phase_ends_in}
+              round={round}
+            />
           </div>
           <div className={`score-area-container ${teamB.team}`}>
             <ScoreAnnouncement
