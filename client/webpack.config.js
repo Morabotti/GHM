@@ -7,18 +7,20 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 module.exports = {
   mode: 'production',
   entry: [
-    './src/index.js'
+    './src/index.tsx'
   ],
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
+  },
   output: {
     filename: 'bundle.[hash].js',
-    path: path.resolve(__dirname, 'build'),
-    publicPath: '/'
+    path: path.resolve(__dirname, 'build')
   },
   module: {
     rules: [
       {
         exclude: /node_modules/,
-        test: /\.js$/,
+        test: /\.[j|t]sx?$/,
         loader: 'babel-loader',
         options: {
           compact: true
@@ -44,7 +46,9 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(['build/*']),
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: ['build/*']
+    }),
     new HtmlWebpackPlugin({
       inject: true,
       hash: true,

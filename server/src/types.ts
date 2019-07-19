@@ -1,4 +1,4 @@
-import { Merge } from "ts-essentials";
+import { Merge } from 'ts-essentials'
 import { GameStateSpectating, Bomb, PlayerList } from 'csgo-gsi-types'
 
 export interface StatsCalculation {

@@ -2,6 +2,7 @@
 *build
 *dist
 *.env
+*.vscode
 
 server/api-struct
 server/static/uploads

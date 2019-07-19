@@ -1,5 +1,3 @@
-'use strict'
-
 const path = require('path')
 const fs = require('fs')
 const webpack = require('webpack')
@@ -14,8 +12,11 @@ module.exports = {
   entry: {
     'js': [
       require.resolve('react-hot-loader/patch'),
-      resolve('src/index.js')
+      resolve('src/index.tsx')
     ]
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
   },
   output: {
     pathinfo: true,
@@ -26,7 +27,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.[j|t]sx?$/,
         exclude: /node_modules/,
         loader: require.resolve('babel-loader'),
         options: {
@@ -35,19 +36,19 @@ module.exports = {
         }
       },
       {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
-      },
-      {
         test: /\.less$/,
         use: [
           'style-loader',
           'css-loader',
           'less-loader',
           'import-glob'
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
         ]
       },
       {
@@ -78,8 +79,7 @@ module.exports = {
       }
     },
     port: 8082,
-    host: 'localhost',
-    contentBase: resolve('/build'),
+    contentBase: resolve('./build'),
     hot: true,
     disableHostCheck: true,
     historyApiFallback: true

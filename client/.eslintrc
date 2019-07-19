@@ -1,0 +1,16 @@
+{
+  "extends": "jubic-typescript",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "camelcase": [0, {"properties": "never"}],
+    "@typescript-eslint/camelcase": [0, { "properties": "never" }],
+    "@typescript-eslint/class-name-casing": [0, { "properties": "never" }],
+    "react/no-did-update-set-state": 0,
+  },
+  "globals": {
+    "fetch": false,
+    "FormData": false
+  }
+}
