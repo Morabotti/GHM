@@ -1,7 +1,0 @@
-{
-  "extends": "tslint-config-standard",
-  "rules": {
-    "no-duplicate-imports": false,
-    "curly": false
-  }
-}

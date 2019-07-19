@@ -15,7 +15,9 @@
     "build": "tsc",
     "build:start": "tsc && node dist/server.js",
     "production": "cd ../client & npm run build && cd ../server & npm run build:start",
-    "server": "node dist/server.js"
+    "server": "node dist/server.js",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "format": "eslint \"src/**/*.{ts,tsx}\" --fix"
   },
   "nodemonConfig": {
     "ignore": [
@@ -34,14 +36,16 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "dotenv": "^7.0.0",
-    "eslint": "^5.16.0",
-    "eslint-plugin-import": "^2.16.0",
     "express": "^4.16.4",
     "jsonfile": "^5.0.0",
     "moment": "^2.24.0",
     "mongoose": "^5.5.4",
     "multer": "^1.4.1",
     "socket.io": "^2.2.0",
+    "eslint": "5.16.0",
+    "eslint-config-jubic-typescript": "1.0.0",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-node": "^9.1.0",
     "ts-node": "^8.0.3",
     "typescript": "^3.3.3333"
   },
@@ -57,7 +61,6 @@
     "@types/socket.io": "^2.1.2",
     "csgo-gsi-types": "^1.0.5",
     "nodemon": "^1.18.9",
-    "ts-essentials": "^2.0.7",
-    "tslint-config-standard": "^8.0.1"
+    "ts-essentials": "^2.0.7"
   }
 }

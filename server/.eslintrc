@@ -1,0 +1,12 @@
+{
+  "extends": "jubic-typescript",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "camelcase": [0, {"properties": "never"}],
+    "@typescript-eslint/camelcase": [0, { "properties": "never" }],
+    "import/no-duplicates": 0,
+    "@typescript-eslint/class-name-casing": 0
+  }
+}

@@ -13,7 +13,7 @@ class GameStats {
   teamTerrorist: TeamStats
   teamCounterTerrorist: TeamStats
 
-  constructor() {
+  constructor () {
     this.teamTerrorist = this.initDefault()
     this.teamCounterTerrorist = this.initDefault()
   }
@@ -29,14 +29,14 @@ class GameStats {
   })
 
   checkIfUpdated = (state: GameState) => {
-    if(state.allplayers === undefined) return
+    if (state.allplayers === undefined) return
 
     const stats: StatsCalculation = this.calculateStats(state)
     const oldStats: StatsCalculation = {
       T: this.getTeamStats('T'),
       CT: this.getTeamStats('CT')
     }
-    
+
     const test = deepEqual(stats, oldStats)
     if (!test) {
       this.teamCounterTerrorist = stats.CT
@@ -67,7 +67,7 @@ class GameStats {
         .filter(weapon => players[player].weapons[weapon].type === 'Grenade')
         .map(grenade => {
           const nade = user.weapons[grenade]
-          switch(nade.name) {
+          switch (nade.name) {
             case 'weapon_flashbang':
               stats = {
                 ...stats,
@@ -130,7 +130,7 @@ class GameStats {
               break
           }
         }
-      )
+        )
     })
     return stats
   }
@@ -138,7 +138,8 @@ class GameStats {
   getTeamStats = (team: TeamType) => {
     if (team === 'CT') {
       return this.teamCounterTerrorist
-    } else {
+    }
+    else {
       return this.teamTerrorist
     }
   }

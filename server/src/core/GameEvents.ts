@@ -6,7 +6,7 @@ import { dispatchSocket } from '../handler/SocketIo'
 const dispatchEvent = (event: EVENT, ...payload: any) => {
   dispatchSocket(
     SOCKET.EVENTS,
-    {event, payload}
+    { event, payload }
   )
 }
 
@@ -15,7 +15,7 @@ export const analyzeEvents = (state: GameState) => {
   if (state.previously.map !== undefined) {
     const { map } = state.previously
     if (map.name !== undefined) {
-      dispatchEvent(EVENT.MAP_CHANGED, {data: state.map.name})
+      dispatchEvent(EVENT.MAP_CHANGED, { data: state.map.name })
     }
   }
 
@@ -23,13 +23,14 @@ export const analyzeEvents = (state: GameState) => {
   if (state.previously.phase_countdowns !== undefined) {
     const { phase_countdowns } = state.previously
     if (phase_countdowns.phase !== undefined) {
-      switch(phase_countdowns.phase) {
+      switch (phase_countdowns.phase) {
         case PHASE.FREEZETIME:
           dispatchEvent(EVENT.FREEZETIME_END)
           break
         case PHASE.OVER:
-          if(state.phase_countdowns.phase === PHASE.FREEZETIME)
+          if (state.phase_countdowns.phase === PHASE.FREEZETIME) {
             dispatchEvent(EVENT.FREEZETIME_START)
+          }
           break
       }
     }

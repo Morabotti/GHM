@@ -22,7 +22,7 @@ const teamSchema = new mongoose.Schema<TeamSchema>({
   },
   logoPath: {
     type: String,
-    required: false,
+    required: false
   }
 })
 

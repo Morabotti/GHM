@@ -1,14 +1,14 @@
 import * as multer from 'multer'
 import { Request } from 'express'
-import { getFileExtension } from '../utils/files';
+import { getFileExtension } from '../utils/files'
 
 // * TEAMS
 const storageTeams = multer.diskStorage({
-  destination: function(req, file, cb) {
+  destination: function (req, file, cb) {
     cb(null, './static/uploads/teams/')
   },
-  filename: function(req: Request, file, cb) {
-    switch(getFileExtension(file.originalname)) {
+  filename: function (req: Request, file, cb) {
+    switch (getFileExtension(file.originalname)) {
       case 'png':
         cb(null, `${req.body.teamNameShort}.png`)
         break
@@ -26,28 +26,32 @@ const storageTeams = multer.diskStorage({
 
 const fileFilterTeams = (req: Request, file, cb) => {
   const logo = req.body.hasLogo
-  if(logo === 'true' || logo === 'false') {
+  if (logo === 'true' || logo === 'false') {
     const hasLogo = JSON.parse(logo)
     if (hasLogo) {
-      if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/svg+xml')
+      if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/svg+xml') {
         cb(null, true)
-      else
+      }
+      else {
         cb(null, false)
-    } else {
+      }
+    }
+    else {
       cb(null, false)
     }
-  } else {
+  }
+  else {
     cb('Invalied Value: hasLogo', false)
   }
 }
 
 // * PLAYERS
 const storagePlayers = multer.diskStorage({
-  destination: function(req, file, cb) {
+  destination: function (req, file, cb) {
     cb(null, './static/uploads/players/')
   },
-  filename: function(req: Request, file, cb) {
-    switch(getFileExtension(file.originalname)){
+  filename: function (req: Request, file, cb) {
+    switch (getFileExtension(file.originalname)) {
       case 'png':
         cb(null, `${req.body.gameName}_${req.body.steam64id}.png`)
         break
@@ -63,18 +67,21 @@ const storagePlayers = multer.diskStorage({
 const fileFilterPlayers = (req: Request, file, cb) => {
   const image = req.body.hasImage
   const steam64id = req.body.steam64id
-  if(image === 'true' || image === 'false' || steam64id !== undefined) {
+  if (image === 'true' || image === 'false' || steam64id !== undefined) {
     const hasImage = JSON.parse(image)
     if (hasImage) {
       if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg') {
         cb(null, true)
-      } else {
+      }
+      else {
         cb(null, false)
       }
-    } else {
+    }
+    else {
       cb(null, false)
     }
-  } else {
+  }
+  else {
     cb('Invalied Value: hasImage', false)
   }
 }

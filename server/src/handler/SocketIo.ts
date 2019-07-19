@@ -1,6 +1,6 @@
 import * as SocketIO from 'socket.io'
 
-import { SOCKET } from '../enum';
+import { SOCKET } from '../enum'
 
 import config from '../config'
 

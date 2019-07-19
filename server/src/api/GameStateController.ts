@@ -13,41 +13,43 @@ router.use(bodyParser.json())
 
 router.post('/update', (req: Request, res: Response) => {
   const data = req.body
-  if (data === null) 
+  if (data === null) {
     return res
-        .status(401)
-        .send({message: 'Data not sent'})
+      .status(401)
+      .send({ message: 'Data not sent' })
+  }
 
   gameState.handleRequest(data)
   return res
-      .sendStatus(200)
+    .sendStatus(200)
 })
 
 router.get('/online', (req: Request, res: Response) => {
   return res
-      .status(200)
-      .send(gameState.getCurrentStatus())
+    .status(200)
+    .send(gameState.getCurrentStatus())
 })
 
 router.get('/', (req: Request, res: Response) => {
   return res
-      .status(200)
-      .send(gameState.getGameState())
+    .status(200)
+    .send(gameState.getGameState())
 })
 
 router.get('/overlay/init', (req: Request, res: Response) => {
   const ok = gameState.checkIfHasData()
-  
+
   if (ok) {
     gameState.sendLatestDispatch()
     gameStats.sendLatestDispatch()
     return res
-        .status(200)
-        .send({message: 'Data was found'})
-  } else {
+      .status(200)
+      .send({ message: 'Data was found' })
+  }
+  else {
     return res
-        .status(404)
-        .send({message: 'Data was not found'})
+      .status(404)
+      .send({ message: 'Data was not found' })
   }
 })
 

@@ -35,7 +35,7 @@ const playerSchema = new mongoose.Schema<PlayerSchema>({
   imagePath: {
     type: String,
     required: false
-  },
+  }
 })
 
 mongoose.model('players', playerSchema)

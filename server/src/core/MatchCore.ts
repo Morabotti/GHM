@@ -58,26 +58,31 @@ class MatchCore {
 
     Object.keys(teamAPlayers).forEach((value, index) => {
       if (allplayers[value] !== undefined) {
-        if(allplayers[value].team === teamATeam)
+        if (allplayers[value].team === teamATeam) {
           aOnSame++
-          
-        else if(allplayers[value].team === teamBTeam)
+        }
+
+        else if (allplayers[value].team === teamBTeam) {
           aOnDifferent++
+        }
       }
     })
 
     Object.keys(teamBPlayers).forEach((value, index) => {
       if (allplayers[value] !== undefined) {
-        if(allplayers[value].team === teamBTeam)
+        if (allplayers[value].team === teamBTeam) {
           bOnSame++
+        }
 
-        else if(allplayers[value].team === teamATeam)
+        else if (allplayers[value].team === teamATeam) {
           bOnDifferent++
+        }
       }
     })
 
-    if(aOnDifferent >= 3 || bOnDifferent >= 3)
+    if (aOnDifferent >= 3 || bOnDifferent >= 3) {
       return true
+    }
 
     return false
   }
@@ -86,11 +91,11 @@ class MatchCore {
     let teamAPlayers = { }
     let teamBPlayers = { }
 
-    const pTeamA = data.teams.find((val: any) => val._id == data.match.teamA )
-    const pTeamB = data.teams.find((val: any) => val._id == data.match.teamB )
+    const pTeamA = data.teams.find((val: any) => val._id == data.match.teamA)
+    const pTeamB = data.teams.find((val: any) => val._id == data.match.teamB)
 
     if (pTeamA === undefined || pTeamB === undefined) {
-      console.log("No team found!")
+      console.log('No team found!')
       return null
     }
 
@@ -105,10 +110,12 @@ class MatchCore {
         imagePath: player.hasImage ? player.imagePath : null
       }
 
-      if(player.team === pTeamA.teamNameShort)
+      if (player.team === pTeamA.teamNameShort) {
         teamAPlayers[player.steam64id] = playerData
-      else
+      }
+      else {
         teamBPlayers[player.steam64id] = playerData
+      }
     })
 
     const teamA = {
@@ -126,8 +133,8 @@ class MatchCore {
       country: pTeamB.country,
       players: teamBPlayers
     }
-    
-    this.refactored = {teamA, teamB, players: { ...teamAPlayers, ...teamBPlayers }}
+
+    this.refactored = { teamA, teamB, players: { ...teamAPlayers, ...teamBPlayers } }
     return this.refactored
   }
 
@@ -135,38 +142,39 @@ class MatchCore {
     return new Promise((resolve, reject) => {
       Match.findById(id, (err: Error, match: any) => {
         if (err) return reject('There was a problem finding the match.')
-    
+
         if (match.isLive) {
           Match.findByIdAndUpdate(
             id,
-            {$set: {isLive: false}},
+            { $set: { isLive: false } },
             (err: Error, newMatch: any) => {
               if (err) return reject('There was a problem updating the match.')
 
               this.dispatchActive()
 
               return resolve(newMatch)
-          })
-        } else {
+            })
+        }
+        else {
           Match.updateMany(
-            {isLive: true},
-            {$set: {isLive: false}},
-            {multi: true},
+            { isLive: true },
+            { $set: { isLive: false } },
+            { multi: true },
             (err: Error, match: any) => {
               if (err) return reject('There was problem replacing players new team')
 
               Match.findByIdAndUpdate(
                 id,
-                {$set: {isLive: true}},
+                { $set: { isLive: true } },
                 { new: true },
                 (err: Error, newMatch: any) => {
-                if (err) return reject('There was a problem updating the match.')
+                  if (err) return reject('There was a problem updating the match.')
 
-                this.dispatchActive()
+                  this.dispatchActive()
 
-                return resolve(newMatch)
+                  return resolve(newMatch)
+                })
             })
-          })
         }
       })
     })
@@ -176,13 +184,14 @@ class MatchCore {
     try {
       const activeData = await matchCore._getActiveMatchData()
       const refactored = matchCore.filterActiveMatchData(activeData)
-      console.log("Is Updated")
+      console.log('Is Updated')
 
       dispatchSocket(
         SOCKET.GAME_CONFIG,
         refactored
       )
-    } catch(e) {
+    }
+    catch (e) {
       return console.log(e)
     }
   }
@@ -200,36 +209,36 @@ class MatchCore {
         if (err) return reject('There was a problem finding the match.')
 
         Match.findByIdAndUpdate(match._id,
-          {$set: {teamA: match.teamB, teamB: match.teamA}},
+          { $set: { teamA: match.teamB, teamB: match.teamA } },
           { new: true }, (err: Error, newMatch: any) => {
             if (err) return reject('There was a problem switching the sides.')
 
             return resolve(newMatch)
-        })
+          })
       })
     })
   }
 
-  _getActiveMatchData = ():Promise<RawMatch> => {
+  _getActiveMatchData = (): Promise<RawMatch> => {
     return new Promise((resolve, reject) => {
       Match.findOne({ isLive: true }, (err: Error, match: any) => {
         if (err) reject(err)
-  
+
         if (match === null) {
           this.dispatchActiveDelete()
           return reject('Clearing match.')
         }
 
-        Team.find({'_id': {$in: [
+        Team.find({ '_id': { $in: [
           match.teamA,
           match.teamB
-        ]}}, (err: Error, teams: any) => {
+        ] } }, (err: Error, teams: any) => {
           if (err) reject(err)
-  
-          Player.find({$or:[ {team: teams[0].teamNameShort},{team: teams[1].teamNameShort} ]}, (err: Error, players: any) => {
+
+          Player.find({ $or: [ { team: teams[0].teamNameShort }, { team: teams[1].teamNameShort } ] }, (err: Error, players: any) => {
             if (err) reject(err)
-  
-            this.raw = {match, teams, players}
+
+            this.raw = { match, teams, players }
             resolve(this.raw)
           })
         })
