@@ -2,12 +2,13 @@ import * as mongoose from 'mongoose'
 import { TeamSchema } from '../types'
 
 const teamSchema = new mongoose.Schema<TeamSchema>({
-  teamNameShort: {
+  nameShort: {
     type: String,
     unique: true,
+    index: true,
     required: true
   },
-  teamNameLong: {
+  nameLong: {
     type: String,
     required: false
   },

@@ -101,7 +101,7 @@ class MatchCore {
 
     data.players.map((player: RPlayer) => {
       const playerData = {
-        teamName: player.team,
+        name: player.team,
         firstName: player.firstName,
         lastName: player.lastName,
         gameName: player.gameName,
@@ -110,7 +110,7 @@ class MatchCore {
         imagePath: player.hasImage ? player.imagePath : null
       }
 
-      if (player.team === pTeamA.teamNameShort) {
+      if (player.team === pTeamA.nameShort) {
         teamAPlayers[player.steam64id] = playerData
       }
       else {
@@ -120,7 +120,7 @@ class MatchCore {
 
     const teamA = {
       team: 'CT',
-      customName: pTeamA.teamNameShort,
+      customName: pTeamA.nameShort,
       customLogo: pTeamA.hasLogo ? pTeamA.logoPath : null,
       country: pTeamA.country,
       players: teamAPlayers
@@ -128,7 +128,7 @@ class MatchCore {
 
     const teamB = {
       team: 'T',
-      customName: pTeamB.teamNameShort,
+      customName: pTeamB.nameShort,
       customLogo: pTeamB.hasLogo ? pTeamB.logoPath : null,
       country: pTeamB.country,
       players: teamBPlayers
@@ -235,7 +235,7 @@ class MatchCore {
         ] } }, (err: Error, teams: any) => {
           if (err) reject(err)
 
-          Player.find({ $or: [ { team: teams[0].teamNameShort }, { team: teams[1].teamNameShort } ] }, (err: Error, players: any) => {
+          Player.find({ $or: [ { team: teams[0].nameShort }, { team: teams[1].nameShort } ] }, (err: Error, players: any) => {
             if (err) reject(err)
 
             this.raw = { match, teams, players }

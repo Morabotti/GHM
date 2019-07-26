@@ -2,6 +2,14 @@ import SideBar from './SideBar'
 import TopBar from './TopBar'
 import ConfirmSnackBar from './ConfirmSnackBar'
 import SideBarItem from './SideBarItem'
+import NewPlayerForm from './NewPlayerForm'
+import PlayerTableRow from './PlayerTableRow'
+import NewTeamForm from './NewTeamForm'
+import TeamTableRow from './TeamTableRow'
+import Layout from './Layout'
+import MatchTableRow from './MatchTableRow'
+import NewMatchTeam from './NewMatchTeam'
+import ActiveMatch from './ActiveMatch'
 
 import {
   SubHeaderWithIcon
@@ -15,12 +23,18 @@ import {
 
 import {
   ConfirmModal,
-  ViewPlayerModal,
-  ViewTeamModal,
-  EditTeamModal,
-  EditPlayerModal,
   TeamSelectionModal
 } from './Modals'
+
+import {
+  ViewTeamModal,
+  EditTeamModal
+} from './TeamModals'
+
+import {
+  ViewPlayerModal,
+  EditPlayerModal
+} from './PlayerModals'
 
 export {
   SideBar,
@@ -36,5 +50,13 @@ export {
   EditPlayerModal,
   TeamSelectionModal,
   ConfirmSnackBar,
-  SideBarItem
+  SideBarItem,
+  NewPlayerForm,
+  PlayerTableRow,
+  NewTeamForm,
+  TeamTableRow,
+  Layout,
+  MatchTableRow,
+  NewMatchTeam,
+  ActiveMatch
 }

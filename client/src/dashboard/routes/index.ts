@@ -4,6 +4,7 @@ import PlayersPage from './Page-Players'
 import ConfigPage from './Page-Config'
 import LivePage from './Page-Live'
 import SettingsPage from './Page-Settings'
+import OverlayPage from './Page-Overlay'
 
 export {
   HomePage,
@@ -11,5 +12,6 @@ export {
   PlayersPage,
   LivePage,
   ConfigPage,
-  SettingsPage
+  SettingsPage,
+  OverlayPage
 }

@@ -6,26 +6,7 @@ export type Action = _Action
 
 export type Dispatch = (action: Action | CommonAction) => void
 
-export interface Match {
-  _id?: string,
-  teamA: string,
-  teamB: string,
-  isLive: boolean
-}
-
-export interface ConnectionButtonType {
-  clientConnection: boolean,
-  clientSpectating: boolean,
-  serverConnection: boolean,
-  overlayConnection: boolean
-}
-
-export interface Country {
-  key: string,
-  value: string,
-  flag: string,
-  text: string
-}
+export type HeaderSizes = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'h7' | 'h8'
 
 export interface ListElement {
   key: string,
@@ -34,13 +15,97 @@ export interface ListElement {
   image: { avatar: boolean, src: string }
 }
 
-export interface Team {
-  hasLogo: boolean,
+export interface Match {
+  _id?: string,
+  teamA: string,
+  teamB: string,
+  isLive: boolean
+}
+
+export interface TeamList {
   _id: string,
-  teamNameShort: string,
-  teamNameLong: string,
+  nameShort: string,
+  nameLong: string,
   country: FlagNameValues,
+  hasLogo: boolean,
   logoPath: string
+}
+
+export interface MatchList {
+  _id: string,
+  teamA: TeamList,
+  teamB: TeamList,
+  isLive: boolean
+}
+
+export interface PlayerList {
+  _id: string,
+  steam64ID: string,
+  firstName: string,
+  lastName: string,
+  gameName: string,
+  country: FlagNameValues,
+  team: string,
+  hasImage: boolean,
+  imagePath: string
+}
+
+export interface TeamSpecific {
+  _id: string,
+  nameLong: string,
+  nameShort: string,
+  country: FlagNameValues,
+  hasLogo: boolean,
+  logoPath: string,
+  players: PlayerList[]
+}
+
+export interface PlayerSpecific {
+  _id: string,
+  steam64ID: string,
+  firstName: string,
+  lastName: string,
+  gameName: string,
+  country: FlagNameValues,
+  team: TeamList,
+  hasImage: boolean,
+  imagePath: string
+}
+
+export interface UpdatePlayer {
+  steam64ID: string,
+  firstName: string,
+  lastName: string,
+  gameName: string,
+  country: string,
+  team: string,
+  hasImage: boolean,
+  image: File | null
+}
+
+export interface UpdateTeam {
+  nameShort: string,
+  nameLong: string,
+  country: string,
+  hasLogo: boolean,
+  logo: File | null
+}
+
+export interface UpdateTeamInfo {
+  nameShort: string,
+  nameLong: string,
+  country: string,
+  hasLogo: boolean
+}
+
+export interface UpdatePlayerInfo {
+  steam64ID: string,
+  firstName: string,
+  lastName: string,
+  gameName: string,
+  country: string,
+  team: string,
+  hasImage: boolean
 }
 
 export interface NewTeam {
@@ -53,64 +118,36 @@ export interface NewTeam {
   newLogo: File | null
 }
 
-export interface NewMatch {
-  teamA: string,
-  teamB: string
-}
-
-export interface UpdateTeamWithNoImage {
-  teamNameShort: string,
-  teamNameLong: string,
-  country: string,
-  hasLogo: boolean,
-  logoPath: string
-}
-
-export interface UpdatePlayerNoImage {
-  steam64id: string,
-  firstName: string,
-  lastName: string,
-  gameName: string,
-  country: string,
-  team: string,
-  hasImage: boolean
-}
-
 export interface NewPlayer {
   firstName: string,
   lastName: string,
   gameName: string,
   team: string,
   country: string,
-  steam64Id: string,
+  steam64ID: string,
   hasImage: boolean,
   imagePath: string,
   hasNewImage: boolean,
   newImage: null | File
 }
 
-export interface Player {
-  hasImage: boolean,
+export interface NewMatch {
+  teamA: TeamList,
+  teamB: TeamList
+}
+
+export interface ActiveMatchResponse {
   _id: string,
-  firstName: string,
-  lastName: string,
-  gameName: string,
-  country: FlagNameValues,
-  steam64id: string,
-  team: string,
-  imagePath: string
+  teamA: TeamList,
+  teamB: TeamList,
+  teamAPlayers: PlayerList[],
+  teamBPlayers: PlayerList[],
+  isLive: boolean
 }
 
-export type Players = Player[]
-
-export type Teams = Team[]
-
-export interface Countries {
-  countries: Country[]
+export interface MatchSpecific {
+  _id: string,
+  teamA: TeamSpecific,
+  teamB: TeamSpecific,
+  isLive: boolean
 }
-
-export interface Maps {
-  maps: string[]
-}
-
-export type HeaderSizes = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'h7' | 'h8'

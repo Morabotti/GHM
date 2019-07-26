@@ -58,6 +58,7 @@ GHM is far from done. There are dozen of features which would fit perfectly, but
 * Better error handling to forms in dashboard
 * HLTV integration to dashboard. Maybe user could link hltv profile into form and it fills automatically?
 * Better match setup => option for bo1/bo3/bo5 with map data and map vetos?
+* Overhaul server structures => Create consistent server structure with strong types.
 
 Here was just a few. Im open for new ideas.
 

@@ -2,7 +2,7 @@ import * as express from 'express'
 import * as bodyParser from 'body-parser'
 
 import { Request, Response } from 'express'
-import { Error } from 'mongoose'
+import { Error, Types } from 'mongoose'
 
 import { uploadPlayerImages } from '../handler/Multer'
 import Player from '../models/Player'
@@ -14,17 +14,17 @@ router.use(bodyParser.urlencoded({ extended: false }))
 router.use(bodyParser.json())
 
 router.post('/', uploadPlayerImages.single('image'), (req: Request, res: Response) => {
-  const { firstName, lastName, gameName, steam64id, team, hasImage } = req.body
+  const { firstName, lastName, gameName, steam64ID, team, hasImage } = req.body
   const country = req.body.country === undefined ? 'eu' : req.body.country
   const isImage = hasImage === 'true'
 
   Player.create({
-    steam64id: steam64id,
-    firstName: firstName,
-    lastName: lastName,
-    gameName: gameName,
-    country: country,
-    team: team,
+    steam64ID,
+    firstName,
+    lastName,
+    gameName,
+    country,
+    team,
     hasImage: isImage,
     imagePath: isImage ? req.file.path : null
   }, (err: Error, player: any) => {
@@ -52,20 +52,45 @@ router.get('/', (req: Request, res: Response) => {
 })
 
 router.get('/:id', (req: Request, res: Response) => {
-  Player.findById(req.params.id, (err: Error, player: any) => {
+  Player.aggregate([
+    { $match: { _id: Types.ObjectId(req.params.id) } },
+    {
+      $lookup: {
+        from: 'teams',
+        localField: 'team',
+        foreignField: 'nameShort',
+        as: 'team_info'
+      }
+    },
+    { $unwind:'$team_info' },
+    {   
+      $project:{
+          _id : 1,
+          steam64ID: 1,
+          firstName: 1,
+          lastName: 1,
+          gameName: 1,
+          country: 1,
+          team: '$team_info',
+          hasImage: 1,
+          imagePath: 1
+      } 
+    },
+    { $limit: 1 }
+  ]).exec((err: Error, result) => {
     if (err) {
       return res
         .status(500)
         .send('There was a problem finding the player.')
     }
 
-    if (!player) {
+    if (!result[0]) {
       return res
         .status(404)
         .send('No player found.')
     }
 
-    return res.status(200).send(player)
+    return res.status(200).send(result[0])
   })
 })
 

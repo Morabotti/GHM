@@ -1,8 +1,8 @@
 import app from './app'
 import config from './config'
-import dbConnect from './db'
+import db from './db'
 
 app.listen(config.port, async () => {
-  await dbConnect()
+  await db.connect()
   console.log(`Server listening on port ${config.port}`)
 })

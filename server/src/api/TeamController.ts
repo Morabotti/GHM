@@ -2,7 +2,8 @@ import * as express from 'express'
 import * as bodyParser from 'body-parser'
 
 import { Request, Response } from 'express'
-import { Error } from 'mongoose'
+import { Error, Document, Types } from 'mongoose'
+import db from '../db'
 import { ListElement, TeamSchema } from '../types'
 
 import { uploadTeamsLogo } from '../handler/Multer'
@@ -16,13 +17,13 @@ router.use(bodyParser.urlencoded({ extended: false }))
 router.use(bodyParser.json())
 
 router.post('/', uploadTeamsLogo.single('logo'), (req: Request, res: Response) => {
-  const { teamNameShort, teamNameLong, hasLogo } = req.body
+  const { nameShort, nameLong, hasLogo } = req.body
   const country = req.body.country === undefined ? 'eu' : req.body.country
   const isLogo = hasLogo === 'true'
 
   Team.create({
-    teamNameShort,
-    teamNameLong,
+    nameShort,
+    nameLong,
     country,
     hasLogo: isLogo,
     logoPath: isLogo ? req.file.path : null
@@ -49,47 +50,43 @@ router.get('/', (req: Request, res: Response) => {
   })
 })
 
-router.get('/dropdown', (req: Request, res: Response) => {
-  Team.find({}, (err: Error, teams: any) => {
+router.get('/:id', async (req: Request, res: Response) => {
+  Team.aggregate([
+    { $match: { _id: Types.ObjectId(req.params.id) } },
+    {
+      $lookup: {
+        from: 'players',
+        localField: 'nameShort',
+        foreignField: 'team',
+        as: 'player_info'
+      }
+    },
+    {
+      $project:{
+        _id : 1,
+        nameShort: 1,
+        nameLong: 1,
+        country: 1,
+        hasLogo: 1,
+        logoPath: 1,
+        players: '$player_info',
+      }
+    },
+    { $limit: 1 }
+  ]).exec((err: Error, result) => {
     if (err) {
       return res
         .status(500)
         .send('There was a problem finding the team.')
     }
 
-    let newArray: ListElement[] = []
-
-    teams.forEach((team: TeamSchema) => {
-      newArray = [
-        ...newArray,
-        {
-          key: team.teamNameShort,
-          value: team.teamNameShort,
-          text: team.teamNameLong,
-          image: { avatar: true, src: `/${team.logoPath === null ? 'static/default/default-team.png' : team.logoPath}` }
-        }
-      ]
-    })
-
-    return res.status(200).send(newArray)
-  })
-})
-
-router.get('/:id', (req: Request, res: Response) => {
-  Team.findById(req.params.id, (err: Error, team: any) => {
-    if (err) {
-      return res
-        .status(500)
-        .send('There was a problem finding the team.')
-    }
-
-    if (!team) {
+    if (!result[0]) {
       return res
         .status(404)
         .send('No team found.')
     }
 
-    return res.status(200).send(team)
+    return res.status(200).send(result[0])
   })
 })
 
@@ -101,7 +98,8 @@ router.delete('/:id', (req: Request, res: Response) => {
         .send('There was a problem deleting the team.')
     }
 
-    Player.deleteMany({ team: team.teamNameShort }).exec()
+    // TODO GET THIS WORKING
+    Player.deleteMany({ team: team.nameShort }).exec()
 
     if (team.logoPath !== null) {
       deleteFile(team.logoPath)
@@ -114,13 +112,10 @@ router.delete('/:id', (req: Request, res: Response) => {
   })
 })
 
-/*
- ! FIX WHEN USER HAS PUT CHECKBOX (hasLogo) TRUE
- */
 router.put('/:id', (req: Request, res: Response) => {
   const {
-    teamNameShort,
-    teamNameLong,
+    nameShort,
+    nameLong,
     country,
     hasLogo
   } = req.body.data
@@ -132,10 +127,10 @@ router.put('/:id', (req: Request, res: Response) => {
         .send('There was problem finding old team.')
     }
 
-    const newName = teamNameShort !== team.teamNameShort
+    const newName = nameShort !== team.nameShort
 
     const newLogoPath = newName
-      ? `static/uploads/teams/${teamNameShort}.${getFileExtension(team.logoPath)}`
+      ? `static/uploads/teams/${nameShort}.${getFileExtension(team.logoPath)}`
       : team.logoPath
 
     if (!hasLogo && team.hasLogo) {
@@ -150,8 +145,8 @@ router.put('/:id', (req: Request, res: Response) => {
 
     if (newName) {
       Player.updateMany(
-        { team: team.teamNameShort },
-        { $set: { team: teamNameShort } },
+        { team: team.nameShort },
+        { $set: { team: nameShort } },
         { multi: true },
         (err: Error, player: any) => {
           if (err) {
@@ -165,8 +160,8 @@ router.put('/:id', (req: Request, res: Response) => {
     Team.findByIdAndUpdate(
       req.params.id,
       {
-        teamNameShort,
-        teamNameLong,
+        nameShort,
+        nameLong,
         country,
         hasLogo,
         logoPath: hasLogo ? newLogoPath : null
@@ -185,7 +180,7 @@ router.put('/:id', (req: Request, res: Response) => {
 })
 
 router.put('/newlogo/:id', uploadTeamsLogo.single('logo'), (req: Request, res: Response) => {
-  const { teamNameShort, teamNameLong, hasLogo } = req.body
+  const { nameShort, nameLong, hasLogo } = req.body
   const country = req.body.country === undefined ? 'eu' : req.body.country
   const isLogo = hasLogo === 'true'
 
@@ -196,15 +191,15 @@ router.put('/newlogo/:id', uploadTeamsLogo.single('logo'), (req: Request, res: R
         .send('There was problem finding old team.')
     }
 
-    if (team.hasLogo && (teamNameShort !== team.teamNameShort)) {
+    if (team.hasLogo && (nameShort !== team.nameShort)) {
       deleteFile(team.logoPath)
         .catch(e => console.log(e))
     }
 
-    if (teamNameShort !== team.teamNameShort) {
+    if (nameShort !== team.nameShort) {
       Player.updateMany(
-        { team: team.teamNameShort },
-        { $set: { team: teamNameShort } },
+        { team: team.nameShort },
+        { $set: { team: nameShort } },
         { multi: true },
         (err: Error, player: any) => {
           if (err) {
@@ -217,9 +212,9 @@ router.put('/newlogo/:id', uploadTeamsLogo.single('logo'), (req: Request, res: R
   })
 
   const newProfile = {
-    teamNameShort: teamNameShort,
-    teamNameLong: teamNameLong,
-    country: country,
+    nameShort,
+    nameLong,
+    country,
     hasLogo: isLogo,
     logoPath: isLogo ? req.file.path : null
   }

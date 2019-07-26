@@ -1,5 +1,15 @@
-import 'whatwg-fetch'
-import { Countries, Maps, UpdatePlayerNoImage, UpdateTeamWithNoImage, NewMatch } from './types'
+import {
+  TeamList,
+  MatchList,
+  PlayerList,
+  PlayerSpecific,
+  MatchSpecific,
+  TeamSpecific,
+  UpdateTeamInfo,
+  UpdatePlayerInfo,
+  NewMatch,
+  ActiveMatchResponse
+} from './types'
 
 const checkResponse = (res: Response): Response => {
   if (!res.ok) {
@@ -8,38 +18,7 @@ const checkResponse = (res: Response): Response => {
   return res
 }
 
-export const getMaps = (): Promise<Maps> => fetch(
-  '/api/general/maps',
-  {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  }
-)
-  .then(checkResponse)
-  .then((res) => res.json())
-
-export const getCountries = (): Promise<Countries> => fetch(
-  '/api/general/countries',
-  {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  }
-)
-  .then(checkResponse)
-  .then((res) => res.json())
-
-export const updateCountries = (countries: Countries) => fetch(
-  '/api/general/countries',
-  {
-    method: 'POST',
-    body: JSON.stringify({ countries: countries }),
-    headers: { 'Content-Type': 'application/json' }
-  }
-)
-  .then(checkResponse)
-  .then((res) => res.json())
-
-export const getTeams = () => fetch(
+export const fetchTeams = (): Promise<TeamList[]> => fetch(
   '/api/teams',
   {
     method: 'GET',
@@ -48,6 +27,94 @@ export const getTeams = () => fetch(
 )
   .then(checkResponse)
   .then((res) => res.json())
+
+export const fetchPlayers = (): Promise<PlayerList[]> => fetch(
+  '/api/players',
+  {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+  .then((res) => res.json())
+
+export const fetchMatches = (): Promise<MatchList[]> => fetch(
+  '/api/matches',
+  {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+  .then((res) => res.json())
+
+export const getTeam = (
+  id: string
+): Promise<TeamSpecific> => fetch(
+  '/api/teams/' + id,
+  {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+  .then((res) => res.json())
+
+export const getPlayer = (
+  id: string
+): Promise<PlayerSpecific> => fetch(
+  '/api/players/' + id,
+  {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+  .then((res) => res.json())
+
+export const getMatch = (
+  id: string
+): Promise<MatchSpecific> => fetch(
+  '/api/matches/' + id,
+  {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+  .then((res) => res.json())
+
+export const addPlayer = (
+  data: FormData
+): Promise<PlayerList> => {
+  const options = {
+    method: 'POST',
+    body: data,
+    headers: { 'content-type': 'multipart/form-data' }
+  }
+
+  delete options.headers['content-type']
+
+  return fetch('/api/players', options)
+    .then(checkResponse)
+    .then((res) => res.json())
+}
+
+export const addTeam = (
+  data: FormData
+): Promise<TeamList> => {
+  const options = {
+    method: 'POST',
+    body: data,
+    headers: { 'content-type': 'multipart/form-data' }
+  }
+
+  delete options.headers['content-type']
+
+  return fetch('/api/teams', options)
+    .then(checkResponse)
+    .then((res) => res.json())
+}
 
 export const removeTeam = (
   id: string
@@ -62,24 +129,10 @@ export const removeTeam = (
 )
   .then(checkResponse)
 
-export const addTeam = (data: FormData) => {
-  const options = {
-    method: 'POST',
-    body: data,
-    headers: { 'content-type': 'multipart/form-data' }
-  }
-
-  delete options.headers['content-type']
-
-  return fetch('/api/teams', options)
-    .then(checkResponse)
-    .then((res) => res.json())
-}
-
 export const updateTeamWithLogo = (
   data: FormData,
   id: string
-) => {
+): Promise<TeamList> => {
   const options = {
     method: 'PUT',
     body: data,
@@ -94,9 +147,9 @@ export const updateTeamWithLogo = (
 }
 
 export const updateTeam = (
-  data: UpdateTeamWithNoImage,
+  data: UpdateTeamInfo,
   id: string
-) => fetch(
+): Promise<TeamList> => fetch(
   `/api/teams/${id}`,
   {
     method: 'PUT',
@@ -106,40 +159,6 @@ export const updateTeam = (
 )
   .then(checkResponse)
   .then((res) => res.json())
-
-export const getTeamsDropdown = () => fetch(
-  '/api/teams/dropdown/',
-  {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  }
-)
-  .then(checkResponse)
-  .then((res) => res.json())
-
-export const getPlayers = () => fetch(
-  '/api/players',
-  {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  }
-)
-  .then(checkResponse)
-  .then((res) => res.json())
-
-export const addPlayer = (data: FormData) => {
-  const options = {
-    method: 'POST',
-    body: data,
-    headers: { 'content-type': 'multipart/form-data' }
-  }
-
-  delete options.headers['content-type']
-
-  return fetch('/api/players', options)
-    .then(checkResponse)
-    .then((res) => res.json())
-}
 
 export const removePlayer = (
   id: string
@@ -154,7 +173,10 @@ export const removePlayer = (
 )
   .then(checkResponse)
 
-export const updatePlayerWithImage = (data: FormData, id: string) => {
+export const updatePlayerWithImage = (
+  data: FormData,
+  id: string
+): Promise<PlayerList> => {
   const options = {
     method: 'PUT',
     body: data,
@@ -169,9 +191,9 @@ export const updatePlayerWithImage = (data: FormData, id: string) => {
 }
 
 export const updatePlayer = (
-  data: UpdatePlayerNoImage,
+  data: UpdatePlayerInfo,
   id: string
-) => fetch(
+): Promise<PlayerList> => fetch(
   `/api/players/${id}`,
   {
     method: 'PUT',
@@ -182,8 +204,8 @@ export const updatePlayer = (
   .then(checkResponse)
   .then((res) => res.json())
 
-export const getMatches = () => fetch(
-  '/api/matches',
+export const getActiveMatch = (): Promise<ActiveMatchResponse> => fetch(
+  `/api/matches/active`,
   {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
@@ -192,7 +214,7 @@ export const getMatches = () => fetch(
   .then(checkResponse)
   .then((res) => res.json())
 
-export const forceLoadMatches = () => fetch(
+export const forceLoadMatches = (): Promise<Response> => fetch(
   '/api/matches/live',
   {
     method: 'GET',
@@ -201,18 +223,18 @@ export const forceLoadMatches = () => fetch(
 )
   .then(checkResponse)
 
-export const setMatch = (data: NewMatch) => fetch(
+export const addMatch = (match: NewMatch): Promise<MatchList> => fetch(
   '/api/matches',
   {
     method: 'POST',
-    body: JSON.stringify({ match: data }),
+    body: JSON.stringify(match),
     headers: { 'Content-Type': 'application/json' }
   }
 )
   .then(checkResponse)
   .then((res) => res.json())
 
-export const setMatchToLive = (id: string) => fetch(
+export const setMatchToLive = (id: string): Promise<MatchList> => fetch(
   `/api/matches/live/${id}`,
   {
     method: 'POST',
@@ -222,7 +244,7 @@ export const setMatchToLive = (id: string) => fetch(
   .then(checkResponse)
   .then((res) => res.json())
 
-export const removeMatch = (id: string) => fetch(
+export const removeMatch = (id: string): Promise<Response> => fetch(
   `/api/matches/${id}`,
   {
     method: 'DELETE',
@@ -230,14 +252,3 @@ export const removeMatch = (id: string) => fetch(
   }
 )
   .then(checkResponse)
-
-export const updateMatch = (data: NewMatch, id: string) => fetch(
-  `/api/matches/${id}`,
-  {
-    method: 'PUT',
-    body: JSON.stringify({ data }),
-    headers: { 'Content-Type': 'application/json' }
-  }
-)
-  .then(checkResponse)
-  .then((res) => res.json())

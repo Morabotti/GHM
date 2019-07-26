@@ -2,10 +2,9 @@ import * as mongoose from 'mongoose'
 import { PlayerSchema } from '../types'
 
 const playerSchema = new mongoose.Schema<PlayerSchema>({
-  steam64id: {
+  steam64ID: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   firstName: {
     type: String,

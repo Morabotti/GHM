@@ -5,21 +5,15 @@ import { connect } from 'react-redux'
 import { Dispatch } from '../types'
 
 import {
-  setCountries,
   setTeams,
   setPlayers,
-  setTeamsDropdown,
-  setMaps,
   setMatches
 } from '../actions'
 
 import {
-  getCountries,
-  getTeams,
-  getPlayers,
-  getTeamsDropdown,
-  getMaps,
-  getMatches
+  fetchMatches,
+  fetchPlayers,
+  fetchTeams
 } from '../client'
 
 import {
@@ -33,7 +27,8 @@ import {
   PlayersPage,
   LivePage,
   ConfigPage,
-  SettingsPage
+  SettingsPage,
+  OverlayPage
 } from '../routes'
 
 import '../index.less'
@@ -53,11 +48,8 @@ class Main extends PureComponent<Props, ComponentState> {
   }
 
   componentDidMount () {
-    this._getCountries()
     this._getTeams()
     this._getPlayers()
-    this._getTeamsDropdown()
-    this._getMaps()
     this._getMatches()
   }
 
@@ -65,27 +57,15 @@ class Main extends PureComponent<Props, ComponentState> {
     show: !this.state.show
   })
 
-  _getCountries = () => getCountries()
-    .then(setCountries)
-    .then(this.props.dispatch)
-
-  _getMatches = () => getMatches()
+  _getMatches = () => fetchMatches()
     .then(setMatches)
     .then(this.props.dispatch)
 
-  _getMaps = () => getMaps()
-    .then(list => setMaps(list.maps))
-    .then(this.props.dispatch)
-
-  _getTeams = () => getTeams()
+  _getTeams = () => fetchTeams()
     .then(setTeams)
     .then(this.props.dispatch)
 
-  _getTeamsDropdown = () => getTeamsDropdown()
-    .then(setTeamsDropdown)
-    .then(this.props.dispatch)
-
-  _getPlayers = () => getPlayers()
+  _getPlayers = () => fetchPlayers()
     .then(setPlayers)
     .then(this.props.dispatch)
 
@@ -101,6 +81,7 @@ class Main extends PureComponent<Props, ComponentState> {
             <Switch>
               <Route path={url + '/'} exact component={HomePage} />
               <Route path={url + '/live'} exact render={() => <LivePage />} />
+              <Route path={url + '/overlay'} exact render={() => <OverlayPage />} />
               <Route path={url + '/config'} exact render={() => <ConfigPage />} />
               <Route path={url + '/teams'} exact render={() => <TeamsPage />} />
               <Route path={url + '/players'} exact render={() => <PlayersPage />} />

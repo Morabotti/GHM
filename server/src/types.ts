@@ -56,8 +56,8 @@ export interface PlayerSchema {
 }
 
 export interface TeamSchema {
-  teamNameShort: string,
-  teamNameLong: string,
+  nameShort: string,
+  nameLong: string,
   country: string,
   hasLogo: boolean,
   logoPath: string
@@ -113,8 +113,8 @@ export interface RMatch {
 export interface RTeam {
   hasLogo: boolean,
   _id: string,
-  teamNameShort: string,
-  teamNameLong: string | null,
+  nameShort: string,
+  nameLong: string | null,
   country: string | null,
   logoPath: string | null
 }

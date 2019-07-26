@@ -2,24 +2,19 @@ import React, { Component } from 'react'
 import { Grid } from 'semantic-ui-react'
 import { Layout } from '../components'
 
-class HomePage extends Component<{}> {
+class OverlayPage extends Component<{}> {
   render () {
     return (
       <Layout
-        section='General'
-        title='Home'
-        icon='home'
+        section='Game'
+        title='Overlay'
+        icon='globe'
       >
-        <Grid columns='2' stackable>
+        <Grid columns='1' stackable>
           <Grid.Row>
             <Grid.Column>
               <div className='f-container-wrap'>
-                <h2>Data</h2>
-              </div>
-            </Grid.Column>
-            <Grid.Column>
-              <div className='f-container-wrap'>
-                <h2>Something</h2>
+                <h2>Overlay</h2>
               </div>
             </Grid.Column>
           </Grid.Row>
@@ -29,4 +24,4 @@ class HomePage extends Component<{}> {
   }
 }
 
-export default HomePage
+export default OverlayPage

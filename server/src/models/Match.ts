@@ -3,11 +3,11 @@ import { MatchSchema } from '../types'
 
 const matchSchema = new mongoose.Schema<MatchSchema>({
   teamA: {
-    type: String,
+    type: mongoose.Types.ObjectId,
     required: true
   },
   teamB: {
-    type: String,
+    type: mongoose.Types.ObjectId,
     required: true
   },
   isLive: {

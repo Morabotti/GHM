@@ -53,13 +53,13 @@ const storagePlayers = multer.diskStorage({
   filename: function (req: Request, file, cb) {
     switch (getFileExtension(file.originalname)) {
       case 'png':
-        cb(null, `${req.body.gameName}_${req.body.steam64id}.png`)
+        cb(null, `${req.body.gameName}_${req.body.steam64ID}.png`)
         break
       case 'jpeg':
-        cb(null, `${req.body.gameName}_${req.body.steam64id}.jpeg`)
+        cb(null, `${req.body.gameName}_${req.body.steam64ID}.jpeg`)
         break
       default:
-        cb(null, `${req.body.gameName}_${req.body.steam64id}.png`)
+        cb(null, `${req.body.gameName}_${req.body.steam64ID}.png`)
     }
   }
 })
