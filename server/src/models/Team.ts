@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose'
-import { TeamSchema } from '../types'
+import { TeamModel } from '../types'
 
-const teamSchema = new mongoose.Schema<TeamSchema>({
+const teamSchema = new mongoose.Schema({
   nameShort: {
     type: String,
     unique: true,
@@ -27,6 +27,4 @@ const teamSchema = new mongoose.Schema<TeamSchema>({
   }
 })
 
-mongoose.model('teams', teamSchema)
-
-export default mongoose.model('teams')
+export default mongoose.model<TeamModel>('teams', teamSchema)

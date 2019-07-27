@@ -71,25 +71,10 @@ class LivePage extends PureComponent<Props, ComponentState> {
   }
 
   _updateActiveMatch = () => getActiveMatch()
-    .then(match => {
-      const activeMatch: MatchSpecific = {
-        _id: match._id,
-        teamA: {
-          ...match.teamA,
-          players: match.teamAPlayers
-        },
-        teamB: {
-          ...match.teamB,
-          players: match.teamBPlayers
-        },
-        isLive: match.isLive
-      }
-
-      this.setState({
-        activeMatch,
-        activation: activeMatch ? activeMatch._id : null
-      })
-    })
+    .then(activeMatch => this.setState({
+      activeMatch,
+      activation: activeMatch ? activeMatch._id : null
+    }))
     .catch(() => this.setState({ activeMatch: null, activation: null }))
 
   componentDidMount () {

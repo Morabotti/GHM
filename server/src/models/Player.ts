@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose'
-import { PlayerSchema } from '../types'
+import { PlayerModel } from '../types'
 
-const playerSchema = new mongoose.Schema<PlayerSchema>({
+const playerSchema = new mongoose.Schema({
   steam64ID: {
     type: String,
     required: true
@@ -37,6 +37,4 @@ const playerSchema = new mongoose.Schema<PlayerSchema>({
   }
 })
 
-mongoose.model('players', playerSchema)
-
-export default mongoose.model('players')
+export default mongoose.model<PlayerModel>('players', playerSchema)

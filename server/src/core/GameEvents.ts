@@ -10,6 +10,7 @@ const dispatchEvent = (event: EVENT, ...payload: any) => {
   )
 }
 
+// TODO: Find relevant usage or delete
 export const analyzeEvents = (state: GameState) => {
   // * MAP EVENTS
   if (state.previously.map !== undefined) {

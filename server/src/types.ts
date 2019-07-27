@@ -1,39 +1,12 @@
 import { Merge } from 'ts-essentials'
-import { GameStateSpectating, Bomb, PlayerList } from 'csgo-gsi-types'
-
-export interface StatsCalculation {
-  CT: TeamStats,
-  T: TeamStats
-}
-
-export interface TeamStats {
-  nades: {
-    smokes: number,
-    grenades: number,
-    molotovs: number,
-    flashes: number
-  },
-  teamEconomy: number
-}
-
-export interface Configs {
-  useRadar: boolean
-}
-
-export type TeamType = 'T' | 'CT'
+import { GameStateSpectating, Bomb, PlayerList, TeamType } from 'csgo-gsi-types'
+import { Document } from 'mongoose'
 
 export interface Country {
   key: string,
   value: string,
   flag: string,
   text: string
-}
-
-export interface ListElement {
-  key: string,
-  value: string,
-  text: string,
-  image: { avatar: boolean, src: string }
 }
 
 export interface Countries {
@@ -68,26 +41,6 @@ export interface MatchSchema {
   teamB: string,
   isLive: boolean
 }
-
-interface __NewPlayerList {
-  position: string | string[],
-  forward: string | string[],
-  watching: boolean
-}
-
-export type CustomPlayerList = Merge<PlayerList, __NewPlayerList>
-export type CustomBomb = Merge<Bomb, {position: string | string[]}>
-
-export interface CustomAllPlayer {
-  [steamid: string]: CustomPlayerList
-}
-
-interface __CustomGameState {
-  bomb: CustomBomb,
-  allplayers: CustomAllPlayer
-}
-
-export type GameState = Merge<GameStateSpectating, __CustomGameState>
 
 export interface RefactoredMatch {
   teamA: TeamConfig,
@@ -147,6 +100,128 @@ export interface PlayerConfig {
   lastName: string | null,
   gameName: string | null,
   country: string | null,
+  hasImage: boolean,
+  imagePath: string | null
+}
+
+/**
+ * NEW TYPES
+ */
+
+export interface StatsCalculation {
+  CT: TeamStats,
+  T: TeamStats
+}
+
+export interface TeamStats {
+  nades: {
+    smokes: number,
+    grenades: number,
+    molotovs: number,
+    flashes: number
+  },
+  teamEconomy: number
+}
+
+interface __NewPlayerList {
+  position: string | string[],
+  forward: string | string[],
+  watching: boolean
+}
+
+export type CustomPlayerList = Merge<PlayerList, __NewPlayerList>
+export type CustomBomb = Merge<Bomb, { position: string | string[] }>
+
+export interface CustomAllPlayer {
+  [steamid: string]: CustomPlayerList
+}
+
+interface __CustomGameState {
+  bomb: CustomBomb,
+  allplayers: CustomAllPlayer
+}
+
+export type GameState = Merge<GameStateSpectating, __CustomGameState>
+
+export interface MatchModel extends Document {
+  teamA: string,
+  teamB: string,
+  isLive: boolean
+}
+
+export interface PlayerModel extends Document {
+  firstName: string,
+  lastName: string,
+  gameName: string,
+  country: string,
+  steam64ID: string,
+  team: string,
+  hasImage: boolean,
+  imagePath: string | null
+}
+
+export interface TeamModel extends Document {
+  nameShort: string,
+  nameLong: string,
+  country: string,
+  hasLogo: boolean,
+  logoPath: string | null
+}
+
+export interface TeamModelSpecific extends Document {
+  nameShort: string,
+  nameLong: string,
+  country: string,
+  hasLogo: boolean,
+  players: PlayerModel[],
+  logoPath: string | null
+}
+
+export interface TeamType {
+  _id: string,
+  nameShort: string,
+  nameLong: string,
+  country: string,
+  hasLogo: boolean,
+  logoPath: string | null
+}
+
+export interface MatchModelList extends Document {
+  teamA: TeamModel,
+  teamB: TeamModel,
+  isLive: boolean
+}
+
+export interface MatchSpecific {
+  _id: string,
+  teamA: TeamModelSpecific,
+  teamB: TeamModelSpecific,
+  isLive: boolean
+}
+
+export interface MatchSpecificModelOverlay extends Document {
+  teamA: TeamModel,
+  teamB: TeamModel,
+  players: PlayerModel[],
+  isLive: boolean
+}
+
+export interface TeamSpecific extends Document {
+  nameShort: string,
+  nameLong: string,
+  country: string,
+  hasLogo: boolean,
+  logoPath: string | null,
+  players: PlayerModel[]
+}
+
+export interface PlayerSpecific extends Document {
+  firstName: string,
+  lastName: string,
+  gameName: string,
+  country: string,
+  steam64ID: string,
+  team: TeamModel,
   hasImage: boolean,
   imagePath: string | null
 }

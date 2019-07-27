@@ -1,12 +1,11 @@
-import * as express from 'express'
 import * as bodyParser from 'body-parser'
 
 import gameState from '../core/GameState'
 import gameStats from '../core/GameStats'
 
-import { Request, Response } from 'express'
+import { Request, Response, Router } from 'express'
 
-const router = express.Router()
+const router = Router()
 
 router.use(bodyParser.urlencoded({ extended: false }))
 router.use(bodyParser.json())

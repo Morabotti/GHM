@@ -1,6 +1,6 @@
 {
   "name": "ghm-server",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "GHM observator UI | Server",
   "author": "Jesse Båtman (http://jessebatman.fi)",
   "private": true,

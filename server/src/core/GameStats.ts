@@ -1,11 +1,11 @@
 import { dispatchSocket } from '../handler/SocketIo'
 import { deepEqual } from '../utils/helpers'
 import { SOCKET } from '../enum'
+import { TeamType } from 'csgo-gsi-types'
 
 import {
   TeamStats,
   GameState,
-  TeamType,
   StatsCalculation
 } from '../types'
 

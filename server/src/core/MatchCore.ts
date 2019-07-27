@@ -1,31 +1,37 @@
-import Player from '../models/Player'
-import Match from '../models/Match'
-import Team from '../models/Team'
-
-import { dispatchSocket } from '../handler/SocketIo'
-
-import { Error } from 'mongoose'
 import {
+  MatchModel,
+  MatchModelList,
+  TeamType,
+  MatchSpecific,
+  CustomAllPlayer,
   RefactoredMatch,
-  RawMatch,
-  RPlayer,
-  CustomAllPlayer
+  TeamModelSpecific
 } from '../types'
 
+import { TeamType as TType } from 'csgo-gsi-types'
+
+import Match from '../models/Match'
+import { Types, Error } from 'mongoose'
+
+import { dispatchSocket } from '../handler/SocketIo'
 import { SOCKET } from '../enum'
 
-const TIMEOUT_TEAMCHANGE = 5000
-
-class MatchCore {
-  raw: RawMatch | any
-  refactored: RefactoredMatch | any
+class LiveMatchCore {
+  refactored: RefactoredMatch | null
   latelyChanged: boolean
 
   constructor () {
-    this.raw = null
     this.refactored = null
     this.latelyChanged = false
   }
+
+  formatTeam = (team: TeamModelSpecific, side: TType) => ({
+    team: side,
+    customName: team.nameShort,
+    customLogo: team.hasLogo ? team.logoPath : null,
+    country: team.country,
+    players: team.players
+  })
 
   testTeamSides = (allplayers: CustomAllPlayer) => {
     if (this.refactored !== null) {
@@ -35,19 +41,21 @@ class MatchCore {
         this.latelyChanged = true
         setTimeout(() => {
           this.latelyChanged = false
-        }, TIMEOUT_TEAMCHANGE)
+        }, 5000)
 
-        this._switchActiveTeams()
-          .then(x => this.dispatchActive())
+        this.switchActiveTeams()
+          .then(() => this.dispatchActive())
           .catch(e => console.log(e))
       }
     }
   }
 
   calculateTeams = (allplayers: CustomAllPlayer): boolean => {
-    let aOnSame = 0
+    if (this.refactored === null || Object.keys(allplayers).length === 0) {
+      return false
+    }
+
     let aOnDifferent = 0
-    let bOnSame = 0
     let bOnDifferent = 0
 
     const teamATeam = this.refactored.teamA.team
@@ -56,25 +64,17 @@ class MatchCore {
     const teamAPlayers = this.refactored.teamA.players
     const teamBPlayers = this.refactored.teamB.players
 
-    Object.keys(teamAPlayers).forEach((value, index) => {
+    Object.keys(teamAPlayers).forEach(value => {
       if (allplayers[value] !== undefined) {
-        if (allplayers[value].team === teamATeam) {
-          aOnSame++
-        }
-
-        else if (allplayers[value].team === teamBTeam) {
+        if (allplayers[value].team === teamBTeam) {
           aOnDifferent++
         }
       }
     })
 
-    Object.keys(teamBPlayers).forEach((value, index) => {
+    Object.keys(teamBPlayers).forEach(value => {
       if (allplayers[value] !== undefined) {
-        if (allplayers[value].team === teamBTeam) {
-          bOnSame++
-        }
-
-        else if (allplayers[value].team === teamATeam) {
+        if (allplayers[value].team === teamATeam) {
           bOnDifferent++
         }
       }
@@ -87,104 +87,51 @@ class MatchCore {
     return false
   }
 
-  filterActiveMatchData = (data: RawMatch): RefactoredMatch | null => {
-    let teamAPlayers = { }
-    let teamBPlayers = { }
-
-    const pTeamA = data.teams.find((val: any) => val._id == data.match.teamA)
-    const pTeamB = data.teams.find((val: any) => val._id == data.match.teamB)
-
-    if (pTeamA === undefined || pTeamB === undefined) {
-      console.log('No team found!')
-      return null
-    }
-
-    data.players.map((player: RPlayer) => {
-      const playerData = {
-        name: player.team,
-        firstName: player.firstName,
-        lastName: player.lastName,
-        gameName: player.gameName,
-        country: player.country,
-        hasImage: player.hasImage,
-        imagePath: player.hasImage ? player.imagePath : null
-      }
-
-      if (player.team === pTeamA.nameShort) {
-        teamAPlayers[player.steam64id] = playerData
-      }
-      else {
-        teamBPlayers[player.steam64id] = playerData
-      }
-    })
-
-    const teamA = {
-      team: 'CT',
-      customName: pTeamA.nameShort,
-      customLogo: pTeamA.hasLogo ? pTeamA.logoPath : null,
-      country: pTeamA.country,
-      players: teamAPlayers
-    }
-
-    const teamB = {
-      team: 'T',
-      customName: pTeamB.nameShort,
-      customLogo: pTeamB.hasLogo ? pTeamB.logoPath : null,
-      country: pTeamB.country,
-      players: teamBPlayers
-    }
-
-    this.refactored = { teamA, teamB, players: { ...teamAPlayers, ...teamBPlayers } }
-    return this.refactored
-  }
-
-  _toggleActiveMatch = (id: string) => {
+  switchActiveTeams = (): Promise<MatchModel> => {
     return new Promise((resolve, reject) => {
-      Match.findById(id, (err: Error, match: any) => {
-        if (err) return reject('There was a problem finding the match.')
-
-        if (match.isLive) {
-          Match.findByIdAndUpdate(
-            id,
-            { $set: { isLive: false } },
-            (err: Error, newMatch: any) => {
-              if (err) return reject('There was a problem updating the match.')
-
-              this.dispatchActive()
-
-              return resolve(newMatch)
-            })
+      Match.findOne({ isLive: true }, (err: Error, match: MatchModel) => {
+        if (err) {
+          return reject('There was a problem finding the match.')
         }
-        else {
-          Match.updateMany(
-            { isLive: true },
-            { $set: { isLive: false } },
-            { multi: true },
-            (err: Error, match: any) => {
-              if (err) return reject('There was problem replacing players new team')
 
-              Match.findByIdAndUpdate(
-                id,
-                { $set: { isLive: true } },
-                { new: true },
-                (err: Error, newMatch: any) => {
-                  if (err) return reject('There was a problem updating the match.')
+        Match.findByIdAndUpdate(match._id,
+          { $set: { teamA: match.teamB, teamB: match.teamA } },
+          { new: true }, (err: Error, newMatch: MatchModel | null) => {
+            if (err || newMatch === null) {
+              return reject('There was a problem switching the sides.')
+            }
 
-                  this.dispatchActive()
-
-                  return resolve(newMatch)
-                })
-            })
-        }
+            return resolve(newMatch)
+          })
       })
     })
   }
 
+  dispatchActiveDelete = () => {
+    dispatchSocket(
+      SOCKET.GAME_CONFIG_RESET,
+      null
+    )
+  }
+
   dispatchActive = async () => {
     try {
-      const activeData = await matchCore._getActiveMatchData()
-      const refactored = matchCore.filterActiveMatchData(activeData)
-      console.log('Is Updated')
+      const activeMatch = await getActiveMatch()
+      const players = {
+        ...activeMatch.teamA.players,
+        ...activeMatch.teamB.players
+      }
+
+      let playerObj = { }
+      players.map(p => {
+        playerObj[p.steam64ID] = p
+      })
+
+      const refactored = {
+        teamA: this.formatTeam(activeMatch.teamA, 'CT'),
+        teamB: this.formatTeam(activeMatch.teamB, 'T'),
+        players: { ...playerObj }
+      }
 
       dispatchSocket(
         SOCKET.GAME_CONFIG,
@@ -195,58 +142,322 @@ class MatchCore {
       return console.log(e)
     }
   }
-
-  dispatchActiveDelete = () => {
-    dispatchSocket(
-      SOCKET.GAME_CONFIG_RESET,
-      null
-    )
-  }
-
-  _switchActiveTeams = (): Promise<any> => {
-    return new Promise((resolve, reject) => {
-      Match.findOne({ isLive: true }, (err: Error, match: any) => {
-        if (err) return reject('There was a problem finding the match.')
-
-        Match.findByIdAndUpdate(match._id,
-          { $set: { teamA: match.teamB, teamB: match.teamA } },
-          { new: true }, (err: Error, newMatch: any) => {
-            if (err) return reject('There was a problem switching the sides.')
-
-            return resolve(newMatch)
-          })
-      })
-    })
-  }
-
-  _getActiveMatchData = (): Promise<RawMatch> => {
-    return new Promise((resolve, reject) => {
-      Match.findOne({ isLive: true }, (err: Error, match: any) => {
-        if (err) reject(err)
-
-        if (match === null) {
-          this.dispatchActiveDelete()
-          return reject('Clearing match.')
-        }
-
-        Team.find({ '_id': { $in: [
-          match.teamA,
-          match.teamB
-        ] } }, (err: Error, teams: any) => {
-          if (err) reject(err)
-
-          Player.find({ $or: [ { team: teams[0].nameShort }, { team: teams[1].nameShort } ] }, (err: Error, players: any) => {
-            if (err) reject(err)
-
-            this.raw = { match, teams, players }
-            resolve(this.raw)
-          })
-        })
-      })
-    })
-  }
 }
 
-const matchCore = new MatchCore()
+export const liveMatchCore = new LiveMatchCore()
 
-export default matchCore
+interface NewMatch {
+  teamA: TeamType,
+  teamB: TeamType
+}
+
+export const createMatch = ({
+  teamA,
+  teamB
+}: NewMatch): Promise<MatchModelList> => new Promise(
+  (resolve, reject) => {
+    Match.create({
+      teamA: teamA._id,
+      teamB: teamB._id
+    }, (err: Error, match: MatchModel) => {
+      if (err) {
+        return reject('There was a problem adding the information to the database.')
+      }
+
+      Match.aggregate([
+        { $match: { _id: Types.ObjectId(match._id) } },
+        {
+          $lookup: {
+            from: 'teams',
+            localField: 'teamA',
+            foreignField: '_id',
+            as: 'teamA'
+          }
+        },
+        {
+          $lookup: {
+            from: 'teams',
+            localField: 'teamB',
+            foreignField: '_id',
+            as: 'teamB'
+          }
+        },
+        { $unwind: '$teamB' },
+        { $unwind: '$teamA' },
+        {
+          $project: {
+            _id: 1,
+            teamA: '$teamA',
+            teamB: '$teamB',
+            isLive: 1
+          }
+        },
+        { $limit: 1 }
+      ])
+        .exec((err: Error, match) => {
+          if (err) {
+            return reject('There was problem returning match.')
+          }
+
+          if (match[0] === undefined) {
+            return reject('Query error.')
+          }
+
+          return resolve(match[0])
+        })
+    })
+  }
+)
+
+export const fetchMatches = (): Promise<MatchModelList[]> => new Promise(
+  (resolve, reject) => {
+    Match.aggregate([
+      {
+        $lookup: {
+          from: 'teams',
+          localField: 'teamA',
+          foreignField: '_id',
+          as: 'teamA'
+        }
+      },
+      {
+        $lookup: {
+          from: 'teams',
+          localField: 'teamB',
+          foreignField: '_id',
+          as: 'teamB'
+        }
+      },
+      { $unwind: '$teamB' },
+      { $unwind: '$teamA' },
+      {
+        $project: {
+          _id: 1,
+          teamA: '$teamA',
+          teamB: '$teamB',
+          isLive: 1
+        }
+      }
+    ])
+      .exec((err: Error, matches) => {
+        if (err) {
+          return reject('There was problem finding matches.')
+        }
+
+        return resolve(matches)
+      })
+  }
+)
+
+export const getMatch = (
+  id: MatchModel['_id']
+): Promise<MatchSpecific> => new Promise(
+  (resolve, reject) => {
+    Match.aggregate([
+      { $match: { _id: Types.ObjectId(id) } },
+      {
+        $lookup: {
+          from: 'teams',
+          localField: 'teamA',
+          foreignField: '_id',
+          as: 'teamA'
+        }
+      },
+      {
+        $lookup: {
+          from: 'teams',
+          localField: 'teamB',
+          foreignField: '_id',
+          as: 'teamB'
+        }
+      },
+      { $unwind: '$teamB' },
+      { $unwind: '$teamA' },
+      {
+        $project: {
+          _id: 1,
+          teamA: '$teamA',
+          teamB: '$teamB',
+          isLive: 1
+        }
+      },
+      { $limit: 1 }
+    ])
+      .exec((err: Error, match) => {
+        if (err) {
+          return reject('There was a problem finding the match.')
+        }
+
+        if (match[0] === undefined) {
+          return reject(null)
+        }
+
+        return resolve(match[0])
+      })
+  }
+)
+
+export const deleteMatch = (
+  id: MatchModel['_id']
+): Promise<string> => new Promise(
+  (resolve, reject) => {
+    Match.findByIdAndRemove(id, (err: Error, match: MatchModel | null) => {
+      if (err || match === null) {
+        return reject('There was a problem deleting the match.')
+      }
+
+      return resolve(`Match was deleted.`)
+    })
+  }
+)
+
+export const updateMatch = (
+  id: MatchModel['_id'],
+  { teamA, teamB }: NewMatch
+): Promise<MatchModel> => new Promise(
+  (resolve, reject) => {
+    Match.findByIdAndUpdate(
+      id,
+      { teamA, teamB },
+      { new: true },
+      (err: Error, match: MatchModel | null) => {
+        if (err || match === null) {
+          return reject('There was a problem updating the match.')
+        }
+
+        return resolve(match)
+      })
+  }
+)
+
+export const toggleMatchToLive = (
+  id: MatchModel['_id']
+): Promise<MatchModel> => new Promise(
+  (resolve, reject) => {
+    Match.findById(id, (err: Error, match: MatchModel) => {
+      if (err) {
+        return reject('There was a problem finding the match.')
+      }
+
+      if (match.isLive) {
+        Match.findByIdAndUpdate(
+          id,
+          { $set: { isLive: false } },
+          (err: Error, newMatch: MatchModel | null) => {
+            if (err || newMatch === null) {
+              return reject('There was a problem updating the match.')
+            }
+            liveMatchCore.dispatchActive()
+            return resolve(newMatch)
+          })
+      }
+      else {
+        Match.updateMany(
+          { isLive: true },
+          { $set: { isLive: false } },
+          { multi: true },
+          (err: Error) => {
+            if (err) {
+              return reject('There was problem replacing players new team')
+            }
+
+            Match.findByIdAndUpdate(
+              id,
+              { $set: { isLive: true } },
+              { new: true },
+              (err: Error, newMatch: MatchModel | null) => {
+                if (err || newMatch === null) {
+                  return reject('There was a problem updating the match.')
+                }
+                liveMatchCore.dispatchActive()
+                return resolve(newMatch)
+              })
+          })
+      }
+    })
+  }
+)
+
+export const getActiveMatch = (): Promise<MatchSpecific> => new Promise(
+  (resolve, reject) => {
+    Match.aggregate([
+      { $match: { isLive: true } },
+      {
+        $lookup: {
+          from: 'teams',
+          localField: 'teamA',
+          foreignField: '_id',
+          as: 'teamA'
+        }
+      },
+      {
+        $lookup: {
+          from: 'teams',
+          localField: 'teamB',
+          foreignField: '_id',
+          as: 'teamB'
+        }
+      },
+      { $unwind: '$teamB' },
+      { $unwind: '$teamA' },
+      {
+        $lookup: {
+          from: 'players',
+          let: { 'teamAName': '$teamA.nameShort' },
+          pipeline: [
+            { $match: { $expr: { $eq: ['$team', '$$teamAName'] } } },
+            { $project: { _id: 0 } }
+          ],
+          as: 'teamAPlayers'
+        }
+      },
+      {
+        $lookup: {
+          from: 'players',
+          let: { 'teamBName': '$teamB.nameShort' },
+          pipeline: [
+            { $match: { $expr: { $eq: ['$team', '$$teamBName'] } } },
+            { $project: { _id: 0 } }
+          ],
+          as: 'teamBPlayers'
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          teamA: '$teamA',
+          teamB: '$teamB',
+          teamAPlayers: '$teamAPlayers',
+          teamBPlayers: '$teamBPlayers',
+          isLive: 1
+        }
+      },
+      { $limit: 1 }
+    ])
+      .exec((err: Error, match) => {
+        if (err) {
+          return reject('There was problem finding match.')
+        }
+
+        if (match[0] === undefined) {
+          liveMatchCore.dispatchActiveDelete()
+          return reject(null)
+        }
+
+        const activeMatch: MatchSpecific = {
+          _id: match[0]._id,
+          teamA: {
+            ...match[0].teamA,
+            players: match[0].teamAPlayers
+          },
+          teamB: {
+            ...match[0].teamB,
+            players: match[0].teamBPlayers
+          },
+          isLive: match[0].isLive
+        }
+
+        resolve(activeMatch)
+      })
+  }
+)

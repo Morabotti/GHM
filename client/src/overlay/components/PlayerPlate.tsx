@@ -53,7 +53,7 @@ class PlayerPlate extends PureComponent<Props> {
       : null
 
     // TODO: TEST THIS
-    if (/* allPlayers[steamid] === 0 || */allPlayers[player.steamid] === undefined) return null
+    if (allPlayers[player.steamid] === undefined) return null
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     const weapons: any = allPlayers[player.steamid].weapons

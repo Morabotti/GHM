@@ -136,15 +136,6 @@ export interface NewMatch {
   teamB: TeamList
 }
 
-export interface ActiveMatchResponse {
-  _id: string,
-  teamA: TeamList,
-  teamB: TeamList,
-  teamAPlayers: PlayerList[],
-  teamBPlayers: PlayerList[],
-  isLive: boolean
-}
-
 export interface MatchSpecific {
   _id: string,
   teamA: TeamSpecific,

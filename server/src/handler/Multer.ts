@@ -10,16 +10,16 @@ const storageTeams = multer.diskStorage({
   filename: function (req: Request, file, cb) {
     switch (getFileExtension(file.originalname)) {
       case 'png':
-        cb(null, `${req.body.teamNameShort}.png`)
+        cb(null, `${req.body.nameShort}.png`)
         break
       case 'svg':
-        cb(null, `${req.body.teamNameShort}.svg`)
+        cb(null, `${req.body.nameShort}.svg`)
         break
       case 'jpeg':
-        cb(null, `${req.body.teamNameShort}.jpeg`)
+        cb(null, `${req.body.nameShort}.jpeg`)
         break
       default:
-        cb(null, `${req.body.teamNameShort}.png`)
+        cb(null, `${req.body.nameShort}.png`)
     }
   }
 })
@@ -39,9 +39,6 @@ const fileFilterTeams = (req: Request, file, cb) => {
     else {
       cb(null, false)
     }
-  }
-  else {
-    cb('Invalied Value: hasLogo', false)
   }
 }
 
@@ -66,8 +63,8 @@ const storagePlayers = multer.diskStorage({
 
 const fileFilterPlayers = (req: Request, file, cb) => {
   const image = req.body.hasImage
-  const steam64id = req.body.steam64id
-  if (image === 'true' || image === 'false' || steam64id !== undefined) {
+  const steam64ID = req.body.steam64ID
+  if (image === 'true' || image === 'false' || steam64ID !== undefined) {
     const hasImage = JSON.parse(image)
     if (hasImage) {
       if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg') {
@@ -81,19 +78,16 @@ const fileFilterPlayers = (req: Request, file, cb) => {
       cb(null, false)
     }
   }
-  else {
-    cb('Invalied Value: hasImage', false)
-  }
 }
 
 // * METHODS
-export const uploadTeamsLogo = multer({
+export const teamLogo = multer({
   storage: storageTeams,
   fileFilter: fileFilterTeams,
   limits: { fileSize: 1024 * 1024 }
 })
 
-export const uploadPlayerImages = multer({
+export const playerImage = multer({
   storage: storagePlayers,
   fileFilter: fileFilterPlayers,
   limits: { fileSize: 1024 * 1024 * 5 }

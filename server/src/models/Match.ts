@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose'
-import { MatchSchema } from '../types'
+import { MatchModel } from '../types'
 
-const matchSchema = new mongoose.Schema<MatchSchema>({
+const matchSchema = new mongoose.Schema({
   teamA: {
     type: mongoose.Types.ObjectId,
     required: true
@@ -17,6 +17,4 @@ const matchSchema = new mongoose.Schema<MatchSchema>({
   }
 })
 
-mongoose.model('matches', matchSchema)
-
-export default mongoose.model('matches')
+export default mongoose.model<MatchModel>('matches', matchSchema)

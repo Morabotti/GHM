@@ -7,8 +7,7 @@ import {
   TeamSpecific,
   UpdateTeamInfo,
   UpdatePlayerInfo,
-  NewMatch,
-  ActiveMatchResponse
+  NewMatch
 } from './types'
 
 const checkResponse = (res: Response): Response => {
@@ -204,7 +203,7 @@ export const updatePlayer = (
   .then(checkResponse)
   .then((res) => res.json())
 
-export const getActiveMatch = (): Promise<ActiveMatchResponse> => fetch(
+export const getActiveMatch = (): Promise<MatchSpecific> => fetch(
   `/api/matches/active`,
   {
     method: 'GET',

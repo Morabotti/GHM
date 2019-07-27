@@ -1,7 +1,7 @@
 import * as express from 'express'
 import * as path from 'path'
 
-import { Request, Response } from 'express'
+import { Request, Response, Application } from 'express'
 
 import {
   GameStateController,
@@ -11,7 +11,7 @@ import {
   MatchController
 } from './api/'
 
-const app: express.Application = express()
+const app: Application = express()
 
 app.use(express.json())
 app.use(express.static('../client/build'))

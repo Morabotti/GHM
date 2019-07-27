@@ -11,7 +11,7 @@ import { SOCKET } from '../enum'
 import { analyzeEvents } from './GameEvents'
 import { dispatchSocket } from '../handler/SocketIo'
 import gameStats from './GameStats'
-import matchCore from './MatchCore'
+import { liveMatchCore } from './MatchCore'
 
 import config from '../config'
 
@@ -25,7 +25,6 @@ class GameEvents {
   latestTime: number
 
   constructor () {
-    this.gameState
     this.isNotFirstTime = false // If have gotten even once data
     this.isClientOnline = false // Is client on CSGO
     this.isClientSpectating = false // Is client spectating
@@ -76,7 +75,7 @@ class GameEvents {
       if (state.previously.allplayers !== undefined) {
         this.setVectors(state)
         analyzeEvents(state)
-        matchCore.testTeamSides(state.allplayers)
+        liveMatchCore.testTeamSides(state.allplayers)
 
         if (state.player !== undefined && state.player.spectarget !== undefined && state.player.spectarget !== 'free') {
           state.allplayers[state.player.spectarget].watching = true

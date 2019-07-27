@@ -16,10 +16,12 @@ class DB {
           useCreateIndex: true,
           useFindAndModify: false
         })
-      } catch (e) {
+      }
+      catch (e) {
         console.log('Wrong mongoDB string, Could not be accessed')
       }
-    } else {
+    }
+    else {
       console.log('Cannot access to mongoDB. DB connection string is not set.')
     }
   }
