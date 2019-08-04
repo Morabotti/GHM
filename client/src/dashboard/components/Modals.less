@@ -31,6 +31,15 @@
     cursor: pointer;
     transform: scale(1);
     transition: transform 200ms;
+
+    &.disabled {
+      cursor: not-allowed;
+      filter: invert(20%) grayscale(100%) brightness(80%) contrast(1);
+      
+      &:hover {
+        transform: scale(1);
+      }
+    }
     
     &:hover {
       transform: scale(1.15);

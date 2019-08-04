@@ -3,8 +3,7 @@
 *dist
 *.env
 *.vscode
+*db-*.json
 
 server/api-struct
 server/static/uploads
-
-/new-server

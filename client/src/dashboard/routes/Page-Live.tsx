@@ -113,14 +113,12 @@ class LivePage extends PureComponent<Props, ComponentState> {
     })
   }
 
-  _resetFields = () => {
-    return new Promise(resolve => {
-      resolve(this.setState({
-        teamA: null,
-        teamB: null
-      }))
-    })
-  }
+  _resetFields = () => new Promise(resolve => {
+    resolve(this.setState({
+      teamA: null,
+      teamB: null
+    }))
+  })
 
   _forceLoad = () => forceLoadMatches()
 
@@ -378,6 +376,8 @@ class LivePage extends PureComponent<Props, ComponentState> {
             isOpen={teamSelectModalOpen}
             onClose={this._closeChooseModal}
             onSelected={this._onSelectedTeam}
+            teamA={teamA}
+            teamB={teamA}
             teams={teams}
           />
         )}

@@ -17,14 +17,18 @@ interface TeamSelectionProps {
   isOpen: boolean,
   onClose: () => void,
   onSelected: (team: TeamList) => () => void,
-  teams: TeamList[] | null
+  teams: TeamList[] | null,
+  teamA: TeamList | null,
+  teamB: TeamList | null
 }
 
 export const TeamSelectionModal = ({
   isOpen,
   onClose,
   teams,
-  onSelected
+  onSelected,
+  teamA,
+  teamB
 }: TeamSelectionProps) => {
   if (teams === null) {
     return (
@@ -38,17 +42,26 @@ export const TeamSelectionModal = ({
     <Modal open={isOpen} onClose={onClose} centered={false} basic size='large'>
       <Header className='selection-header' icon='users' content='Select Team' />
       <div className='team-selection-modal'>
-        {teams.map(team => (
-          <div key={team._id} className='selection-box' onClick={onSelected(team)}>
-            <Image
-              src={`/${team.logoPath === null ? 'static/default/default-team.png' : team.logoPath}`}
-              wrapped
-              size='small'
-              centered
-            />
-            <p>{team.nameShort}</p>
-          </div>
-        ))}
+        {teams.map(team => {
+          const isDisabled = (teamA !== null && teamA._id === team._id)
+            || (teamB !== null && teamB._id === team._id)
+
+          return (
+            <div
+              key={team._id}
+              className={`selection-box ${isDisabled && 'disabled'}`}
+              onClick={!isDisabled ? onSelected(team) : () => {}}
+            >
+              <Image
+                src={`/${team.logoPath === null ? 'static/default/default-team.png' : team.logoPath}`}
+                wrapped
+                size='small'
+                centered
+              />
+              <p>{team.nameShort}</p>
+            </div>
+          )
+        })}
       </div>
     </Modal>
   )

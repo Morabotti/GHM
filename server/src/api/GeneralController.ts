@@ -11,7 +11,7 @@ const router = Router()
 router.use(bodyParser.urlencoded({ extended: false }))
 router.use(bodyParser.json())
 
-const fileConfigs = './static/config/configs.json'
+const fileConfigs = './static/config/db-configs.json'
 
 router.post('/configs', (req: Request, res: Response) => {
   const configs = req.body.configs
@@ -24,7 +24,10 @@ router.post('/configs', (req: Request, res: Response) => {
 router.get('/configs', (req: Request, res: Response) => {
   getConfig(fileConfigs)
     .then(configs => res.status(200).send(configs))
-    .catch(e => res.status(500).send(e))
+    .catch(() => {
+      console.log('No config set')
+      res.status(500).send('No config set')
+    })
 })
 
 export default router
