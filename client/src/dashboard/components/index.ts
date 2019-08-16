@@ -23,7 +23,8 @@ import {
 
 import {
   ConfirmModal,
-  TeamSelectionModal
+  TeamSelectionModal,
+  MapSelectionModal
 } from './Modals'
 
 import {
@@ -58,5 +59,6 @@ export {
   Layout,
   MatchTableRow,
   NewMatchTeam,
-  ActiveMatch
+  ActiveMatch,
+  MapSelectionModal
 }

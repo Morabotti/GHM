@@ -1,4 +1,5 @@
 import React from 'react'
+import { maps } from '../../enum'
 
 import {
   TeamList,
@@ -41,7 +42,7 @@ export const TeamSelectionModal = ({
   return (
     <Modal open={isOpen} onClose={onClose} centered={false} basic size='large'>
       <Header className='selection-header' icon='users' content='Select Team' />
-      <div className='team-selection-modal'>
+      <div className='selection-modal'>
         {teams.map(team => {
           const isDisabled = (teamA !== null && teamA._id === team._id)
             || (teamB !== null && teamB._id === team._id)
@@ -109,5 +110,38 @@ export const ConfirmModal = ({
         onClick={onDelete}
       />
     </Modal.Actions>
+  </Modal>
+)
+
+interface MapSelectionProps {
+  isOpen: boolean,
+  onClose: () => void,
+  onSelected: (map: string) => () => void
+}
+
+export const MapSelectionModal = ({
+  isOpen,
+  onClose,
+  onSelected
+}: MapSelectionProps) => (
+  <Modal open={isOpen} onClose={onClose} centered={false} basic size='large'>
+    <Header className='selection-header' icon='users' content='Select Team' />
+    <div className='selection-modal'>
+      {maps.map(map => (
+        <div
+          key={map.key}
+          className='selection-box'
+          onClick={onSelected(map.name)}
+        >
+          <Image
+            src={`/static/map/${map.name}_overview.jpg`}
+            wrapped
+            size='small'
+            centered
+          />
+          <p>{map.name}</p>
+        </div>
+      ))}
+    </div>
   </Modal>
 )

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { State } from '../../types'
 import { Dispatch, TeamList, MatchList, MatchSpecific } from '../types'
+import { formatsDropDown, formats } from '../../enum'
 
 import {
   getActiveMatch,
@@ -21,7 +22,8 @@ import {
   Layout,
   MatchTableRow,
   NewMatchTeam,
-  ActiveMatch
+  ActiveMatch,
+  MapSelectionModal
 } from '../components'
 
 import {
@@ -32,7 +34,10 @@ import {
   Table,
   Message,
   Dimmer,
-  Loader
+  Loader,
+  Select,
+  DropdownProps,
+  Card
 } from 'semantic-ui-react'
 
 interface Props {
@@ -44,23 +49,29 @@ interface Props {
 interface ComponentState {
   teamA: null | TeamList,
   teamB: null | TeamList,
+  activeFormat: string,
+  activeMaps: string[],
   selectedId: 'a' | 'b' | null,
   teamSelectModalOpen: boolean,
   matchLiveModalOpen: boolean,
   matchDeleteModalOpen: boolean,
   activeMatch: MatchSpecific | null,
-  activation: string | null
+  activation: string | null,
+  mapModalIndex: number | null
 }
 
 const getInitialState = () => ({
   teamA: null,
   teamB: null,
+  activeFormat: 'bo1',
+  activeMaps: [''],
   selectedId: null,
   teamSelectModalOpen: false,
   matchLiveModalOpen: false,
   matchDeleteModalOpen: false,
   activeMatch: null,
-  activation: null
+  activation: null,
+  mapModalIndex: null
 })
 
 class LivePage extends PureComponent<Props, ComponentState> {
@@ -80,6 +91,36 @@ class LivePage extends PureComponent<Props, ComponentState> {
   componentDidMount () {
     this._updateActiveMatch()
   }
+
+  _setActiveFormat = (
+    e: React.SyntheticEvent<HTMLElement, Event>,
+    { value }: DropdownProps
+  ) => {
+    const numOfMaps = formats.find(i => i.name === value)
+    const maps = numOfMaps
+      ? [...Array(numOfMaps.maps)].map(() => '')
+      : ['']
+
+    this.setState({
+      activeFormat: value !== undefined ? value.toString() : 'bo1',
+      activeMaps: maps
+    })
+  }
+
+  _selectMap = (map: string) => () => {
+    const { activeMaps, mapModalIndex } = this.state
+
+    if (mapModalIndex === null) {
+      return
+    }
+
+    this.setState({
+      activeMaps: activeMaps.map((m, i) => i === mapModalIndex ? map : m),
+      mapModalIndex: null
+    })
+  }
+
+  _toggleMapModal = (i: number | null) => () => this.setState({ mapModalIndex: i })
 
   _openDeleteModal = (id: string) => () => this.setState({
     matchDeleteModalOpen: true,
@@ -209,11 +250,14 @@ class LivePage extends PureComponent<Props, ComponentState> {
     const {
       teamA,
       teamB,
+      activeFormat,
+      activeMaps,
       teamSelectModalOpen,
       matchLiveModalOpen,
       matchDeleteModalOpen,
       activeMatch,
-      activation
+      activation,
+      mapModalIndex
     } = this.state
 
     const {
@@ -346,6 +390,16 @@ class LivePage extends PureComponent<Props, ComponentState> {
                         <span>VS</span>
                       </div>
                       <div className='margin-top-default'>
+                        <Select
+                          fluid
+                          label='Format'
+                          options={formatsDropDown}
+                          onChange={this._setActiveFormat}
+                          value={activeFormat}
+                          placeholder='Format'
+                        />
+                      </div>
+                      <div className='margin-top-default'>
                         <Button
                           positive
                           disabled={(teamA === null || teamB === null)}
@@ -366,11 +420,42 @@ class LivePage extends PureComponent<Props, ComponentState> {
                       onClick={this._openChooseModal('b')}
                     />
                   </div>
+                  <div className='new-match-maps'>
+                    <Card.Group itemsPerRow={5} style={{
+                      display: 'flex',
+                      justifyContent: 'center'
+                    }}>
+                      {activeMaps.map((e, i) => (
+                        <Card
+                          raised
+                          key={i}
+                          header={e === ''
+                            ? 'Unknown map'
+                            : e
+                          }
+                          description={`Map ${i + 1}`}
+                          onClick={this._toggleMapModal(i)}
+                          image={e === ''
+                            ? '/static/map/de_default_overview.jpg'
+                            : `/static/map/${e}_overview.jpg`
+                          }
+                        />
+                      ))}
+                    </Card.Group>
+                  </div>
                 </div>
               </Grid.Column>
             </Grid.Row>
           </Grid>
         </Layout>
+        {mapModalIndex !== null && (
+          <MapSelectionModal
+            isOpen={mapModalIndex !== null}
+            onSelected={this._selectMap}
+            onClose={this._toggleMapModal(null)}
+          />
+        )}
+
         {teamSelectModalOpen && (
           <TeamSelectionModal
             isOpen={teamSelectModalOpen}
