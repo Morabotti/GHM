@@ -23,7 +23,8 @@ import {
   MatchTableRow,
   NewMatchTeam,
   ActiveMatch,
-  MapSelectionModal
+  MapSelectionModal,
+  ActiveMatchControls
 } from '../components'
 
 import {
@@ -37,7 +38,8 @@ import {
   Loader,
   Select,
   DropdownProps,
-  Card
+  Card,
+  Image
 } from 'semantic-ui-react'
 
 interface Props {
@@ -120,6 +122,18 @@ class LivePage extends PureComponent<Props, ComponentState> {
     })
   }
 
+  _resetMapField = (
+    sel: number
+  ) => (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    const { activeMaps } = this.state
+    e.stopPropagation()
+    this.setState({
+      activeMaps: activeMaps.map((m, i) => sel === i ? '' : m)
+    })
+  }
+
   _toggleMapModal = (i: number | null) => () => this.setState({ mapModalIndex: i })
 
   _openDeleteModal = (id: string) => () => this.setState({
@@ -154,34 +168,34 @@ class LivePage extends PureComponent<Props, ComponentState> {
     })
   }
 
-  _resetFields = () => new Promise(resolve => {
-    resolve(this.setState({
-      teamA: null,
-      teamB: null
-    }))
+  _resetFields = () => this.setState({
+    teamA: null,
+    teamB: null,
+    activeFormat: 'bo1',
+    activeMaps: ['']
   })
 
-  _forceLoad = () => forceLoadMatches()
-
   _addNewMatch = () => {
-    const { teamA, teamB } = this.state
+    const { teamA, teamB, activeFormat, activeMaps } = this.state
     const { dispatch, matches } = this.props
 
     if (teamA === null || teamB === null) {
       return
     }
 
-    addMatch({ teamA, teamB })
+    addMatch({
+      teamA,
+      teamB,
+      format: activeFormat,
+      maps: activeMaps
+    })
       .then(match => {
         if (matches) {
           dispatch(setMatches([ ...matches, match ]))
         }
-        this.setState({ teamA: null, teamB: null })
+        this._resetFields()
       })
-      .catch(() => this.setState({
-        teamA: null,
-        teamB: null
-      }))
+      .catch(this._resetFields)
   }
 
   _deleteMatch = () => {
@@ -222,7 +236,7 @@ class LivePage extends PureComponent<Props, ComponentState> {
             matchLiveModalOpen: false
           })
         })
-        .catch(e => console.log(e))
+        .catch(console.log)
     }
   }
 
@@ -256,7 +270,6 @@ class LivePage extends PureComponent<Props, ComponentState> {
       matchLiveModalOpen,
       matchDeleteModalOpen,
       activeMatch,
-      activation,
       mapModalIndex
     } = this.state
 
@@ -293,8 +306,14 @@ class LivePage extends PureComponent<Props, ComponentState> {
                         teamClass='a'
                       />
                       <div className='vs'>
-                        <div>
+                        <div className='current-stats'>
+                          <span>{activeMatch.scoreA} - {activeMatch.scoreB}</span>
+                        </div>
+                        <div className='current-stats'>
                           <span>VS</span>
+                        </div>
+                        <div>
+                          <span>{activeMatch.format.toUpperCase()}</span>
                         </div>
                       </div>
                       <ActiveMatch
@@ -312,18 +331,11 @@ class LivePage extends PureComponent<Props, ComponentState> {
                     <Header.Content>Live match actions</Header.Content>
                   </Header>
                   {activeMatch !== null && (
-                    <div className='actions-container'>
-                      <Button
-                        fluid
-                        color='google plus'
-                        onClick={this._forceLoad}
-                      >Force load</Button>
-                      <Button
-                        fluid
-                        color='instagram'
-                        onClick={this._openLiveConfirmModal(activation)}
-                      >Unload match</Button>
-                    </div>
+                    <ActiveMatchControls
+                      activeMatch={activeMatch}
+                      forceLoad={forceLoadMatches}
+                      openConfirm={this._openLiveConfirmModal}
+                    />
                   )}
                 </div>
               </Grid.Column>
@@ -405,7 +417,7 @@ class LivePage extends PureComponent<Props, ComponentState> {
                           disabled={(teamA === null || teamB === null)}
                           onClick={this._addNewMatch}
                         >Save match</Button>
-                        {(teamA !== null || teamB !== null) && (
+                        {(teamA !== null || teamB !== null || activeFormat !== 'bo1' || activeMaps[0] !== '') && (
                           <Button
                             color='yellow'
                             className='margin-top-min'
@@ -426,20 +438,26 @@ class LivePage extends PureComponent<Props, ComponentState> {
                       justifyContent: 'center'
                     }}>
                       {activeMaps.map((e, i) => (
-                        <Card
-                          raised
-                          key={i}
-                          header={e === ''
-                            ? 'Unknown map'
-                            : e
-                          }
-                          description={`Map ${i + 1}`}
-                          onClick={this._toggleMapModal(i)}
-                          image={e === ''
+                        <Card raised key={i} onClick={this._toggleMapModal(i)}>
+                          <Image src={e === ''
                             ? '/static/map/de_default_overview.jpg'
                             : `/static/map/${e}_overview.jpg`
-                          }
-                        />
+                          } wrapped ui={false} />
+                          <Card.Content>
+                            <Card.Header>{e === '' ? 'Unknown map' : e}</Card.Header>
+                            <Card.Description>
+                              Map {i + 1}
+                            </Card.Description>
+                          </Card.Content>
+                          {e !== '' && (
+                            <Card.Content extra>
+                              <span className='remove-map-text' onClick={this._resetMapField(i)}>
+                                <Icon name='remove' />
+                                Reset Map
+                              </span>
+                            </Card.Content>
+                          )}
+                        </Card>
                       ))}
                     </Card.Group>
                   </div>
@@ -455,7 +473,6 @@ class LivePage extends PureComponent<Props, ComponentState> {
             onClose={this._toggleMapModal(null)}
           />
         )}
-
         {teamSelectModalOpen && (
           <TeamSelectionModal
             isOpen={teamSelectModalOpen}

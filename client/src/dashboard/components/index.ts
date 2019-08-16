@@ -10,6 +10,7 @@ import Layout from './Layout'
 import MatchTableRow from './MatchTableRow'
 import NewMatchTeam from './NewMatchTeam'
 import ActiveMatch from './ActiveMatch'
+import ActiveMatchControls from './ActiveMatchControls'
 
 import {
   SubHeaderWithIcon
@@ -60,5 +61,6 @@ export {
   MatchTableRow,
   NewMatchTeam,
   ActiveMatch,
-  MapSelectionModal
+  MapSelectionModal,
+  ActiveMatchControls
 }

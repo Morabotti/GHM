@@ -14,7 +14,26 @@ const matchSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
     required: false
-  }
+  },
+  format: {
+    type: String,
+    default: 'bo1',
+    required: true
+  },
+  maps: {
+    type: [String],
+    required: true
+  },
+  scoreA: {
+    type: Number,
+    default: 0,
+    required: false
+  },
+  scoreB: {
+    type: Number,
+    default: 0,
+    required: false
+  },
 })
 
 export default mongoose.model<MatchModel>('matches', matchSchema)

@@ -19,7 +19,11 @@ export interface Match {
   _id?: string,
   teamA: string,
   teamB: string,
-  isLive: boolean
+  isLive: boolean,
+  scoreA: number,
+  scoreB: number,
+  format: string,
+  maps: string[]
 }
 
 export interface TeamList {
@@ -35,7 +39,11 @@ export interface MatchList {
   _id: string,
   teamA: TeamList,
   teamB: TeamList,
-  isLive: boolean
+  isLive: boolean,
+  format: string,
+  maps: string[],
+  scoreA: number,
+  scoreB: number
 }
 
 export interface PlayerList {
@@ -133,12 +141,18 @@ export interface NewPlayer {
 
 export interface NewMatch {
   teamA: TeamList,
-  teamB: TeamList
+  teamB: TeamList,
+  format: string,
+  maps: string[]
 }
 
 export interface MatchSpecific {
   _id: string,
   teamA: TeamSpecific,
   teamB: TeamSpecific,
-  isLive: boolean
+  isLive: boolean,
+  format: string,
+  maps: string[],
+  scoreA: number,
+  scoreB: number
 }

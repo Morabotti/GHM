@@ -125,7 +125,7 @@ export const MapSelectionModal = ({
   onSelected
 }: MapSelectionProps) => (
   <Modal open={isOpen} onClose={onClose} centered={false} basic size='large'>
-    <Header className='selection-header' icon='users' content='Select Team' />
+    <Header className='selection-header' icon='map outline' content='Select Map' />
     <div className='selection-modal'>
       {maps.map(map => (
         <div

@@ -146,7 +146,11 @@ export type GameState = Merge<GameStateSpectating, __CustomGameState>
 export interface MatchModel extends Document {
   teamA: string,
   teamB: string,
-  isLive: boolean
+  isLive: boolean,
+  format: string,
+  maps: string[],
+  scoreA: number,
+  scoreB: number
 }
 
 export interface PlayerModel extends Document {
@@ -189,21 +193,33 @@ export interface TeamType {
 export interface MatchModelList extends Document {
   teamA: TeamModel,
   teamB: TeamModel,
-  isLive: boolean
+  isLive: boolean,
+  maps: string[],
+  format: string,
+  scoreA: number,
+  scoreB: number
 }
 
 export interface MatchSpecific {
   _id: string,
   teamA: TeamModelSpecific,
   teamB: TeamModelSpecific,
-  isLive: boolean
+  isLive: boolean,
+  maps: string[],
+  format: string,
+  scoreA: number,
+  scoreB: number
 }
 
 export interface MatchSpecificModelOverlay extends Document {
   teamA: TeamModel,
   teamB: TeamModel,
   players: PlayerModel[],
-  isLive: boolean
+  isLive: boolean,
+  maps: string[],
+  format: string,
+  scoreA: number,
+  scoreB: number
 }
 
 export interface TeamSpecific extends Document {

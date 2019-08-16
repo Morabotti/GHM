@@ -85,8 +85,8 @@ router.get('/live', (req: Request, res: Response) => {
 
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const { teamA, teamB } = req.body
-    const newMatch = await createMatch({ teamA, teamB })
+    const { teamA, teamB, format, maps } = req.body
+    const newMatch = await createMatch({ teamA, teamB, format, maps })
     return res.status(200).send(newMatch)
   }
   catch (e) {
@@ -134,8 +134,11 @@ router.delete('/:id', async (req: Request, res: Response) => {
 
 router.put('/:id', async (req: Request, res: Response) => {
   try {
-    const { teamA, teamB } = req.body
-    const message = await updateMatch(req.params.id, { teamA, teamB })
+    const { teamA, teamB, format, maps } = req.body
+    const message = await updateMatch(
+      req.params.id,
+      { teamA, teamB, format, maps }
+    )
     return res.status(200).send(message)
   }
   catch (e) {

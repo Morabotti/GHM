@@ -117,10 +117,10 @@ class LiveMatchCore {
   dispatchActive = async () => {
     try {
       const activeMatch = await getActiveMatch()
-      const players = {
+      const players = [
         ...activeMatch.teamA.players,
         ...activeMatch.teamB.players
-      }
+      ]
 
       let playerObj = { }
       players.map(p => {
@@ -148,17 +148,23 @@ export const liveMatchCore = new LiveMatchCore()
 
 interface NewMatch {
   teamA: TeamType,
-  teamB: TeamType
+  teamB: TeamType,
+  format: string,
+  maps: string[]
 }
 
 export const createMatch = ({
   teamA,
-  teamB
+  teamB,
+  maps,
+  format
 }: NewMatch): Promise<MatchModelList> => new Promise(
   (resolve, reject) => {
     Match.create({
       teamA: teamA._id,
-      teamB: teamB._id
+      teamB: teamB._id,
+      maps,
+      format
     }, (err: Error, match: MatchModel) => {
       if (err) {
         return reject('There was a problem adding the information to the database.')
@@ -189,6 +195,10 @@ export const createMatch = ({
             _id: 1,
             teamA: '$teamA',
             teamB: '$teamB',
+            format: 1,
+            maps: 1,
+            scoreA: 1,
+            scoreB: 1,
             isLive: 1
           }
         },
@@ -235,6 +245,10 @@ export const fetchMatches = (): Promise<MatchModelList[]> => new Promise(
           _id: 1,
           teamA: '$teamA',
           teamB: '$teamB',
+          format: 1,
+          maps: 1,
+          scoreA: 1,
+          scoreB: 1,
           isLive: 1
         }
       }
@@ -278,6 +292,10 @@ export const getMatch = (
           _id: 1,
           teamA: '$teamA',
           teamB: '$teamB',
+          format: 1,
+          maps: 1,
+          scoreA: 1,
+          scoreB: 1,
           isLive: 1
         }
       },
@@ -429,6 +447,10 @@ export const getActiveMatch = (): Promise<MatchSpecific> => new Promise(
           teamB: '$teamB',
           teamAPlayers: '$teamAPlayers',
           teamBPlayers: '$teamBPlayers',
+          format: 1,
+          maps: 1,
+          scoreA: 1,
+          scoreB: 1,
           isLive: 1
         }
       },
@@ -454,7 +476,11 @@ export const getActiveMatch = (): Promise<MatchSpecific> => new Promise(
             ...match[0].teamB,
             players: match[0].teamBPlayers
           },
-          isLive: match[0].isLive
+          maps: match[0].maps,
+          format: match[0].format,
+          isLive: match[0].isLive,
+          scoreA: match[0].scoreA,
+          scoreB: match[0].scoreB,
         }
 
         resolve(activeMatch)
