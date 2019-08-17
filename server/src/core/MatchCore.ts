@@ -96,7 +96,12 @@ class LiveMatchCore {
         }
 
         Match.findByIdAndUpdate(match._id,
-          { $set: { teamA: match.teamB, teamB: match.teamA } },
+          { $set: {
+            teamA: match.teamB,
+            teamB: match.teamA,
+            scoreA: match.scoreB,
+            scoreB: match.scoreA
+          }},
           { new: true }, (err: Error, newMatch: MatchModel | null) => {
             if (err || newMatch === null) {
               return reject('There was a problem switching the sides.')
