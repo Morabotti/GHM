@@ -192,7 +192,7 @@ class TeamsPage extends Component<Props, ComponentState> {
     nameLong,
     country,
     hasLogo,
-    logoPath,
+    // logoPath,
     hasChangedLogo,
     newLogo
   }: NewTeam) => () => {

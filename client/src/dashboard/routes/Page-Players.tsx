@@ -175,7 +175,7 @@ class PlayersPage extends Component<Props, ComponentState> {
 
   _submitEdit = ({
     firstName, lastName, gameName, team,
-    country, steam64ID, hasImage, imagePath,
+    country, steam64ID, hasImage, // imagePath,
     hasNewImage, newImage
   }: NewPlayer) => () => {
     const { selectedPlayer } = this.state

@@ -1,5 +1,7 @@
 export interface ConfigState {
   useRoundedCorners: boolean,
+  disableOverlayIndicator: boolean,
+  useDenseOverlayIndicator: boolean,
   useRadar: boolean,
   playerSize: number,
   bombSize: number,

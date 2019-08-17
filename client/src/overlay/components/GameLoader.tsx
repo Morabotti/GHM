@@ -4,10 +4,15 @@ import { Status } from '../../common/types'
 
 interface Props {
   status: Status,
-  showMessage: boolean
+  showMessage: boolean,
+  dense: boolean
 }
 
-export default ({ status, showMessage }: Props) => {
+export default ({
+  status,
+  showMessage,
+  dense
+}: Props) => {
   const { clientOnline, gameOnline, clientSpectating } = status
   if (!showMessage) {
     return <div />
@@ -30,15 +35,13 @@ export default ({ status, showMessage }: Props) => {
         : ''
 
   return (
-    <div className='loader-message-container'>
-      <div>
-        <div className={`message-with-icon ${color}`}>
-          <div className='loading'>Loading...</div>
-          <div className='content'>
-            <div className='content-header'>Loading...</div>
-            <div className='content-sub'>
-              {message}
-            </div>
+    <div className={`loader-message-container ${dense ? 'dense' : ''}`}>
+      <div className={`message-with-icon ${color}`}>
+        <div className='loading'>Loading...</div>
+        <div className='content'>
+          <div className='content-header'>Loading...</div>
+          <div className='content-sub'>
+            {message}
           </div>
         </div>
       </div>

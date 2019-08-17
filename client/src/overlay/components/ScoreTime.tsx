@@ -1,4 +1,5 @@
 import React from 'react'
+import { PhaseExt } from 'csgo-gsi-types'
 
 interface Props {
   showBomb: boolean,
@@ -6,7 +7,7 @@ interface Props {
   bombState: string,
   bombActive: boolean,
   bombTimeLeft: number,
-  phase: string,
+  phase: PhaseExt,
   phaseTimer: number,
   round: number
 }
@@ -42,6 +43,19 @@ export default ({
                   : phaseTimer) / BOMB_TIMER) + 0.35}s`
           }}>
           <img src='/static/utils/bomb.svg' className='bomb-icon' />
+        </div>
+      </>
+    )
+  }
+
+  if (phase === 'paused') {
+    return (
+      <>
+        <div className='timeout-wrapper'>
+          <img src='/static/utils/timeout.svg' className='bomb-icon' />
+        </div>
+        <div className='timeout-text'>
+          {Number(phaseTimer) !== 0 ? sectostr(Math.trunc(phaseTimer) + 1) : 'Paused'}
         </div>
       </>
     )

@@ -6,6 +6,20 @@
   width: 500px;
   padding: 1rem;
 
+  &.dense {
+    width: auto;
+    .message-with-icon{
+      padding: 0.5em;
+      font-weight: 700;
+
+      .content .content-header{
+        display: none;
+      }
+    }
+
+    .loading{ display: none; }
+  }
+
   .message-with-icon {
     display: flex;
     position: relative;

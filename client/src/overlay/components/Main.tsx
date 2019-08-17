@@ -80,7 +80,11 @@ class Main extends PureComponent<Props> {
     } = this.props
 
     if (!status.clientSpectating || !status.gameOnline || !mapData) {
-      return <GameLoader showMessage status={status} />
+      return <GameLoader
+        showMessage={!config.disableOverlayIndicator}
+        dense={config.useDenseOverlayIndicator}
+        status={status}
+      />
     }
 
     if (mapData.phase === 'gameover') return <React.Fragment />

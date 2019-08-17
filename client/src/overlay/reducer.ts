@@ -66,7 +66,13 @@ const getDefaultState = (): State => ({
     players: { },
     scoreA: 0,
     scoreB: 0,
-    format: 'bo1',
+    format: {
+      key: 'bo1',
+      maps: 1,
+      matchesPerTeam: 1,
+      name: 'bo1',
+      text: 'Best of 1'
+    },
     maps: ['']
   }
 })

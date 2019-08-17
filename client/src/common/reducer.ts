@@ -16,6 +16,8 @@ const statusState: Status = {
 export const configState: ConfigState = {
   // General
   useRoundedCorners: false,
+  disableOverlayIndicator: false,
+  useDenseOverlayIndicator: true,
   safeZoneLeft: 35,
   safeZoneRight: 35,
   safeZoneTop: 20,

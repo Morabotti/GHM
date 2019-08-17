@@ -22,7 +22,6 @@ import {
   Bomb,
   AllPlayers
 } from '../types'
-import { formats } from '../../enum'
 
 interface Props {
   mapData: Map | null,
@@ -114,7 +113,6 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
     } = this.state
 
     const isWin = (gameStateRound !== null && gameStateRound.win_team !== undefined)
-    const currentFormat = formats.find(i => i.key === format)
 
     const aTeamWin = isWin
       && gameStateRound !== null
@@ -183,10 +181,10 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
                 }
               </div>
               <div className='team-score'>
-                {currentFormat && currentFormat.key !== 'bo1' && (
+                {format && format.key !== 'bo1' && (
                   <MapScoreAnnoucement
                     hide={showScores}
-                    max={currentFormat.matchesPerTeam}
+                    max={format.matchesPerTeam}
                     won={scoreA}
                   />
                 )}
@@ -198,9 +196,11 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
             </div>
           </div>
           <div className='score-time'>
-            <div className={`score-format ${showScores ? 'hide' : ''}`}>
-              {currentFormat && currentFormat.text}
-            </div>
+            {format && format.key !== 'bo1' && (
+              <div className={`score-format ${showScores ? 'hide' : ''}`}>
+                {format.text}
+              </div>
+            )}
             <ScoreTime
               showBomb={showBomb}
               useBombEffects={stopBombEffects}
@@ -241,10 +241,10 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
                 }
               </div>
               <div className='team-score'>
-                {currentFormat && currentFormat.key !== 'bo1' && (
+                {format && format.key !== 'bo1' && (
                   <MapScoreAnnoucement
                     hide={showScores}
-                    max={currentFormat.matchesPerTeam}
+                    max={format.matchesPerTeam}
                     won={scoreB}
                   />
                 )}

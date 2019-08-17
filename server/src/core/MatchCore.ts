@@ -15,7 +15,7 @@ import Match from '../models/Match'
 import { Types, Error } from 'mongoose'
 
 import { dispatchSocket } from '../handler/SocketIo'
-import { SOCKET } from '../enum'
+import { SOCKET, formats } from '../enum'
 
 class LiveMatchCore {
   refactored: RefactoredMatch | null
@@ -133,13 +133,15 @@ class LiveMatchCore {
         playerObj[p.steam64ID] = p
       })
 
+      const currFormat = formats.find(f => f.key === activeMatch.format)
+
       const refactored = {
         teamA: this.formatTeam(activeMatch.teamA, 'CT'),
         teamB: this.formatTeam(activeMatch.teamB, 'T'),
         players: { ...playerObj },
         scoreA: activeMatch.scoreA,
         scoreB: activeMatch.scoreB,
-        format: activeMatch.format,
+        format: currFormat ? currFormat : null,
         maps: activeMatch.maps
       }
 

@@ -1,6 +1,7 @@
 import * as bodyParser from 'body-parser'
 
 import { Request, Response, Router } from 'express'
+import { formats } from '../enum'
 
 import {
   createMatch,
@@ -78,13 +79,15 @@ router.get('/overlay', async (req: Request, res: Response) => {
       playerObj[p.steam64ID] = p
     })
 
+    const currFormat = formats.find(f => f.key === active.format)
+
     const refactored = {
       teamA: liveMatchCore.formatTeam(active.teamA, 'CT'),
       teamB: liveMatchCore.formatTeam(active.teamB, 'T'),
       players: { ...playerObj },
       scoreA: active.scoreA,
       scoreB: active.scoreB,
-      format: active.format,
+      format: currFormat ? currFormat : null,
       maps: active.maps
     }
 

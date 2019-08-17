@@ -75,6 +75,14 @@ export interface TeamConfig {
   }
 }
 
+export interface Format {
+  key: string,
+  maps: number,
+  matchesPerTeam: number,
+  name: string,
+  text: string
+}
+
 export interface StateTeamConfig {
   teamA: TeamConfig,
   teamB: TeamConfig,
@@ -83,7 +91,7 @@ export interface StateTeamConfig {
   },
   scoreA: number,
   scoreB: number,
-  format: string,
+  format: Format,
   maps: string[]
 }
 

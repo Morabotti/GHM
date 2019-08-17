@@ -148,6 +148,24 @@ class ConfigPage extends Component<Props, PageState> {
                             onChange={this._onCheckboxChange}
                           />
                         </div>
+                        <div className='settings-group'>
+                          <Checkbox
+                            toggle
+                            label='Disable overlay status indicator'
+                            name='disableOverlayIndicator'
+                            checked={configs.disableOverlayIndicator}
+                            onChange={this._onCheckboxChange}
+                          />
+                        </div>
+                        <div className='settings-group'>
+                          <Checkbox
+                            toggle
+                            label='Dense overlay status indicator'
+                            name='useDenseOverlayIndicator'
+                            checked={configs.useDenseOverlayIndicator}
+                            onChange={this._onCheckboxChange}
+                          />
+                        </div>
                         <Header as='h3'>HUD Safezones</Header>
                         <Form.Field inline>
                           <label>Left (default 35px):</label>
