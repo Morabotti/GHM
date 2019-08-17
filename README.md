@@ -12,6 +12,7 @@ GHM is meant to be run on local servers. In smaller productions it's prefered to
 * /client | This folder contains frontend created with react.
 * /cs-go | This folder contains example dataset and configs which i've found good to use. Note that `gamestate_integration_ghm.cfg` is required in order to this app work.
 * /server | This folder contains NodeJS server.
+* /scripts | This folder scripts that helps user to setup/run this program.
 
 ### Requirements:
 
@@ -24,7 +25,9 @@ This project relies on MongoDB. That means that you will have to get access to o
 
 ### Project setup:
 
-Setup is quite simple if you have basic acknowledge of npm and mongoDB.
+Setup is quite simple if you have basic acknowledge of npm and mongoDB. There are two ways to install this program:
+
+#### Manual Setup:
 
 1. Have all required technologies downloaded & working (Working DB)
 2. Goto /cs-go/cfg and copy config files into csgo's cfg folder
@@ -36,6 +39,19 @@ DB_CONNECTION="mongodb+srv://url-to-cluster/test?retryWrites=true&w=majority"
 5. in /server, open a cmd/powershell/terminal and run following command: `npm run production`. This command automatically builds front for you so you dont have to worry about it.
 6. Now you have you server running. Go to `http://localhost:8080` and you find yourself in GHM dashboard. Here you can configurate your HUD and create/manage your player/team profiles. HUD opens in `http://localhost:8080/overlay`
 7. If you want to get HUD on top of your game, goto /app and run `npm run start` in new cmd. (Note that you need to run CSGO on fullscreen windowed with 1920x1080 resolution.) If you want to remove CSGO's built in hud, type in console: `exec observator_ghm.cfg`. This removes all useless hud components.
+
+#### Automatic Setup:
+
+1. Same as manual
+2. Same as manual
+3. Goto /scripts and run `setup.bat`
+4. Goto /server and open `.env` file and update `DB_CONNECTION` string to match your database
+5. Goto /scripts and run `run.bat`
+
+#### Overlay app setup & Run
+
+1. Goto /app and run `npm install`. This load is usually very long depending on internet speed. If download doesn't finish. Run `npm install -g electron --verbose`.
+2. Run `npm run start`. Console prompts the path to settings. In order to hud to be on top of csgo, csgo needs to be running on windowed fullscreen.
 
 ### In error cases:
 
@@ -57,8 +73,8 @@ GHM is far from done. There are dozen of features which would fit perfectly, but
 * Custom scoreboard which works well with overlay
 * Better error handling to forms in dashboard
 * HLTV integration to dashboard. Maybe user could link hltv profile into form and it fills automatically?
-* Better match setup => option for bo1/bo3/bo5 with map data and map vetos?
-* Overhaul server structures => Create consistent server structure with strong types.
+* ~~Better match setup => option for bo1/bo3/bo5 with map data and map vetos?~~
+* ~~Overhaul server structures => Create consistent server structure with strong types.~~
 
 Here was just a few. Im open for new ideas.
 

@@ -15,6 +15,7 @@
     "build": "tsc",
     "build:start": "tsc && node dist/server.js",
     "production": "cd ../client & npm run build && cd ../server & npm run build:start",
+    "setup": "cd ../client & npm run build && cd ../server & npm run build",
     "server": "node dist/server.js",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "format": "eslint \"src/**/*.{ts,tsx}\" --fix"
@@ -32,7 +33,7 @@
     "exec": "npm start",
     "ext": "ts"
   },
-  "license": "private",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.3",
     "dotenv": "^7.0.0",

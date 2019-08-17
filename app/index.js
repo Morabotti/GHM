@@ -2,7 +2,6 @@ const electron = require('electron')
 const fs = require('fs')
 const { app, BrowserWindow, globalShortcut } = require('electron')
 const config = require('electron-json-config')
-require('electron-reload')(__dirname)
 
 const defConfig = {
   controlRefresh: 'Alt+R',
