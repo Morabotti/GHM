@@ -7,7 +7,8 @@ import {
   TeamSpecific,
   UpdateTeamInfo,
   UpdatePlayerInfo,
-  NewMatch
+  NewMatch,
+  UpdateActiveScore
 } from './types'
 
 const checkResponse = (res: Response): Response => {
@@ -237,6 +238,20 @@ export const setMatchToLive = (id: string): Promise<MatchList> => fetch(
   `/api/matches/live/${id}`,
   {
     method: 'POST',
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+  .then((res) => res.json())
+
+export const setActiveScores = (
+  id: string,
+  score: UpdateActiveScore
+): Promise<MatchSpecific> => fetch(
+  `/api/matches/score/${id}`,
+  {
+    method: 'PUT',
+    body: JSON.stringify({ score }),
     headers: { 'Content-Type': 'application/json' }
   }
 )

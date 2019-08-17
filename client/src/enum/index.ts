@@ -14,10 +14,10 @@ export const formatsDropDown = [
 ]
 
 export const formats = [
-  { key: 'bo1', name: 'bo1', matchesPerTeam: 1, maps: 1 },
-  { key: 'bo2', name: 'bo2', matchesPerTeam: 2, maps: 2 },
-  { key: 'bo3', name: 'bo3', matchesPerTeam: 2, maps: 3 },
-  { key: 'bo5', name: 'bo5', matchesPerTeam: 3, maps: 5 }
+  { key: 'bo1', name: 'bo1', matchesPerTeam: 1, maps: 1, text: 'Best of 1' },
+  { key: 'bo2', name: 'bo2', matchesPerTeam: 2, maps: 2, text: 'Best of 2' },
+  { key: 'bo3', name: 'bo3', matchesPerTeam: 2, maps: 3, text: 'Best of 3' },
+  { key: 'bo5', name: 'bo5', matchesPerTeam: 3, maps: 5, text: 'Best of 5' }
 ]
 
 export const maps = [

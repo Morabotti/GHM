@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { State } from '../../types'
-import { Dispatch, TeamList, MatchList, MatchSpecific } from '../types'
+import { Dispatch, TeamList, MatchList, MatchSpecific, UpdateActiveScore } from '../types'
 import { formatsDropDown, formats } from '../../enum'
 
 import {
@@ -9,7 +9,8 @@ import {
   forceLoadMatches,
   addMatch,
   setMatchToLive,
-  removeMatch
+  removeMatch,
+  setActiveScores
 } from '../client'
 
 import {
@@ -198,6 +199,20 @@ class LivePage extends PureComponent<Props, ComponentState> {
       .catch(this._resetFields)
   }
 
+  _updateScore = (scores: UpdateActiveScore) => () => {
+    const { activeMatch } = this.state
+
+    if (!activeMatch) {
+      return
+    }
+
+    return setActiveScores(activeMatch._id, scores)
+      .then(activeMatch => this.setState({
+        activeMatch,
+        activation: activeMatch ? activeMatch._id : null
+      }))
+  }
+
   _deleteMatch = () => {
     const { dispatch, matches } = this.props
     const { activation, activeMatch } = this.state
@@ -335,6 +350,7 @@ class LivePage extends PureComponent<Props, ComponentState> {
                       activeMatch={activeMatch}
                       forceLoad={forceLoadMatches}
                       openConfirm={this._openLiveConfirmModal}
+                      onUpdateScore={this._updateScore}
                     />
                   )}
                 </div>

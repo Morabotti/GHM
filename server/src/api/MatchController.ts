@@ -10,13 +10,28 @@ import {
   updateMatch,
   getActiveMatch,
   toggleMatchToLive,
-  liveMatchCore
+  liveMatchCore,
+  updateScore
 } from '../core/MatchCore'
 
 const router = Router()
 
 router.use(bodyParser.urlencoded({ extended: false }))
 router.use(bodyParser.json())
+
+router.put('/score/:id', async (req: Request, res: Response) => {
+  try {
+    await updateScore(req.params.id, req.body.score)
+    await liveMatchCore.dispatchActive()
+    const match = await getActiveMatch()
+    return res.status(200).send(match)
+  }
+  catch (e) {
+    return res
+      .status(500)
+      .send(e)
+  }
+})
 
 router.get('/active', async (req: Request, res: Response) => {
   try {
@@ -66,9 +81,11 @@ router.get('/overlay', async (req: Request, res: Response) => {
     const refactored = {
       teamA: liveMatchCore.formatTeam(active.teamA, 'CT'),
       teamB: liveMatchCore.formatTeam(active.teamB, 'T'),
-      players: {
-        ...playerObj
-      }
+      players: { ...playerObj },
+      scoreA: active.scoreA,
+      scoreB: active.scoreB,
+      format: active.format,
+      maps: active.maps
     }
 
     return res.status(200).send(refactored)

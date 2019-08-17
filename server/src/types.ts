@@ -222,6 +222,11 @@ export interface MatchSpecificModelOverlay extends Document {
   scoreB: number
 }
 
+export interface UpdateActiveScore {
+  scoreA: number,
+  scoreB: number
+}
+
 export interface TeamSpecific extends Document {
   nameShort: string,
   nameLong: string,

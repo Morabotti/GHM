@@ -99,6 +99,11 @@ export interface UpdateTeam {
   logo: File | null
 }
 
+export interface UpdateActiveScore {
+  scoreA: number,
+  scoreB: number
+}
+
 export interface UpdateTeamInfo {
   nameShort: string,
   nameLong: string,

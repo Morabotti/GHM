@@ -12,9 +12,8 @@ import {
   EventsReducer,
   TeamStat,
   TeamStats,
-  TeamConfig,
-  PlayerConfig,
-  Bomb
+  Bomb,
+  StateTeamConfig
 } from './types'
 
 export interface State {
@@ -26,13 +25,7 @@ export interface State {
   gameStateRound: Round | null,
   events: EventsReducer,
   teamStats: TeamStats,
-  teamConfiguration: {
-    teamA: TeamConfig,
-    teamB: TeamConfig,
-    players: {
-      [key: string]: PlayerConfig
-    }
-  }
+  teamConfiguration: StateTeamConfig
 }
 
 const teamStats: TeamStat = {
@@ -70,7 +63,11 @@ const getDefaultState = (): State => ({
   teamConfiguration: {
     teamA: teamConfiguration('CT'),
     teamB: teamConfiguration('T'),
-    players: { }
+    players: { },
+    scoreA: 0,
+    scoreB: 0,
+    format: 'bo1',
+    maps: ['']
   }
 })
 

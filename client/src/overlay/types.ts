@@ -80,7 +80,11 @@ export interface StateTeamConfig {
   teamB: TeamConfig,
   players: {
     [key: string]: PlayerConfig
-  }
+  },
+  scoreA: number,
+  scoreB: number,
+  format: string,
+  maps: string[]
 }
 
 export interface LevelRange {

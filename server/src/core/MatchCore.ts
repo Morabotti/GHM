@@ -5,7 +5,8 @@ import {
   MatchSpecific,
   CustomAllPlayer,
   RefactoredMatch,
-  TeamModelSpecific
+  TeamModelSpecific,
+  UpdateActiveScore
 } from '../types'
 
 import { TeamType as TType } from 'csgo-gsi-types'
@@ -130,7 +131,11 @@ class LiveMatchCore {
       const refactored = {
         teamA: this.formatTeam(activeMatch.teamA, 'CT'),
         teamB: this.formatTeam(activeMatch.teamB, 'T'),
-        players: { ...playerObj }
+        players: { ...playerObj },
+        scoreA: activeMatch.scoreA,
+        scoreB: activeMatch.scoreB,
+        format: activeMatch.format,
+        maps: activeMatch.maps
       }
 
       dispatchSocket(
@@ -337,6 +342,25 @@ export const updateMatch = (
     Match.findByIdAndUpdate(
       id,
       { teamA, teamB },
+      { new: true },
+      (err: Error, match: MatchModel | null) => {
+        if (err || match === null) {
+          return reject('There was a problem updating the match.')
+        }
+
+        return resolve(match)
+      })
+  }
+)
+
+export const updateScore = (
+  id: MatchModel['_id'],
+  { scoreB, scoreA }: UpdateActiveScore
+): Promise<MatchModel> => new Promise(
+  (resolve, reject) => {
+    Match.findByIdAndUpdate(
+      id,
+      { scoreA, scoreB },
       { new: true },
       (err: Error, match: MatchModel | null) => {
         if (err || match === null) {

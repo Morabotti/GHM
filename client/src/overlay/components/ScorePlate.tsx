@@ -1,7 +1,12 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
-import { ScoreAnnouncement, DefuseAnnouncement, ScoreTime } from './'
+import {
+  ScoreAnnouncement,
+  DefuseAnnouncement,
+  ScoreTime,
+  MapScoreAnnoucement
+} from './'
 
 import { State } from '../../types'
 import { ConfigState } from '../../common/types'
@@ -17,6 +22,7 @@ import {
   Bomb,
   AllPlayers
 } from '../types'
+import { formats } from '../../enum'
 
 interface Props {
   mapData: Map | null,
@@ -83,7 +89,13 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
     const {
       phaseData,
       mapData,
-      teamConfiguration: { teamA, teamB },
+      teamConfiguration: {
+        teamA,
+        teamB,
+        scoreA,
+        scoreB,
+        format
+      },
       bomb,
       gameStateRound,
       config
@@ -102,6 +114,7 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
     } = this.state
 
     const isWin = (gameStateRound !== null && gameStateRound.win_team !== undefined)
+    const currentFormat = formats.find(i => i.key === format)
 
     const aTeamWin = isWin
       && gameStateRound !== null
@@ -133,6 +146,10 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
       : plantedBomb
         ? 'PLANTED THE BOMB'
         : ''
+
+    const showScores = isWin
+      || (bomb ? bomb.state === 'defusing' : false)
+      || plantedBomb
 
     return (
       <div className={`score-top ${config.useRoundedCorners ? 'rounded' : ''}`}>
@@ -166,6 +183,13 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
                 }
               </div>
               <div className='team-score'>
+                {currentFormat && currentFormat.key !== 'bo1' && (
+                  <MapScoreAnnoucement
+                    hide={showScores}
+                    max={currentFormat.matchesPerTeam}
+                    won={scoreA}
+                  />
+                )}
                 {teamA.team === 'CT'
                   ? team_ct.score
                   : team_t.score
@@ -174,6 +198,9 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
             </div>
           </div>
           <div className='score-time'>
+            <div className={`score-format ${showScores ? 'hide' : ''}`}>
+              {currentFormat && currentFormat.text}
+            </div>
             <ScoreTime
               showBomb={showBomb}
               useBombEffects={stopBombEffects}
@@ -214,6 +241,13 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
                 }
               </div>
               <div className='team-score'>
+                {currentFormat && currentFormat.key !== 'bo1' && (
+                  <MapScoreAnnoucement
+                    hide={showScores}
+                    max={currentFormat.matchesPerTeam}
+                    won={scoreB}
+                  />
+                )}
                 {teamB.team === 'T'
                   ? team_t.score
                   : team_ct.score

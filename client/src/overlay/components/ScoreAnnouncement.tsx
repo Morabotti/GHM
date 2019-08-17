@@ -6,21 +6,17 @@ interface Props {
   eventText: string
 }
 
-export default (props: Props) => {
-  const {
-    planted,
-    win,
-    eventText
-  } = props
-
-  return (
-    <div className={`team-event-container
-      ${planted ? 'show-bomb' : ''}
-      ${win ? ' show-win' : ''}`}
-    >
-      <div className='team-event'>
-        {eventText}
-      </div>
+export default ({
+  planted,
+  win,
+  eventText
+}: Props) => (
+  <div className={`team-event-container
+    ${planted ? 'show-bomb' : ''}
+    ${win ? ' show-win' : ''}`}
+  >
+    <div className='team-event'>
+      {eventText}
     </div>
-  )
-}
+  </div>
+)

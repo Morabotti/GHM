@@ -1,6 +1,6 @@
 import React from 'react'
 import { useScores } from '../../hooks'
-import { MatchSpecific } from '../types'
+import { MatchSpecific, UpdateActiveScore } from '../types'
 
 import {
   Button,
@@ -11,20 +11,21 @@ import {
 interface Props {
   activeMatch: MatchSpecific,
   forceLoad: () => Promise<Response>,
-  openConfirm: (id: string | null) => () => void
+  openConfirm: (id: string | null) => () => void,
+  onUpdateScore: (scores: UpdateActiveScore) => () => void
 }
 
 export default ({
   activeMatch,
   forceLoad,
-  openConfirm
+  openConfirm,
+  onUpdateScore
 }: Props) => {
   const {
     scoreA,
     scoreB,
     errorA,
     errorB,
-    updateScore,
     updateScoreA,
     updateScoreB
   } = useScores(activeMatch.scoreA, activeMatch.scoreB, activeMatch.format)
@@ -44,9 +45,10 @@ export default ({
       <Button
         fluid
         color='instagram'
+        disabled
         onClick={() => {}}
       >Update maps</Button>
-      <Form onSubmit={updateScore}>
+      <Form onSubmit={onUpdateScore({ scoreA, scoreB })}>
         <Header as='h2' className='text-center'>Update map score</Header>
         <Form.Group widths='equal'>
           <Form.Input

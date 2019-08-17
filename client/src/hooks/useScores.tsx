@@ -7,8 +7,7 @@ interface ScoreContext {
   errorA: boolean,
   errorB: boolean,
   updateScoreA: (e: React.ChangeEvent<HTMLInputElement>) => void,
-  updateScoreB: (e: React.ChangeEvent<HTMLInputElement>) => void,
-  updateScore: () => void
+  updateScoreB: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export const useScores = (
@@ -54,17 +53,12 @@ export const useScores = (
     setScoreB(value)
   }
 
-  const updateScore = () => {
-
-  }
-
   return {
     scoreA,
     scoreB,
     errorA,
     errorB,
     updateScoreA,
-    updateScoreB,
-    updateScore
+    updateScoreB
   }
 }

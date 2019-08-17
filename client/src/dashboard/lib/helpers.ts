@@ -11,18 +11,18 @@ export const deepEqual = (x: any, y: any): boolean => {
 
 export const formats = [{
   key: 'bo1',
-  text: 'Best of 1',
-  value: '1'
+  text: 'Best Of 1',
+  value: 1
 }, {
   key: 'bo2',
-  text: 'Best of 2',
-  value: '2'
+  text: 'Best Of 2',
+  value: 2
 }, {
   key: 'bo3',
-  text: 'Best of 3',
-  value: '3'
+  text: 'Best Of 3',
+  value: 3
 }, {
   key: 'bo5',
-  text: 'Best of 5',
-  value: '5'
+  text: 'Best Of 5',
+  value: 5
 }]
