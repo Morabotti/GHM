@@ -9,7 +9,7 @@ interface ConfigType {
   gameStateTimeout: number,
   steamApiKey: string,
   dbConnection: string | null,
-  countriesPath: string
+  useStaticData: boolean
 }
 
 const config: ConfigType = {
@@ -19,7 +19,7 @@ const config: ConfigType = {
   'gameStateTimeout': Number(process.env.TIMEOUT_TIME) || 5,
   'steamApiKey': process.env.STEAM_API_KEY || '',
   'dbConnection': process.env.DB_CONNECTION || null,
-  'countriesPath': process.env.COUNTRIES_PATH || './static/config/countries.json'
+  'useStaticData': process.env.USE_STATIC_DATA === 'TRUE'
 }
 
 export default config

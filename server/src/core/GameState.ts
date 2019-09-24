@@ -1,4 +1,5 @@
 import * as moment from 'moment'
+import * as jsonfile from 'jsonfile'
 import {
   PhaseCountDown,
   Player,
@@ -31,6 +32,15 @@ class GameEvents {
     this.isGameOnline = false // Is client on server
     this.isGameLive = false // Is game on live
     this.latestTime = 0 // Default: 0, doesn't rly matter since code checks this.isNotFirstTime
+
+    if (config.useStaticData) {
+      this.isNotFirstTime = true
+      this.isClientOnline = true
+      this.isClientSpectating = true
+      this.isGameOnline = true 
+      this.isGameLive = true
+      this.readStaticState()
+    }
   }
 
   handleRequest (state: GameState) {
@@ -364,6 +374,15 @@ class GameEvents {
     }
   }
 
+  readStaticState () {
+    try {
+      const state = jsonfile.readFileSync('./dev/static-state.json')
+      this.handleRequest(state)
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
   // * SETTERS * //
   setCurrentTime () {
     this.latestTime = moment().unix()
@@ -387,7 +406,9 @@ class GameEvents {
   }
 
   getCurrentStatus () {
-    this.checkOfflineStatus()
+    if (!config.useStaticData) {
+      this.checkOfflineStatus()
+    }
     return {
       clientOnline: this.isClientOnline,
       clientSpectating: this.isClientSpectating,

@@ -5,5 +5,5 @@
 *.vscode
 *db-*.json
 
-server/api-struct
+server/dev/static-state.json
 server/static/uploads

@@ -40,6 +40,8 @@ DB_CONNECTION="mongodb+srv://url-to-cluster/test?retryWrites=true&w=majority"
 6. Now you have you server running. Go to `http://localhost:8080` and you find yourself in GHM dashboard. Here you can configurate your HUD and create/manage your player/team profiles. HUD opens in `http://localhost:8080/overlay`
 7. If you want to get HUD on top of your game, goto /app and run `npm run start` in new cmd. (Note that you need to run CSGO on fullscreen windowed with 1920x1080 resolution.) If you want to remove CSGO's built in hud, type in console: `exec observator_ghm.cfg`. This removes all useless hud components.
 
+* If you want to dev without opening CSGO, set ENV flag `USE_STATIC_DATA` to `"TRUE"`. Make sure that you have `static-state.json` file in `./server/dev/`. You can change state manually by editing this file.
+
 #### Automatic Setup:
 
 1. Same as manual
