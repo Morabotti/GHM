@@ -449,10 +449,10 @@ class LivePage extends PureComponent<Props, ComponentState> {
                     />
                   </div>
                   <div className='new-match-maps'>
-                    <Card.Group itemsPerRow={5} style={{
-                      display: 'flex',
-                      justifyContent: 'center'
-                    }}>
+                    <Card.Group
+                      itemsPerRow={5}
+                      className='live-map-selection'
+                    >
                       {activeMaps.map((e, i) => (
                         <Card raised key={i} onClick={this._toggleMapModal(i)}>
                           <Image src={e === ''

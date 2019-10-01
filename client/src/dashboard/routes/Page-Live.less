@@ -92,11 +92,27 @@
   }
 }
 
+.live-map-selection{
+  display: flex;
+  justify-content: center;
+}
+
 .actions-container{
   margin: 20px 0 0;
 
   button{
     margin: 10px 0 !important;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .live-map-selection{
+    flex-direction: column;
+    align-items: center;
+
+    a {
+      width: calc(80% - 1.5em) !important;
+    }
   }
 }
 

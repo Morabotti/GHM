@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
+import { compose } from 'recompose'
+import { withRouter } from 'react-router'
 
 import {
   Map
@@ -31,11 +33,26 @@ interface Props {
   status: Status,
   teamConfiguration: StateTeamConfig,
   config: ConfigState,
-  mapData: Map | null
+  mapData: Map | null,
+  location: { search: string }
 }
 
-class Main extends PureComponent<Props> {
+interface ComponentState {
+  hideScore: boolean,
+  hideTeams: boolean
+}
+
+class Main extends PureComponent<Props, ComponentState> {
   private interval: NodeJS.Timeout | undefined
+
+  constructor (props: Props) {
+    super(props)
+
+    this.state = {
+      hideScore: props.location.search.includes('hideScore'),
+      hideTeams: props.location.search.includes('hideTeams')
+    }
+  }
 
   componentDidMount () {
     this._getStatus()
@@ -79,6 +96,11 @@ class Main extends PureComponent<Props> {
       mapData
     } = this.props
 
+    const {
+      hideTeams,
+      hideScore
+    } = this.state
+
     if (!status.clientSpectating || !status.gameOnline || !mapData) {
       return <GameLoader
         showMessage={!config.disableOverlayIndicator}
@@ -106,7 +128,9 @@ class Main extends PureComponent<Props> {
         >
           <Radar />
           <div className='overlay-left-dummy' />
-          <Team team={teamA.team} />
+          {!hideTeams && (
+            <Team team={teamA.team} />
+          )}
         </div>
         <div
           className='overlay-center'
@@ -114,7 +138,10 @@ class Main extends PureComponent<Props> {
             marginTop: `${config.safeZoneTop}px`
           }}
         >
-          <ScorePlate />
+          {!hideScore
+            ? <ScorePlate />
+            : <div className='overlay-top-dummy' />
+          }
           <div className='overlay-center-dummy' />
           <PlayerPlate />
         </div>
@@ -126,7 +153,9 @@ class Main extends PureComponent<Props> {
           }}
         >
           <div className='overlay-right-dummy' />
-          <Team team={teamB.team} />
+          {!hideTeams && (
+            <Team team={teamB.team} />
+          )}
         </div>
       </div>
     )
@@ -140,4 +169,7 @@ const mapStateToProps = (state: State) => ({
   mapData: state.overlay.gameStateMap
 })
 
-export default connect(mapStateToProps)(Main)
+export default compose<Props, {}>(
+  withRouter,
+  connect(mapStateToProps)
+)(Main)
