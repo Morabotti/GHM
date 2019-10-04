@@ -14,6 +14,7 @@ import {
   liveMatchCore,
   updateScore
 } from '../core/MatchCore'
+import { RefactoredMatch } from '../types'
 
 const router = Router()
 
@@ -81,7 +82,7 @@ router.get('/overlay', async (req: Request, res: Response) => {
 
     const currFormat = formats.find(f => f.key === active.format)
 
-    const refactored = {
+    const refactored: RefactoredMatch = {
       teamA: liveMatchCore.formatTeam(active.teamA, 'CT'),
       teamB: liveMatchCore.formatTeam(active.teamB, 'T'),
       players: { ...playerObj },

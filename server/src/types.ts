@@ -42,6 +42,7 @@ export interface MatchSchema {
   isLive: boolean
 }
 
+/*
 export interface RefactoredMatch {
   teamA: TeamConfig,
   teamB: TeamConfig,
@@ -49,6 +50,7 @@ export interface RefactoredMatch {
     [key: string]: PlayerConfig
   }
 }
+*/
 
 export interface RawMatch {
   match: RMatch,
@@ -84,16 +86,17 @@ export interface RPlayer {
   imagePath: string | null
 }
 
+/*
 export interface TeamConfig {
   team: TeamType,
   customName: null | string,
   customLogo: null | string,
   country: null | string,
-  players: {
-    [key: string]: PlayerConfig
-  }
+  players: PlayerConfig[]
 }
+*/
 
+/*
 export interface PlayerConfig {
   teamName: string,
   firstName: string | null,
@@ -101,8 +104,10 @@ export interface PlayerConfig {
   gameName: string | null,
   country: string | null,
   hasImage: boolean,
+  steam64ID: string,
   imagePath: string | null
 }
+*/
 
 /**
  * NEW TYPES
@@ -245,4 +250,43 @@ export interface PlayerSpecific extends Document {
   team: TeamModel,
   hasImage: boolean,
   imagePath: string | null
+}
+
+export interface RefactoredMatchPlayer {
+  firstName: string,
+  lastName: string,
+  gameName: string,
+  country: string,
+  steam64ID: string,
+  team: string,
+  hasImage: boolean,
+  imagePath: string | null
+}
+
+export interface MatchFormat {
+  key: string,
+  name: string,
+  matchesPerTeam: number,
+  maps: number,
+}
+
+export interface RefactoredMatchTeam {
+  team: TeamType,
+  customName: string,
+  customLogo: string | null,
+  country: string,
+  players: RefactoredMatchPlayer[]
+}
+
+export interface RefactoredMatch {
+  _id?: string,
+  teamA: RefactoredMatchTeam,
+  teamB: RefactoredMatchTeam,
+  players: {
+    [key: string]: RefactoredMatchPlayer
+  },
+  maps: string[],
+  scoreA: number,
+  scoreB: number,
+  format: MatchFormat | null
 }

@@ -6,7 +6,8 @@ import {
   CustomAllPlayer,
   RefactoredMatch,
   TeamModelSpecific,
-  UpdateActiveScore
+  UpdateActiveScore,
+  RefactoredMatchTeam
 } from '../types'
 
 import { TeamType as TType } from 'csgo-gsi-types'
@@ -26,7 +27,7 @@ class LiveMatchCore {
     this.latelyChanged = false
   }
 
-  formatTeam = (team: TeamModelSpecific, side: TType) => ({
+  formatTeam = (team: TeamModelSpecific, side: TType): RefactoredMatchTeam => ({
     team: side,
     customName: team.nameShort,
     customLogo: team.hasLogo ? team.logoPath : null,
@@ -35,6 +36,11 @@ class LiveMatchCore {
   })
 
   testTeamSides = (allplayers: CustomAllPlayer) => {
+    if (this.refactored === null) {
+      this.dispatchActive()
+      return
+    }
+
     if (this.refactored !== null) {
       const needSwitch = this.calculateTeams(allplayers)
 
@@ -65,17 +71,17 @@ class LiveMatchCore {
     const teamAPlayers = this.refactored.teamA.players
     const teamBPlayers = this.refactored.teamB.players
 
-    Object.keys(teamAPlayers).forEach(value => {
-      if (allplayers[value] !== undefined) {
-        if (allplayers[value].team === teamBTeam) {
+    teamAPlayers.forEach(player => {
+      if (allplayers[player.steam64ID] !== undefined) {
+        if (allplayers[player.steam64ID].team === teamBTeam) {
           aOnDifferent++
         }
       }
     })
 
-    Object.keys(teamBPlayers).forEach(value => {
-      if (allplayers[value] !== undefined) {
-        if (allplayers[value].team === teamATeam) {
+    teamBPlayers.forEach(player => {
+      if (allplayers[player.steam64ID] !== undefined) {
+        if (allplayers[player.steam64ID].team === teamATeam) {
           bOnDifferent++
         }
       }
@@ -135,7 +141,7 @@ class LiveMatchCore {
 
       const currFormat = formats.find(f => f.key === activeMatch.format)
 
-      const refactored = {
+      const refactored: RefactoredMatch = {
         teamA: this.formatTeam(activeMatch.teamA, 'CT'),
         teamB: this.formatTeam(activeMatch.teamB, 'T'),
         players: { ...playerObj },
@@ -144,6 +150,8 @@ class LiveMatchCore {
         format: currFormat ? currFormat : null,
         maps: activeMatch.maps
       }
+
+      this.refactored = refactored
 
       dispatchSocket(
         SOCKET.GAME_CONFIG,
