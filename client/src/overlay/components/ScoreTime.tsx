@@ -61,6 +61,10 @@ export default ({
     )
   }
 
+  const isOvertime = round + 1 > 30
+  const otRound = isOvertime ? ((round - 30) % 6) + 1 : 0
+  const otTimes = isOvertime ? Math.floor((round - 30) / 6) + 1 : 0
+
   return (
     <>
       <div className={`time ${(phase === 'live' && phaseTimer <= 10) ? 'text-red' : ''}`}>
@@ -70,7 +74,11 @@ export default ({
         }
       </div>
       <div className='round'>
-        {phase === 'warmup' ? 'WARMUP' : `Round ${round + 1}/30`}
+        {phase === 'warmup'
+          ? 'WARMUP'
+          : isOvertime
+            ? `OT ${otTimes} (${otRound}/6)`
+            : `Round ${round + 1}/30`}
       </div>
     </>
   )
