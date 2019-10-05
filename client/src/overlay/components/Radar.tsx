@@ -97,7 +97,7 @@ class Radar extends PureComponent<Props, ComponentState> {
                 playerPosition={player.position}
                 playerForward={player.forward}
                 playerDead={player.state.health === 0}
-                isSpectating={player.watching}
+                isSpectating={false}
                 size={config.playerSize}
                 fontSize={config.radarNumberSize}
                 prefixX={prefixX}

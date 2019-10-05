@@ -1,7 +1,5 @@
 const electron = require('electron')
-const fs = require('fs')
 const { app, BrowserWindow, globalShortcut } = require('electron')
-const config = require('electron-json-config')
 
 const defConfig = {
   controlRefresh: 'Alt+R',
@@ -11,20 +9,7 @@ const defConfig = {
 }
 
 app.on('ready', async () => {
-  console.log('Settings: ' + config.file())
-
-  if (!config.has('overlayUrl'))
-    config.set('overlayUrl', defConfig.overlayUrl)
-
-  if (!config.has('controlRefresh'))
-    config.set('controlRefresh', defConfig.controlRefresh)
-
-  if (!config.has('controlHide'))
-    config.set('controlHide', defConfig.controlHide)
-
-  if (!config.has('controlQuit'))
-    config.set('controlQuit', defConfig.controlQuit)
-
+  let isVisible = true
   const displays = electron.screen.getAllDisplays()
   const externalDisplay = displays.find((display) => {
     return display.bounds.x !== 0 || display.bounds.y !== 0
@@ -45,24 +30,27 @@ app.on('ready', async () => {
     win.setIgnoreMouseEvents(true)
 
     // TOGGLE HUD
-    globalShortcut.register(config.get('controlHide', defConfig.controlHide), () => {
-      const isVisible = win.isVisible()
-      if (isVisible)
+    globalShortcut.register(defConfig.controlHide, () => {
+      if (isVisible) {
+        isVisible = false
         win.minimize()
-      else
+      }
+      else {
+        isVisible = true
         win.showInactive()
+      }
     })
 
     // EXIT PROGRAM
-    globalShortcut.register(config.get('controlQuit', defConfig.controlQuit), () => {
+    globalShortcut.register(defConfig.controlQuit, () => {
       win.close()
     })
 
     // REFRESH OVERLAY
-    globalShortcut.register(config.get('controlRefresh', defConfig.controlRefresh), () => {
+    globalShortcut.register(defConfig.controlRefresh, () => {
       win.reload()
     })
 
-    win.loadURL(config.get('overlayUrl', defConfig.overlayUrl))
+    win.loadURL(defConfig.overlayUrl)
   }
 })

@@ -63,7 +63,7 @@ class GameEvents {
   handleGameState (state: GameState) {
     if (this.gameState === undefined) {
       if (state.allplayers !== undefined) {
-        this.setVectors(state)
+        // this.setVectors(state)
         this.dispatchAllPlayers(state.allplayers)
       }
 
@@ -83,13 +83,11 @@ class GameEvents {
 
     if (state.previously !== undefined) {
       if (state.previously.allplayers !== undefined) {
-        this.setVectors(state)
-        analyzeEvents(state)
+        // * This is practically useless if radar is not used
+        // this.setVectors(state)
+        // * Could be deleted
+        // analyzeEvents(state)
         liveMatchCore.testTeamSides(state.allplayers)
-
-        if (state.player !== undefined && state.player.spectarget !== undefined && state.player.spectarget !== 'free') {
-          state.allplayers[state.player.spectarget].watching = true
-        }
 
         this.dispatchAllPlayers(state.allplayers)
         this.gameState = {

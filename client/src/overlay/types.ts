@@ -33,8 +33,7 @@ export interface TeamStats {
 
 interface __NewPlayerList {
   position: [number, number, number],
-  forward: [number, number, number],
-  watching: boolean
+  forward: [number, number, number]
 }
 
 interface __NewBombState {

@@ -13,7 +13,7 @@ import ARMOR from '../../assets/util/armor.svg'
 interface Props {
   first?: boolean,
   last?: boolean,
-  name: string,
+  name: string | null,
   team: TeamType,
   /* eslint-disable @typescript-eslint/no-explicit-any */
   weapons: Weapons | any, // Figure out typeof
@@ -142,7 +142,9 @@ class Player extends PureComponent<Props, ComponentState> {
               )}
             </div>
             <div className='player-name'>
-              <div className='name'>{name}</div>
+              <div
+                className='name'
+              >{name}</div>
               <div className='data-divider'>|</div>
               <div className='spec-num'>{observerSlot}</div>
             </div>

@@ -130,8 +130,7 @@ export interface TeamStats {
 
 interface __NewPlayerList {
   position: string | string[],
-  forward: string | string[],
-  watching: boolean
+  forward: string | string[]
 }
 
 export type CustomPlayerList = Merge<PlayerList, __NewPlayerList>

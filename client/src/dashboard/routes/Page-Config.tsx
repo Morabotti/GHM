@@ -223,7 +223,7 @@ class ConfigPage extends Component<Props, PageState> {
                           <div className='settings-group'>
                             <Checkbox
                               toggle
-                              label='Use custom radar'
+                              label='Use custom radar (This currently requires changes to backend. See GameStateCore)'
                               name='useRadar'
                               checked={configs.useRadar}
                               onChange={this._onCheckboxChange}

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { Player } from './'
 
-import { TeamType, PhaseCountDown } from 'csgo-gsi-types'
+import { TeamType, PhaseCountDown, Player as PlayerType } from 'csgo-gsi-types'
 
 import {
   calculateNadeGrade,
@@ -11,19 +11,23 @@ import {
 
 import { State } from '../../types'
 import { ConfigState } from '../../common/types'
-import { AllPlayers, TeamStats } from '../types'
+import { AllPlayers, TeamStats, PlayerConfig } from '../types'
 
 interface Props {
   team: TeamType,
   allPlayers: AllPlayers | null,
   phase: PhaseCountDown | null,
   teamStats: TeamStats,
+  player: PlayerType | null,
+  configuredPlayers: {
+    [key: string]: PlayerConfig
+  },
   config: ConfigState
 }
 
 class Team extends PureComponent<Props> {
   render () {
-    const { team, allPlayers, teamStats, config, phase } = this.props
+    const { team, allPlayers, teamStats, config, phase, player, configuredPlayers } = this.props
     if (!allPlayers || !phase) {
       return <div />
     }
@@ -80,20 +84,20 @@ class Team extends PureComponent<Props> {
           .filter(key => {
             return allPlayers[key].team === team
           })
-          .map((player, index) => (
+          .map((p, index) => (
             <Player
-              key={player}
+              key={p}
               team={team}
               first={index === 0}
               last={index === 4}
-              flashed={allPlayers[player].state.flashed}
+              flashed={allPlayers[p].state.flashed}
               showStats={isOnStart}
-              name={allPlayers[player].name}
-              weapons={allPlayers[player].weapons}
-              state={allPlayers[player].state}
-              stats={allPlayers[player].match_stats}
-              watching={allPlayers[player].watching}
-              observerSlot={allPlayers[player].observer_slot}
+              name={configuredPlayers[p] ? configuredPlayers[p].gameName : allPlayers[p].name}
+              weapons={allPlayers[p].weapons}
+              state={allPlayers[p].state}
+              stats={allPlayers[p].match_stats}
+              watching={(player && player.steamid) === p}
+              observerSlot={allPlayers[p].observer_slot}
             />
           )
           )}
@@ -106,6 +110,8 @@ const mapStateToProps = (state: State) => ({
   allPlayers: state.overlay.gameStateAllPlayer,
   phase: state.overlay.gameStatePhase,
   teamStats: state.overlay.teamStats,
+  player: state.overlay.gameStatePlayer,
+  configuredPlayers: state.overlay.teamConfiguration.players,
   config: state.common.config
 })
 
