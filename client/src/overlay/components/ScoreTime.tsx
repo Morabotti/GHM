@@ -48,11 +48,11 @@ export default ({
     )
   }
 
-  if (phase === 'paused') {
+  if (phase === 'paused' || phase === 'timeout_ct' || phase === 'timeout_t') {
     return (
       <>
-        <div className='timeout-wrapper'>
-          <img src='/static/utils/timeout.svg' className='bomb-icon' />
+        <div className='timeout-wrapper smaller'>
+          <img src='/static/utils/timeout.svg' />
         </div>
         <div className='timeout-text'>
           {Number(phaseTimer) !== 0 ? sectostr(Math.trunc(phaseTimer) + 1) : 'Paused'}

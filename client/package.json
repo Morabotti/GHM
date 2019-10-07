@@ -26,7 +26,7 @@
     "@types/recompose": "^0.30.7",
     "@types/socket.io-client": "^1.4.32",
     "@types/webpack-env": "^1.14.0",
-    "csgo-gsi-types": "^1.0.6",
+    "csgo-gsi-types": "^1.0.7",
     "react-hot-loader": "4.12.6",
     "ts-essentials": "^3.0.0",
     "webpack-dev-server": "3.7.2"

@@ -54,7 +54,8 @@
         margin-top: 0;
         transition: opacity 150ms linear, margin 350ms linear;
 
-        &.show-win{
+        &.show-win,
+        &.show-timeout{
           opacity: 1;
           margin-top: 65px;
         }
@@ -235,6 +236,10 @@
         transform: scale(0.80);
         padding-top: 0.5em;
         height: 70%;
+
+        &.smaller {
+          transform: scale(0.70);
+        }
       }
 
       .timeout-text{

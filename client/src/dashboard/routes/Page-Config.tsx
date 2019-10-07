@@ -166,6 +166,18 @@ class ConfigPage extends Component<Props, PageState> {
                             onChange={this._onCheckboxChange}
                           />
                         </div>
+                        <Header as='h3'>Game</Header>
+                        <Form.Field inline>
+                          <label>Max timeouts (per team):</label>
+                          <Input
+                            name='maxRounds'
+                            value={configs.maxRounds}
+                            label='timeouts'
+                            labelPosition='right'
+                            onChange={this._onNumberChange}
+                            placeholder='Number of timeouts'
+                          />
+                        </Form.Field>
                         <Header as='h3'>HUD Safezones</Header>
                         <Form.Field inline>
                           <label>Left (default 35px):</label>
@@ -223,6 +235,7 @@ class ConfigPage extends Component<Props, PageState> {
                           <div className='settings-group'>
                             <Checkbox
                               toggle
+                              disabled
                               label='Use custom radar (This currently requires changes to backend. See GameStateCore)'
                               name='useRadar'
                               checked={configs.useRadar}

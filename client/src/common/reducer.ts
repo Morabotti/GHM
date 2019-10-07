@@ -26,6 +26,7 @@ export const configState: ConfigState = {
   useRadar: false,
   playerSize: 40,
   bombSize: 40,
+  maxRounds: 4,
   radarNumberSize: 32,
   // Player
   usePreSetName: false,

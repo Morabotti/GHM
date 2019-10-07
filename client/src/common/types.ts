@@ -5,6 +5,7 @@ export interface ConfigState {
   useRadar: boolean,
   playerSize: number,
   bombSize: number,
+  maxRounds: number,
   radarNumberSize: number,
   safeZoneLeft: number,
   safeZoneRight: number,

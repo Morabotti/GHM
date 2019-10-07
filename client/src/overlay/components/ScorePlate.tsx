@@ -5,7 +5,8 @@ import {
   ScoreAnnouncement,
   DefuseAnnouncement,
   ScoreTime,
-  MapScoreAnnoucement
+  MapScoreAnnoucement,
+  TimeoutAnnoucement
 } from './'
 
 import { State } from '../../types'
@@ -149,6 +150,31 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
       || (bomb ? bomb.state === 'defusing' : false)
       || plantedBomb
 
+    const teamAName = teamA.customName !== null
+      ? teamA.customName
+      : teamA.team === 'CT'
+        ? team_ct.name !== undefined ? team_ct.name : 'COUNTER-TERRORISTS'
+        : team_t.name !== undefined ? team_t.name : 'TERRORISTS'
+
+    const teamBName = teamB.customName !== null
+      ? teamB.customName
+      : teamB.team === 'T'
+        ? team_t.name !== undefined ? team_t.name : 'TERRORISTS'
+        : team_ct.name !== undefined ? team_ct.name : 'COUNTER-TERRORISTS'
+
+    const teamATimeout = (teamA.team === 'CT' && phase === 'timeout_ct')
+      || (teamA.team === 'T' && phase === 'timeout_t')
+
+    const teamBTimeout = (teamB.team === 'T' && phase === 'timeout_t')
+      || (teamB.team === 'CT' && phase === 'timeout_ct')
+
+    const teamATimeoutAmount = (teamA.team === 'CT'
+      ? team_ct.timeouts_remaining
+      : team_t.timeouts_remaining) - config.maxRounds + 1
+    const teamBTimeoutAmount = (teamB.team === 'T'
+      ? team_t.timeouts_remaining
+      : team_ct.timeouts_remaining) - config.maxRounds + 1
+
     return (
       <div className={`score-top ${config.useRoundedCorners ? 'rounded' : ''}`}>
         <div className='score-top-upper'>
@@ -157,6 +183,10 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
               planted={plantedBomb}
               win={aTeamWin}
               eventText={eventText}
+            />
+            <TimeoutAnnoucement
+              timeout={teamATimeout}
+              eventText={`${teamAName} timeout (${teamATimeoutAmount}/${config.maxRounds})`}
             />
             <DefuseAnnouncement
               defusing={bomb ? bomb.state === 'defusing' : false}
@@ -173,12 +203,7 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
                 }
               </div>
               <div className={`team-name smaller`}>
-                {teamA.customName !== null
-                  ? teamA.customName
-                  : teamA.team === 'CT'
-                    ? team_ct.name !== undefined ? team_ct.name : 'COUNTER-TERRORISTS'
-                    : team_t.name !== undefined ? team_t.name : 'TERRORISTS'
-                }
+                {teamAName}
               </div>
               <div className='team-score'>
                 {format && format.key !== 'bo1' && (
@@ -218,6 +243,10 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
               win={bTeamWin}
               eventText={eventText}
             />
+            <TimeoutAnnoucement
+              timeout={teamBTimeout}
+              eventText={`${teamBName} timeout (${teamBTimeoutAmount}/${config.maxRounds})`}
+            />
             <DefuseAnnouncement
               defusing={bomb ? bomb.state === 'defusing' : false}
               hasKit={defuserHasKit}
@@ -233,12 +262,7 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
                 }
               </div>
               <div className={`team-name smaller`}>
-                {teamB.customName !== null
-                  ? teamB.customName
-                  : teamB.team === 'T'
-                    ? team_t.name !== undefined ? team_t.name : 'TERRORISTS'
-                    : team_ct.name !== undefined ? team_ct.name : 'COUNTER-TERRORISTS'
-                }
+                {teamBName}
               </div>
               <div className='team-score'>
                 {format && format.key !== 'bo1' && (

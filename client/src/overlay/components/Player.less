@@ -108,6 +108,9 @@
   .player-weapon-main{
     width: 100px;
     height: 32.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &.bigger{
       width: 125px;
@@ -115,14 +118,6 @@
 
     &.biggest{
       width: 143px;
-    }
-
-    img{
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      margin-top: 5px;
-      margin-bottom: 4px;
     }
   }
 
@@ -177,13 +172,9 @@
 
     .player-pistol {
       width: 60px;
-      img{
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 5px;
-        margin-bottom: 5px;
-      }
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .weapon-grenades{
@@ -199,11 +190,12 @@
     .player-grenade {
       width: 20px;
         img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 5px;
-        margin-bottom: 5px;
+          // TODO: Make with flex
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 5px;
+          margin-bottom: 5px;
       }
     }
   }

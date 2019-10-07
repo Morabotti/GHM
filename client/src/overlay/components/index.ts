@@ -10,6 +10,7 @@ import RadarBomb from './RadarBomb'
 import DefuseAnnouncement from './DefuseAnnouncement'
 import ScoreTime from './ScoreTime'
 import MapScoreAnnoucement from './MapScoreAnnoucement'
+import TimeoutAnnoucement from './TimeoutAnnoucement'
 
 export {
   Team,
@@ -23,5 +24,6 @@ export {
   RadarBomb,
   DefuseAnnouncement,
   ScoreTime,
-  MapScoreAnnoucement
+  MapScoreAnnoucement,
+  TimeoutAnnoucement
 }
