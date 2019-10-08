@@ -134,15 +134,12 @@ export const updateTeam = (
         ? `static/uploads/teams/${nameShort}.${getFileExtension(team.logoPath)}`
         : team.logoPath
 
-      console.log(newLogoPath)
-
       if (!hasLogo && team.hasLogo && team.logoPath) {
         deleteFile(team.logoPath)
           .catch(e => reject(`Failed to delete file, ${e}`))
       }
 
       if (hasLogo && newLogoPath && team.hasLogo && team.logoPath) {
-        console.log(team.logoPath)
         renameFile(team.logoPath, newLogoPath)
           .catch(e => reject(`Failed to rename file, ${e}`))
       }

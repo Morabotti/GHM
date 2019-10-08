@@ -52,7 +52,7 @@ class LiveMatchCore {
 
         this.switchActiveTeams()
           .then(() => this.dispatchActive())
-          .catch(e => console.log(e))
+          // .catch(e => console.log(e))
       }
     }
   }
@@ -159,7 +159,8 @@ class LiveMatchCore {
       )
     }
     catch (e) {
-      return console.log(e)
+      //return console.log(e)
+      return
     }
   }
 }

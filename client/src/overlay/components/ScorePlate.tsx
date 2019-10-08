@@ -150,17 +150,16 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
       || (bomb ? bomb.state === 'defusing' : false)
       || plantedBomb
 
+    const teamATeam = teamA.team === 'CT' ? team_ct : team_t
+    const teamBTeam = teamB.team === 'T' ? team_t : team_ct
+
     const teamAName = teamA.customName !== null
       ? teamA.customName
-      : teamA.team === 'CT'
-        ? team_ct.name !== undefined ? team_ct.name : 'COUNTER-TERRORISTS'
-        : team_t.name !== undefined ? team_t.name : 'TERRORISTS'
+      : teamATeam.name !== undefined ? teamATeam.name : 'COUNTER-TERRORISTS'
 
     const teamBName = teamB.customName !== null
       ? teamB.customName
-      : teamB.team === 'T'
-        ? team_t.name !== undefined ? team_t.name : 'TERRORISTS'
-        : team_ct.name !== undefined ? team_ct.name : 'COUNTER-TERRORISTS'
+      : teamBTeam.name !== undefined ? teamBTeam.name : 'COUNTER-TERRORISTS'
 
     const teamATimeout = (teamA.team === 'CT' && phase === 'timeout_ct')
       || (teamA.team === 'T' && phase === 'timeout_t')
@@ -168,12 +167,8 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
     const teamBTimeout = (teamB.team === 'T' && phase === 'timeout_t')
       || (teamB.team === 'CT' && phase === 'timeout_ct')
 
-    const teamATimeoutAmount = (teamA.team === 'CT'
-      ? team_ct.timeouts_remaining
-      : team_t.timeouts_remaining) - config.maxRounds + 1
-    const teamBTimeoutAmount = (teamB.team === 'T'
-      ? team_t.timeouts_remaining
-      : team_ct.timeouts_remaining) - config.maxRounds + 1
+    const teamATimeoutAmount = config.maxRounds - teamATeam.timeouts_remaining
+    const teamBTimeoutAmount = config.maxRounds - teamBTeam.timeouts_remaining
 
     return (
       <div className={`score-top ${config.useRoundedCorners ? 'rounded' : ''}`}>
