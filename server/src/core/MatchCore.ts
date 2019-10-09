@@ -17,6 +17,7 @@ import { Types, Error } from 'mongoose'
 
 import { dispatchSocket } from '../handler/SocketIo'
 import { SOCKET, formats } from '../enum'
+import gameEvents from './GameState'
 
 class LiveMatchCore {
   refactored: RefactoredMatch | null
@@ -405,6 +406,7 @@ export const toggleMatchToLive = (
             if (err || newMatch === null) {
               return reject('There was a problem updating the match.')
             }
+            gameEvents.resetStateHard()
             liveMatchCore.dispatchActive()
             return resolve(newMatch)
           })
@@ -427,6 +429,7 @@ export const toggleMatchToLive = (
                 if (err || newMatch === null) {
                   return reject('There was a problem updating the match.')
                 }
+                gameEvents.resetStateSoft()
                 liveMatchCore.dispatchActive()
                 return resolve(newMatch)
               })
