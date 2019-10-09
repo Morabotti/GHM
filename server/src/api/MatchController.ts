@@ -57,6 +57,7 @@ router.get('/active', async (req: Request, res: Response) => {
 router.post('/teams/switch', async (req: Request, res: Response) => {
   try {
     const match = await liveMatchCore.switchActiveTeams()
+    await liveMatchCore.dispatchActive()
     return res.status(200).send(match)
   }
   catch (e) {

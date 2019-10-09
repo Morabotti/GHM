@@ -52,20 +52,21 @@ class PlayerPlate extends PureComponent<Props> {
           : null
       : null
 
-    // TODO: TEST THIS
-    if (allPlayers[player.steamid] === undefined) return null
+    if (allPlayers[player.steamid] === undefined) {
+      return null
+    }
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     const weapons: any = allPlayers[player.steamid].weapons
-    const currentWeaponID = Object.keys(weapons).find(key => weapons[key].state === 'active')
+    const currentWeaponID = Object
+      .keys(weapons)
+      .find(key => weapons[key].state === 'active')
 
-    if (currentWeaponID === undefined) return null
+    const { assists, deaths, kills} = allPlayers[player.steamid].match_stats
+    const currentWeapon = currentWeaponID && weapons[currentWeaponID]
 
-    const { assists, deaths, kills } = allPlayers[player.steamid].match_stats
-    const currentWeapon = weapons[currentWeaponID]
     const hasBOMB = (player.team === 'T'
-      ? (Object.keys(weapons)
-        .find(weapon => weapons[weapon].type === 'C4') !== undefined)
+      ? (Object.keys(weapons).find(weapon => weapons[weapon].type === 'C4') !== undefined)
       : null)
 
     if (isWatching) {
@@ -182,7 +183,7 @@ class PlayerPlate extends PureComponent<Props> {
                   }
                 </div>
                 <div className='item'>
-                  {currentWeapon.ammo_clip !== undefined ? (
+                  {currentWeapon && currentWeapon.ammo_clip !== undefined ? (
                     <>
                       <span
                         className='ammo-main'

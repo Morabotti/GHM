@@ -118,10 +118,12 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
     const aTeamWin = isWin
       && gameStateRound !== null
       && gameStateRound.win_team === teamA.team
+      && (phase !== 'warmup' && phase !== 'freezetime')
 
     const bTeamWin = isWin
       && gameStateRound !== null
       && gameStateRound.win_team === teamB.team
+      && (phase !== 'warmup' && phase !== 'freezetime')
 
     const showBomb = bomb ? (
       bomb.state === 'planted'

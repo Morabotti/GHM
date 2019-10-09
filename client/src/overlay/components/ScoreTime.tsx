@@ -30,7 +30,7 @@ export default ({
   phase,
   round
 }: Props) => {
-  if (showBomb) {
+  if (showBomb && phase !== 'warmup') {
     return (
       <>
         <div className={`bomb-timer ${useBombEffects ? bombState : ''}`} />
