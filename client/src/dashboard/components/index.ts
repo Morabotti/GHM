@@ -11,6 +11,7 @@ import MatchTableRow from './MatchTableRow'
 import NewMatchTeam from './NewMatchTeam'
 import ActiveMatch from './ActiveMatch'
 import ActiveMatchControls from './ActiveMatchControls'
+import OverlayActions from './OverlayActions'
 
 import {
   SubHeaderWithIcon
@@ -62,5 +63,6 @@ export {
   NewMatchTeam,
   ActiveMatch,
   MapSelectionModal,
-  ActiveMatchControls
+  ActiveMatchControls,
+  OverlayActions
 }

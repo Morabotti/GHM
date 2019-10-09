@@ -23,6 +23,7 @@ class GameEvents {
   isClientSpectating: boolean
   isGameOnline: boolean
   isGameLive: boolean
+  softLoadNext: boolean
   latestTime: number
 
   constructor () {
@@ -31,6 +32,7 @@ class GameEvents {
     this.isClientSpectating = false // Is client spectating
     this.isGameOnline = false // Is client on server
     this.isGameLive = false // Is game on live
+    this.softLoadNext = false // This is used for game state resets
     this.latestTime = 0 // Default: 0, doesn't rly matter since code checks this.isNotFirstTime
 
     if (config.useStaticData) {
@@ -61,7 +63,7 @@ class GameEvents {
   }
 
   handleGameState (state: GameState) {
-    if (this.gameState === undefined) {
+    if (this.gameState === undefined || this.softLoadNext) {
       if (state.allplayers !== undefined) {
         // this.setVectors(state)
         this.dispatchAllPlayers(state.allplayers)
@@ -77,6 +79,7 @@ class GameEvents {
         this.dispatchBomb(state.bomb)
       }
 
+      this.softLoadNext = false
       this.gameState = state
       return
     }
@@ -371,6 +374,9 @@ class GameEvents {
       }
     }
   }
+
+  resetStateHard () { this.gameState = undefined }
+  resetStateSoft () { this.softLoadNext = true }
 
   readStaticState () {
     try {

@@ -217,7 +217,34 @@ export const getActiveMatch = (): Promise<MatchSpecific> => fetch(
 export const forceLoadMatches = (): Promise<Response> => fetch(
   '/api/matches/live',
   {
-    method: 'GET',
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+
+export const softUpdateGameState = (): Promise<Response> => fetch(
+  '/api/game/reset/soft',
+  {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+
+export const forceSwitch = (): Promise<Response> => fetch(
+  '/api/matches/teams/switch',
+  {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' }
+  }
+)
+  .then(checkResponse)
+
+export const hardUpdateGameState = (): Promise<Response> => fetch(
+  '/api/game/reset/hard',
+  {
+    method: 'POST',
     headers: { 'Content-Type': 'application/json' }
   }
 )

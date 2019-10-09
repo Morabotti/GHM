@@ -155,11 +155,15 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
 
     const teamAName = teamA.customName !== null
       ? teamA.customName
-      : teamATeam.name !== undefined ? teamATeam.name : 'COUNTER-TERRORISTS'
+      : teamATeam.name !== undefined
+        ? teamATeam.name
+        : teamA.team === 'CT' ? 'COUNTER-TERRORISTS' : 'TERRORISTS'
 
     const teamBName = teamB.customName !== null
       ? teamB.customName
-      : teamBTeam.name !== undefined ? teamBTeam.name : 'COUNTER-TERRORISTS'
+      : teamBTeam.name !== undefined
+        ? teamBTeam.name
+        : teamB.team === 'T' ? 'TERRORISTS' : 'COUNTER-TERRORISTS'
 
     const teamATimeout = (teamA.team === 'CT' && phase === 'timeout_ct')
       || (teamA.team === 'T' && phase === 'timeout_t')
@@ -208,10 +212,7 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
                     won={scoreA}
                   />
                 )}
-                {teamA.team === 'CT'
-                  ? team_ct.score
-                  : team_t.score
-                }
+                {teamATeam.score}
               </div>
             </div>
           </div>
@@ -229,6 +230,7 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
               bombTimeLeft={bombTimerLeft}
               phase={phase}
               phaseTimer={phase_ends_in}
+              otRounds={config.otRounds || 6}
               round={round}
             />
           </div>
@@ -267,10 +269,7 @@ class ScorePlate extends PureComponent<Props, ComponentState> {
                     won={scoreB}
                   />
                 )}
-                {teamB.team === 'T'
-                  ? team_t.score
-                  : team_ct.score
-                }
+                {teamBTeam.score}
               </div>
             </div>
           </div>

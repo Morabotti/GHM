@@ -9,7 +9,8 @@ interface Props {
   bombTimeLeft: number,
   phase: PhaseExt,
   phaseTimer: number,
-  round: number
+  round: number,
+  otRounds: number
 }
 
 const BOMB_TIMER = 40
@@ -25,6 +26,7 @@ export default ({
   bombActive,
   bombTimeLeft,
   phaseTimer,
+  otRounds,
   phase,
   round
 }: Props) => {
@@ -62,8 +64,8 @@ export default ({
   }
 
   const isOvertime = round + 1 > 30
-  const otRound = isOvertime ? ((round - 30) % 6) + 1 : 0
-  const otTimes = isOvertime ? Math.floor((round - 30) / 6) + 1 : 0
+  const otRound = isOvertime ? ((round - 30) % otRounds) + 1 : 0
+  const otTimes = isOvertime ? Math.floor((round - 30) / otRounds) + 1 : 0
 
   return (
     <>
@@ -77,7 +79,7 @@ export default ({
         {phase === 'warmup'
           ? 'WARMUP'
           : isOvertime
-            ? `OT ${otTimes} (${otRound}/6)`
+            ? `OT ${otTimes} (${otRound}/${otRounds})`
             : `Round ${round + 1}/30`}
       </div>
     </>

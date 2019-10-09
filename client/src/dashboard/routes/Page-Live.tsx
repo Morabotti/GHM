@@ -10,7 +10,10 @@ import {
   addMatch,
   setMatchToLive,
   removeMatch,
-  setActiveScores
+  setActiveScores,
+  softUpdateGameState,
+  hardUpdateGameState,
+  forceSwitch
 } from '../client'
 
 import {
@@ -25,7 +28,8 @@ import {
   NewMatchTeam,
   ActiveMatch,
   MapSelectionModal,
-  ActiveMatchControls
+  ActiveMatchControls,
+  OverlayActions
 } from '../components'
 
 import {
@@ -78,6 +82,8 @@ const getInitialState = () => ({
 })
 
 class LivePage extends PureComponent<Props, ComponentState> {
+  private interval: NodeJS.Timeout | undefined
+
   constructor (props: Props) {
     super(props)
 
@@ -93,6 +99,13 @@ class LivePage extends PureComponent<Props, ComponentState> {
 
   componentDidMount () {
     this._updateActiveMatch()
+    this.interval = setInterval(this._updateActiveMatch, 30000)
+  }
+
+  componentWillUnmount () {
+    if (this.interval) {
+      clearInterval(this.interval)
+    }
   }
 
   _setActiveFormat = (
@@ -151,6 +164,13 @@ class LivePage extends PureComponent<Props, ComponentState> {
     matchDeleteModalOpen: false,
     activation: null
   })
+
+  _forceSwitch = () => {
+    forceSwitch()
+      .then(() => {
+        this._updateActiveMatch()
+      })
+  }
 
   _closeChooseModal = () => this.setState({
     teamSelectModalOpen: false,
@@ -348,7 +368,9 @@ class LivePage extends PureComponent<Props, ComponentState> {
                   {activeMatch !== null && (
                     <ActiveMatchControls
                       activeMatch={activeMatch}
-                      forceLoad={forceLoadMatches}
+                      forceLoadGHM={forceLoadMatches}
+                      onSoftLoad={softUpdateGameState}
+                      onHardLoad={hardUpdateGameState}
                       openConfirm={this._openLiveConfirmModal}
                       onUpdateScore={this._updateScore}
                     />
@@ -477,6 +499,19 @@ class LivePage extends PureComponent<Props, ComponentState> {
                       ))}
                     </Card.Group>
                   </div>
+                </div>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column>
+                <div className='f-container-wrap'>
+                  <Header as='h2'>
+                    <Icon name='chess rook' />
+                    <Header.Content>Everything fails</Header.Content>
+                  </Header>
+                  <OverlayActions
+                    onForceSwitch={this._forceSwitch}
+                  />
                 </div>
               </Grid.Column>
             </Grid.Row>

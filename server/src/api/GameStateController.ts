@@ -52,4 +52,18 @@ router.get('/overlay/init', (req: Request, res: Response) => {
   }
 })
 
+router.post('/reset/soft', (req: Request, res: Response) => {
+  const ok = gameState.resetStateSoft()
+  return res
+    .status(200)
+    .send({ message: 'Soft update' })
+})
+
+router.post('/reset/hard', (req: Request, res: Response) => {
+  const ok = gameState.resetStateHard()
+  return res
+    .status(200)
+    .send({ message: 'Soft update' })
+})
+
 export default router

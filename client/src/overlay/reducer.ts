@@ -139,6 +139,10 @@ export default function reducer (
         teamConfiguration: action.teamConfiguration
       }
     case 'set-team-configuration-reset':
+      if (Object.entries(state.teamConfiguration.players).length === 0) {
+        return state
+      }
+
       return {
         ...state,
         teamConfiguration: getDefaultState().teamConfiguration

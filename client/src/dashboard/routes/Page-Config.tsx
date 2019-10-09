@@ -178,6 +178,17 @@ class ConfigPage extends Component<Props, PageState> {
                             placeholder='Number of timeouts'
                           />
                         </Form.Field>
+                        <Form.Field inline>
+                          <label>Overtime rounds (per overtime):</label>
+                          <Input
+                            name='otRounds'
+                            value={configs.otRounds}
+                            label='rounds'
+                            labelPosition='right'
+                            onChange={this._onNumberChange}
+                            placeholder='Number of overtime rounds'
+                          />
+                        </Form.Field>
                         <Header as='h3'>HUD Safezones</Header>
                         <Form.Field inline>
                           <label>Left (default 35px):</label>

@@ -54,6 +54,25 @@ router.get('/active', async (req: Request, res: Response) => {
   }
 })
 
+router.post('/teams/switch', async (req: Request, res: Response) => {
+  try {
+    const match = await liveMatchCore.switchActiveTeams()
+    return res.status(200).send(match)
+  }
+  catch (e) {
+    if (e === null) {
+      return res
+        .status(200)
+        .send(null)
+    }
+    else {
+      return res
+        .status(500)
+        .send(e)
+    }
+  }
+})
+
 router.post('/live/:id', async (req: Request, res: Response) => {
   try {
     const updatedMatch = await toggleMatchToLive(req.params.id)

@@ -6,6 +6,7 @@ export interface ConfigState {
   playerSize: number,
   bombSize: number,
   maxRounds: number,
+  otRounds: number,
   radarNumberSize: number,
   safeZoneLeft: number,
   safeZoneRight: number,

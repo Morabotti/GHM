@@ -10,14 +10,18 @@ import {
 
 interface Props {
   activeMatch: MatchSpecific,
-  forceLoad: () => Promise<Response>,
+  forceLoadGHM: () => Promise<Response>,
+  onSoftLoad: () => Promise<Response>,
+  onHardLoad: () => Promise<Response>,
   openConfirm: (id: string | null) => () => void,
   onUpdateScore: (scores: UpdateActiveScore) => () => void
 }
 
 export default ({
   activeMatch,
-  forceLoad,
+  forceLoadGHM,
+  onSoftLoad,
+  onHardLoad,
   openConfirm,
   onUpdateScore
 }: Props) => {
@@ -32,23 +36,12 @@ export default ({
 
   return (
     <div className='actions-container'>
-      <Button
-        fluid
-        color='google plus'
-        onClick={forceLoad}
-      >Force load</Button>
-      <Button
-        fluid
-        color='instagram'
-        onClick={openConfirm(activeMatch._id)}
-      >Unload match</Button>
-      <Button
-        fluid
-        color='instagram'
-        disabled
-        onClick={() => {}}
-      >Update maps</Button>
       <Form onSubmit={onUpdateScore({ scoreA, scoreB })}>
+        <Button
+          fluid
+          color='google plus'
+          onClick={openConfirm(activeMatch._id)}
+        >Unload match</Button>
         <Header as='h2' className='text-center'>Update map score</Header>
         <Form.Group widths='equal'>
           <Form.Input
@@ -70,6 +63,27 @@ export default ({
         </Form.Group>
         <Form.Button fluid color='instagram'>Update Score</Form.Button>
       </Form>
+      <Button
+        fluid
+        color='instagram'
+        disabled
+        onClick={() => {}}
+      >Update maps</Button>
+      <Button
+        fluid
+        color='instagram'
+        onClick={forceLoadGHM}
+      >Update GHM data</Button>
+      <Button
+        fluid
+        color='instagram'
+        onClick={onSoftLoad}
+      >Reset game-state (soft)</Button>
+      <Button
+        fluid
+        color='instagram'
+        onClick={onHardLoad}
+      >Reset game-state (hard)</Button>
     </div>
   )
 }
