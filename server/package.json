@@ -39,7 +39,7 @@
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
     "jsonfile": "^5.0.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mongoose": "^5.7.5",
     "multer": "^1.4.1",
     "socket.io": "^2.2.0",
